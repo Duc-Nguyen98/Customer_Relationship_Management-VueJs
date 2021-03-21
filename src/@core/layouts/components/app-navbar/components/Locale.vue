@@ -64,9 +64,9 @@ export default {
         name: 'German',
       },
       {
-        locale: 'pt',
+        locale: 'vi',
         img: require('@/assets/images/flags/vn.png'),
-        name: 'Portuguese',
+        name: 'Viet Nam',
       },
     ]
     /* eslint-disable global-require */
