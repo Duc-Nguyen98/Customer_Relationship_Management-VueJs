@@ -155,41 +155,6 @@ export default [
     },
   },
   {
-    path: '/pages/profile',
-    name: 'pages-profile',
-    component: () => import('@/views/pages/profile/Profile.vue'),
-    meta: {
-      pageTitle: 'Profile',
-      breadcrumb: [
-        {
-          text: 'Pages',
-        },
-        {
-          text: 'Profile',
-          active: true,
-        },
-      ],
-    },
-  },
-
-  {
-    path: '/pages/faq',
-    name: 'pages-faq',
-    component: () => import('@/views/pages/faq/Faq.vue'),
-    meta: {
-      pageTitle: 'FAQ',
-      breadcrumb: [
-        {
-          text: 'Pages',
-        },
-        {
-          text: 'FAQ',
-          active: true,
-        },
-      ],
-    },
-  },
-  {
     path: '/pages/knowledge-base',
     name: 'pages-knowledge-base',
     component: () => import('@/views/pages/Knowledge-base/KnowledgeBase.vue'),
@@ -253,11 +218,6 @@ export default [
       ],
       navActiveLink: 'pages-knowledge-base',
     },
-  },
-  {
-    path: '/pages/pricing',
-    name: 'pages-pricing',
-    component: () => import('@/views/pages/pricing/Pricing.vue'),
   },
   {
     path: '/pages/blog/list',

@@ -65,7 +65,7 @@ export default {
       },
       {
         locale: 'pt',
-        img: require('@/assets/images/flags/pt.png'),
+        img: require('@/assets/images/flags/vn.png'),
         name: 'Portuguese',
       },
     ]
