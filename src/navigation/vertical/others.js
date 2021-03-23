@@ -2,15 +2,15 @@ export default [
   {
     header: 'Others',
   },
-  // {
-  //   title: 'Access Control',
-  //   route: 'access-control',
-  //   icon: 'ShieldIcon',
-  //   // acl: {
-  //   action: 'read',
-  //   resource: 'ACL',
-  //   // },
-  // },
+  {
+    title: 'Permission Control',
+    route: 'access-control',
+    icon: 'ShieldIcon',
+    // acl: {
+    action: 'read',
+    resource: 'ACL',
+    // },
+  },
   // {
   //   title: 'Menu Levels',
   //   icon: 'MenuIcon',

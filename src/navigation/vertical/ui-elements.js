@@ -230,30 +230,4 @@ export default [
       },
     ],
   },
-  {
-    title: 'Page Layouts',
-    icon: 'LayoutIcon',
-    children: [
-      {
-        title: 'Collapsed Menu',
-        route: 'page-layout-collapsed-menu',
-      },
-      {
-        title: 'Layout Boxed',
-        route: 'page-layout-boxed-layout',
-      },
-      {
-        title: 'Without Menu',
-        route: 'page-layout-without-menu',
-      },
-      {
-        title: 'Layout Empty',
-        route: 'page-layout-layout-empty',
-      },
-      {
-        title: 'Layout Blank',
-        route: 'page-layout-layout-blank',
-      },
-    ],
-  },
 ]
