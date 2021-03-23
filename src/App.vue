@@ -26,14 +26,12 @@ import { useWindowSize, useCssVar } from '@vueuse/core'
 import store from '@/store'
 
 const LayoutVertical = () => import('@/layouts/vertical/LayoutVertical.vue')
-const LayoutFull = () => import('@/layouts/full/LayoutFull.vue')
 
 export default {
   components: {
 
     // Layouts
     LayoutVertical,
-    LayoutFull,
 
     ScrollToTop,
   },
