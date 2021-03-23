@@ -10,8 +10,10 @@ export default [
         route: 'dashboard-analytics',
       },
       {
-        title: 'eCommerce',
-        route: 'dashboard-aa',
+        title: 'Others',
+        route: 'dashboard-others',
+        tag: 'Building',
+        tagVariant: 'light-warning',
       },
     ],
   },

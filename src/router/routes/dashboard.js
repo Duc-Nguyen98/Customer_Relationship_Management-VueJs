@@ -5,8 +5,8 @@ export default [
     component: () => import('@/views/dashboard/analytics/Analytics.vue'),
   },
   {
-    path: '/dashboard/other',
-    name: 'dashboard-ecommerce',
+    path: '/dashboard/others',
+    name: 'dashboard-others',
     component: () => import('@/views/pages/miscellaneous/ComingSoon.vue'),
   },
 ]
