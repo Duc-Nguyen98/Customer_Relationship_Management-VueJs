@@ -11,7 +11,7 @@ export default [
       },
       {
         title: 'eCommerce',
-        route: 'dashboard-ecommerce',
+        route: 'dashboard-aa',
       },
     ],
   },

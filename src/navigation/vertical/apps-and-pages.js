@@ -6,66 +6,37 @@ export default [
     title: 'Email',
     route: 'apps-email',
     icon: 'MailIcon',
+    tag: 'new',
+    tagVariant: 'light-success',
   },
   {
     title: 'Chat',
     route: 'apps-chat',
     icon: 'MessageSquareIcon',
+    tag: 'new',
+    tagVariant: 'light-success',
   },
   {
     title: 'Todo',
     route: 'apps-todo',
     icon: 'CheckSquareIcon',
+    tag: 'new',
+    tagVariant: 'light-success',
   },
   {
     title: 'Calendar',
     route: 'apps-calendar',
     icon: 'CalendarIcon',
+    tag: 'new',
+    tagVariant: 'light-success',
   },
-  // {
-  //   title: 'Invoice',
-  //   icon: 'FileTextIcon',
-  //   children: [
-  //     {
-  //       title: 'List',
-  //       route: 'apps-invoice-list',
-  //     },
-  //     {
-  //       title: 'Preview',
-  //       route: { name: 'apps-invoice-preview', params: { id: 4987 } },
-  //     },
-  //     {
-  //       title: 'Edit',
-  //       route: { name: 'apps-invoice-edit', params: { id: 4987 } },
-  //     },
-  //     {
-  //       title: 'Add',
-  //       route: { name: 'apps-invoice-add' },
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: 'eCommerce',
-  //   icon: 'ShoppingCartIcon',
-  //   children: [
-  //     {
-  //       title: 'Shop',
-  //       route: 'apps-e-commerce-shop',
-  //     },
-  //     {
-  //       title: 'Details',
-  //       route: { name: 'apps-e-commerce-product-details', params: { slug: 'apple-watch-series-5-27' } },
-  //     },
-  //     {
-  //       title: 'Wishlist',
-  //       route: 'apps-e-commerce-wishlist',
-  //     },
-  //     {
-  //       title: 'Checkout',
-  //       route: 'apps-e-commerce-checkout',
-  //     },
-  //   ],
-  // },
+  {
+    title: 'Chatbot',
+    route: 'apps-chatbox',
+    icon: 'EyeIcon',
+    tag: 'Building',
+    tagVariant: 'light-warning',
+  },
   {
     title: 'User',
     icon: 'UserIcon',
