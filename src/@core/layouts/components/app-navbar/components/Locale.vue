@@ -59,11 +59,6 @@ export default {
         name: 'French',
       },
       {
-        locale: 'de',
-        img: require('@/assets/images/flags/de.png'),
-        name: 'German',
-      },
-      {
         locale: 'vi',
         img: require('@/assets/images/flags/vn.png'),
         name: 'Viet Nam',
