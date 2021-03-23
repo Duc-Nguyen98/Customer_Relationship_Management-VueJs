@@ -1,3 +1,3 @@
-# Vuexy - Vuejs, React, HTML & Laravel Admin Dashboard Template
+# ANT-CVV Admin Dashboard 
 
-**Vuexy – Vuejs, React, HTML & Laravel Admin Dashboard Template** – is the most developer friendly & highly customizable Admin Dashboard Template based on Bootstrap 4, Bootstrap Vue & Reactstrap.
+**ANT-CVV Admin Dashboard** – is the most developer friendly & highly customizable Admin Dashboard.

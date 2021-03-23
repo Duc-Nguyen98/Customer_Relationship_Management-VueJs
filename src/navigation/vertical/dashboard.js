@@ -10,8 +10,8 @@ export default [
         route: 'dashboard-analytics',
       },
       {
-        title: 'Other',
-        route: 'dashboard-ecommerce2',
+        title: 'eCommerce',
+        route: 'dashboard-ecommerce',
       },
     ],
   },
