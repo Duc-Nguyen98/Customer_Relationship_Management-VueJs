@@ -50,21 +50,4 @@ export default [
       ],
     },
   },
-  {
-    path: '/maps/leaflet',
-    name: 'maps-leaflet',
-    component: () => import('@/views/charts-and-maps/maps/leaflet/Leaflet.vue'),
-    meta: {
-      pageTitle: 'Leaflet',
-      breadcrumb: [
-        {
-          text: 'Table',
-        },
-        {
-          text: 'Leaflet',
-          active: true,
-        },
-      ],
-    },
-  },
 ]
