@@ -249,7 +249,7 @@ export default {
     }
 
     const blankTask = {
-      id: null,
+      id: 51,
       title: '',
       dueDate: new Date(),
       description: '',
