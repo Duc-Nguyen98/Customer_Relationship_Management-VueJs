@@ -178,7 +178,7 @@ import {
 } from '@vue/composition-api'
 import {
   BFormInput, BInputGroup, BInputGroupPrepend, BDropdown, BDropdownItem,
-  BFormCheckbox, BBadge, BAvatar,
+  BFormCheckbox, BBadge,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import draggable from 'vuedraggable'
@@ -198,10 +198,8 @@ export default {
     BDropdownItem,
     BFormCheckbox,
     BBadge,
-    BAvatar,
     draggable,
     VuePerfectScrollbar,
-
     // App SFC
     TodoLeftSidebar,
     TodoTaskHandlerSidebar,
