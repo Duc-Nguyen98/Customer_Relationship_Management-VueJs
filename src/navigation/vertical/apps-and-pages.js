@@ -24,13 +24,6 @@ export default [
     tagVariant: 'light-success',
   },
   {
-    title: 'Calendar',
-    route: 'apps-calendar',
-    icon: 'CalendarIcon',
-    tag: 'N',
-    tagVariant: 'light-success',
-  },
-  {
     title: 'ChatBot',
     route: 'apps-chatbot',
     icon: 'EyeIcon',

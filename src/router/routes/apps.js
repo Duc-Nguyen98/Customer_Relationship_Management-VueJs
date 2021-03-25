@@ -1,11 +1,5 @@
 export default [
   {
-    path: '/apps/calendar',
-    name: 'apps-calendar',
-    component: () => import('@/views/apps/calendar/Calendar.vue'),
-  },
-
-  {
     path: '/apps/chatbot',
     name: 'apps-chatbot',
     component: () => import('@/views/pages/miscellaneous/ComingSoon.vue'),
