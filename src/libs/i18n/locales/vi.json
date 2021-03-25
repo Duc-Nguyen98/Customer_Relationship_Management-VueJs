@@ -1,6 +1,7 @@
 {
   "Charts & Maps": "BIỂU ĐỒ & BÁO CÁO",
-  "Others": "KHÁC",
+  "Others": "Khác",
+
   "Calendar": "Lịch",
   "Dashboards": "Bảng điều khiển",
   "Analytics": "Phân tích",
@@ -9,8 +10,15 @@
   "Chat": "Trò chuyện",
   "Todo": "Todo",
   "Access Control": "Quyền điều khiển",
-  "eCommerce": "eCommerce22",
+  "eCommerce": "Thương mại",
   "Chatbot": "ChatBot",
   "Sales": "Bán hàng",
-  "Charts & Exports": "Biểu đồ & Báo cáo"
+  "Charts & Exports": "Biểu đồ & Báo cáo",
+  "Users": "Người Dùng",
+  "Customers": "Khách Hàng",
+  "Transactions": "Giao Dịch",
+  "Data Chart": "Biểu đồ dữ liệu",
+  "Data Export": "Truy xuất Dữ liệu",
+  "Forms & Tables": "Bảng & Biểu mẫu",
+  "Permission Control": "Quản lý quyền"
 }

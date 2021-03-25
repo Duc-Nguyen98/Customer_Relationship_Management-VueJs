@@ -2,7 +2,7 @@ export default [
   {
     title: 'Dashboards',
     icon: 'HomeIcon',
-    tag: '2',
+    tag: '1',
     tagVariant: 'light-warning',
     children: [
       {
@@ -10,9 +10,9 @@ export default [
         route: 'dashboard-analytics',
       },
       {
-        title: 'Others',
+        title: 'eCommerce',
         route: 'dashboard-others',
-        tag: 'Building',
+        tag: 'B',
         tagVariant: 'light-warning',
       },
     ],
