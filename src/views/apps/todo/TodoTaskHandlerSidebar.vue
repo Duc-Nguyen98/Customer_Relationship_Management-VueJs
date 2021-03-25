@@ -90,6 +90,41 @@
               </b-form-group>
             </validation-provider>
 
+            <!-- Assignee -->
+            <b-form-group
+              label="Assignee"
+              label-for="assignee"
+            >
+              <v-select
+                v-model="taskLocal.assignee"
+                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :options="assigneeOptions"
+                label="fullName"
+                class="assignee-selector"
+                input-id="assignee"
+              >
+
+                <template #option="{ avatar, fullName }">
+                  <b-avatar
+                    size="26"
+                    :src="avatar"
+                  />
+                  <span class="ml-50 d-inline-block align-middle"> {{ fullName }}</span>
+                </template>
+
+                <template #selected-option="{ avatar, fullName }">
+                  <b-avatar
+                    size="26"
+                    :src="avatar"
+                    :variant="`light-${resolveAvatarVariant(taskLocal.tags)}`"
+                    :text="avatarText(fullName)"
+                  />
+
+                  <span class="ml-50 d-inline-block align-middle"> {{ fullName }}</span>
+                </template>
+              </v-select>
+            </b-form-group>
+
             <!-- due Date -->
             <validation-provider
               #default="validationContext"
@@ -178,7 +213,7 @@
 
 <script>
 import {
-  BSidebar, BForm, BFormGroup, BFormInput, BButton, BFormInvalidFeedback,
+  BSidebar, BForm, BFormGroup, BFormInput, BAvatar, BButton, BFormInvalidFeedback,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component'
@@ -199,6 +234,7 @@ export default {
     BForm,
     BFormGroup,
     BFormInput,
+    BAvatar,
     BFormInvalidFeedback,
 
     // 3rd party packages

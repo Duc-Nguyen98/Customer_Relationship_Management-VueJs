@@ -54,12 +54,6 @@
         <analytics-app-design :data="data.appDesign" />
       </b-col>
     </b-row>
-
-    <b-row>
-      <b-col cols="12">
-        <invoice-list />
-      </b-col>
-    </b-row>
   </section>
 </template>
 

@@ -198,8 +198,10 @@ export default {
     BDropdownItem,
     BFormCheckbox,
     BBadge,
+    BAvatar,
     draggable,
     VuePerfectScrollbar,
+
     // App SFC
     TodoLeftSidebar,
     TodoTaskHandlerSidebar,

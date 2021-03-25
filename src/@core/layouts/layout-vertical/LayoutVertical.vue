@@ -148,7 +148,6 @@ export default {
       layoutClasses,
       navbarTypeClass,
       footerTypeClass,
-
       // App Config
       routerTransition,
       navbarBackgroundColor,
