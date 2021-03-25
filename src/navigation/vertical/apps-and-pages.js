@@ -31,7 +31,7 @@ export default [
     tagVariant: 'light-success',
   },
   {
-    title: 'Chatbot',
+    title: 'ChatBot',
     route: 'apps-chatbot',
     icon: 'EyeIcon',
     tag: 'Building',
