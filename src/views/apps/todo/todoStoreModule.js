@@ -9,7 +9,7 @@ export default {
     fetchTasks(ctx, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get("/apps/todo/tasks", { params: payload })
+          .get("http://localhost:3000/todo", { params: payload })
           .then((response) => resolve(response))
           .catch((error) => reject(error));
       });
@@ -17,7 +17,7 @@ export default {
     addTask(ctx, taskData) {
       return new Promise((resolve, reject) => {
         axios
-          .post("/apps/todo/tasks", { task: taskData })
+          .post("http://localhost:3000/todo", { task: taskData })
           .then((response) => resolve(response))
           .catch((error) => reject(error));
       });
@@ -25,7 +25,7 @@ export default {
     updateTask(ctx, { task }) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`/apps/todo/tasks/${task.id}`, { task })
+          .post(`http://localhost:3000/todo/${task.id}`, { task })
           .then((response) => resolve(response))
           .catch((error) => reject(error));
       });
@@ -33,7 +33,7 @@ export default {
     removeTask(ctx, { id }) {
       return new Promise((resolve, reject) => {
         axios
-          .delete(`/apps/todo/tasks/${id}`)
+          .delete(`http://localhost:3000/todo/${id}`)
           .then((response) => resolve(response))
           .catch((error) => reject(error));
       });
