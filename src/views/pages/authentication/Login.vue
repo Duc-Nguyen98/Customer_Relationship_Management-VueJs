@@ -9,7 +9,6 @@
       <!-- /Brand logo-->
 
       <!-- Left Text-->
-            :src="imgUrl"
       <b-col lg="8" class="d-none d-lg-flex align-items-center p-5">
         <div
           class="w-100 d-lg-flex align-items-center justify-content-center px-5"
