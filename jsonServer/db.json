@@ -1,0 +1,119 @@
+{
+  "user": [],
+  "customer": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "todo": [
+    {
+      "id": 10,
+      "title": "List out all the SEO resources and send it to new SEO team. ",
+      "dueDate": "2020-12-09",
+      "description": "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+      "assignee": {
+        "fullName": "Karen Carrillo",
+        "avatar": ""
+      },
+      "tags": [
+        "low",
+        "medium",
+        "high",
+        "update"
+      ],
+      "isCompleted": true,
+      "isDeleted": false,
+      "isImportant": false
+    },
+    {
+      "id": 8,
+      "title": "Pick up Nats from her school and drop at dance class😁 ",
+      "dueDate": "2020-12-08",
+      "description": "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+      "assignee": {
+        "fullName": "Thomas Moses",
+        "avatar": "/img/7.8446f5dc.png"
+      },
+      "tags": [
+        "low",
+        "medium"
+      ],
+      "isCompleted": false,
+      "isDeleted": false,
+      "isImportant": false
+    },
+    {
+      "id": 7,
+      "title": "222222222222 ",
+      "dueDate": "2020-12-05",
+      "description": "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+      "assignee": {
+        "fullName": "Katherine Perkins",
+        "avatar": "/img/9.3fd39137.png"
+      },
+      "tags": [
+        "medium"
+      ],
+      "isCompleted": true,
+      "isDeleted": false,
+      "isImportant": true
+    },
+    {
+      "id": 5,
+      "title": "Test functionality of apps developed by dev team for enhancements. ",
+      "dueDate": "2020-12-06",
+      "description": "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+      "assignee": {
+        "fullName": "Katherine Perkins",
+        "avatar": "/img/9.3fd39137.png"
+      },
+      "tags": [
+        "medium"
+      ],
+      "isCompleted": true,
+      "isDeleted": false,
+      "isImportant": true
+    },
+    {
+      "id": 16,
+      "title": "Hire 5 new Fresher or Experienced, frontend and backend developers ",
+      "dueDate": "2020-12-12",
+      "description": "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+      "assignee": {
+        "fullName": "Darlene Shields",
+        "avatar": "/img/1.9cba4a79.png"
+      },
+      "tags": [
+        "low"
+      ],
+      "isCompleted": true,
+      "isDeleted": true,
+      "isImportant": false
+    },
+    {
+      "id": 50,
+      "title": "222222222222 ",
+      "dueDate": "2020-12-05",
+      "description": "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+      "assignee": {
+        "fullName": "Katherine Perkins",
+        "avatar": "/img/9.3fd39137.png"
+      },
+      "tags": [
+        "medium"
+      ],
+      "isCompleted": true,
+      "isDeleted": false,
+      "isImportant": true
+    }
+  ]
+}

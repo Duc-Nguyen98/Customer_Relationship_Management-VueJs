@@ -1,4 +1,4 @@
-import axios from "@axios";
+import axios from '@axios'
 
 export default {
   namespaced: true,
@@ -9,34 +9,34 @@ export default {
     fetchTasks(ctx, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get("http://localhost:3000/todo", { params: payload })
-          .then((response) => resolve(response))
-          .catch((error) => reject(error));
-      });
+          .get('/apps/todo/tasks', { params: payload })
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
     },
     addTask(ctx, taskData) {
       return new Promise((resolve, reject) => {
         axios
-          .post("http://localhost:3000/todo", { task: taskData })
-          .then((response) => resolve(response))
-          .catch((error) => reject(error));
-      });
+          .post('/apps/todo/tasks', { task: taskData })
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
     },
     updateTask(ctx, { task }) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`http://localhost:3000/todo/${task.id}`, { task })
-          .then((response) => resolve(response))
-          .catch((error) => reject(error));
-      });
+          .post(`/apps/todo/tasks/${task.id}`, { task })
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
     },
     removeTask(ctx, { id }) {
       return new Promise((resolve, reject) => {
         axios
-          .delete(`http://localhost:3000/todo/${id}`)
-          .then((response) => resolve(response))
-          .catch((error) => reject(error));
-      });
+          .delete(`/apps/todo/tasks/${id}`)
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
     },
   },
-};
+}
