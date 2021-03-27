@@ -54,19 +54,6 @@
         </template>
         <user-edit-tab-information class="mt-2 pt-75" />
       </b-tab>
-
-      <!-- Tab: Social -->
-      <b-tab>
-        <template #title>
-          <feather-icon
-            icon="Share2Icon"
-            size="16"
-            class="mr-0 mr-sm-50"
-          />
-          <span class="d-none d-sm-inline">Social</span>
-        </template>
-        <user-edit-tab-social class="mt-2 pt-75" />
-      </b-tab>
     </b-tabs>
   </component>
 </template>
@@ -81,7 +68,6 @@ import store from '@/store'
 import userStoreModule from '../userStoreModule'
 import UserEditTabAccount from './UserEditTabAccount.vue'
 import UserEditTabInformation from './UserEditTabInformation.vue'
-import UserEditTabSocial from './UserEditTabSocial.vue'
 
 export default {
   components: {
@@ -93,7 +79,6 @@ export default {
 
     UserEditTabAccount,
     UserEditTabInformation,
-    UserEditTabSocial,
   },
   setup() {
     const userData = ref(null)
