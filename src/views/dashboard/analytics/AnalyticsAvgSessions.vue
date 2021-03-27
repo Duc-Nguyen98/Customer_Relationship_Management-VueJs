@@ -9,32 +9,20 @@
         class="d-flex justify-content-between flex-column mt-1 mt-sm-0"
       >
         <div>
-          <h2 class="font-weight-bolder mb-25">
-            {{ kFormatter(data.sessions) }}
-          </h2>
-          <b-card-text class="font-weight-bold mb-2">
-            Avg Sessions
-          </b-card-text>
+          <b-card-title class="font-weight-bold mb-2">
+            Overview Statistics Chart
+          </b-card-title>
 
           <h5 class="font-medium-2">
             <span class="text-success mr-50">{{ data.growth }}</span>
             <span>vs to last weeks</span>
           </h5>
         </div>
-
-        <b-button
-          v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-          variant="primary"
-          class="shadow"
-        >
-          <span>View Details </span>
-          <feather-icon icon="ChevronsRightIcon" />
-        </b-button>
       </b-col>
 
       <!-- dropdown and chart -->
       <b-col
-        sm="6"
+        sm="12"
         cols="12"
         order-sm="2"
         order="1"
@@ -42,7 +30,7 @@
       >
         <div>
           <b-dropdown
-            text="Last 7 Days"
+            text="Last Weeks"
             variant="transparent"
             class="chart-dropdown"
             left
@@ -116,6 +104,7 @@ import {
   BDropdownItem,
   BProgress,
   BCardText,
+  BCardTitle,
 } from "bootstrap-vue";
 import VueApexCharts from "vue-apexcharts";
 import Ripple from "vue-ripple-directive";
@@ -130,6 +119,7 @@ export default {
     BCol,
     BButton,
     BCardText,
+    BCardTitle,
     BDropdown,
     BDropdownItem,
     BProgress,
