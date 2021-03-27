@@ -28,23 +28,8 @@
     </b-row>
 
     <b-row class="match-height">
-      <b-col lg="6">
+      <b-col lg="12">
         <analytics-avg-sessions :data="data.avgSessions" />
-      </b-col>
-      <b-col lg="6">
-        <analytics-support-tracker :data="data.supportTracker" />
-      </b-col>
-    </b-row>
-
-    <b-row class="match-height">
-      <b-col lg="4">
-        <analytics-timeline :data="data.timeline" />
-      </b-col>
-      <b-col lg="4">
-        <analytics-sales-radar-chart :data="data.salesChart" />
-      </b-col>
-      <b-col lg="4">
-        <analytics-app-design :data="data.appDesign" />
       </b-col>
     </b-row>
   </section>
@@ -57,7 +42,6 @@ import StatisticCardWithAreaChart from "@core/components/statistics-cards/Statis
 import { kFormatter } from "@core/utils/filter";
 import AnalyticsCongratulation from "./AnalyticsCongratulation.vue";
 import AnalyticsAvgSessions from "./AnalyticsAvgSessions.vue";
-import AnalyticsSupportTracker from "./AnalyticsSupportTracker.vue";
 
 export default {
   components: {
@@ -66,7 +50,6 @@ export default {
     AnalyticsCongratulation,
     AnalyticsAvgSessions,
     StatisticCardWithAreaChart,
-    AnalyticsSupportTracker,
   },
   data() {
     return {
