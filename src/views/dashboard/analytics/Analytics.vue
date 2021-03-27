@@ -1,28 +1,21 @@
 <template>
   <section id="dashboard-analytics">
     <b-row class="match-height">
-      <b-col
-        lg="6"
-        md="12"
-      >
+      <b-col lg="6" md="12">
         <analytics-congratulation :data="data.congratulations" />
       </b-col>
-      <b-col
-        lg="3"
-        sm="6"
-      >
+      <b-col lg="3" sm="6">
         <statistic-card-with-area-chart
           v-if="data.subscribersGained"
           icon="UsersIcon"
-          :statistic="kFormatter(data.subscribersGained.analyticsData.subscribers)"
+          :statistic="
+            kFormatter(data.subscribersGained.analyticsData.subscribers)
+          "
           statistic-title="Subscribers Gained"
           :chart-data="data.subscribersGained.series"
         />
       </b-col>
-      <b-col
-        lg="3"
-        sm="6"
-      >
+      <b-col lg="3" sm="6">
         <statistic-card-with-area-chart
           v-if="data.ordersRecevied"
           icon="PackageIcon"
@@ -58,16 +51,13 @@
 </template>
 
 <script>
-import { BRow, BCol } from 'bootstrap-vue'
+import { BRow, BCol } from "bootstrap-vue";
 
-import StatisticCardWithAreaChart from '@core/components/statistics-cards/StatisticCardWithAreaChart.vue'
-import { kFormatter } from '@core/utils/filter'
-import AnalyticsCongratulation from './AnalyticsCongratulation.vue'
-import AnalyticsAvgSessions from './AnalyticsAvgSessions.vue'
-import AnalyticsSupportTracker from './AnalyticsSupportTracker.vue'
-import AnalyticsTimeline from './AnalyticsTimeline.vue'
-import AnalyticsSalesRadarChart from './AnalyticsSalesRadarChart.vue'
-import AnalyticsAppDesign from './AnalyticsAppDesign.vue'
+import StatisticCardWithAreaChart from "@core/components/statistics-cards/StatisticCardWithAreaChart.vue";
+import { kFormatter } from "@core/utils/filter";
+import AnalyticsCongratulation from "./AnalyticsCongratulation.vue";
+import AnalyticsAvgSessions from "./AnalyticsAvgSessions.vue";
+import AnalyticsSupportTracker from "./AnalyticsSupportTracker.vue";
 
 export default {
   components: {
@@ -77,22 +67,20 @@ export default {
     AnalyticsAvgSessions,
     StatisticCardWithAreaChart,
     AnalyticsSupportTracker,
-    AnalyticsTimeline,
-    AnalyticsSalesRadarChart,
-    AnalyticsAppDesign,
   },
   data() {
     return {
       data: {},
-    }
+    };
   },
   created() {
     // data
-    this.$http.get('/analytics/data')
-      .then(response => { this.data = response.data })
+    this.$http.get("/analytics/data").then((response) => {
+      this.data = response.data;
+    });
   },
   methods: {
     kFormatter,
   },
-}
+};
 </script>
