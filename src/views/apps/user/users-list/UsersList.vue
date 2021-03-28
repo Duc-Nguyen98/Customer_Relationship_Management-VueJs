@@ -60,9 +60,8 @@
                 text="Export To"
                 variant="primary"
               >
-                <b-dropdown-item>Option 1</b-dropdown-item>
-                <b-dropdown-item>Option 2</b-dropdown-item>
-                <b-dropdown-item>Option 3</b-dropdown-item>
+                <b-dropdown-item>PDF</b-dropdown-item>
+                <b-dropdown-item>Excel</b-dropdown-item>
               </b-dropdown>
             </div>
           </b-col>
