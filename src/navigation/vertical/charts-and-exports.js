@@ -1,6 +1,6 @@
 export default [
   {
-    header: 'Charts & Exports',
+    header: 'Charts Data',
   },
   {
 
