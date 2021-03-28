@@ -3,33 +3,22 @@ export default [
     header: 'Charts & Exports',
   },
   {
-    title: 'Users',
-    icon: 'UserIcon',
-    children: [
-      {
-        title: 'Data Chart',
-        route: '',
-      },
-    ],
+
+    title: 'Charts Users',
+    route: '',
+    icon: 'BarChartIcon',
   },
   {
-    title: 'Customers',
-    icon: 'UserIcon',
-    children: [
-      {
-        title: 'Data Chart',
-        route: '',
-      },
-    ],
+
+    title: 'Charts Customers',
+    route: '',
+    icon: 'BarChartIcon',
   },
   {
-    title: 'Transactions',
-    icon: 'GitPullRequestIcon',
-    children: [
-      {
-        title: 'Data Chart',
-        route: '',
-      },
-    ],
+
+    title: 'Charts Transaction',
+    route: '',
+    icon: 'PieChartIcon'
   },
+
 ]
