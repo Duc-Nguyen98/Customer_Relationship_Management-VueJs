@@ -35,8 +35,6 @@ import { ref, onUnmounted } from "@vue/composition-api";
 import { BRow, BCol, BAlert, BLink } from "bootstrap-vue";
 import userStoreModule from "../userStoreModule";
 import UserViewUserInfoCard from "./UserViewUserInfoCard.vue";
-// import UserViewUserPlanCard from "./UserViewUserPlanCard.vue";
-// import UserViewUserTimelineCard from "./UserViewUserTimelineCard.vue";
 import UserViewUserPermissionsCard from "./UserViewUserPermissionsCard.vue";
 
 export default {
@@ -47,8 +45,6 @@ export default {
     BLink,
     // Local Components
     UserViewUserInfoCard,
-    // UserViewUserPlanCard,
-    // UserViewUserTimelineCard,
     UserViewUserPermissionsCard,
   },
   setup() {
