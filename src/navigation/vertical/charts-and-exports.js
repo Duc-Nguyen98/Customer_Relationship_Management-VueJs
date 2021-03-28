@@ -5,19 +5,19 @@ export default [
   {
 
     title: 'Charts Users',
-    route: '',
+    route: 'charts-apex-chart',
     icon: 'BarChartIcon',
   },
   {
 
     title: 'Charts Customers',
-    route: '',
+    route: 'charts-chartjs',
     icon: 'BarChartIcon',
   },
   {
 
     title: 'Charts Transaction',
-    route: '',
+    route: 'charts-echart',
     icon: 'PieChartIcon'
   },
 
