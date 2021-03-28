@@ -10,10 +10,6 @@ export default [
         title: 'Data Chart',
         route: '',
       },
-      {
-        title: 'Data Export',
-        route: '',
-      },
     ],
   },
   {
@@ -24,10 +20,6 @@ export default [
         title: 'Data Chart',
         route: '',
       },
-      {
-        title: 'Data Export',
-        route: '',
-      },
     ],
   },
   {
@@ -36,10 +28,6 @@ export default [
     children: [
       {
         title: 'Data Chart',
-        route: '',
-      },
-      {
-        title: 'Data Export',
         route: '',
       },
     ],
