@@ -14,8 +14,10 @@ export default function useUsersList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'user', sortable: true },
-    { key: 'email', sortable: true },
+    { key: 'C_Name', sortable: true },
+    { key: 'C_Adress', sortable: true },
+    { key: 'C_Phone', sortable: true },
+    { key: 'C_Email', sortable: true },
     { key: 'role', sortable: true },
     {
       key: 'currentPlan',
@@ -23,7 +25,7 @@ export default function useUsersList() {
       formatter: title,
       sortable: true,
     },
-    { key: 'status', sortable: true },
+    // { key: 'status', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -33,9 +35,9 @@ export default function useUsersList() {
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  const roleFilter = ref(null)
-  const planFilter = ref(null)
-  const statusFilter = ref(null)
+  // const roleFilter = ref(null)
+  // const planFilter = ref(null)
+  // const statusFilter = ref(null)
 
   const dataMeta = computed(() => {
     const localItemsCount = refUserListTable.value ? refUserListTable.value.localItems.length : 0
@@ -49,8 +51,9 @@ export default function useUsersList() {
   const refetchData = () => {
     refUserListTable.value.refresh()
   }
+      // roleFilter, planFilter, statusFilter
 
-  watch([currentPage, perPage, searchQuery, roleFilter, planFilter, statusFilter], () => {
+  watch([currentPage, perPage, searchQuery], () => {
     refetchData()
   })
 
@@ -62,9 +65,9 @@ export default function useUsersList() {
         page: currentPage.value,
         sortBy: sortBy.value,
         sortDesc: isSortDirDesc.value,
-        role: roleFilter.value,
-        plan: planFilter.value,
-        status: statusFilter.value,
+        // role: roleFilter.value,
+        // plan: planFilter.value,
+        // status: statusFilter.value,
       })
       .then(response => {
         const { users, total } = response.data
@@ -132,8 +135,8 @@ export default function useUsersList() {
     refetchData,
 
     // Extra Filters
-    roleFilter,
-    planFilter,
-    statusFilter,
+    // roleFilter,
+    // planFilter,
+    // statusFilter,
   }
 }

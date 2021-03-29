@@ -84,50 +84,50 @@
       >
 
         <!-- Column: User -->
-        <template #cell(user)="data">
-          <b-media vertical-align="center">
-            <template #aside>
-              <b-avatar
-                size="32"
-                :src="data.item.avatar"
-                :text="avatarText(data.item.fullName)"
-                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
-                :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
-              />
-            </template>
-            <b-link
-              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
-              class="font-weight-bold d-block text-nowrap"
-            >
-              {{ data.item.fullName }}
-            </b-link>
-            <small class="text-muted">@{{ data.item.username }}</small>
-          </b-media>
-        </template>
+<!--        <template #cell(user)="data">-->
+<!--          <b-media vertical-align="center">-->
+<!--            <template #aside>-->
+<!--              <b-avatar-->
+<!--                size="32"-->
+<!--                :src="data.item.avatar"-->
+<!--                :text="avatarText(data.item.fullName)"-->
+<!--                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"-->
+<!--                :to="{ name: 'apps-users-view', params: { id: data.item.id } }"-->
+<!--              />-->
+<!--            </template>-->
+<!--            <b-link-->
+<!--              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"-->
+<!--              class="font-weight-bold d-block text-nowrap"-->
+<!--            >-->
+<!--              {{ data.item.fullName }}-->
+<!--            </b-link>-->
+<!--            <small class="text-muted">@{{ data.item.username }}</small>-->
+<!--          </b-media>-->
+<!--        </template>-->
 
         <!-- Column: Role -->
-        <template #cell(role)="data">
-          <div class="text-nowrap">
-            <feather-icon
-              :icon="resolveUserRoleIcon(data.item.role)"
-              size="18"
-              class="mr-50"
-              :class="`text-${resolveUserRoleVariant(data.item.role)}`"
-            />
-            <span class="align-text-top text-capitalize">{{ data.item.role }}</span>
-          </div>
-        </template>
+<!--        <template #cell(role)="data">-->
+<!--          <div class="text-nowrap">-->
+<!--            <feather-icon-->
+<!--              :icon="resolveUserRoleIcon(data.item.role)"-->
+<!--              size="18"-->
+<!--              class="mr-50"-->
+<!--              :class="`text-${resolveUserRoleVariant(data.item.role)}`"-->
+<!--            />-->
+<!--            <span class="align-text-top text-capitalize">{{ data.item.role }}</span>-->
+<!--          </div>-->
+<!--        </template>-->
 
         <!-- Column: Status -->
-        <template #cell(status)="data">
-          <b-badge
-            pill
-            :variant="`light-${resolveUserStatusVariant(data.item.status)}`"
-            class="text-capitalize"
-          >
-            {{ data.item.status }}
-          </b-badge>
-        </template>
+<!--        <template #cell(status)="data">-->
+<!--          <b-badge-->
+<!--            pill-->
+<!--            :variant="`light-${resolveUserStatusVariant(data.item.status)}`"-->
+<!--            class="text-capitalize"-->
+<!--          >-->
+<!--            {{ data.item.status }}-->
+<!--          </b-badge>-->
+<!--        </template>-->
 
         <!-- Column: Actions -->
         <template #cell(actions)="data">
@@ -144,12 +144,12 @@
                 class="align-middle text-body"
               />
             </template>
-            <b-dropdown-item :to="{ name: 'apps-users-view', params: { id: data.item.id } }">
+            <b-dropdown-item :to="{ name: 'apps-users-view', params: { id: data.item.C_ID } }">
               <feather-icon icon="FileTextIcon" />
               <span class="align-middle ml-50">Details</span>
             </b-dropdown-item>
 
-            <b-dropdown-item :to="{ name: 'apps-users-edit', params: { id: data.item.id } }">
+            <b-dropdown-item :to="{ name: 'apps-users-edit', params: { id: data.item.C_ID } }">
               <feather-icon icon="EditIcon" />
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
@@ -236,10 +236,10 @@ export default {
     BFormInput,
     BButton,
     BTable,
-    BMedia,
-    BAvatar,
-    BLink,
-    BBadge,
+    // BMedia,
+    // BAvatar,
+    // BLink,
+    // BBadge,
     BDropdown,
     BDropdownItem,
     BPagination,
