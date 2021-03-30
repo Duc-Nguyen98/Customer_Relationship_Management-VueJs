@@ -1,7 +1,6 @@
 {
   "Charts & Maps": "BIỂU ĐỒ & BÁO CÁO",
   "Others": "Khác",
-
   "Calendar": "Lịch",
   "Dashboards": "Bảng điều khiển",
   "Analytics": "Phân tích",
@@ -13,12 +12,15 @@
   "eCommerce": "Thương mại",
   "Chatbot": "ChatBot",
   "Sales": "Bán hàng",
-  "Charts & Exports": "Biểu đồ & Báo cáo",
+  "Charts Data": "Dữ liệu biểu đồ",
   "Users": "Người Dùng",
+  "Table Users": "Bảng Người Dùng",
   "Customers": "Khách Hàng",
   "Transactions": "Giao Dịch",
   "Data Chart": "Biểu đồ dữ liệu",
-  "Data Export": "Truy xuất Dữ liệu",
   "Forms & Tables": "Bảng & Biểu mẫu",
-  "Permission Control": "Quản lý quyền"
+  "Permission Control": "Quản lý quyền",
+  "Charts Users": "Biểu đồ người dùng",
+  "Charts Customers": "Biểu đồ khách hàng",
+  "Charts Transaction": "Biểu đồ giao dịch"
 }

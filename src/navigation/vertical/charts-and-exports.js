@@ -1,47 +1,18 @@
 export default [
   {
-    header: 'Charts & Exports',
+    header: 'Charts Data',
   },
   {
-    title: 'Users',
-    icon: 'UserIcon',
-    children: [
-      {
-        title: 'Data Chart',
-        route: '',
-      },
-      {
-        title: 'Data Export',
-        route: '',
-      },
-    ],
+
+    title: 'Charts Customers',
+    route: 'charts-chartjs',
+    icon: 'BarChartIcon',
   },
   {
-    title: 'Customers',
-    icon: 'UserIcon',
-    children: [
-      {
-        title: 'Data Chart',
-        route: '',
-      },
-      {
-        title: 'Data Export',
-        route: '',
-      },
-    ],
+
+    title: 'Charts Transaction',
+    route: 'charts-echart',
+    icon: 'PieChartIcon'
   },
-  {
-    title: 'Transactions',
-    icon: 'GitPullRequestIcon',
-    children: [
-      {
-        title: 'Data Chart',
-        route: '',
-      },
-      {
-        title: 'Data Export',
-        route: '',
-      },
-    ],
-  },
+
 ]
