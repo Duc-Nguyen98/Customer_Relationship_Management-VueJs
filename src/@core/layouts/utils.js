@@ -1,6 +1,7 @@
 import router from '@/router'
 import { isObject } from '@core/utils/utils'
 import { computed } from '@vue/composition-api'
+import {console} from "vuedraggable/src/util/helper";
 
 /**
  * Return which component to render based on it's data/context

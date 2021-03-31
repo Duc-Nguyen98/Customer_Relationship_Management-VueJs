@@ -14,10 +14,14 @@ export default [
     component: () => import('@/views/apps/user/users-view/UsersView.vue'),
   },
   {
+    path: '/apps/users/add',
+    name: 'apps-users-add',
+    component: () => import('@/views/apps/user/users-add/UsersAdd.vue'),
+  },
+  {
     path: '/apps/users/edit/:id',
     name: 'apps-users-edit',
     component: () => import('@/views/apps/user/users-edit/UsersEdit.vue'),
   },
-
 
 ]
