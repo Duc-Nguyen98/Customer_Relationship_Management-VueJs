@@ -141,14 +141,14 @@
               />
             </template>
             <b-dropdown-item
-              :to="{ name: 'apps-users-view', params: { id: data.item.C_ID } }"
+              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
             >
               <feather-icon icon="FileTextIcon" />
               <span class="align-middle ml-50">Details</span>
             </b-dropdown-item>
 
             <b-dropdown-item
-              :to="{ name: 'apps-users-edit', params: { id: data.item.C_ID } }"
+              :to="{ name: 'apps-users-edit', params: { id: data.item.id } }"
             >
               <feather-icon icon="EditIcon" />
               <span class="align-middle ml-50">Edit</span>

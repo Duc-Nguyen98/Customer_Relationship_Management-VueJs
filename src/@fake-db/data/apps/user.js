@@ -5,7 +5,7 @@ import { paginateArray, sortCompare } from '@/@fake-db/utils'
 const data = {
   users: [
     {
-      C_ID: 1,
+      id: 1,
       C_Name: 'DucND',
       C_Adress: 'Hà Nội',
       C_Email: 'mphobao@gmail.com',
@@ -44,7 +44,7 @@ const data = {
       ],
     },
     {
-      C_ID: 2,
+      id: 2,
       C_Name: 'AnhTu',
       C_Adress: 'Hà Nội',
       C_Email: 'mphobao@gmail.com',
@@ -83,7 +83,7 @@ const data = {
       ],
     },
     {
-      C_ID: 3,
+      id: 3,
       C_Name: 'HuyenHam',
       C_Adress: 'TP.Hồ Chí Minh',
       C_Email: 'mphobao@gmail.com',
