@@ -114,50 +114,6 @@
       "isCompleted": true,
       "isDeleted": false,
       "isImportant": true
-    },
-    {
-      "taskData": {
-        "title": "vue",
-        "dueDate": "2021-03-29",
-        "description": "<p>vue</p>",
-        "assignee": {
-          "avatar": "/img/3-small.33d29f56.png",
-          "fullName": "Donna Frank"
-        },
-        "tags": [
-          "team",
-          "low",
-          "medium",
-          "high",
-          "update"
-        ],
-        "isCompleted": false,
-        "isDeleted": false,
-        "isImportant": false
-      },
-      "id": 51
-    },
-    {
-      "taskData": {
-        "title": "vue",
-        "dueDate": "2021-03-29",
-        "description": "<p>vue</p>",
-        "assignee": {
-          "avatar": "/img/3-small.33d29f56.png",
-          "fullName": "Donna Frank"
-        },
-        "tags": [
-          "team",
-          "low",
-          "medium",
-          "high",
-          "update"
-        ],
-        "isCompleted": false,
-        "isDeleted": false,
-        "isImportant": false
-      },
-      "id": 52
     }
   ]
 }
