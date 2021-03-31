@@ -13,16 +13,7 @@
     </b-alert>
 
     <b-tabs pills>
-      <!-- Tab: Account -->
-      <b-tab active>
-        <template #title>
-          <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
-          <span class="d-none d-sm-inline">Account</span>
-        </template>
-        <user-add-tab-account :user-data="userData" class="mt-2 pt-75" />
-      </b-tab>
-
-      <!-- Tab: Information -->
+      <!-- Tab: New Account -->
       <b-tab active>
         <template #title>
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
@@ -40,7 +31,6 @@ import { ref, onUnmounted } from "@vue/composition-api";
 import router from "@/router";
 import store from "@/store";
 import userStoreModule from "../userStoreModule";
-import UserAddTabAccount from "./UserAddTabAccount.vue";
 import UserAddTabInformation from "./UserAddTabInformation.vue";
 
 export default {
@@ -51,7 +41,6 @@ export default {
     BAlert,
     BLink,
 
-    UserAddTabAccount,
     UserAddTabInformation,
   },
   setup() {

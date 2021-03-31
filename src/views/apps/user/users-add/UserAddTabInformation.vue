@@ -9,7 +9,7 @@
     <!-- Form: Personal Info Form -->
     <b-form class="mt-1">
       <b-row>
-        <!-- Field: Birth Date -->
+        <!-- Field: Name Date -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Full Name" label-for="birth-date">
             <flat-pickr
@@ -85,10 +85,7 @@
         <!-- Field: City -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Province Name" label-for="city">
-            <b-form-select
-              v-model="selected"
-              :options="options"
-            ></b-form-select>
+            <b-form-select v-model="selected" :options="options" />
             <!-- <b-form-input id="city" v-model="userDataInfo.city" /> -->
           </b-form-group>
         </b-col>
@@ -238,17 +235,14 @@ export default {
       languageOptions,
       genderOptions,
       contactOptionsOptions,
+
+      //select options
+      selected: null,
       options: [
-        { value: null, text: "Please select an option" },
+        { value: null, text: "Please select some item", disabled: true },
         { value: "a", text: "This is First option" },
-        { value: "b", text: "Selected Option", disabled: true },
-        {
-          label: "Grouped options",
-          options: [
-            { value: { C: "3PO" }, text: "Option with object value" },
-            { value: { R: "2D2" }, text: "Another option with object value" },
-          ],
-        },
+        { value: "b", text: "Default Selected Option" },
+        { value: "c", text: "This is another option" },
       ],
     };
   },
