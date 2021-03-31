@@ -1,12 +1,5 @@
 <template>
   <div>
-    <user-list-add-new
-      :is-add-new-user-sidebar-active.sync="isAddNewUserSidebarActive"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
-      @refetch-data="refetchData"
-    />
-
     <!-- Filters -->
     <users-list-filters
       :role-filter.sync="roleFilter"
@@ -50,7 +43,7 @@
               <b-button
                 class="mr-1"
                 variant="primary"
-                @click="isAddNewUserSidebarActive = true"
+                :to="{ name: 'apps-users-add' }"
               >
                 <span class="text-nowrap">Add User</span>
               </b-button>
@@ -226,12 +219,10 @@ import { avatarText } from "@core/utils/filter";
 import UsersListFilters from "./UsersListFilters.vue";
 import useUsersList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
-import UserListAddNew from "./UserListAddNew.vue";
 
 export default {
   components: {
     UsersListFilters,
-    UserListAddNew,
 
     BCard,
     BRow,
@@ -261,8 +252,6 @@ export default {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME))
         store.unregisterModule(USER_APP_STORE_MODULE_NAME);
     });
-
-    const isAddNewUserSidebarActive = ref(false);
 
     const roleOptions = [
       { label: "Admin", value: "admin" },
@@ -311,9 +300,6 @@ export default {
     } = useUsersList();
 
     return {
-      // Sidebar
-      isAddNewUserSidebarActive,
-
       fetchUsers,
       tableColumns,
       perPage,
