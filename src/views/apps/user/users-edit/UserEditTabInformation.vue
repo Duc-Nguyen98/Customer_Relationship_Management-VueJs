@@ -129,6 +129,33 @@
           </b-form-group>
         </b-col>
       </b-row>
+      <!-- Form Actions -->
+      <div class="d-flex mt-2 float-right">
+        <b-button
+          v-ripple.400="'rgba(186, 191, 199, 0.15)'"
+          type="button"
+          variant="outline-secondary"
+          class="mr-2"
+          @click="hide"
+        >
+          Cancel
+        </b-button>
+        <b-button
+          v-ripple.400="'rgba(186, 191, 199, 0.15)'"
+          type="button"
+          class="mr-2"
+          variant="outline-secondary"
+        >
+          Reset
+        </b-button>
+        <b-button
+          v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+          variant="primary"
+          type="submit"
+        >
+          Add
+        </b-button>
+      </div>
     </b-form>
   </div>
 </template>
