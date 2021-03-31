@@ -125,10 +125,45 @@
         <!-- Field: City -->
         <b-col cols="12" md="12" lg="12">
           <b-form-group label="" label-for="city">
-            <b-form-textarea id="city" placeholder="Note" />
+            <b-form-textarea
+              id="textarea-rows"
+              placeholder="Note Here"
+              rows="8"
+            />
           </b-form-group>
         </b-col>
       </b-row>
+
+      <!-- Form Actions -->
+      <div class="d-flex float-right mt-2">
+        <b-button
+          v-ripple.400="'rgba(186, 191, 199, 0.15)'"
+          type="button"
+          variant="outline-secondary"
+          @click="hide"
+          class="mr-2 text-uppercase"
+        >
+          Cancel
+        </b-button>
+
+        <b-button
+          v-ripple.400="'rgba(186, 191, 199, 0.15)'"
+          type="button"
+          variant="primary"
+          class="mr-2 text-up text-uppercase"
+        >
+          Reset
+        </b-button>
+
+        <b-button
+          v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+          variant="primary"
+          type="submit"
+          class="text-uppercase"
+        >
+          Add New
+        </b-button>
+      </div>
     </b-form>
   </div>
 </template>
