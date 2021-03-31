@@ -9,35 +9,33 @@
     <!-- Form: Personal Info Form -->
     <b-form class="mt-1">
       <b-row>
-        <!-- Field: Birth Date -->
+        <!-- Field: Name  -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Full Name" label-for="birth-date">
-            <flat-pickr
-              v-model="userDataInfo.dob"
-              class="form-control"
-              :config="{ dateFormat: 'Y-m-d' }"
+          <b-form-group label="Full Name" label-for="Full Name">
+            <b-form-input
+              id="fullname"
+              v-model="userDataInfo.fullname"
               placeholder="Full Name"
             />
           </b-form-group>
         </b-col>
-        <!-- Field: Birth Date -->
+        <!-- Field: Email -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Email" label-for="birth-date">
-            <flat-pickr
-              v-model="userDataInfo.dob"
-              class="form-control"
-              :config="{ dateFormat: 'Y-m-d' }"
+          <b-form-group label="Email" label-for="Email">
+            <b-form-input
+              id="email"
+              type="email"
+              v-model="userDataInfo.email"
               placeholder="Email"
             />
           </b-form-group>
         </b-col>
-        <!-- Field: Birth Date -->
+        <!-- Field: Adress  -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Adress" label-for="birth-date">
-            <flat-pickr
-              v-model="userDataInfo.dob"
-              class="form-control"
-              :config="{ dateFormat: 'Y-m-d' }"
+          <b-form-group label="Adress" label-for="Adress">
+            <b-form-input
+              id="adress"
+              v-model="userDataInfo.adress"
               placeholder="Adress"
             />
           </b-form-group>
@@ -57,7 +55,11 @@
         <!-- Field: Mobile -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Mobile" label-for="mobile">
-            <b-form-input id="mobile" v-model="userDataInfo.mobile" />
+            <b-form-input
+              id="mobile"
+              v-model="userDataInfo.mobile"
+              placeholder="+84303177289"
+            />
           </b-form-group>
         </b-col>
 
@@ -85,10 +87,7 @@
         <!-- Field: City -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Province Name" label-for="city">
-            <b-form-select
-              v-model="selected"
-              :options="options"
-            ></b-form-select>
+            <b-form-select v-model="selected" :options="options" />
             <!-- <b-form-input id="city" v-model="userDataInfo.city" /> -->
           </b-form-group>
         </b-col>
@@ -238,17 +237,14 @@ export default {
       languageOptions,
       genderOptions,
       contactOptionsOptions,
+
+      //select options
+      selected: null,
       options: [
-        { value: null, text: "Please select an option" },
+        { value: null, text: "Please select some item", disabled: true },
         { value: "a", text: "This is First option" },
-        { value: "b", text: "Selected Option", disabled: true },
-        {
-          label: "Grouped options",
-          options: [
-            { value: { C: "3PO" }, text: "Option with object value" },
-            { value: { R: "2D2" }, text: "Another option with object value" },
-          ],
-        },
+        { value: "b", text: "Default Selected Option" },
+        { value: "c", text: "This is another option" },
       ],
     };
   },
