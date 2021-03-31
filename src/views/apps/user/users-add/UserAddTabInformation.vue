@@ -9,35 +9,33 @@
     <!-- Form: Personal Info Form -->
     <b-form class="mt-1">
       <b-row>
-        <!-- Field: Name Date -->
+        <!-- Field: Name  -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Full Name" label-for="birth-date">
-            <flat-pickr
-              v-model="userDataInfo.dob"
-              class="form-control"
-              :config="{ dateFormat: 'Y-m-d' }"
+          <b-form-group label="Full Name" label-for="Full Name">
+            <b-form-input
+              id="fullname"
+              v-model="userDataInfo.fullname"
               placeholder="Full Name"
             />
           </b-form-group>
         </b-col>
-        <!-- Field: Birth Date -->
+        <!-- Field: Email -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Email" label-for="birth-date">
-            <flat-pickr
-              v-model="userDataInfo.dob"
-              class="form-control"
-              :config="{ dateFormat: 'Y-m-d' }"
+          <b-form-group label="Email" label-for="Email">
+            <b-form-input
+              id="email"
+              type="email"
+              v-model="userDataInfo.email"
               placeholder="Email"
             />
           </b-form-group>
         </b-col>
-        <!-- Field: Birth Date -->
+        <!-- Field: Adress  -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Adress" label-for="birth-date">
-            <flat-pickr
-              v-model="userDataInfo.dob"
-              class="form-control"
-              :config="{ dateFormat: 'Y-m-d' }"
+          <b-form-group label="Adress" label-for="Adress">
+            <b-form-input
+              id="adress"
+              v-model="userDataInfo.adress"
               placeholder="Adress"
             />
           </b-form-group>
@@ -57,7 +55,11 @@
         <!-- Field: Mobile -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Mobile" label-for="mobile">
-            <b-form-input id="mobile" v-model="userDataInfo.mobile" />
+            <b-form-input
+              id="mobile"
+              v-model="userDataInfo.mobile"
+              placeholder="+84303177289"
+            />
           </b-form-group>
         </b-col>
 
