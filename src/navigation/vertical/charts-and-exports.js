@@ -4,12 +4,6 @@ export default [
   },
   {
 
-    title: 'Charts Users',
-    route: 'charts-apex-chart',
-    icon: 'BarChartIcon',
-  },
-  {
-
     title: 'Charts Customers',
     route: 'charts-chartjs',
     icon: 'BarChartIcon',
