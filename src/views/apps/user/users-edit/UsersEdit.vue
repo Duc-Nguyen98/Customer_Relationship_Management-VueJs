@@ -13,20 +13,12 @@
     </b-alert>
 
     <b-tabs v-if="userData" pills>
-      <!-- Tab: Account -->
-      <b-tab active>
-        <template #title>
-          <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
-          <span class="d-none d-sm-inline">Account</span>
-        </template>
-        <user-edit-tab-account :user-data="userData" class="mt-2 pt-75" />
-      </b-tab>
 
-      <!-- Tab: Information -->
+      <!-- Tab: Info Account -->
       <b-tab active>
         <template #title>
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
-          <span class="d-none d-sm-inline">New Account</span>
+          <span class="d-none d-sm-inline">Info Account</span>
         </template>
         <user-edit-tab-information class="mt-2 pt-75" />
       </b-tab>
@@ -40,7 +32,6 @@ import { ref, onUnmounted } from "@vue/composition-api";
 import router from "@/router";
 import store from "@/store";
 import userStoreModule from "../userStoreModule";
-import UserEditTabAccount from "./UserEditTabAccount.vue";
 import UserEditTabInformation from "./UserEditTabInformation.vue";
 
 export default {
@@ -51,7 +42,6 @@ export default {
     BAlert,
     BLink,
 
-    UserEditTabAccount,
     UserEditTabInformation,
   },
   setup() {
