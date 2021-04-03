@@ -13,14 +13,13 @@
     </b-alert>
 
     <b-tabs v-if="userData" pills>
-
       <!-- Tab: Info Account -->
       <b-tab active>
         <template #title>
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
           <span class="d-none d-sm-inline">Info Account</span>
         </template>
-        <user-edit-tab-information class="mt-2 pt-75" />
+        <user-edit-tab-information :userinfo="userData" class="mt-2 pt-75" />
       </b-tab>
     </b-tabs>
   </component>
