@@ -182,7 +182,7 @@
           type="submit"
           class="text-uppercase"
         >
-          Add New
+          Save Changes
         </b-button>
       </div>
     </b-form>
