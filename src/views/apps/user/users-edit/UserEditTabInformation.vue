@@ -58,6 +58,10 @@
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Birth Date" label-for="birth-date">
             <b-form-datepicker id="datepicker-valid" :state="true" />
+            <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
+            <b-form-invalid-feedback>
+              Please provide a valid input.
+            </b-form-invalid-feedback>
           </b-form-group>
         </b-col>
 
