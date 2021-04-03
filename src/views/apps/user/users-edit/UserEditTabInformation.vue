@@ -159,7 +159,6 @@
       <!-- Form Actions -->
       <div class="d-flex float-right mt-2">
         <b-button
-          v-ripple.400="'rgba(186, 191, 199, 0.15)'"
           type="button"
           variant="outline-secondary"
           class="mr-2 text-uppercase"
@@ -168,7 +167,6 @@
         </b-button>
 
         <b-button
-          v-ripple.400="'rgba(186, 191, 199, 0.15)'"
           type="button"
           variant="primary"
           class="mr-2 text-up text-uppercase"
@@ -176,12 +174,7 @@
           Reset
         </b-button>
 
-        <b-button
-          v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-          variant="primary"
-          type="submit"
-          class="text-uppercase"
-        >
+        <b-button variant="primary" type="submit" class="text-uppercase">
           Save Changes
         </b-button>
       </div>
