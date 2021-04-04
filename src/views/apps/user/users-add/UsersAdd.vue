@@ -32,6 +32,7 @@ import router from "@/router";
 import store from "@/store";
 import userStoreModule from "../userStoreModule";
 import UserAddTabInformation from "./UserAddTabInformation.vue";
+import Ripple from "vue-ripple-directive";
 
 export default {
   components: {

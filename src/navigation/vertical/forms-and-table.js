@@ -3,7 +3,7 @@ export default [
     header: 'Forms & Tables',
   },
   {
-    title: 'Table Users',
+    title: 'Table Customers',
     icon: 'UserIcon',
     children: [
       {

@@ -45,7 +45,7 @@
                 variant="primary"
                 :to="{ name: 'apps-users-add' }"
               >
-                <span class="text-nowrap">Add User</span>
+                <span class="text-nowrap">Add Customer</span>
               </b-button>
               <b-dropdown
                 id="dropdown-1"
@@ -219,6 +219,7 @@ import { avatarText } from "@core/utils/filter";
 import UsersListFilters from "./UsersListFilters.vue";
 import useUsersList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
+import Ripple from "vue-ripple-directive";
 
 export default {
   components: {
@@ -239,6 +240,9 @@ export default {
     BPagination,
 
     vSelect,
+  },
+  directives: {
+    Ripple,
   },
   setup() {
     const USER_APP_STORE_MODULE_NAME = "app-user";

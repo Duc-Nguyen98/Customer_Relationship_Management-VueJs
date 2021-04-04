@@ -3,7 +3,7 @@
     <!-- Header: Personal Info -->
     <div class="d-flex">
       <feather-icon icon="UserIcon" size="19" />
-      <h4 class="mb-0 ml-50">Personal Information</h4>
+      <h4 class="mb-0 ml-50">Personal Information </h4>
     </div>
 
     <!-- Form: Personal Info Form -->
@@ -14,8 +14,8 @@
           <b-form-group label="Full Name" label-for="Full Name">
             <b-form-input
               id="fullname"
-              v-model="userinfo.C_name"
-              :state="userinfo.C_name.length > 0"
+              v-model="userDataInfo.C_Name"
+              :state="userDataInfo.C_Name.length > 0 "
               placeholder="Fullname"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -29,8 +29,8 @@
           <b-form-group label="Email" label-for="Email">
             <b-form-input
               id="email"
-              v-model="userDataInfo.value2"
-              :state="userDataInfo.value2.length > 0"
+              v-model="userDataInfo.C_Email"
+              :state="userDataInfo.C_Email.length > 0"
               placeholder="Email"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -44,8 +44,8 @@
           <b-form-group label="Adress" label-for="Adress">
             <b-form-input
               id="adress"
-              v-model="userDataInfo.value3"
-              :state="userDataInfo.value3.length > 0"
+              v-model="userDataInfo.C_Adress"
+              :state="userDataInfo.C_Adress.length > 0"
               placeholder="Adress"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -57,7 +57,7 @@
         <!-- Field: Birth Date -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Birth Date" label-for="birth-date">
-            <b-form-datepicker id="datepicker-valid" :state="true" />
+            <b-form-datepicker id="datepicker-valid" v-model="userDataInfo.C_DoB" :state="userDataInfo.C_DoB.length > 0" />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
             <b-form-invalid-feedback>
               Please provide a valid input.
@@ -70,11 +70,15 @@
           <b-form-group label="Mobile" label-for="mobile">
             <b-form-input
               id="mobile"
-              v-model="userDataInfo.value5"
-              :state="userDataInfo.value5.length > 0"
+              v-model="userDataInfo.C_Phone"
+              :state="userDataInfo.C_Phone.length > 0"
               placeholder="mobile"
             />
           </b-form-group>
+          <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
+          <b-form-invalid-feedback>
+            Please provide a valid input.
+          </b-form-invalid-feedback>
         </b-col>
 
         <!-- Field: Gender -->
@@ -142,13 +146,14 @@
 
       <!-- Form: Personal Info Form -->
       <b-row class="mt-1">
-        <!-- Field: City -->
+        <!-- Field: Content -->
         <b-col cols="12" md="12" lg="12">
           <b-form-group label="" label-for="city">
             <b-form-textarea
               id="textarea-state"
-              v-model="userDataInfo.textareaNote"
-              :state="userDataInfo.textareaNote.length <= 255"
+              @input="follow"
+              v-model="userDataInfo.C_Note"
+              :state="userDataInfo.C_Note.length > 0 "
               placeholder="Enter only 255 characters or less"
               rows="3"
             />
@@ -163,6 +168,7 @@
           type="button"
           variant="outline-secondary"
           class="mr-2 text-uppercase"
+          @click="autoClose"
         >
           Cancel
         </b-button>
@@ -234,10 +240,15 @@ export default {
   props: {
     userinfo: {
       required: true,
-      default: {}
+      type: Object
     }
   },
-  setup(props, {context}) {
+  setup({userinfo}) {
+    const userDataInfo = ref(
+            {...userinfo, gender: 'male'}
+    );
+
+    const change = false;
 
     const objSelectDistrict = {
       selected: "a",
@@ -287,14 +298,38 @@ export default {
     const contactOptionsOptions = ["Email", "Message", "Phone"];
 
     return {
+      userDataInfo,
       languageOptions,
       genderOptions,
       contactOptionsOptions,
       objSelectDistrict,
       objSelectProvince,
-      objSelectWard
+      objSelectWard,
+      change
     };
   },
+  methods: {
+    //check thay đổi
+    follow() {
+      this.change = true;
+      console.log(this.change);
+    },
+
+    // auto close
+    autoClose() {
+      if (this.change) {
+        this.$swal({
+          title: 'Auto close alert!',
+          html: 'I will close in <strong>3</strong> seconds.',
+          timer: 3000,
+          customClass: {
+            confirmButton: 'btn btn-primary',
+          },
+          buttonsStyling: false,
+        })
+      }
+    },
+  }
 };
 </script>
 
