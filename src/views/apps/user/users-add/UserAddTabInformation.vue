@@ -180,7 +180,7 @@
               type="submit"
               @click.prevent="validationForm"
             >
-              Submit
+              Save Changes
             </b-button>
           </b-col>
         </b-row>
