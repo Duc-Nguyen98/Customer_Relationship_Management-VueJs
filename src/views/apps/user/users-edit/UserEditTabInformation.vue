@@ -69,14 +69,14 @@
           </b-form-group>
         </b-col>
 
-        <!-- Field: Mobile -->
+        <!-- Field: Telephone Number -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Mobile" label-for="mobile">
+          <b-form-group label="Telephone Number" label-for="Telephone Number">
             <b-form-input
-              id="mobile"
+              id="telephone"
               v-model="userDataInfo.C_Phone"
               :state="userDataInfo.C_Phone.length > 0"
-              placeholder="mobile"
+              placeholder="Telephone Number"
             />
           </b-form-group>
           <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
