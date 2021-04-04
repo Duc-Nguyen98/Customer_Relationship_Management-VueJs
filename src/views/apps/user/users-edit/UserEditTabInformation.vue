@@ -3,7 +3,7 @@
     <!-- Header: Personal Info -->
     <div class="d-flex">
       <feather-icon icon="UserIcon" size="19" />
-      <h4 class="mb-0 ml-50">Personal Information </h4>
+      <h4 class="mb-0 ml-50">Personal Information</h4>
     </div>
 
     <!-- Form: Personal Info Form -->
@@ -15,7 +15,7 @@
             <b-form-input
               id="fullname"
               v-model="userDataInfo.C_Name"
-              :state="userDataInfo.C_Name.length > 0 "
+              :state="userDataInfo.C_Name.length > 0"
               placeholder="Fullname"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -57,7 +57,11 @@
         <!-- Field: Birth Date -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Birth Date" label-for="birth-date">
-            <b-form-datepicker id="datepicker-valid" v-model="userDataInfo.C_DoB" :state="userDataInfo.C_DoB.length > 0" />
+            <b-form-datepicker
+              id="datepicker-valid"
+              v-model="userDataInfo.C_DoB"
+              :state="userDataInfo.C_DoB.length > 0"
+            />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
             <b-form-invalid-feedback>
               Please provide a valid input.
@@ -65,14 +69,14 @@
           </b-form-group>
         </b-col>
 
-        <!-- Field: Mobile -->
+        <!-- Field: Telephone Number -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Mobile" label-for="mobile">
+          <b-form-group label="Telephone Number" label-for="Telephone Number">
             <b-form-input
-              id="mobile"
+              id="telephone"
               v-model="userDataInfo.C_Phone"
               :state="userDataInfo.C_Phone.length > 0"
-              placeholder="mobile"
+              placeholder="Telephone Number"
             />
           </b-form-group>
           <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -102,7 +106,7 @@
 
       <!-- Form: Personal Info Form -->
       <b-row class="mt-1">
-        <!-- Field: City -->
+        <!-- Field: Province Name -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Province Name" label-for="city">
             <b-form-select
@@ -115,7 +119,7 @@
           </b-form-group>
         </b-col>
 
-        <!-- Field: State -->
+        <!-- Field: District Name -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="District Name" label-for="state">
             <b-form-select
@@ -126,7 +130,7 @@
           </b-form-group>
         </b-col>
 
-        <!-- Field: Country -->
+        <!-- Field: Ward Name -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Ward Name" label-for="country">
             <b-form-select
@@ -148,12 +152,12 @@
       <b-row class="mt-1">
         <!-- Field: Content -->
         <b-col cols="12" md="12" lg="12">
-          <b-form-group label="" label-for="city">
+          <b-form-group label="Note Information" label-for="Note Information">
             <b-form-textarea
               id="textarea-state"
               @input="follow"
               v-model="userDataInfo.C_Note"
-              :state="userDataInfo.C_Note.length > 0 "
+              :state="userDataInfo.C_Note.length > 0"
               placeholder="Enter only 255 characters or less"
               rows="3"
             />
@@ -164,7 +168,6 @@
       <!-- Form Actions -->
       <div class="d-flex float-right mt-2">
         <b-button
-          v-ripple.400="'rgba(186, 191, 199, 0.15)'"
           type="button"
           variant="outline-secondary"
           class="mr-2 text-uppercase"
@@ -173,21 +176,7 @@
           Cancel
         </b-button>
 
-        <b-button
-          v-ripple.400="'rgba(186, 191, 199, 0.15)'"
-          type="button"
-          variant="primary"
-          class="mr-2 text-up text-uppercase"
-        >
-          Reset
-        </b-button>
-
-        <b-button
-          v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-          variant="primary"
-          type="submit"
-          class="text-uppercase"
-        >
+        <b-button variant="primary" type="submit" class="text-uppercase">
           Save Changes
         </b-button>
       </div>
@@ -240,19 +229,17 @@ export default {
   props: {
     userinfo: {
       required: true,
-      type: Object
-    }
+      type: Object,
+    },
   },
-  setup({userinfo}) {
-    const userDataInfo = ref(
-            {...userinfo, gender: 'male'}
-    );
+  setup({ userinfo }) {
+    const userDataInfo = ref({ ...userinfo, gender: "male" });
 
     const change = false;
 
     const objSelectDistrict = {
       selected: "a",
-              options: [
+      options: [
         { value: null, text: "Please select some item", disabled: true },
         { value: "a", text: "This is First option" },
         { value: "b", text: "Default Selected Option" },
@@ -280,32 +267,18 @@ export default {
       ],
     };
 
-    const languageOptions = [
-      "English",
-      "Spanish",
-      "French",
-      "Russian",
-      "German",
-      "Arabic",
-      "Sanskrit",
-    ];
-
     const genderOptions = [
       { text: "Male", value: "male" },
       { text: "Female", value: "female" },
     ];
 
-    const contactOptionsOptions = ["Email", "Message", "Phone"];
-
     return {
       userDataInfo,
-      languageOptions,
       genderOptions,
-      contactOptionsOptions,
       objSelectDistrict,
       objSelectProvince,
       objSelectWard,
-      change
+      change,
     };
   },
   methods: {
@@ -319,17 +292,17 @@ export default {
     autoClose() {
       if (this.change) {
         this.$swal({
-          title: 'Auto close alert!',
-          html: 'I will close in <strong>3</strong> seconds.',
+          title: "Auto close alert!",
+          html: "I will close in <strong>3</strong> seconds.",
           timer: 3000,
           customClass: {
-            confirmButton: 'btn btn-primary',
+            confirmButton: "btn btn-primary",
           },
           buttonsStyling: false,
-        })
+        });
       }
     },
-  }
+  },
 };
 </script>
 

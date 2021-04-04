@@ -3,6 +3,7 @@ import {
   required as rule_required,
   email as rule_email,
   min as rule_min,
+  max as rule_max,
   confirmed as rule_confirmed,
   regex as rule_regex,
   between as rule_between,
@@ -28,6 +29,8 @@ export const required = extend('required', rule_required)
 export const email = extend('email', rule_email)
 
 export const min = extend('min', rule_min)
+
+export const max = extend('max', rule_max)
 
 export const confirmed = extend('confirmed', rule_confirmed)
 
@@ -69,6 +72,18 @@ export const url = extend('url', {
 
 // Install English and Arabic localizations.
 localize({
+  en: {
+    messages: en.messages,
+    names: {
+      email: 'Email',
+      password: 'Password',
+    },
+    fields: {
+      password: {
+        min: '{_field_} is too short, you want to get hacked?',
+      },
+    },
+  },
   en: {
     messages: en.messages,
     names: {
