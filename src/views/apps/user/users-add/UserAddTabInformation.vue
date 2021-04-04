@@ -139,7 +139,6 @@
           v-ripple.400="'rgba(186, 191, 199, 0.15)'"
           type="button"
           variant="outline-secondary"
-          @click="hide"
           class="mr-2 text-uppercase"
         >
           Cancel
@@ -183,6 +182,7 @@ import {
 import flatPickr from "vue-flatpickr-component";
 import { ref } from "@vue/composition-api";
 import vSelect from "vue-select";
+import Ripple from "vue-ripple-directive";
 
 export default {
   components: {
@@ -198,6 +198,9 @@ export default {
     BFormRadioGroup,
     BFormCheckboxGroup,
     BButton,
+  },
+  directives: {
+    Ripple,
   },
   setup() {
     const userDataInfo = ref({
