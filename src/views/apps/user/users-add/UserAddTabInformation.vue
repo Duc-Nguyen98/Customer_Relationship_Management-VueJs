@@ -165,9 +165,17 @@
           </b-col>
         </b-row>
         <!-- submit button -->
-        <b-row>
-          <b-col cols="12">
+        <b-row class="d-flex float-right mt-2">
+          <b-col>
             <b-button
+              variant="outline-secondary"
+              class="mr-2 text-uppercase"
+              type="button"
+            >
+              Cancel
+            </b-button>
+            <b-button
+              class="text-uppercase"
               variant="primary"
               type="submit"
               @click.prevent="validationForm"
