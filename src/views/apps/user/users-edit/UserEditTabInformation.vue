@@ -3,7 +3,7 @@
     <!-- Header: Personal Info -->
     <div class="d-flex">
       <feather-icon icon="UserIcon" size="19" />
-      <h4 class="mb-0 ml-50">Personal Information</h4>
+      <h4 class="mb-0 ml-50">Personal Information </h4>
     </div>
 
     <!-- Form: Personal Info Form -->
@@ -14,8 +14,8 @@
           <b-form-group label="Full Name" label-for="Full Name">
             <b-form-input
               id="fullname"
-              v-model="value1"
-              :state="value1.length > 0"
+              v-model="userDataInfo.C_Name"
+              :state="userDataInfo.C_Name.length > 0 "
               placeholder="Fullname"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -29,8 +29,8 @@
           <b-form-group label="Email" label-for="Email">
             <b-form-input
               id="email"
-              v-model="value2"
-              :state="value2.length > 0"
+              v-model="userDataInfo.C_Email"
+              :state="userDataInfo.C_Email.length > 0"
               placeholder="Email"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -44,8 +44,8 @@
           <b-form-group label="Adress" label-for="Adress">
             <b-form-input
               id="adress"
-              v-model="value3"
-              :state="value3.length > 0"
+              v-model="userDataInfo.C_Adress"
+              :state="userDataInfo.C_Adress.length > 0"
               placeholder="Adress"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -57,7 +57,7 @@
         <!-- Field: Birth Date -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Birth Date" label-for="birth-date">
-            <b-form-datepicker id="datepicker-valid" :state="true" />
+            <b-form-datepicker id="datepicker-valid" v-model="userDataInfo.C_DoB" :state="userDataInfo.C_DoB.length > 0" />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
             <b-form-invalid-feedback>
               Please provide a valid input.
@@ -70,11 +70,15 @@
           <b-form-group label="Mobile" label-for="mobile">
             <b-form-input
               id="mobile"
-              v-model="value5"
-              :state="value5.length > 0"
+              v-model="userDataInfo.C_Phone"
+              :state="userDataInfo.C_Phone.length > 0"
               placeholder="mobile"
             />
           </b-form-group>
+          <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
+          <b-form-invalid-feedback>
+            Please provide a valid input.
+          </b-form-invalid-feedback>
         </b-col>
 
         <!-- Field: Gender -->
@@ -142,13 +146,14 @@
 
       <!-- Form: Personal Info Form -->
       <b-row class="mt-1">
-        <!-- Field: City -->
+        <!-- Field: Content -->
         <b-col cols="12" md="12" lg="12">
           <b-form-group label="" label-for="city">
             <b-form-textarea
               id="textarea-state"
-              v-model="textareaNote"
-              :state="textareaNote.length <= 255"
+              @input="follow"
+              v-model="userDataInfo.C_Note"
+              :state="userDataInfo.C_Note.length > 0 "
               placeholder="Enter only 255 characters or less"
               rows="3"
             />
@@ -162,6 +167,7 @@
           type="button"
           variant="outline-secondary"
           class="mr-2 text-uppercase"
+          @click="autoClose"
         >
           Cancel
         </b-button>
@@ -201,6 +207,7 @@ import {
 import flatPickr from "vue-flatpickr-component";
 import { ref } from "@vue/composition-api";
 import vSelect from "vue-select";
+import Ripple from "vue-ripple-directive";
 
 export default {
   components: {
@@ -220,58 +227,51 @@ export default {
     BFormInvalidFeedback,
     BFormDatepicker,
   },
-  data() {
-    return {
-      value1: "Nguyễn Quang Đức",
-      value2: "ducsimax199@gmail.com",
-      value3: "Quan Hoa, Cầu Giấy, Hà Nội",
-      value4: "2021-04-01",
-      value5: "0393177289",
-      objSelectDistrict: {
-        selected: "a",
-        options: [
-          { value: null, text: "Please select some item", disabled: true },
-          { value: "a", text: "This is First option" },
-          { value: "b", text: "Default Selected Option" },
-          { value: "c", text: "This is another option" },
-        ],
-      },
-      objSelectProvince: {
-        selected: "b",
-        options: [
-          { value: null, text: "Please select some item", disabled: true },
-          { value: "a", text: "This is First option" },
-          { value: "b", text: "Default Selected Option" },
-          { value: "c", text: "This is another option" },
-        ],
-      },
-      objSelectWard: {
-        selected: "c",
-        options: [
-          { value: null, text: "Please select some item", disabled: true },
-          { value: "a", text: "This is First option" },
-          { value: "b", text: "Default Selected Option" },
-          { value: "c", text: "This is another option" },
-        ],
-      },
-      textareaNote: "",
-    };
+  directives: {
+    Ripple,
   },
-  setup() {
-    const userDataInfo = ref({
-      dob: null,
-      mobile: "+6595895857",
-      website: "https://rowboat.com/insititious/Angelo",
-      language: "French",
-      gender: "female",
-      contactOptions: ["Email", "Message"],
-      addressLine1: "A-65, Belvedere Streets",
-      addressLine2: "",
-      postcode: "",
-      city: "New York",
-      state: "",
-      country: "",
-    });
+  props: {
+    userinfo: {
+      required: true,
+      type: Object
+    }
+  },
+  setup({userinfo}) {
+    const userDataInfo = ref(
+            {...userinfo, gender: 'male'}
+    );
+
+    const change = false;
+
+    const objSelectDistrict = {
+      selected: "a",
+              options: [
+        { value: null, text: "Please select some item", disabled: true },
+        { value: "a", text: "This is First option" },
+        { value: "b", text: "Default Selected Option" },
+        { value: "c", text: "This is another option" },
+      ],
+    };
+
+    const objSelectProvince = {
+      selected: "b",
+      options: [
+        { value: null, text: "Please select some item", disabled: true },
+        { value: "a", text: "This is First option" },
+        { value: "b", text: "Default Selected Option" },
+        { value: "c", text: "This is another option" },
+      ],
+    };
+
+    const objSelectWard = {
+      selected: "c",
+      options: [
+        { value: null, text: "Please select some item", disabled: true },
+        { value: "a", text: "This is First option" },
+        { value: "b", text: "Default Selected Option" },
+        { value: "c", text: "This is another option" },
+      ],
+    };
 
     const languageOptions = [
       "English",
@@ -295,8 +295,34 @@ export default {
       languageOptions,
       genderOptions,
       contactOptionsOptions,
+      objSelectDistrict,
+      objSelectProvince,
+      objSelectWard,
+      change
     };
   },
+  methods: {
+    //check thay đổi
+    follow() {
+      this.change = true;
+      console.log(this.change);
+    },
+
+    // auto close
+    autoClose() {
+      if (this.change) {
+        this.$swal({
+          title: 'Auto close alert!',
+          html: 'I will close in <strong>3</strong> seconds.',
+          timer: 3000,
+          customClass: {
+            confirmButton: 'btn btn-primary',
+          },
+          buttonsStyling: false,
+        })
+      }
+    },
+  }
 };
 </script>
 
