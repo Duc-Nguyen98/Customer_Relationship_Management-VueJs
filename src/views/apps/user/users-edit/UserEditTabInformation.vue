@@ -152,7 +152,7 @@
       <b-row class="mt-1">
         <!-- Field: Content -->
         <b-col cols="12" md="12" lg="12">
-          <b-form-group label="Note Information" label-for="city">
+          <b-form-group label="Note Information" label-for="Note Information">
             <b-form-textarea
               id="textarea-state"
               @input="follow"
@@ -267,28 +267,14 @@ export default {
       ],
     };
 
-    const languageOptions = [
-      "English",
-      "Spanish",
-      "French",
-      "Russian",
-      "German",
-      "Arabic",
-      "Sanskrit",
-    ];
-
     const genderOptions = [
       { text: "Male", value: "male" },
       { text: "Female", value: "female" },
     ];
 
-    const contactOptionsOptions = ["Email", "Message", "Phone"];
-
     return {
       userDataInfo,
-      languageOptions,
       genderOptions,
-      contactOptionsOptions,
       objSelectDistrict,
       objSelectProvince,
       objSelectWard,
