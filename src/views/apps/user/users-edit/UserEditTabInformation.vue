@@ -106,7 +106,7 @@
 
       <!-- Form: Personal Info Form -->
       <b-row class="mt-1">
-        <!-- Field: City -->
+        <!-- Field: Province Name -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Province Name" label-for="city">
             <b-form-select
@@ -119,7 +119,7 @@
           </b-form-group>
         </b-col>
 
-        <!-- Field: State -->
+        <!-- Field: District Name -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="District Name" label-for="state">
             <b-form-select
@@ -130,7 +130,7 @@
           </b-form-group>
         </b-col>
 
-        <!-- Field: Country -->
+        <!-- Field: Ward Name -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Ward Name" label-for="country">
             <b-form-select
