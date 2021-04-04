@@ -152,7 +152,7 @@
       <b-row class="mt-1">
         <!-- Field: Content -->
         <b-col cols="12" md="12" lg="12">
-          <b-form-group label="" label-for="city">
+          <b-form-group label="Note Information" label-for="city">
             <b-form-textarea
               id="textarea-state"
               @input="follow"
