@@ -1,3 +1,4 @@
+import Vue from "vue";
 import { extend, localize } from 'vee-validate'
 import {
   required as rule_required,
@@ -14,7 +15,7 @@ import {
   alpha_num as rule_alpha_num,
   length as rule_length,
 } from 'vee-validate/dist/rules'
-import ar from 'vee-validate/dist/locale/ar.json'
+import vi from 'vee-validate/dist/locale/vi.json'
 import en from 'vee-validate/dist/locale/en.json'
 
 // eslint-disable-next-line object-curly-newline
@@ -84,27 +85,15 @@ localize({
       },
     },
   },
-  en: {
-    messages: en.messages,
+  vi: {
+    messages: vi.messages,
     names: {
       email: 'Email',
-      password: 'Password',
+      password: 'Mật khẩu',
     },
     fields: {
       password: {
-        min: '{_field_} is too short, you want to get hacked?',
-      },
-    },
-  },
-  ar: {
-    messages: ar.messages,
-    names: {
-      email: 'البريد الإلكتروني',
-      password: 'كلمة السر',
-    },
-    fields: {
-      password: {
-        min: 'كلمة السر قصيرة جداً سيتم اختراقك',
+        min: '{_field_} quá ngắn, bạn muốn hack nó?',
       },
     },
   },
@@ -186,3 +175,16 @@ localize({
 //   else if (max === null) return val >= min || msg
 //   else return (val >= min && val <= max) || msg
 // }
+let LOCALE = "vi";
+
+// A simple get/set interface to manage our locale in components.
+// This is not reactive, so don't create any computed properties/watchers off it.
+Object.defineProperty(Vue.prototype, "locale", {
+  get() {
+    return LOCALE;
+  },
+  set(val) {
+    LOCALE = val;
+    localize(val);
+  }
+});

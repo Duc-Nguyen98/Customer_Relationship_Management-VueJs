@@ -285,7 +285,6 @@ export default {
     //check thay đổi
     follow() {
       this.change = true;
-      console.log(this.change);
     },
 
     // auto close

@@ -9,7 +9,7 @@ export default {
     fetchTasks(ctx, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get('/apps/todo/tasks', { params: payload })
+          .get(process.env.VUE_APP_ROOT_API + 'todo/task', { params: payload })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -22,18 +22,26 @@ export default {
           .catch(error => reject(error))
       })
     },
-    updateTask(ctx, { task }) {
+    updateTask(ctx, task) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`/apps/todo/tasks/${task.id}`, { task })
+          .put(process.env.VUE_APP_ROOT_API + `todo/task/update/${task._id}`, task)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
     },
-    removeTask(ctx, { id }) {
+    updateStatusTask(ctx, task) {
       return new Promise((resolve, reject) => {
         axios
-          .delete(`/apps/todo/tasks/${id}`)
+            .patch(process.env.VUE_APP_ROOT_API + `todo/task/change/${task._id}`, task)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    removeTask(ctx, _id) {
+      return new Promise((resolve, reject) => {
+        axios
+          .delete(process.env.VUE_APP_ROOT_API + `todo/task/delete-soft/${_id}`)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

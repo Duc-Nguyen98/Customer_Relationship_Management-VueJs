@@ -338,6 +338,7 @@ export default {
     }
 
     const fetchEmails = () => {
+      console.log(process.env.VUE_APP_ROOT_API)
       store.dispatch('app-email/fetchEmails', {
         q: searchQuery.value,
         folder: router.currentRoute.params.folder || 'inbox',

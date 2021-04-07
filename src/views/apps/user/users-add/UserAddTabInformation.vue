@@ -119,10 +119,17 @@
           <b-col cols="12" md="6" lg="4">
             <b-form-group>
               <label>Province Name</label>
+              <validation-provider
+                      #default="{ errors }"
+                      rules="required"
+                      name="Province Name"
+              >
               <b-form-select
                 v-model="objSelectProvince.selected"
                 :options="objSelectProvince.options"
               />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
             </b-form-group>
           </b-col>
           <!--  District Name-->
@@ -177,8 +184,8 @@
             <b-button
               class="text-uppercase"
               variant="primary"
-              type="submit"
-              @click.prevent="validationForm"
+              type="button"
+              @click="validationForm"
             >
               Save Changes
             </b-button>
@@ -191,6 +198,8 @@
 
 <script>
 import { ValidationProvider, ValidationObserver } from "vee-validate";
+import { ref } from "@vue/composition-api";
+
 import {
   BFormTextarea,
   BFormDatepicker,
@@ -235,14 +244,14 @@ export default {
     BButton,
   },
   setup() {
-    const blankData = {
+    const blankData = ref({
       C_DoB: "1992-03-22",
       C_Adress: "",
       C_Name: "",
       C_Email: "",
       C_Phone: "",
       C_Note: "",
-    };
+    });
 
     const objSelectDistrict = {
       selected: null,
@@ -294,19 +303,20 @@ export default {
       length,
       alphaDash,
     };
-
+``
     return {
       blankData,
       objSelectDistrict,
       objSelectProvince,
       objSelectWard,
       genderOptions,
-
       validation,
     };
   },
   methods: {
     validationForm() {
+      this.locale = this.locale === "en" ? "vi" : "en";
+
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
           // eslint-disable-next-line

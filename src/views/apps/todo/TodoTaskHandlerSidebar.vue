@@ -194,7 +194,7 @@
                 class="mr-2"
                 type="submit"
               >
-                {{ taskLocal.id ? 'Update' : 'Add ' }}
+                {{ taskLocal._id ? 'Update' : 'Add ' }}
               </b-button>
               <b-button
                 v-ripple.400="'rgba(186, 191, 199, 0.15)'"

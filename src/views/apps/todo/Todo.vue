@@ -85,7 +85,7 @@
         >
           <li
             v-for="task in tasks"
-            :key="task.id"
+            :key="task.key"
             class="todo-item"
             :class="{ 'completed': task.isCompleted }"
             @click="handleTaskClick(task)"
@@ -272,17 +272,24 @@ export default {
         })
     }
     const removeTask = () => {
-      store.dispatch('app-todo/removeTask', { id: task.value.id })
+      store.dispatch('app-todo/removeTask', task.value._id)
         .then(() => {
           // eslint-disable-next-line no-use-before-define
           fetchTasks()
         })
     }
     const updateTask = taskData => {
-      store.dispatch('app-todo/updateTask', { task: taskData })
+      store.dispatch('app-todo/updateTask', { taskData })
         .then(() => {
           // eslint-disable-next-line no-use-before-define
           fetchTasks()
+        })
+    }
+    const updateStatusTask = taskData => {
+      store.dispatch('app-todo/updateStatusTask', { _id: taskData._id, isCompleted: taskData.isCompleted })
+        .then(() => {
+           // eslint-disable-next-line no-use-before-define
+           fetchTasks()
         })
     }
 
@@ -342,7 +349,9 @@ export default {
         sortBy: sortBy.value,
       })
         .then(response => {
-          tasks.value = response.data
+          if (response.data.success) {
+            tasks.value = response.data.data
+          }
         })
     }
 
@@ -357,7 +366,7 @@ export default {
     const updateTaskIsCompleted = taskData => {
       // eslint-disable-next-line no-param-reassign
       taskData.isCompleted = !taskData.isCompleted
-      updateTask(taskData)
+      updateStatusTask(taskData)
     }
 
     const { mqShallShowLeftSidebar } = useResponsiveAppLeftSidebarVisibility()
@@ -368,6 +377,7 @@ export default {
       removeTask,
       addTask,
       updateTask,
+      updateStatusTask,
       clearTaskData,
       taskTags,
       searchQuery,
