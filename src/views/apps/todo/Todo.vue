@@ -188,7 +188,12 @@ import { useResponsiveAppLeftSidebarVisibility } from '@core/comp-functions/ui/a
 import TodoLeftSidebar from './TodoLeftSidebar.vue'
 import todoStoreModule from './todoStoreModule'
 import TodoTaskHandlerSidebar from './TodoTaskHandlerSidebar.vue'
-
+import Ripple from 'vue-ripple-directive'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import Vue from 'vue'
+import { ToastPlugin, ModalPlugin } from 'bootstrap-vue'
+Vue.use(ToastPlugin)
+const v = new Vue;
 export default {
   components: {
     BFormInput,
@@ -201,6 +206,7 @@ export default {
     BAvatar,
     draggable,
     VuePerfectScrollbar,
+    ToastificationContent,
 
     // App SFC
     TodoLeftSidebar,
@@ -264,31 +270,63 @@ export default {
       task.value = JSON.parse(JSON.stringify(blankTask))
     }
 
+    const alert = (variant, message) => {
+      v.$toast({
+        component: ToastificationContent,
+        props: {
+          title: 'Notification',
+          icon: 'BellIcon',
+          text: '👋 ' + message,
+          variant,
+        },
+      })
+    }
+
     const addTask = val => {
       store.dispatch('app-todo/addTask', val)
-        .then(() => {
+        .then(response => {
           // eslint-disable-next-line no-use-before-define
+          if (response.data.success) {
+            alert('success', 'Create task successfully.');
+          } else {
+            alert('danger', 'Create task failed.');
+          }
           fetchTasks()
         })
     }
     const removeTask = () => {
       store.dispatch('app-todo/removeTask', task.value._id)
-        .then(() => {
+        .then(({data}) => {
           // eslint-disable-next-line no-use-before-define
-          fetchTasks()
+          if (data.success) {
+            alert('success', 'Delete task successfully.');
+          } else {
+            alert('danger', 'Delete task failed.');
+          }
+          fetchTasks();
         })
     }
     const updateTask = taskData => {
       store.dispatch('app-todo/updateTask', { taskData })
-        .then(() => {
+        .then(({data}) => {
           // eslint-disable-next-line no-use-before-define
+          if (data.success) {
+            alert('success', 'Update task successfully.');
+          } else {
+            alert('danger', 'Update task failed.');
+          }
           fetchTasks()
         })
     }
     const updateStatusTask = taskData => {
       store.dispatch('app-todo/updateStatusTask', { _id: taskData._id, isCompleted: taskData.isCompleted })
-        .then(() => {
+        .then(({data}) => {
            // eslint-disable-next-line no-use-before-define
+          if (data.success) {
+            alert('success', 'Change status task successfully.');
+          } else {
+            alert('danger', 'Change status task failed.');
+          }
            fetchTasks()
         })
     }
@@ -372,6 +410,7 @@ export default {
     const { mqShallShowLeftSidebar } = useResponsiveAppLeftSidebarVisibility()
 
     return {
+      alert,
       task,
       tasks,
       removeTask,

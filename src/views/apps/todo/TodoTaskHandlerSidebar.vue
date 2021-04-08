@@ -16,7 +16,7 @@
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center content-sidebar-header px-2 py-1">
           <b-button
-            v-if="taskLocal.id"
+            v-if="taskLocal._id"
             size="sm"
             :variant="taskLocal.isCompleted ? 'outline-success' : 'outline-secondary'"
             @click="taskLocal.isCompleted = !taskLocal.isCompleted"
@@ -31,7 +31,7 @@
           </h5>
           <div>
             <feather-icon
-              v-show="taskLocal.id"
+              v-show="taskLocal._id"
               icon="TrashIcon"
               class="cursor-pointer"
               @click="$emit('remove-task'); hide();"
