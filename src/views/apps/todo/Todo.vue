@@ -291,7 +291,7 @@ export default {
           } else {
             alert('danger', 'Create task failed.');
           }
-          fetchTasks()
+          fetchTasks();
         })
     }
     const removeTask = () => {
@@ -384,7 +384,8 @@ export default {
         q: searchQuery.value,
         filter: router.currentRoute.params.filter,
         tag: router.currentRoute.params.tag,
-        sortBy: sortBy.value,
+        sort: sortBy.value ?? 'title-desc',
+        page: 1,
       })
         .then(response => {
           if (response.data.success) {
