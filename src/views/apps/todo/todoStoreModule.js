@@ -7,12 +7,21 @@ export default {
   mutations: {},
   actions: {
     fetchTasks(ctx, payload) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(process.env.VUE_APP_ROOT_API + 'todo/task', { params: payload })
-          .then(response => resolve(response))
-          .catch(error => reject(error))
-      })
+        if (payload.filter != undefined) {
+          return new Promise((resolve, reject) => {
+            axios
+                .get(process.env.VUE_APP_ROOT_API + 'todo/task', { params: payload })
+                .then(response => resolve(response))
+                .catch(error => reject(error))
+          })
+        } else {
+          return new Promise((resolve, reject) => {
+            axios
+                .get(process.env.VUE_APP_ROOT_API + 'todo/task/tag', { params: payload })
+                .then(response => resolve(response))
+                .catch(error => reject(error))
+          })
+      }
     },
     addTask(ctx, task) {
       return new Promise((resolve, reject) => {

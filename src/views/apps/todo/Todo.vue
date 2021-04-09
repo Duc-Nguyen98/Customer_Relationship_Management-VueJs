@@ -187,12 +187,12 @@
               </div>
             </div>
         </div>
-<!--        <div-->
-<!--          class="no-results"-->
-<!--          :class="{'show': !tasks.length}"-->
-<!--        >-->
-<!--          <h5>No Items Found</h5>-->
-<!--        </div>-->
+        <div
+          class="no-results"
+          :class="{'show': !tasks.length && lazyload == true}"
+        >
+          <h5>No Items Found</h5>
+        </div>
       </vue-perfect-scrollbar>
     </div>
 
