@@ -152,7 +152,7 @@
         <div class="demo-spacing-0" v-if="rows > 0">
           <!-- Use text in props -->
           <div class="d-flex justify-content-between flex-wrap">
-            <div class="d-flex align-items-center mb-0 mt-1">
+            <div class="d-flex align-items-center mb-0 mt-1 mx-1">
               <span class="text-nowrap"> Showing 1 to </span>
               <b-form-select
                 :value="perPage"
