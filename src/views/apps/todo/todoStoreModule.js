@@ -14,10 +14,10 @@ export default {
           .catch(error => reject(error))
       })
     },
-    addTask(ctx, taskData) {
+    addTask(ctx, task) {
       return new Promise((resolve, reject) => {
         axios
-          .post('/apps/todo/tasks', { task: taskData })
+          .patch('/todo/task/create', task)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
