@@ -62,9 +62,6 @@
             <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'title-desc' } }">
               Sort Z-A
             </b-dropdown-item>
-            <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'assignee' } }">
-              Sort Assignee
-            </b-dropdown-item>
             <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'due-date' } }">
               Sort Due Date
             </b-dropdown-item>
@@ -77,6 +74,18 @@
         :settings="perfectScrollbarSettings"
         class="todo-task-list-wrapper list-group scroll-area"
       >
+
+        <div style="width: 35%; margin: auto;" v-if="lazyload">
+          <div class="d-flex flex-wrap">
+            <b-spinner
+                    v-for="variant in variants"
+                    :key="variant"
+                    :variant="variant"
+                    class="mr-1"
+                    type="grow"
+            />
+          </div>
+        </div>
         <draggable
           v-model="tasks"
           handle=".draggable-task-handle"
@@ -140,6 +149,50 @@
 
           </li>
         </draggable>
+        <div class="demo-spacing-0" style="z-index: 99999999">
+          <!-- Use text in props -->
+            <div class="d-flex justify-content-between flex-wrap">
+              <div class="d-flex align-items-center mb-0 mt-1">
+            <span class="text-nowrap ">
+              Showing 1 to
+            </span>
+                <b-form-select
+                        :value="perPage"
+                        :options="['10','20','30']"
+                        class="mx-1"
+                        @input="(value) => perPage = value"
+                />
+                <span class="text-nowrap"> of {{ rows }} entries </span>
+              </div>
+              <div>
+                <b-pagination
+                        :value="page"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                        align="right"
+                        first-text="First"
+                        prev-text="Prev"
+                        next-text="Next"
+                        last-text="Last"
+                        class="mt-1 mb-0"
+                        @input="(value)=> page = value"
+                >
+                  <template #prev-text>
+                    <feather-icon
+                            icon="ChevronLeftIcon"
+                            size="18"
+                    />
+                  </template>
+                  <template #next-text>
+                    <feather-icon
+                            icon="ChevronRightIcon"
+                            size="18"
+                    />
+                  </template>
+                </b-pagination>
+              </div>
+            </div>
+        </div>
         <div
           class="no-results"
           :class="{'show': !tasks.length}"
@@ -168,6 +221,7 @@
         @close-left-sidebar="mqShallShowLeftSidebar = false"
       />
     </portal>
+
   </div>
 </template>
 
@@ -178,7 +232,7 @@ import {
 } from '@vue/composition-api'
 import {
   BFormInput, BInputGroup, BInputGroupPrepend, BDropdown, BDropdownItem,
-  BFormCheckbox, BBadge, BAvatar,
+  BFormCheckbox, BBadge, BAvatar, BPagination, BFormSelect, BSpinner
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import draggable from 'vuedraggable'
@@ -191,7 +245,7 @@ import TodoTaskHandlerSidebar from './TodoTaskHandlerSidebar.vue'
 import Ripple from 'vue-ripple-directive'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import Vue from 'vue'
-import { ToastPlugin, ModalPlugin } from 'bootstrap-vue'
+import { ToastPlugin } from 'bootstrap-vue'
 Vue.use(ToastPlugin)
 const v = new Vue;
 export default {
@@ -205,6 +259,9 @@ export default {
     BBadge,
     BAvatar,
     draggable,
+    BPagination,
+    BFormSelect,
+    BSpinner,
     VuePerfectScrollbar,
     ToastificationContent,
 
@@ -215,6 +272,7 @@ export default {
   setup() {
     const TODO_APP_STORE_MODULE_NAME = 'app-todo'
 
+    const variants = ['primary', 'secondary', 'danger', 'warning', 'success', 'info', 'light', 'dark'];
     // Register module
     if (!store.hasModule(TODO_APP_STORE_MODULE_NAME)) store.registerModule(TODO_APP_STORE_MODULE_NAME, todoStoreModule)
 
@@ -227,6 +285,8 @@ export default {
     const routeSortBy = computed(() => route.value.query.sort)
     const routeQuery = computed(() => route.value.query.q)
     const routeParams = computed(() => route.value.params)
+    const routePage = computed(() => route.value.query.page??1)
+    const routePerPage = computed(() => route.value.query.perPage??10)
     watch(routeParams, () => {
       // eslint-disable-next-line no-use-before-define
       fetchTasks()
@@ -368,8 +428,20 @@ export default {
     watch(routeQuery, val => {
       searchQuery.value = val
     })
+
+    // currentPage
+    const page = ref(routePage.value)
+    watch(routePage, val => {
+      routePage.value = val
+    })
+
+    // Search Query
+    const perPage = ref(routePerPage.value)
+    watch(routePerPage, val => {
+      routePerPage.value = val
+    })
     // eslint-disable-next-line no-use-before-define
-    watch([searchQuery, sortBy], () => fetchTasks())
+    watch([searchQuery, sortBy, page, perPage], () => fetchTasks())
     const updateRouteQuery = val => {
       const currentRouteQuery = JSON.parse(JSON.stringify(route.value.query))
 
@@ -379,16 +451,20 @@ export default {
       router.replace({ name: route.name, query: currentRouteQuery })
     }
 
+    const rows = 100;
+    const lazyload = ref(true);
     const fetchTasks = () => {
       store.dispatch('app-todo/fetchTasks', {
         q: searchQuery.value,
         filter: router.currentRoute.params.filter,
         tag: router.currentRoute.params.tag,
         sort: sortBy.value ?? 'title-desc',
-        page: 1,
+        page: page.value,
+        perPage: perPage.value,
       })
         .then(response => {
           if (response.data.success) {
+            lazyload.value = false;
             tasks.value = response.data.data
           }
         })
@@ -412,6 +488,8 @@ export default {
 
     return {
       alert,
+      lazyload,
+      variants,
       task,
       tasks,
       removeTask,
@@ -421,6 +499,9 @@ export default {
       clearTaskData,
       taskTags,
       searchQuery,
+      page,
+      perPage,
+      rows,
       fetchTasks,
       perfectScrollbarSettings,
       updateRouteQuery,
