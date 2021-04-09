@@ -355,16 +355,18 @@ export default {
         })
     }
     const removeTask = () => {
-      store.dispatch('app-todo/removeTask', task.value._id)
-        .then(({data}) => {
-          // eslint-disable-next-line no-use-before-define
-          if (data.success) {
-            alert('success', 'Delete task successfully.');
-          } else {
-            alert('danger', 'Delete task failed.');
-          }
-          fetchTasks();
-        })
+      if (confirm('Are you sure you want to remove?')) {
+        store.dispatch('app-todo/removeTask', task.value._id)
+                .then(({data}) => {
+                  // eslint-disable-next-line no-use-before-define
+                  if (data.success) {
+                    alert('success', 'Delete task successfully.');
+                  } else {
+                    alert('danger', 'Delete task failed.');
+                  }
+                  fetchTasks();
+                })
+      }
     }
     const updateTask = taskData => {
       store.dispatch('app-todo/updateTask', { taskData })
@@ -451,7 +453,7 @@ export default {
       router.replace({ name: route.name, query: currentRouteQuery })
     }
 
-    const rows = 100;
+    const rows = 0;
     const lazyload = ref(true);
     const fetchTasks = () => {
       store.dispatch('app-todo/fetchTasks', {
@@ -466,6 +468,7 @@ export default {
           if (response.data.success) {
             lazyload.value = false;
             tasks.value = response.data.data
+            rows.value = response.data.totalRecords
           }
         })
     }

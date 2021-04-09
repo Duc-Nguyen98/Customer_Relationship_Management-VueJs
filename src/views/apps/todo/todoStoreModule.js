@@ -22,10 +22,10 @@ export default {
           .catch(error => reject(error))
       })
     },
-    updateTask(ctx, task) {
+    updateTask(ctx, {taskData}) {
       return new Promise((resolve, reject) => {
         axios
-          .put(process.env.VUE_APP_ROOT_API + `todo/task/update/${task._id}`, task)
+          .put(process.env.VUE_APP_ROOT_API + `todo/task/update/${taskData._id}`, taskData)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
