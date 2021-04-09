@@ -143,7 +143,7 @@
 
           </li>
         </draggable>
-        <div class="demo-spacing-0" style="z-index: 99999999">
+        <div class="demo-spacing-0" v-if="rows > 0">
           <!-- Use text in props -->
             <div class="d-flex justify-content-between flex-wrap">
               <div class="d-flex align-items-center mb-0 mt-1">
@@ -447,7 +447,7 @@ export default {
       router.replace({ name: route.name, query: currentRouteQuery })
     }
 
-    const rows = 0;
+    const rows = ref(0);
     const lazyload = ref(true);
     const fetchTasks = () => {
       store.dispatch('app-todo/fetchTasks', {
@@ -460,7 +460,7 @@ export default {
       })
         .then(response => {
           if (response.data.success) {
-            lazyload.value = false;
+            lazyload.value = false
             tasks.value = response.data.data
             rows.value = response.data.totalRecords
           }
