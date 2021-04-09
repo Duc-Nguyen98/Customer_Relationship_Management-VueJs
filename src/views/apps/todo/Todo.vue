@@ -76,14 +76,8 @@
       >
 
         <div style="width: 35%; margin: auto;" v-if="lazyload">
-          <div class="d-flex flex-wrap">
-            <b-spinner
-                    v-for="variant in variants"
-                    :key="variant"
-                    :variant="variant"
-                    class="mr-1"
-                    type="grow"
-            />
+          <div class="text-center">
+            <b-spinner variant="primary" label="Text Centered" />
           </div>
         </div>
         <draggable
