@@ -450,21 +450,23 @@ export default {
     const rows = ref(0);
     const lazyload = ref(true);
     const fetchTasks = () => {
-      store.dispatch('app-todo/fetchTasks', {
-        q: searchQuery.value,
-        filter: router.currentRoute.params.filter,
-        tag: router.currentRoute.params.tag,
-        sort: sortBy.value ?? 'title-desc',
-        page: page.value,
-        perPage: perPage.value,
-      })
-        .then(response => {
-          if (response.data.success) {
-            lazyload.value = false
-            tasks.value = response.data.data
-            rows.value = response.data.totalRecords
-          }
+      setTimeout(() => {
+        store.dispatch('app-todo/fetchTasks', {
+          q: searchQuery.value,
+          filter: router.currentRoute.params.filter,
+          tag: router.currentRoute.params.tag,
+          sort: sortBy.value ?? 'title-desc',
+          page: page.value,
+          perPage: perPage.value,
         })
+                .then(response => {
+                  if (response.data.success) {
+                    lazyload.value = false
+                    tasks.value = response.data.data
+                    rows.value = response.data.totalRecords
+                  }
+                })
+      }, 1000);
     }
 
     fetchTasks()
