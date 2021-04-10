@@ -143,7 +143,7 @@
 
           </li>
         </draggable>
-        <div class="demo-spacing-0" v-if="rows > 0">
+        <div class="demo-spacing-0" v-if="tasks.length > perPage">
           <!-- Use text in props -->
             <div class="d-flex justify-content-between flex-wrap">
               <div class="d-flex align-items-center mb-0 mt-1">
@@ -189,7 +189,7 @@
         </div>
         <div
           class="no-results"
-          :class="{'show': !tasks.length && lazyload == true}"
+          :class="{'show': !tasks.length && lazyload == false}"
         >
           <h5>No Items Found</h5>
         </div>
@@ -447,10 +447,15 @@ export default {
       router.replace({ name: route.name, query: currentRouteQuery })
     }
 
-    const rows = ref(0);
-    const lazyload = ref(true);
+    const rows = ref(0)
+    const time = ref(null)
+    const lazyload = ref(true)
     const fetchTasks = () => {
-      setTimeout(() => {
+      lazyload.value = true
+      if (time.value) {
+        clearTimeout(time.value);
+      }
+      time.value = setTimeout(() => {
         store.dispatch('app-todo/fetchTasks', {
           q: searchQuery.value,
           filter: router.currentRoute.params.filter,
@@ -458,15 +463,14 @@ export default {
           sort: sortBy.value ?? 'title-desc',
           page: page.value,
           perPage: perPage.value,
+        }).then(response => {
+          if (response.data.success) {
+            lazyload.value = false
+            tasks.value = response.data.data
+            rows.value = response.data.totalRecords
+          }
         })
-                .then(response => {
-                  if (response.data.success) {
-                    lazyload.value = false
-                    tasks.value = response.data.data
-                    rows.value = response.data.totalRecords
-                  }
-                })
-      }, 1000);
+      }, 1000)
     }
 
     fetchTasks()
@@ -487,6 +491,7 @@ export default {
 
     return {
       alert,
+      time,
       lazyload,
       variants,
       task,
