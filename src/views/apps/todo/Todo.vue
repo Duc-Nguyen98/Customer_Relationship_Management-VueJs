@@ -143,7 +143,7 @@
 
           </li>
         </draggable>
-        <div class="demo-spacing-0" v-if="rows > perPage">
+        <div class="demo-spacing-0">
           <!-- Use text in props -->
             <div class="d-flex justify-content-between flex-wrap">
               <div class="d-flex align-items-center mb-0 mt-1">
