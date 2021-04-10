@@ -9,7 +9,7 @@ export default {
     fetchEmails(ctx, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get('/apps/email/emails', { params: payload })
+          .get(process.env.VUE_APP_ROOT_API + 'mail/task/', { params: payload })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
