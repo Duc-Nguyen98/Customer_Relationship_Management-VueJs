@@ -75,7 +75,7 @@
         class="todo-task-list-wrapper list-group scroll-area"
       >
 
-        <div style="width: 35%; margin: auto;" v-if="lazyload">
+        <div style="position:absolute; width: 100%; margin: auto; top: 35%;" v-if="lazyload">
           <div class="text-center">
             <b-spinner variant="primary" label="Text Centered" />
           </div>
@@ -453,7 +453,7 @@ export default {
     const fetchTasks = () => {
       lazyload.value = true
       if (time.value) {
-        clearTimeout(time.value);
+        clearTimeout(time.value)
       }
       time.value = setTimeout(() => {
         store.dispatch('app-todo/fetchTasks', {
