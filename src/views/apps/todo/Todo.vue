@@ -112,7 +112,10 @@
                     @click.native.stop
                     @change="updateTaskIsCompleted(task)"
                   />
-                  <span class="todo-title">{{ task.title }}</span>
+                  <span class="todo-title" :id="`tooltip-target-${task._id}`">{{ task.title.length > 100 ? task.title.substring(0,100) + '...' : task.title }}</span>
+                  <b-tooltip  placement="bottom" :target="`tooltip-target-${task._id}`" triggers="hover">
+                    {{ task.title }}
+                  </b-tooltip>
                 </div>
               </div>
               <div class="todo-item-action">
@@ -144,7 +147,7 @@
             </div>
           </li>
         </draggable>
-        <div class="demo-spacing-0 mx-1" v-if="rows > 0 && lazyload == false">
+        <div class="demo-spacing-0 mx-1" v-if="rows > 0 || lazyload == false">
           <!-- Use text in props -->
           <div class="d-flex justify-content-between flex-wrap">
             <div class="d-flex align-items-center mb-0 mt-1">
@@ -226,7 +229,9 @@ import {
   BPagination,
   BFormSelect,
   BSpinner,
+  BTooltip
 } from "bootstrap-vue";
+
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
 import draggable from "vuedraggable";
 import { formatDate, avatarText } from "@core/utils/filter";
@@ -256,6 +261,7 @@ export default {
     BPagination,
     BFormSelect,
     BSpinner,
+    BTooltip,
     VuePerfectScrollbar,
     ToastificationContent,
 
