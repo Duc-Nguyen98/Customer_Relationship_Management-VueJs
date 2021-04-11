@@ -239,8 +239,9 @@ import Ripple from "vue-ripple-directive";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
 import Vue from "vue";
 import { ToastPlugin } from "bootstrap-vue";
-Vue.use(ToastPlugin);
-const v = new Vue();
+Vue.use(ToastPlugin)
+const v = new Vue()
+
 export default {
   components: {
     BFormInput,

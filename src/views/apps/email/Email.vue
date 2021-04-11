@@ -148,10 +148,18 @@
         :settings="perfectScrollbarSettings"
         class="email-user-list scroll-area"
       >
+        <div
+                style="position: absolute; width: 100%; margin: auto; top: 35%"
+                v-if="lazyload"
+        >
+          <div class="text-center">
+            <b-spinner variant="primary" label="Text Centered" />
+          </div>
+        </div>
         <ul class="email-media-list">
           <b-media
             v-for="email in emails"
-            :key="email.id"
+            :key="email._id"
             tag="li"
             no-body
             :class="{ 'mail-read': email.isRead }"
@@ -167,8 +175,8 @@
               />
               <div class="user-action">
                 <b-form-checkbox
-                  :checked="selectedEmails.includes(email.id)"
-                  @change="toggleSelectedMail(email.id)"
+                  :checked="selectedEmails.includes(email._id)"
+                  @change="toggleSelectedMail(email._id)"
                   @click.native.stop
                 />
                 <div class="email-favorite">
@@ -213,6 +221,42 @@
             </b-media-body>
           </b-media>
         </ul>
+        <div class="demo-spacing-0 mx-1" v-if="rows > 0 && lazyload == false">
+          <!-- Use text in props -->
+          <div class="d-flex justify-content-between flex-wrap">
+            <div class="d-flex align-items-center mb-0 mt-1">
+              <span class="text-nowrap"> Showing 1 to </span>
+              <b-form-select
+                      :value="perPage"
+                      :options="['10', '20', '30']"
+                      class="mx-1"
+                      @input="(value) => (perPage = value)"
+              />
+              <span class="text-nowrap"> of {{ rows }} entries </span>
+            </div>
+            <div>
+              <b-pagination
+                      :value="page"
+                      :total-rows="rows"
+                      :per-page="perPage"
+                      align="right"
+                      first-text="First"
+                      prev-text="Prev"
+                      next-text="Next"
+                      last-text="Last"
+                      class="mt-1 mb-0"
+                      @input="(value) => (page = value)"
+              >
+                <template #prev-text>
+                  <feather-icon icon="ChevronLeftIcon" size="18" />
+                </template>
+                <template #next-text>
+                  <feather-icon icon="ChevronRightIcon" size="18" />
+                </template>
+              </b-pagination>
+            </div>
+          </div>
+        </div>
         <div
           class="no-results"
           :class="{'show': !emails.length}"
@@ -224,15 +268,15 @@
 
     <!-- Email View/Detail -->
     <email-view
-      :class="{'show': showEmailDetails}"
-      :email-view-data="emailViewData"
-      :opended-email-meta="opendedEmailMeta"
-      @close-email-view="showEmailDetails = false"
-      @move-email-to-folder="moveOpenEmailToFolder"
-      @toggle-email-starred="toggleStarred(emailViewData)"
-      @update-email-label="updateOpenEmailLabel"
-      @mark-email-unread="markOpenEmailAsUnread"
-      @change-opened-email="changeOpenedEmail"
+            :class="{'show': showEmailDetails}"
+            :email-view-data="emailViewData"
+            :opended-email-meta="opendedEmailMeta"
+            @close-email-view="showEmailDetails = false"
+            @move-email-to-folder="moveOpenEmailToFolder"
+            @toggle-email-starred="toggleStarred(emailViewData)"
+            @update-email-label="updateOpenEmailLabel"
+            @mark-email-unread="markOpenEmailAsUnread"
+            @change-opened-email="changeOpenedEmail"
     />
 
     <!-- Sidebar -->
@@ -251,6 +295,7 @@
 </template>
 
 <script>
+
 import store from '@/store'
 import {
   ref, onUnmounted, computed, watch,
@@ -258,7 +303,7 @@ import {
 } from '@vue/composition-api'
 import {
   BFormInput, BInputGroup, BInputGroupPrepend, BDropdown, BDropdownItem,
-  BFormCheckbox, BMedia, BMediaAside, BMediaBody, BAvatar,
+  BFormCheckbox, BMedia, BMediaAside, BMediaBody, BAvatar, BPagination, BFormSelect, BSpinner,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { filterTags, formatDateToMonthShort } from '@core/utils/filter'
@@ -269,6 +314,11 @@ import EmailView from './EmailView.vue'
 import emailStoreModule from './emailStoreModule'
 import useEmail from './useEmail'
 import EmailCompose from './EmailCompose.vue'
+import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+import Vue from "vue";
+import { ToastPlugin } from "bootstrap-vue";
+Vue.use(ToastPlugin)
+const v = new Vue()
 
 export default {
   components: {
@@ -282,9 +332,12 @@ export default {
     BMediaAside,
     BMediaBody,
     BAvatar,
-
+    BPagination,
+    BFormSelect,
+    BSpinner,
     // 3rd Party
     VuePerfectScrollbar,
+    ToastificationContent,
 
     // App SFC
     EmailLeftSidebar,
@@ -337,14 +390,30 @@ export default {
       router.replace({ name: route.name, query: currentRouteQuery })
     }
 
+    const rows = ref(0)
+    const time = ref(null)
+    const lazyload = ref(true)
+
+    const alert = (variant, message) => {
+      v.$toast({
+        component: ToastificationContent,
+        props: {
+          title: "Notification",
+          icon: "BellIcon",
+          text: "👋 " + message,
+          variant,
+        },
+      });
+    };
+
     const fetchEmails = () => {
-      console.log(process.env.VUE_APP_ROOT_API)
       store.dispatch('app-email/fetchEmails', {
         q: searchQuery.value,
         folder: router.currentRoute.params.folder || 'inbox',
         label: router.currentRoute.params.label,
       })
         .then(response => {
+          lazyload.value = false
           emails.value = response.data.emails
           emailsMeta.value = response.data.emailsMeta
         })
@@ -373,12 +442,17 @@ export default {
     // Mail Actions
     // ------------------------------------------------
     const toggleStarred = email => {
-      store.dispatch('app-email/updateEmail', {
-        emailIds: [email.id],
-        dataToUpdate: { isStarred: !email.isStarred },
-      }).then(() => {
+      store.dispatch('app-email/updateStarredEmail', {
+        emailIds: email._id,
+        isStarred: !email.isStarred
+      }).then((response) => {
         // eslint-disable-next-line no-param-reassign
-        email.isStarred = !email.isStarred
+        if (response.data.success) {
+          alert("success", "Change starred successfully.")
+          email.isStarred = !email.isStarred
+        } else {
+          alert("danger", "Change starred failed.")
+        }
       })
     }
 
@@ -387,7 +461,14 @@ export default {
         emailIds: selectedEmails.value,
         dataToUpdate: { folder },
       })
-        .then(() => { fetchEmails() })
+        .then((response) => {
+          if (response.data.success) {
+            alert("success", "Change starred successfully.")
+            fetchEmails()
+          } else {
+            alert("danger", "Change starred failed.")
+          }
+           })
         .finally(() => { selectedEmails.value = [] })
     }
 
@@ -396,7 +477,14 @@ export default {
         emailIds: selectedEmails.value,
         label,
       })
-        .then(() => { fetchEmails() })
+        .then((response) => {
+          if (response.data.success) {
+          alert("success", "Update email label successfully.")
+            fetchEmails()
+          } else {
+            alert("danger", "Update email label failed.")
+          }
+        })
         .finally(() => { selectedEmails.value = [] })
     }
 
@@ -405,7 +493,14 @@ export default {
         emailIds: selectedEmails.value,
         dataToUpdate: { isRead: false },
       })
-        .then(() => { fetchEmails() })
+        .then((response) => {
+          if (response.data.success) {
+            alert("success", "Mark select email successfully.")
+            fetchEmails()
+          } else {
+            alert("danger", "Mark select email failed.")
+          }
+        })
         .finally(() => { selectedEmails.value = [] })
     }
 
@@ -492,6 +587,11 @@ export default {
     const { mqShallShowLeftSidebar } = useResponsiveAppLeftSidebarVisibility()
 
     return {
+      // Paginate
+      rows,
+      lazyload,
+      time,
+
       // UI
       perfectScrollbarSettings,
 
