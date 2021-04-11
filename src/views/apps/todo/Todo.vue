@@ -112,10 +112,11 @@
                     @click.native.stop
                     @change="updateTaskIsCompleted(task)"
                   />
-                  <span class="todo-title" :id="`tooltip-target-${task._id}`">{{ task.title.length > 100 ? task.title.substring(0,100) + '...' : task.title }}</span>
-                  <b-tooltip  placement="bottom" :target="`tooltip-target-${task._id}`" triggers="hover">
-                    {{ task.title }}
-                  </b-tooltip>
+                  <span class="todo-title" :id="`tooltip-target-${task._id}`">{{
+                    task.title.length >= 70
+                      ? task.title.substring(0, 70) + "..."
+                      : task.title
+                  }}</span>
                 </div>
               </div>
               <div class="todo-item-action">
@@ -229,7 +230,7 @@ import {
   BPagination,
   BFormSelect,
   BSpinner,
-  BTooltip
+  BTooltip,
 } from "bootstrap-vue";
 
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
@@ -244,8 +245,8 @@ import Ripple from "vue-ripple-directive";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
 import Vue from "vue";
 import { ToastPlugin } from "bootstrap-vue";
-Vue.use(ToastPlugin)
-const v = new Vue()
+Vue.use(ToastPlugin);
+const v = new Vue();
 
 export default {
   components: {
