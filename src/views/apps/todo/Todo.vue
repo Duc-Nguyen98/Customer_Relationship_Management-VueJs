@@ -148,7 +148,7 @@
             </div>
           </li>
         </draggable>
-        <div class="demo-spacing-0 mx-1" v-if="rows > 0 || lazyload == false">
+        <div class="demo-spacing-0 mx-1" v-if="rows > 0 && lazyload == false || rows > 0">
           <!-- Use text in props -->
           <div class="d-flex justify-content-between flex-wrap">
             <div class="d-flex align-items-center mb-0 mt-1">

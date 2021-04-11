@@ -420,7 +420,7 @@ export default {
     }
 
     fetchEmails()
-
+console.log(emails.value);
     // ------------------------------------------------
     // Mail Selection
     // ------------------------------------------------
