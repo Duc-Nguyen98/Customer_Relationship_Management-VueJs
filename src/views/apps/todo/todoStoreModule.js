@@ -8,7 +8,6 @@ export default {
   actions: {
     fetchTasks(ctx, payload) {
         if (payload.tag != undefined) {
-          console.log(payload);
           return new Promise((resolve, reject) => {
             axios
                 .get(process.env.VUE_APP_ROOT_API + 'todo/task/tag', { params: payload })

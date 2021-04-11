@@ -9,7 +9,7 @@ export default {
     fetchEmails(ctx, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + 'mail/task/', { params: payload })
+          .get(process.env.VUE_APP_ROOT_API + 'mail/task', { params: payload })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -20,6 +20,14 @@ export default {
           .post('/apps/email/update-emails', payload)
           .then(response => resolve(response))
           .catch(error => reject(error))
+      })
+    },
+    updateStarredEmail(ctx, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + `mail/task/is-starred/${payload.emailIds}`, payload)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
       })
     },
     updateEmailLabels(ctx, payload) {
