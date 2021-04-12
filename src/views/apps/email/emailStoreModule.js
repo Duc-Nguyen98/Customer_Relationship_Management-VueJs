@@ -14,12 +14,36 @@ export default {
           .catch(error => reject(error))
       })
     },
+    createEmail(ctx, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+            .post(process.env.VUE_APP_ROOT_API + 'mail/task/create', payload)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
     updateEmail(ctx, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post('/apps/email/update-emails', payload)
-          .then(response => resolve(response))
-          .catch(error => reject(error))
+            .patch(process.env.VUE_APP_ROOT_API + 'mail/task/update-multi', payload)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    updateEmail(ctx, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + 'mail/task/update-multi', payload)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    deleteEmail(ctx, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + 'mail/task/delete-multi', payload)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
       })
     },
     updateStarredEmail(ctx, payload) {
