@@ -369,7 +369,7 @@ export default {
     const removeTask = () => {
       if (confirm("Are you sure you want to remove?")) {
         store
-          .dispatch("app-todo/removeTask", task.value._id)
+          .dispatch("app-todo/removeTask", task.value)
           .then(({ data }) => {
             // eslint-disable-next-line no-use-before-define
             if (data.success) {

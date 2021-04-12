@@ -47,13 +47,22 @@ export default {
             .catch(error => reject(error))
       })
     },
-    removeTask(ctx, _id) {
-      return new Promise((resolve, reject) => {
-        axios
-          .delete(process.env.VUE_APP_ROOT_API + `todo/task/delete-soft/${_id}`)
-          .then(response => resolve(response))
-          .catch(error => reject(error))
-      })
+    removeTask(ctx, task) {
+      if (task.isDeleted) {
+        return new Promise((resolve, reject) => {
+          axios
+              .delete(process.env.VUE_APP_ROOT_API + `todo/task/delete/${task._id}`)
+              .then(response => resolve(response))
+              .catch(error => reject(error))
+        })
+      } else {
+        return new Promise((resolve, reject) => {
+          axios
+              .delete(process.env.VUE_APP_ROOT_API + `todo/task/delete-soft/${task._id}`)
+              .then(response => resolve(response))
+              .catch(error => reject(error))
+        })
+      }
     },
   },
 }

@@ -264,6 +264,7 @@ import Ripple from 'vue-ripple-directive'
 import { ref } from '@vue/composition-api'
 import { quillEditor } from 'vue-quill-editor'
 import vSelect from 'vue-select'
+import store from "@/store";
 
 export default {
   directives: {
@@ -294,7 +295,9 @@ export default {
     },
   },
   setup(_, { emit }) {
-    const composeData = ref({})
+    const composeData = ref({
+
+    })
     const showCcField = ref(false)
     const showBccField = ref(false)
 
@@ -317,10 +320,17 @@ export default {
     /* eslint-enable global-require */
 
     const sendEmail = () => {
-      composeData.value = {}
-      emit('update:shall-show-email-compose-modal', false)
+      store.dispatch('app-email/createEmail', composeData.value)
+              .then((response) => {
+                if (response.data.success) {
+                  emit('send-email', true)
+                  composeData.value = {}
+                  emit('update:shall-show-email-compose-modal', false)
+                } else {
+                  emit('send-email', false)
+                }
+              });
 
-      // ? Send your Email
     }
 
     const discardEmail = () => {
