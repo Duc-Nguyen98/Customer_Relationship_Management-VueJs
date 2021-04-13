@@ -1,9 +1,14 @@
 export default [
   {
-    header: 'Forms & Tables',
+    header: 'Users & Customers',
   },
   {
     title: 'Table Customers',
+    route: 'apps-customers-list',
+    icon: 'UserIcon',
+  },
+  {
+    title: 'Table Users',
     route: 'apps-users-list',
     icon: 'UserIcon',
   },

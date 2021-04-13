@@ -1,12 +1,5 @@
 <template>
   <div>
-    <user-list-add-new
-      :is-add-new-user-sidebar-active.sync="isAddNewUserSidebarActive"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
-      @refetch-data="refetchData"
-    />
-
     <!-- Filters -->
     <users-list-filters
       :role-filter.sync="roleFilter"
@@ -50,9 +43,9 @@
               <b-button
                 class="mr-1"
                 variant="primary"
-                @click="isAddNewUserSidebarActive = true"
+                :to="{ name: 'apps-users-add' }"
               >
-                <span class="text-nowrap">Add User</span>
+                <span class="text-nowrap">Add Customer</span>
               </b-button>
               <b-dropdown
                 id="dropdown-1"
@@ -81,52 +74,50 @@
         :sort-desc.sync="isSortDirDesc"
       >
         <!-- Column: User -->
-        <template #cell(user)="data">
-          <b-media vertical-align="center">
-            <template #aside>
-              <b-avatar
-                size="32"
-                :src="data.item.avatar"
-                :text="avatarText(data.item.fullName)"
-                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
-                :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
-              />
-            </template>
-            <b-link
-              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
-              class="font-weight-bold d-block text-nowrap"
-            >
-              {{ data.item.fullName }}
-            </b-link>
-            <small class="text-muted">@{{ data.item.username }}</small>
-          </b-media>
-        </template>
+        <!--        <template #cell(user)="data">-->
+        <!--          <b-media vertical-align="center">-->
+        <!--            <template #aside>-->
+        <!--              <b-avatar-->
+        <!--                size="32"-->
+        <!--                :src="data.item.avatar"-->
+        <!--                :text="avatarText(data.item.fullName)"-->
+        <!--                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"-->
+        <!--                :to="{ name: 'apps-users-view', params: { id: data.item.id } }"-->
+        <!--              />-->
+        <!--            </template>-->
+        <!--            <b-link-->
+        <!--              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"-->
+        <!--              class="font-weight-bold d-block text-nowrap"-->
+        <!--            >-->
+        <!--              {{ data.item.fullName }}-->
+        <!--            </b-link>-->
+        <!--            <small class="text-muted">@{{ data.item.username }}</small>-->
+        <!--          </b-media>-->
+        <!--        </template>-->
 
         <!-- Column: Role -->
-        <template #cell(role)="data">
-          <div class="text-nowrap">
-            <feather-icon
-              :icon="resolveUserRoleIcon(data.item.role)"
-              size="18"
-              class="mr-50"
-              :class="`text-${resolveUserRoleVariant(data.item.role)}`"
-            />
-            <span class="align-text-top text-capitalize">{{
-              data.item.role
-            }}</span>
-          </div>
-        </template>
+        <!--        <template #cell(role)="data">-->
+        <!--          <div class="text-nowrap">-->
+        <!--            <feather-icon-->
+        <!--              :icon="resolveUserRoleIcon(data.item.role)"-->
+        <!--              size="18"-->
+        <!--              class="mr-50"-->
+        <!--              :class="`text-${resolveUserRoleVariant(data.item.role)}`"-->
+        <!--            />-->
+        <!--            <span class="align-text-top text-capitalize">{{ data.item.role }}</span>-->
+        <!--          </div>-->
+        <!--        </template>-->
 
         <!-- Column: Status -->
-        <template #cell(status)="data">
-          <b-badge
-            pill
-            :variant="`light-${resolveUserStatusVariant(data.item.status)}`"
-            class="text-capitalize"
-          >
-            {{ data.item.status }}
-          </b-badge>
-        </template>
+        <!--        <template #cell(status)="data">-->
+        <!--          <b-badge-->
+        <!--            pill-->
+        <!--            :variant="`light-${resolveUserStatusVariant(data.item.status)}`"-->
+        <!--            class="text-capitalize"-->
+        <!--          >-->
+        <!--            {{ data.item.status }}-->
+        <!--          </b-badge>-->
+        <!--        </template>-->
 
         <!-- Column: Actions -->
         <template #cell(actions)="data">
@@ -228,12 +219,11 @@ import { avatarText } from "@core/utils/filter";
 import UsersListFilters from "./UsersListFilters.vue";
 import useUsersList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
-import UserListAddNew from "./UserListAddNew.vue";
+import Ripple from "vue-ripple-directive";
 
 export default {
   components: {
     UsersListFilters,
-    UserListAddNew,
 
     BCard,
     BRow,
@@ -241,15 +231,18 @@ export default {
     BFormInput,
     BButton,
     BTable,
-    BMedia,
-    BAvatar,
-    BLink,
-    BBadge,
+    // BMedia,
+    // BAvatar,
+    // BLink,
+    // BBadge,
     BDropdown,
     BDropdownItem,
     BPagination,
 
     vSelect,
+  },
+  directives: {
+    Ripple,
   },
   setup() {
     const USER_APP_STORE_MODULE_NAME = "app-user";
@@ -263,8 +256,6 @@ export default {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME))
         store.unregisterModule(USER_APP_STORE_MODULE_NAME);
     });
-
-    const isAddNewUserSidebarActive = ref(false);
 
     const roleOptions = [
       { label: "Admin", value: "admin" },
@@ -313,9 +304,6 @@ export default {
     } = useUsersList();
 
     return {
-      // Sidebar
-      isAddNewUserSidebarActive,
-
       fetchUsers,
       tableColumns,
       perPage,
