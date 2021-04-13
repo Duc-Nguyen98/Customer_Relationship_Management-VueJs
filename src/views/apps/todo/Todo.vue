@@ -514,7 +514,7 @@ export default {
               rows.value = response.data.totalRecords;
             }
           });
-      }, 1000);
+      }, searchQuery.value ? 1000 : 0);
     };
 
     fetchTasks();

@@ -268,7 +268,7 @@
                 </div>
                 <div
                         class="no-results"
-                        :class="{'show': !emails.length}"
+                        :class="{'show': !emails.length  && lazyload == false }"
                 >
                     <h5>No Items Found</h5>
                 </div>
@@ -437,7 +437,7 @@
 
             const fetchEmails = () => {
                 emails.value = []
-                    lazyload.value = true
+                lazyload.value = true
                 if (time.value) {
                     clearTimeout(time.value)
                 }
@@ -453,9 +453,10 @@
                             lazyload.value = false
                             emails.value = response.data.emails
                             emailsMeta.value = response.data.emailsMeta
+                            console.log(response.data);
                             rows.value = response.data.totalRecords
                         })
-                }, 1000)
+                }, searchQuery.value? 1000 : 0);
             }
 
             fetchEmails()
