@@ -14,18 +14,15 @@ export default function useUsersList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'C_Name', sortable: true },
-    { key: 'C_Adress', sortable: true },
-    { key: 'C_Phone', sortable: true },
-    { key: 'C_Email', sortable: true },
-    { key: 'role', sortable: true },
-    {
-      key: 'currentPlan',
-      label: 'Plan',
-      formatter: title,
-      sortable: true,
-    },
-    // { key: 'status', sortable: true },
+    { key: 'stt', label: 'STT', sortable: true },
+    { key: 'avatar', label: 'AVATAR', sortable: false },
+    { key: 'name', label: 'NAME', sortable: true },
+    { key: 'telephone', label: 'TELEPHONE', sortable: false },
+    { key: 'email', label: 'EMAIL', sortable: false },
+    { key: 'birthDate', label: 'BIRTHDAY', sortable: false },
+    { key: 'lastTrading', label: 'LASTTRADING', sortable: false },
+    { key: 'createdAt', label: 'CREATEDAT', sortable: true },
+    { key: 'updatedAt', label: 'UPDATEDAT', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -35,9 +32,8 @@ export default function useUsersList() {
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  // const roleFilter = ref(null)
-  // const planFilter = ref(null)
-  // const statusFilter = ref(null)
+  const group = ref(null)
+  const gender = ref(null)
 
   const dataMeta = computed(() => {
     const localItemsCount = refUserListTable.value ? refUserListTable.value.localItems.length : 0
@@ -50,10 +46,10 @@ export default function useUsersList() {
 
   const refetchData = () => {
     refUserListTable.value.refresh()
+    fetchUsers()
   }
-      // roleFilter, planFilter, statusFilter
 
-  watch([currentPage, perPage, searchQuery], () => {
+  watch([currentPage, perPage, searchQuery, group, gender], () => {
     refetchData()
   })
 
@@ -63,17 +59,14 @@ export default function useUsersList() {
         q: searchQuery.value,
         perPage: perPage.value,
         page: currentPage.value,
-        sortBy: sortBy.value,
-        sortDesc: isSortDirDesc.value,
-        // role: roleFilter.value,
-        // plan: planFilter.value,
-        // status: statusFilter.value,
+        sort: sortBy.value,
+        gender: gender.value,
+        group: group.value,
       })
       .then(response => {
-        const { users, total } = response.data
-
-        callback(users)
-        totalUsers.value = total
+        const { data, totalRecords } = response.data
+        callback(data)
+        totalUsers.value = totalRecords
       })
       .catch(() => {
         toast({
@@ -135,8 +128,7 @@ export default function useUsersList() {
     refetchData,
 
     // Extra Filters
-    // roleFilter,
-    // planFilter,
-    // statusFilter,
+    group,
+    gender,
   }
 }

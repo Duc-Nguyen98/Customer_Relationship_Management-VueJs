@@ -9,7 +9,7 @@ export default {
     fetchUsers(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-          .get('/apps/user/users', { params: queryParams })
+          .get(process.env.VUE_APP_ROOT_API + 'customer/list', { params: queryParams })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -28,6 +28,14 @@ export default {
           .post('/apps/user/users', { user: userData })
           .then(response => resolve(response))
           .catch(error => reject(error))
+      })
+    },
+    deleteUser(ctx, { id }) {
+      return new Promise((resolve, reject) => {
+        axios
+            .delete(`/apps/user/users/${id}`)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
       })
     },
   },
