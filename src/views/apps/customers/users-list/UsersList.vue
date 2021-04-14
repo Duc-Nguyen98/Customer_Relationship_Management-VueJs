@@ -47,8 +47,18 @@
               >
                 <span class="text-nowrap">Add Customer</span>
               </b-button>
+
+              <b-button
+                class="mr-1"
+                variant="primary"
+                :to="{ name: 'apps-users-add' }"
+              >
+                <span class="text-nowrap">Trash</span>
+              </b-button>
+
               <b-dropdown
                 id="dropdown-1"
+                class="mr-1"
                 v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                 text="Export To"
                 variant="primary"
