@@ -9,22 +9,22 @@
           <label>Groups Customer</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="roleFilter"
-            :options="roleOptions"
+            :value="group"
+            :options="groupOptions"
             class="w-100"
             :reduce="(val) => val.value"
-            @input="(val) => $emit('update:roleFilter', val)"
+            @input="(val) => $emit('update:group', val)"
           />
         </b-col>
         <b-col cols="12" md="6" class="mb-md-0 mb-2">
           <label>Gender</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="planFilter"
-            :options="planOptions"
+            :value="gender"
+            :options="genderOptions"
             class="w-100"
             :reduce="(val) => val.value"
-            @input="(val) => $emit('update:planFilter', val)"
+            @input="(val) => $emit('update:gender', val)"
           />
         </b-col>
       </b-row>
@@ -46,19 +46,19 @@ export default {
     vSelect,
   },
   props: {
-    roleFilter: {
-      type: [String, null],
+    group: {
+      type: [Number, null],
       default: null,
     },
-    planFilter: {
-      type: [String, null],
+    gender: {
+      type: [Number, null],
       default: null,
     },
-    roleOptions: {
+    groupOptions: {
       type: Array,
       required: true,
     },
-    planOptions: {
+    genderOptions: {
       type: Array,
       required: true,
     },

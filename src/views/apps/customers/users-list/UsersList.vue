@@ -2,12 +2,10 @@
   <div>
     <!-- Filters -->
     <users-list-filters
-      :role-filter.sync="roleFilter"
-      :plan-filter.sync="planFilter"
-      :status-filter.sync="statusFilter"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
-      :status-options="statusOptions"
+      :group.sync="group"
+      :gender.sync="gender"
+      :group-options="groupOptions"
+      :gender-options="genderOptions"
     />
 
     <!-- Table Container Card -->
@@ -43,17 +41,17 @@
               <b-button
                 class="mr-1"
                 variant="primary"
-                :to="{ name: 'apps-users-add' }"
+                :to="{ name: 'apps-customers-add' }"
               >
-                <span class="text-nowrap">Add Customer</span>
+                <span class="text-nowrap"><feather-icon icon="PlusCircleIcon" /></span>
               </b-button>
 
               <b-button
                 class="mr-1"
                 variant="primary"
-                :to="{ name: 'apps-users-add' }"
+                :to="{ name: 'apps-customers-add' }"
               >
-                <span class="text-nowrap">Trash</span>
+                <span class="text-nowrap"><feather-icon icon="Trash2Icon" /></span>
               </b-button>
 
               <b-dropdown
@@ -83,52 +81,30 @@
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
       >
+        <!-- Column: STT -->
+        <template #cell(stt)="data">
+          {{ data.index + 1 }}
+        </template>
         <!-- Column: User -->
-        <!--        <template #cell(user)="data">-->
-        <!--          <b-media vertical-align="center">-->
-        <!--            <template #aside>-->
-        <!--              <b-avatar-->
-        <!--                size="32"-->
-        <!--                :src="data.item.avatar"-->
-        <!--                :text="avatarText(data.item.fullName)"-->
-        <!--                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"-->
-        <!--                :to="{ name: 'apps-users-view', params: { id: data.item.id } }"-->
-        <!--              />-->
-        <!--            </template>-->
-        <!--            <b-link-->
-        <!--              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"-->
-        <!--              class="font-weight-bold d-block text-nowrap"-->
-        <!--            >-->
-        <!--              {{ data.item.fullName }}-->
-        <!--            </b-link>-->
-        <!--            <small class="text-muted">@{{ data.item.username }}</small>-->
-        <!--          </b-media>-->
-        <!--        </template>-->
-
-        <!-- Column: Role -->
-        <!--        <template #cell(role)="data">-->
-        <!--          <div class="text-nowrap">-->
-        <!--            <feather-icon-->
-        <!--              :icon="resolveUserRoleIcon(data.item.role)"-->
-        <!--              size="18"-->
-        <!--              class="mr-50"-->
-        <!--              :class="`text-${resolveUserRoleVariant(data.item.role)}`"-->
-        <!--            />-->
-        <!--            <span class="align-text-top text-capitalize">{{ data.item.role }}</span>-->
-        <!--          </div>-->
-        <!--        </template>-->
-
-        <!-- Column: Status -->
-        <!--        <template #cell(status)="data">-->
-        <!--          <b-badge-->
-        <!--            pill-->
-        <!--            :variant="`light-${resolveUserStatusVariant(data.item.status)}`"-->
-        <!--            class="text-capitalize"-->
-        <!--          >-->
-        <!--            {{ data.item.status }}-->
-        <!--          </b-badge>-->
-        <!--        </template>-->
-
+        <template #cell(avatar)="data">
+          <b-media vertical-align="center">
+            <template #aside>
+              <b-avatar
+                      size="32"
+                      src="/img/5-small.a4eb6d6e.png"
+                      :text="avatarText(data.item.name)"
+                      :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
+                      :to="{ name: 'apps-customers-view', params: { id: data.item._id } }"
+              />
+            </template>
+            <b-link
+                    :to="{ name: 'apps-customers-view', params: { id: data.item._id } }"
+                    class="font-weight-bold d-block text-nowrap"
+            >
+              {{ data.item.fullName }}
+            </b-link>
+          </b-media>
+        </template>
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
@@ -144,22 +120,22 @@
               />
             </template>
             <b-dropdown-item
-              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
+              :to="{ name: 'apps-customers-view', params: { id: data.item._id } }"
             >
               <feather-icon icon="FileTextIcon" />
               <span class="align-middle ml-50">Details</span>
             </b-dropdown-item>
 
             <b-dropdown-item
-              :to="{ name: 'apps-users-edit', params: { id: data.item.id } }"
+              :to="{ name: 'apps-customers-edit', params: { id: data.item._id } }"
             >
-              <feather-icon icon="EditIcon" />
+              <feather-icon icon="PlusCircleIcon" />
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
 
-            <b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'apps-customers-delete', params: { id: data.item._id } }">
               <feather-icon icon="TrashIcon" />
-              <span class="align-middle ml-50">Delete</span>
+              <span class="align-middle ml-50" >Delete</span>
             </b-dropdown-item>
           </b-dropdown>
         </template>
@@ -217,7 +193,7 @@ import {
   BMedia,
   BAvatar,
   BLink,
-  BBadge,
+  // BBadge,
   BDropdown,
   BDropdownItem,
   BPagination,
@@ -234,21 +210,19 @@ import Ripple from "vue-ripple-directive";
 export default {
   components: {
     UsersListFilters,
-
     BCard,
     BRow,
     BCol,
     BFormInput,
     BButton,
     BTable,
-    // BMedia,
-    // BAvatar,
-    // BLink,
+    BMedia,
+    BAvatar,
+    BLink,
     // BBadge,
     BDropdown,
     BDropdownItem,
     BPagination,
-
     vSelect,
   },
   directives: {
@@ -267,25 +241,15 @@ export default {
         store.unregisterModule(USER_APP_STORE_MODULE_NAME);
     });
 
-    const roleOptions = [
-      { label: "Admin", value: "admin" },
-      { label: "Author", value: "author" },
-      { label: "Editor", value: "editor" },
-      { label: "Maintainer", value: "maintainer" },
-      { label: "Subscriber", value: "subscriber" },
+    const groupOptions = [
+      { label: "Khách hàng thường", value: 0 },
+      { label: "khách hàng thân thiết", value: 1 },
+      { label: "Khách hàng tiềm năng", value: 2 },
     ];
 
-    const planOptions = [
-      { label: "Basic", value: "basic" },
-      { label: "Company", value: "company" },
-      { label: "Enterprise", value: "enterprise" },
-      { label: "Team", value: "team" },
-    ];
-
-    const statusOptions = [
-      { label: "Pending", value: "pending" },
-      { label: "Active", value: "active" },
-      { label: "Inactive", value: "inactive" },
+    const genderOptions = [
+      { label: "Nam", value: 0 },
+      { label: "Nữ", value: 1 },
     ];
 
     const {
@@ -308,9 +272,8 @@ export default {
       resolveUserStatusVariant,
 
       // Extra Filters
-      roleFilter,
-      planFilter,
-      statusFilter,
+      group,
+      gender,
     } = useUsersList();
 
     return {
@@ -335,14 +298,12 @@ export default {
       resolveUserRoleIcon,
       resolveUserStatusVariant,
 
-      roleOptions,
-      planOptions,
-      statusOptions,
+      groupOptions,
+      genderOptions,
 
       // Extra Filters
-      roleFilter,
-      planFilter,
-      statusFilter,
+      gender,
+      group,
     };
   },
 };
