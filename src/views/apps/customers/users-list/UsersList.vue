@@ -168,10 +168,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-              :to="{
-                name: 'apps-customers-delete',
-                params: { id: data.item._id },
-              }"
+              @click="deleteUser(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -198,7 +195,7 @@
             class="d-flex align-items-center justify-content-center justify-content-sm-end"
           >
             <b-pagination
-              :value="page"
+              :value="currentPage"
               :total-rows="totalUsers"
               :per-page="perPage"
               align="right"
@@ -207,7 +204,7 @@
               next-text="Next"
               last-text="Last"
               class="mt-1 mb-0"
-              @input="(value) => (page = value)"
+              @input="(value) => (currentPage = value)"
             >
               <template #prev-text>
                 <feather-icon icon="ChevronLeftIcon" size="18" />
@@ -248,6 +245,12 @@ import useUsersList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
+import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+import Vue from "vue";
+import {ToastPlugin} from "bootstrap-vue";
+
+Vue.use(ToastPlugin)
+const v = new Vue()
 
 export default {
   components: {
@@ -311,7 +314,7 @@ export default {
       isSortDirDesc,
       refUserListTable,
       refetchData,
-
+      deleteUser,
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
@@ -336,6 +339,7 @@ export default {
       refUserListTable,
       convertDate,
       refetchData,
+      deleteUser,
 
       // Filter
       avatarText,
