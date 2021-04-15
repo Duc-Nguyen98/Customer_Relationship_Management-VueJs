@@ -129,18 +129,8 @@
         </template>
 
         <!-- Column: lastTrading -->
-        <template #cell(lastTrading)="data">
-          {{ convertDate(data.value) }}
-        </template>
-
-        <!-- Column: createdAt -->
-        <template #cell(createdAt)="data">
-          {{ convertDate(data.value) }}
-        </template>
-
-        <!-- Column: updatedAt -->
-        <template #cell(updatedAt)="data">
-          {{ convertDate(data.value) }}
+        <template #cell(gender)="data">
+          {{ data.value == 1 ? 'Nam' : 'Nữ' }}
         </template>
 
         <!-- Column: Actions -->

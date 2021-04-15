@@ -20,9 +20,7 @@ export default function useUsersList() {
     { key: 'telephone', label: 'TELEPHONE', sortable: false },
     { key: 'email', label: 'EMAIL', sortable: false },
     { key: 'birthDate', label: 'BIRTHDAY', sortable: false },
-    { key: 'lastTrading', label: 'LASTTRADING', sortable: false },
-    { key: 'createdAt', label: 'CREATEDAT', sortable: true },
-    { key: 'updatedAt', label: 'UPDATEDAT', sortable: true },
+    { key: 'gender', label: 'GENDER', sortable: false },
     { key: 'actions' },
   ]
   const perPage = ref(10)
