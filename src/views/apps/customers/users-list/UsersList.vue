@@ -72,8 +72,8 @@
                     class="align-middle"
                   />
                 </template>
-                <b-dropdown-item>PDF</b-dropdown-item>
-                <b-dropdown-item>Excel</b-dropdown-item>
+                <b-dropdown-item>Export PDF</b-dropdown-item>
+                <b-dropdown-item>Export Excel</b-dropdown-item>
               </b-dropdown>
             </div>
           </b-col>
