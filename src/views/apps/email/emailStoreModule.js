@@ -49,7 +49,7 @@ export default {
     updateEmailLabels(ctx, payload) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `mail/task/detail/${payload.emailIds[0]}`, payload)
+            .patch(process.env.VUE_APP_ROOT_API + `mail/task/update/${payload.emailIds[0]}`, payload)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
