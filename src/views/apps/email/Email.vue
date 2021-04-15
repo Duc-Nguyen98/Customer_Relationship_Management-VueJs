@@ -453,7 +453,6 @@
                             lazyload.value = false
                             emails.value = response.data.emails
                             emailsMeta.value = response.data.emailsMeta
-                            console.log(response.data);
                             rows.value = response.data.totalRecords
                         })
                 }, searchQuery.value? 1000 : 0);
