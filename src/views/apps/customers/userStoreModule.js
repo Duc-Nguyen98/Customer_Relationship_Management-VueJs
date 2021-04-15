@@ -14,10 +14,10 @@ export default {
           .catch(error => reject(error))
       })
     },
-    fetchUser(ctx, { id }) {
+    fetchUser(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`/apps/user/users/${id}`)
+          .get(`/apps/user/users/${_id}`)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -30,10 +30,10 @@ export default {
           .catch(error => reject(error))
       })
     },
-    deleteUser(ctx, { id }) {
+    deleteUser(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(`/apps/user/users/${id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `customer/delete-soft/${_id}`)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
