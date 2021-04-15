@@ -34,6 +34,7 @@ export default function useUsersList() {
   const isSortDirDesc = ref(true)
   const group = ref(null)
   const gender = ref(null)
+  const Users = ref([])
 
   const dataMeta = computed(() => {
     const localItemsCount = refUserListTable.value ? refUserListTable.value.localItems.length : 0
@@ -45,7 +46,6 @@ export default function useUsersList() {
   })
 
   const refetchData = () => {
-    refUserListTable.value.refresh()
     fetchUsers()
   }
 
@@ -65,8 +65,9 @@ export default function useUsersList() {
       })
       .then(response => {
         const { data, totalRecords } = response.data
-        callback(data)
         totalUsers.value = totalRecords
+        console.log(data)
+        Users.value = data
       })
       .catch(() => {
         toast({
@@ -80,6 +81,7 @@ export default function useUsersList() {
       })
   }
 
+  fetchUsers();
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
@@ -111,6 +113,7 @@ export default function useUsersList() {
 
   return {
     fetchUsers,
+    Users,
     tableColumns,
     perPage,
     currentPage,
