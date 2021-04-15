@@ -30,14 +30,6 @@ export default {
             .catch(error => reject(error))
       })
     },
-    updateEmail(ctx, payload) {
-      return new Promise((resolve, reject) => {
-        axios
-            .patch(process.env.VUE_APP_ROOT_API + 'mail/task/update-multi', payload)
-            .then(response => resolve(response))
-            .catch(error => reject(error))
-      })
-    },
     deleteEmail(ctx, payload) {
       return new Promise((resolve, reject) => {
         axios
@@ -57,9 +49,9 @@ export default {
     updateEmailLabels(ctx, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post('/apps/email/update-emails-label', payload)
-          .then(response => resolve(response))
-          .catch(error => reject(error))
+            .patch(process.env.VUE_APP_ROOT_API + `mail/task/detail/${payload.emailIds[0]}`, payload)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
       })
     },
     paginateEmail(ctx, payload) {

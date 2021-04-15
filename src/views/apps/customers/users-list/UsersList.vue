@@ -187,20 +187,22 @@
             class="d-flex align-items-center justify-content-center justify-content-sm-end"
           >
             <b-pagination
-              v-model="currentPage"
-              :total-rows="totalUsers"
-              :per-page="perPage"
-              first-number
-              last-number
-              class="mb-0 mt-1 mt-sm-0"
-              prev-class="prev-item"
-              next-class="next-item"
+                    :value="page"
+                    :total-rows="totalUsers"
+                    :per-page="perPage"
+                    align="right"
+                    first-text="First"
+                    prev-text="Prev"
+                    next-text="Next"
+                    last-text="Last"
+                    class="mt-1 mb-0"
+                    @input="(value) => (page = value)"
             >
               <template #prev-text>
-                <feather-icon icon="ChevronLeftIcon" size="18" />
+                <feather-icon icon="ChevronLeftIcon" size="18"/>
               </template>
               <template #next-text>
-                <feather-icon icon="ChevronRightIcon" size="18" />
+                <feather-icon icon="ChevronRightIcon" size="18"/>
               </template>
             </b-pagination>
           </b-col>
