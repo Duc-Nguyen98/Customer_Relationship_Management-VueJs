@@ -133,16 +133,6 @@
           {{ convertDate(data.value) }}
         </template>
 
-        <!-- Column: createdAt -->
-        <template #cell(createdAt)="data">
-          {{ convertDate(data.value) }}
-        </template>
-
-        <!-- Column: updatedAt -->
-        <template #cell(updatedAt)="data">
-          {{ convertDate(data.value) }}
-        </template>
-
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
