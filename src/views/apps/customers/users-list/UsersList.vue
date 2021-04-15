@@ -58,9 +58,15 @@
                 id="dropdown-1"
                 class="mr-1"
                 v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                text="Export To"
                 variant="primary"
               >
+                <template #button-content>
+                  <feather-icon
+                          icon="DownloadIcon"
+                          size="14"
+                          class="align-middle"
+                  />
+                </template>
                 <b-dropdown-item>PDF</b-dropdown-item>
                 <b-dropdown-item>Excel</b-dropdown-item>
               </b-dropdown>
@@ -72,7 +78,7 @@
       <b-table
         ref="refUserListTable"
         class="position-relative"
-        :items="fetchUsers"
+        :items="Users"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -105,6 +111,27 @@
             </b-link>
           </b-media>
         </template>
+
+        <!-- Column: birthDate -->
+        <template #cell(birthDate)="data">
+          {{ convertDate(data.value) }}
+        </template>
+
+        <!-- Column: lastTrading -->
+        <template #cell(lastTrading)="data">
+          {{ convertDate(data.value) }}
+        </template>
+
+        <!-- Column: createdAt -->
+        <template #cell(createdAt)="data">
+          {{ convertDate(data.value) }}
+        </template>
+
+        <!-- Column: updatedAt -->
+        <template #cell(updatedAt)="data">
+          {{ convertDate(data.value) }}
+        </template>
+
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
@@ -139,6 +166,7 @@
             </b-dropdown-item>
           </b-dropdown>
         </template>
+
       </b-table>
       <div class="mx-2 mb-2">
         <b-row>
@@ -206,6 +234,7 @@ import UsersListFilters from "./UsersListFilters.vue";
 import useUsersList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
 import Ripple from "vue-ripple-directive";
+import moment from 'moment';
 
 export default {
   components: {
@@ -252,8 +281,12 @@ export default {
       { label: "Nữ", value: 1 },
     ];
 
+    const convertDate = (date) => {
+      return moment(date).format('DD-MM-YYYY');
+    };
+
     const {
-      fetchUsers,
+      Users,
       tableColumns,
       perPage,
       currentPage,
@@ -277,7 +310,7 @@ export default {
     } = useUsersList();
 
     return {
-      fetchUsers,
+      Users,
       tableColumns,
       perPage,
       currentPage,
@@ -288,6 +321,7 @@ export default {
       sortBy,
       isSortDirDesc,
       refUserListTable,
+      convertDate,
       refetchData,
 
       // Filter
