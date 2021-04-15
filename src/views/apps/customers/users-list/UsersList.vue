@@ -43,9 +43,7 @@
                 variant="primary"
                 :to="{ name: 'apps-customers-add' }"
               >
-                <span class="text-nowrap"
-                  ><feather-icon icon="PlusCircleIcon"
-                /></span>
+                <span class="text-nowrap"><feather-icon icon="PlusCircleIcon" /></span>
               </b-button>
 
               <b-button
@@ -53,12 +51,10 @@
                 variant="primary"
                 :to="{ name: 'apps-customers-add' }"
               >
-                <span class="text-nowrap"
-                  ><feather-icon icon="Trash2Icon"
-                /></span>
+                <span class="text-nowrap"><feather-icon icon="Trash2Icon" /></span>
               </b-button>
 
-              <!-- <b-dropdown
+              <b-dropdown
                 id="dropdown-1"
                 class="mr-1"
                 v-ripple.400="'rgba(255, 255, 255, 0.15)'"
@@ -69,24 +65,6 @@
                           icon="DownloadIcon"
                           size="14"
                           class="align-middle"
-                  />
-                </template>
-                <b-dropdown-item>PDF</b-dropdown-item>
-                <b-dropdown-item>Excel</b-dropdown-item>
-              </b-dropdown> -->
-              <!-- icon -->
-              <b-dropdown
-                id="dropdown-grouped"
-                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                variant="primary"
-                right
-                class="dropdown-icon-wrapper"
-              >
-                <template #button-content>
-                  <feather-icon
-                    icon="DownloadIcon"
-                    size="14"
-                    class="align-middle"
                   />
                 </template>
                 <b-dropdown-item>PDF</b-dropdown-item>
@@ -118,22 +96,16 @@
           <b-media vertical-align="center">
             <template #aside>
               <b-avatar
-                size="32"
-                src="/img/5-small.a4eb6d6e.png"
-                :text="avatarText(data.item.name)"
-                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
-                :to="{
-                  name: 'apps-customers-view',
-                  params: { id: data.item._id },
-                }"
+                      size="32"
+                      src="/img/5-small.a4eb6d6e.png"
+                      :text="avatarText(data.item.name)"
+                      :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
+                      :to="{ name: 'apps-customers-view', params: { id: data.item._id } }"
               />
             </template>
             <b-link
-              :to="{
-                name: 'apps-customers-view',
-                params: { id: data.item._id },
-              }"
-              class="font-weight-bold d-block text-nowrap"
+                    :to="{ name: 'apps-customers-view', params: { id: data.item._id } }"
+                    class="font-weight-bold d-block text-nowrap"
             >
               {{ data.item.fullName }}
             </b-link>
@@ -175,36 +147,26 @@
               />
             </template>
             <b-dropdown-item
-              :to="{
-                name: 'apps-customers-view',
-                params: { id: data.item._id },
-              }"
+              :to="{ name: 'apps-customers-view', params: { id: data.item._id } }"
             >
               <feather-icon icon="FileTextIcon" />
               <span class="align-middle ml-50">Details</span>
             </b-dropdown-item>
 
             <b-dropdown-item
-              :to="{
-                name: 'apps-customers-edit',
-                params: { id: data.item._id },
-              }"
+              :to="{ name: 'apps-customers-edit', params: { id: data.item._id } }"
             >
               <feather-icon icon="PlusCircleIcon" />
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
 
-            <b-dropdown-item
-              :to="{
-                name: 'apps-customers-delete',
-                params: { id: data.item._id },
-              }"
-            >
+            <b-dropdown-item :to="{ name: 'apps-customers-delete', params: { id: data.item._id } }">
               <feather-icon icon="TrashIcon" />
-              <span class="align-middle ml-50">Delete</span>
+              <span class="align-middle ml-50" >Delete</span>
             </b-dropdown-item>
           </b-dropdown>
         </template>
+
       </b-table>
       <div class="mx-2 mb-2">
         <b-row>
@@ -272,7 +234,7 @@ import UsersListFilters from "./UsersListFilters.vue";
 import useUsersList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
 import Ripple from "vue-ripple-directive";
-import moment from "moment";
+import moment from 'moment';
 
 export default {
   components: {
@@ -320,7 +282,7 @@ export default {
     ];
 
     const convertDate = (date) => {
-      return moment(date).format("DD-MM-YYYY");
+      return moment(date).format('DD-MM-YYYY');
     };
 
     const {
