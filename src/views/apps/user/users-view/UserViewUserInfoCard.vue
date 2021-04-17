@@ -159,7 +159,7 @@ import {
   BCard, BButton, BAvatar, BRow, BCol,
 } from 'bootstrap-vue'
 import { avatarText } from '@core/utils/filter'
-import useUsersList from '../users-list/useUsersList'
+import useServicesList from '../users-list/useUsersList'
 
 export default {
   components: {

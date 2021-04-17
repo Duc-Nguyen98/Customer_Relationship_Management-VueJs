@@ -213,7 +213,7 @@ import { avatarText } from '@core/utils/filter'
 import vSelect from 'vue-select'
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
 import { ref } from '@vue/composition-api'
-import useUsersList from '../users-list/useUsersList'
+import useServicesList from '../users-list/useUsersList'
 
 export default {
   components: {
