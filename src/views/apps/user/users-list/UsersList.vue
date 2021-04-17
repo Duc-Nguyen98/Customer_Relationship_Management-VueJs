@@ -1,20 +1,11 @@
 <template>
   <div>
-    <user-list-add-new
-      :is-add-new-user-sidebar-active.sync="isAddNewUserSidebarActive"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
-      @refetch-data="refetchData"
-    />
-
     <!-- Filters -->
     <users-list-filters
-      :role-filter.sync="roleFilter"
-      :plan-filter.sync="planFilter"
-      :status-filter.sync="statusFilter"
+      :role.sync="role"
+      :gender.sync="gender"
       :role-options="roleOptions"
-      :plan-options="planOptions"
-      :status-options="statusOptions"
+      :gender-options="genderOptions"
     />
 
     <!-- Table Container Card -->
@@ -81,7 +72,7 @@
       <b-table
         ref="refUserListTable"
         class="position-relative"
-        :items="fetchUsers"
+        :items="Users"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -90,14 +81,19 @@
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
       >
-        <!-- Column: User -->
-        <template #cell(user)="data">
+        <!-- Column: Stt -->
+        <template #cell(stt)="data">
+            {{ data.index + 1 }}
+        </template>
+
+        <!-- Column: name -->
+        <template #cell(name)="data">
           <b-media vertical-align="center">
             <template #aside>
               <b-avatar
                 size="32"
                 :src="data.item.avatar"
-                :text="avatarText(data.item.fullName)"
+                :text="avatarText(data.item.name)"
                 :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
                 :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
               />
@@ -106,9 +102,8 @@
               :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
               class="font-weight-bold d-block text-nowrap"
             >
-              {{ data.item.fullName }}
+              {{ data.item.name }}
             </b-link>
-            <small class="text-muted">@{{ data.item.username }}</small>
           </b-media>
         </template>
 
@@ -122,20 +117,14 @@
               :class="`text-${resolveUserRoleVariant(data.item.role)}`"
             />
             <span class="align-text-top text-capitalize">{{
-              data.item.role
+              data.item.role == 0 ? 'Nhận viên' : 'Quản lý'
             }}</span>
           </div>
         </template>
 
-        <!-- Column: Status -->
-        <template #cell(status)="data">
-          <b-badge
-            pill
-            :variant="`light-${resolveUserStatusVariant(data.item.status)}`"
-            class="text-capitalize"
-          >
-            {{ data.item.status }}
-          </b-badge>
+        <!-- Column: lastTrading -->
+        <template #cell(gender)="data">
+          {{ data.value == 1 ? 'Nam' : 'Nữ' }}
         </template>
 
         <!-- Column: Actions -->
@@ -241,6 +230,7 @@ import UsersListFilters from "./UsersListFilters.vue";
 import useUsersList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
 import UserListAddNew from "./UserListAddNew.vue";
+import Ripple from "vue-ripple-directive";
 
 export default {
   components: {
@@ -263,6 +253,9 @@ export default {
 
     vSelect,
   },
+  directives: {
+    Ripple,
+  },
   setup() {
     const USER_APP_STORE_MODULE_NAME = "app-user";
 
@@ -279,28 +272,18 @@ export default {
     const isAddNewUserSidebarActive = ref(false);
 
     const roleOptions = [
-      { label: "Admin", value: "admin" },
-      { label: "Author", value: "author" },
-      { label: "Editor", value: "editor" },
-      { label: "Maintainer", value: "maintainer" },
-      { label: "Subscriber", value: "subscriber" },
+      { label: "Nhân viên", value: 0 },
+      { label: "Quản lí", value: 1 },
     ];
 
-    const planOptions = [
-      { label: "Basic", value: "basic" },
-      { label: "Company", value: "company" },
-      { label: "Enterprise", value: "enterprise" },
-      { label: "Team", value: "team" },
-    ];
-
-    const statusOptions = [
-      { label: "Pending", value: "pending" },
-      { label: "Active", value: "active" },
-      { label: "Inactive", value: "inactive" },
+    const genderOptions = [
+      { label: "Nam", value: 0 },
+      { label: "Nữ", value: 1 },
     ];
 
     const {
       fetchUsers,
+      Users,
       tableColumns,
       perPage,
       currentPage,
@@ -316,12 +299,10 @@ export default {
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
-      resolveUserStatusVariant,
 
       // Extra Filters
-      roleFilter,
-      planFilter,
-      statusFilter,
+      role,
+      gender,
     } = useUsersList();
 
     return {
@@ -329,6 +310,7 @@ export default {
       isAddNewUserSidebarActive,
 
       fetchUsers,
+      Users,
       tableColumns,
       perPage,
       currentPage,
@@ -347,16 +329,13 @@ export default {
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
-      resolveUserStatusVariant,
 
       roleOptions,
-      planOptions,
-      statusOptions,
+      genderOptions,
 
       // Extra Filters
-      roleFilter,
-      planFilter,
-      statusFilter,
+      role,
+      gender,
     };
   },
 };

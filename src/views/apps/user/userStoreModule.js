@@ -9,7 +9,7 @@ export default {
     fetchUsers(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-          .get('/apps/user/users', { params: queryParams })
+          .get(process.env.VUE_APP_ROOT_API + 'user/list', { params: queryParams })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

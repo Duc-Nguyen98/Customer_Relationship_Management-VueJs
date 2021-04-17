@@ -51,7 +51,7 @@
             >
               <b-form-input
                 id="full-name"
-                v-model="userData.fullName"
+                v-model="userData.name"
                 autofocus
                 :state="getValidationState(validationContext)"
                 trim
@@ -219,7 +219,7 @@
               <v-select
                 v-model="userData.currentPlan"
                 :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="planOptions"
+                :options="genderOptions"
                 :reduce="val => val.value"
                 :clearable="false"
                 input-id="plan"
@@ -299,7 +299,7 @@ export default {
       type: Array,
       required: true,
     },
-    planOptions: {
+    genderOptions: {
       type: Array,
       required: true,
     },
@@ -314,7 +314,7 @@ export default {
   },
   setup(props, { emit }) {
     const blankUserData = {
-      fullName: '',
+      name: '',
       username: '',
       email: '',
       role: null,

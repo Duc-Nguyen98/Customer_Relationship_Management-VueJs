@@ -14,16 +14,12 @@ export default function useUsersList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'user', sortable: true },
+    { key: 'stt', label: 'STT', sortable: true },
+    { key: 'name', formatter: title, sortable: false },
     { key: 'email', sortable: true },
+    { key: 'telephone', sortable: true },
     { key: 'role', sortable: true },
-    {
-      key: 'currentPlan',
-      label: 'Plan',
-      formatter: title,
-      sortable: true,
-    },
-    { key: 'status', sortable: true },
+    { key: 'gender', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -33,9 +29,9 @@ export default function useUsersList() {
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  const roleFilter = ref(null)
-  const planFilter = ref(null)
-  const statusFilter = ref(null)
+  const role = ref(null)
+  const gender = ref(null)
+  const Users = ref([])
 
   const dataMeta = computed(() => {
     const localItemsCount = refUserListTable.value ? refUserListTable.value.localItems.length : 0
@@ -47,10 +43,10 @@ export default function useUsersList() {
   })
 
   const refetchData = () => {
-    refUserListTable.value.refresh()
+    fetchUsers()
   }
 
-  watch([currentPage, perPage, searchQuery, roleFilter, planFilter, statusFilter], () => {
+  watch([currentPage, perPage, searchQuery, role, gender], () => {
     refetchData()
   })
 
@@ -60,17 +56,13 @@ export default function useUsersList() {
         q: searchQuery.value,
         perPage: perPage.value,
         page: currentPage.value,
-        sortBy: sortBy.value,
-        sortDesc: isSortDirDesc.value,
-        role: roleFilter.value,
-        plan: planFilter.value,
-        status: statusFilter.value,
+        role: role.value,
+        gender: gender.value,
       })
       .then(response => {
-        const { users, total } = response.data
-
-        callback(users)
-        totalUsers.value = total
+        const { users, totalRecords } = response.data
+        totalUsers.value = totalRecords
+        Users.value = users
       })
       .catch(() => {
         toast({
@@ -83,7 +75,7 @@ export default function useUsersList() {
         })
       })
   }
-
+  fetchUsers()
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
@@ -106,15 +98,9 @@ export default function useUsersList() {
     return 'UserIcon'
   }
 
-  const resolveUserStatusVariant = status => {
-    if (status === 'pending') return 'warning'
-    if (status === 'active') return 'success'
-    if (status === 'inactive') return 'secondary'
-    return 'primary'
-  }
-
   return {
     fetchUsers,
+    Users,
     tableColumns,
     perPage,
     currentPage,
@@ -128,12 +114,10 @@ export default function useUsersList() {
 
     resolveUserRoleVariant,
     resolveUserRoleIcon,
-    resolveUserStatusVariant,
     refetchData,
 
     // Extra Filters
-    roleFilter,
-    planFilter,
-    statusFilter,
+    role,
+    gender,
   }
 }
