@@ -5,7 +5,7 @@
         <!-- Header: Personal Info -->
         <div class="d-flex mb-2">
           <feather-icon icon="UserIcon" size="19" />
-          <h4 class="mb-0 ml-50">Personal Information</h4>
+          <h4 class="mb-0 ml-50">User Information</h4>
         </div>
         <b-row>
           <!--  Full Name-->
@@ -108,51 +108,50 @@
             >
             </b-form-radio-group>
           </b-col>
-        </b-row>
-        <!-- Header: Personal Select -->
-        <div class="d-flex my-2">
-          <feather-icon icon="MapPinIcon" size="19" />
-          <h4 class="mb-0 ml-50">Address</h4>
-        </div>
-        <b-row>
-          <!--  Province Name-->
+
+          <!-- Account Name -->
           <b-col cols="12" md="6" lg="4">
             <b-form-group>
-              <label>Province Name</label>
+              <label>Account Name</label>
               <validation-provider
-                      #default="{ errors }"
-                      rules="required"
-                      name="Province Name"
+                #default="{ errors }"
+                rules="required||max:50"
+                name="Account Name"
               >
-              <b-form-select
-                v-model="objSelectProvince.selected"
-                :options="objSelectProvince.options"
-              />
+                <b-form-input
+                  v-model="blankData.AccountName"
+                  :state="
+                    errors.length > 0 && errors.length <= 50 ? false : null
+                  "
+                  placeholder="Enter Account Name"
+                />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
           </b-col>
-          <!--  District Name-->
+          <!-- Password -->
           <b-col cols="12" md="6" lg="4">
             <b-form-group>
-              <label>District Name</label>
-              <b-form-select
-                v-model="objSelectDistrict.selected"
-                :options="objSelectDistrict.options"
-              />
-            </b-form-group>
-          </b-col>
-          <!--  Ward Name-->
-          <b-col cols="12" md="6" lg="4">
-            <b-form-group>
-              <label>Ward Name</label>
-              <b-form-select
-                v-model="objSelectWard.selected"
-                :options="objSelectWard.options"
-              />
+              <label>Password</label>
+              <validation-provider
+                #default="{ errors }"
+                rules="required||max:50"
+                name="Password"
+              >
+                <b-form-input
+                  v-model="blankData.Password"
+                  type="password"
+                  :state="
+                    errors.length > 0 && errors.length <= 50 ? false : null
+                  "
+                  placeholder="Enter Password"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
             </b-form-group>
           </b-col>
         </b-row>
+
         <!-- Header: Personal Note -->
         <div class="d-flex my-2">
           <feather-icon icon="MapPinIcon" size="19" />
@@ -303,7 +302,7 @@ export default {
       length,
       alphaDash,
     };
-``
+    ``;
     return {
       blankData,
       objSelectDistrict,
