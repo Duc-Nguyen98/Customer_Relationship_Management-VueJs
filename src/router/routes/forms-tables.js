@@ -34,6 +34,11 @@ export default [
     component: () => import('@/views/apps/user/users-list/UsersList.vue'),
   },
   {
+    path: '/apps/users/add',
+    name: 'apps-users-add',
+    component: () => import('@/views/apps/user/users-add/UsersAdd.vue'),
+  },
+  {
     path: '/apps/users/view/:id',
     name: 'apps-users-view',
     component: () => import('@/views/apps/user/users-view/UsersView.vue'),
