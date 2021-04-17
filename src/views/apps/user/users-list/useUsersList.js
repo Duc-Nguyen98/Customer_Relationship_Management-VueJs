@@ -14,16 +14,13 @@ export default function useUsersList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'user', sortable: true },
-    { key: 'email', sortable: true },
-    { key: 'role', sortable: true },
-    {
-      key: 'currentPlan',
-      label: 'Plan',
-      formatter: title,
-      sortable: true,
-    },
-    { key: 'status', sortable: true },
+    { key: 'stt', label: 'STT', sortable: false },
+    { key: 'avatar', label: 'AVATAR', sortable: false },
+    { key: 'name', label: 'NAME', sortable: true },
+    { key: 'telephone', label: 'TELEPHONE', sortable: true },
+    { key: 'email', label: 'EMAIL', sortable: true },
+    { key: 'birthDate', label: 'BIRTHDAY', sortable: true },
+    { key: 'gender', label: 'GENDER', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
