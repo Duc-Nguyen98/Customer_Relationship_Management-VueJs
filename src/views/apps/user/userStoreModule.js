@@ -17,7 +17,7 @@ export default {
     fetchUser(ctx, { id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`/apps/user/users/${id}`)
+          .get(process.env.VUE_APP_ROOT_API + `user/detail/${id}`)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

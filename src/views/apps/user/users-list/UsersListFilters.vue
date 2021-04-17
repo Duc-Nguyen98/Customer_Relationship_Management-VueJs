@@ -89,6 +89,10 @@ export default {
       type: Array,
       required: true,
     },
+    genderOptions: {
+      type: Array,
+      required: true,
+    },
     activeOptions: {
       type: Array,
       required: true,

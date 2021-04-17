@@ -79,6 +79,42 @@ export default function useUsersList() {
         })
       })
   }
+
+  const alert = (variant, message) => {
+    toast({
+      component: ToastificationContent,
+      props: {
+        title: "Notification",
+        icon: "BellIcon",
+        text: "👋 " + message,
+        variant,
+      },
+    });
+  }
+
+  const deleteUser = id => {
+    store
+        .dispatch('app-user/deleteUser', { _id: id })
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Delete user successfully.")
+            fetchUsers()
+          } else {
+            alert("danger", "Delete user failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching users list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
   fetchUsers()
   // *===============================================---*
   // *--------- UI ---------------------------------------*
@@ -119,7 +155,7 @@ export default function useUsersList() {
     resolveUserRoleVariant,
     resolveUserRoleIcon,
     refetchData,
-
+    deleteUser,
     // Extra Filters
     role,
     gender,

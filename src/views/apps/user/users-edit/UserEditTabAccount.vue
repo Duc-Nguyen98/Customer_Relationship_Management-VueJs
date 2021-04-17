@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!-- Media -->
     <b-media class="mb-2">
       <template #aside>
@@ -14,7 +13,7 @@
         />
       </template>
       <h4 class="mb-1">
-        {{ userData.fullName }}
+        {{ userData.name }}
       </h4>
       <div class="d-flex flex-wrap">
         <b-button
@@ -56,33 +55,17 @@
           md="4"
         >
           <b-form-group
-            label="Username"
-            label-for="username"
-          >
-            <b-form-input
-              id="username"
-              v-model="userData.username"
-            />
-          </b-form-group>
-        </b-col>
-
-        <!-- Field: Full Name -->
-        <b-col
-          cols="12"
-          md="4"
-        >
-          <b-form-group
             label="Name"
             label-for="full-name"
           >
             <b-form-input
               id="full-name"
-              v-model="userData.fullName"
+              v-model="userData.name"
             />
           </b-form-group>
         </b-col>
 
-        <!-- Field: Email -->
+        <!-- Field: Full Name -->
         <b-col
           cols="12"
           md="4"
@@ -94,29 +77,69 @@
             <b-form-input
               id="email"
               v-model="userData.email"
-              type="email"
             />
           </b-form-group>
         </b-col>
 
-        <!-- Field: Status -->
+        <!-- Field: Email -->
         <b-col
           cols="12"
           md="4"
         >
           <b-form-group
-            label="Status"
-            label-for="user-status"
+            label="Adress"
+            label-for="adress"
           >
-            <v-select
-              v-model="userData.status"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-              :options="statusOptions"
-              :reduce="val => val.value"
-              :clearable="false"
-              input-id="user-status"
+            <b-form-input
+              id="adress"
+              v-model="userData.adress"
+              type="email"
             />
           </b-form-group>
+        </b-col>
+
+        <!-- Birth Day -->
+        <b-col cols="12" md="6" lg="4">
+          <b-form-group>
+            <label for="datepicker-placeholder">Birth Day</label>
+            <b-form-datepicker
+                    id="datepicker-placeholder"
+                    placeholder="Choose a date"
+                    local="vi"
+                    v-model="userData.birthDay"
+            />
+          </b-form-group>
+        </b-col>
+
+        <!-- Telephone Number -->
+        <b-col cols="12" md="6" lg="4">
+          <b-form-group>
+            <label>Telephone Number</label>
+            <validation-provider
+                    #default="{ errors }"
+                    rules="required|regex:^([0-9]+)$|digits:10"
+                    name="Telephone Number"
+            >
+              <b-form-input
+                      v-model="userData.telephone"
+                      :state="errors.length > 0 ? false : null"
+                      placeholder="Enter Telephone Number"
+              />
+              <small class="text-danger">{{ errors[0] }}</small>
+            </validation-provider>
+          </b-form-group>
+        </b-col>
+
+        <!-- Field: Gender -->
+        <b-col cols="12" md="6" lg="4">
+          <b-form-radio-group
+                  v-model="userData.gender"
+                  :options="genderOptions"
+                  class="demo-inline-spacing"
+                  name="radio-validation"
+                  value="Male"
+          >
+          </b-form-radio-group>
         </b-col>
 
         <!-- Field: Role -->
@@ -207,14 +230,29 @@
 
 <script>
 import {
-  BButton, BMedia, BAvatar, BRow, BCol, BFormGroup, BFormInput, BForm, BTable, BCard, BCardHeader, BCardTitle, BFormCheckbox,
+  BButton, BMedia, BAvatar, BRow, BCol, BFormGroup, BFormInput, BForm, BTable, BCard, BCardHeader, BCardTitle, BFormCheckbox, BFormRadioGroup, BFormDatepicker
 } from 'bootstrap-vue'
 import { avatarText } from '@core/utils/filter'
 import vSelect from 'vue-select'
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
 import { ref } from '@vue/composition-api'
-import useServicesList from '../users-list/useUsersList'
-
+import useUsersList from '../users-list/useUsersList'
+import { ValidationProvider, ValidationObserver } from "vee-validate";
+import {
+  required,
+  email,
+  confirmed,
+  url,
+  between,
+  alpha,
+  integer,
+  password,
+  min,
+  max,
+  digits,
+  alphaDash,
+  length,
+} from "@validations";
 export default {
   components: {
     BButton,
@@ -230,7 +268,11 @@ export default {
     BCardHeader,
     BCardTitle,
     BFormCheckbox,
+    BFormRadioGroup,
+    BFormDatepicker,
     vSelect,
+    ValidationProvider,
+    ValidationObserver,
   },
   props: {
     userData: {
@@ -249,10 +291,9 @@ export default {
       { label: 'Subscriber', value: 'subscriber' },
     ]
 
-    const statusOptions = [
-      { label: 'Pending', value: 'pending' },
-      { label: 'Active', value: 'active' },
-      { label: 'Inactive', value: 'inactive' },
+    const genderOptions = [
+      { text: 'Nam', value: 0 },
+      { text: 'Nữ', value: 1 },
     ]
 
     const permissionsData = [
@@ -306,7 +347,7 @@ export default {
       resolveUserRoleVariant,
       avatarText,
       roleOptions,
-      statusOptions,
+      genderOptions,
       permissionsData,
 
       //  ? Demo - Update Image on click of update button

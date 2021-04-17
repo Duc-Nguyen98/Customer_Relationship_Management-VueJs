@@ -138,32 +138,40 @@
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
-            variant="link"
-            no-caret
-            :right="$store.state.appConfig.isRTL"
+                  variant="link"
+                  no-caret
+                  :right="$store.state.appConfig.isRTL"
           >
             <template #button-content>
               <feather-icon
-                icon="MoreVerticalIcon"
-                size="16"
-                class="align-middle text-body"
+                      icon="MoreVerticalIcon"
+                      size="16"
+                      class="align-middle text-body"
               />
             </template>
             <b-dropdown-item
-              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
+                    :to="{
+                name: 'apps-users-view',
+                params: { id: data.item._id },
+              }"
             >
               <feather-icon icon="FileTextIcon" />
               <span class="align-middle ml-50">Details</span>
             </b-dropdown-item>
 
             <b-dropdown-item
-              :to="{ name: 'apps-users-edit', params: { id: data.item.id } }"
+                    :to="{
+                name: 'apps-users-edit',
+                params: { id: data.item._id },
+              }"
             >
-              <feather-icon icon="EditIcon" />
+              <feather-icon icon="PlusCircleIcon" />
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
 
-            <b-dropdown-item>
+            <b-dropdown-item
+                    @click="deleteUser(data.item._id)"
+            >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>
@@ -314,7 +322,7 @@ export default {
       isSortDirDesc,
       refUserListTable,
       refetchData,
-
+      deleteUser,
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
@@ -343,6 +351,7 @@ export default {
       refUserListTable,
       refetchData,
       convertDate,
+      deleteUser,
 
       // Filter
       avatarText,
