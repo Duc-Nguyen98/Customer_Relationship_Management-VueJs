@@ -49,23 +49,6 @@
                   ><feather-icon icon="PlusCircleIcon"
                 /></span>
               </b-button>
-              <b-dropdown
-                id="dropdown-grouped"
-                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                variant="primary"
-                right
-                class="dropdown-icon-wrapper"
-              >
-                <template #button-content>
-                  <feather-icon
-                    icon="DownloadIcon"
-                    size="14"
-                    class="align-middle"
-                  />
-                </template>
-                <b-dropdown-item>Export PDF</b-dropdown-item>
-                <b-dropdown-item>Export Excel</b-dropdown-item>
-              </b-dropdown>
             </div>
           </b-col>
         </b-row>
