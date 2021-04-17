@@ -21,7 +21,7 @@ export default function useUsersList() {
     { key: 'email', label: 'EMAIL', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
     { key: 'gender', label: 'GENDER', sortable: true },
-
+    { key: 'active', label: 'ACTIVE', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -33,6 +33,7 @@ export default function useUsersList() {
   const isSortDirDesc = ref(true)
   const role = ref(null)
   const gender = ref(null)
+  const active = ref(null)
   const Users = ref([])
 
   const dataMeta = computed(() => {
@@ -48,7 +49,7 @@ export default function useUsersList() {
     fetchUsers()
   }
 
-  watch([currentPage, perPage, searchQuery, role, gender], () => {
+  watch([currentPage, perPage, searchQuery, role, gender, active], () => {
     refetchData()
   })
 
@@ -60,6 +61,7 @@ export default function useUsersList() {
         page: currentPage.value,
         role: role.value,
         gender: gender.value,
+        active: active.value,
       })
       .then(response => {
         const { users, totalRecords } = response.data
@@ -121,5 +123,6 @@ export default function useUsersList() {
     // Extra Filters
     role,
     gender,
+    active,
   }
 }

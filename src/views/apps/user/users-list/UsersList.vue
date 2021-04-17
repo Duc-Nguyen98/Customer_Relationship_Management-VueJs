@@ -4,8 +4,10 @@
     <users-list-filters
       :role.sync="role"
       :gender.sync="gender"
+      :active.sync="active"
       :role-options="roleOptions"
       :gender-options="genderOptions"
+      :active-options="activeOptions"
     />
 
     <!-- Table Container Card -->
@@ -132,6 +134,12 @@
           {{ data.value == 1 ? 'Nam' : 'Nữ' }}
         </template>
 
+
+        <!-- Column: Active -->
+        <template #cell(active)="data">
+          <b-form-checkbox :value="data.value" name="check-button" switch></b-form-checkbox>
+        </template>
+
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
@@ -226,6 +234,7 @@ import {
   BDropdown,
   BDropdownItem,
   BPagination,
+  BFormCheckbox,
 } from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
@@ -256,7 +265,7 @@ export default {
     BDropdown,
     BDropdownItem,
     BPagination,
-
+    BFormCheckbox,
     vSelect,
   },
   directives: {
@@ -287,6 +296,11 @@ export default {
       { label: "Nữ", value: 1 },
     ];
 
+    const activeOptions = [
+      { label: "NonActive", value: 0 },
+      { label: "Active", value: 1 },
+    ];
+
     const convertDate = (date) => {
       return moment(date).format("DD-MM-YYYY");
     };
@@ -313,6 +327,7 @@ export default {
       // Extra Filters
       role,
       gender,
+            active,
     } = useUsersList();
 
     return {
@@ -343,10 +358,11 @@ export default {
 
       roleOptions,
       genderOptions,
-
+      activeOptions,
       // Extra Filters
       role,
       gender,
+      active,
     };
   },
 };
