@@ -123,8 +123,8 @@
           </b-media>
         </template>
 
-        <!-- Column: birthDate -->
-        <template #cell(birthDate)="data">
+        <!-- Column: birthDay -->
+        <template #cell(birthDay)="data">
           {{ convertDate(data.value) }}
         </template>
 

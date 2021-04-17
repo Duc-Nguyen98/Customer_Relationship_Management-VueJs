@@ -19,7 +19,7 @@ export default function useUsersList() {
     { key: 'name', label: 'NAME', sortable: true },
     { key: 'telephone', label: 'TELEPHONE', sortable: true },
     { key: 'email', label: 'EMAIL', sortable: true },
-    { key: 'birthDate', label: 'BIRTHDAY', sortable: true },
+    { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
     { key: 'gender', label: 'GENDER', sortable: true },
     { key: 'actions' },
   ]

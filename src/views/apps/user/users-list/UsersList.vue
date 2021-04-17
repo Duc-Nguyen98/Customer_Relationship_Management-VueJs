@@ -120,9 +120,14 @@
               data.item.role == 0 ? 'Nhận viên' : 'Quản lý'
             }}</span>
           </div>
+
+        </template>
+        <!-- Column: birthDay -->
+        <template #cell(birthDay)="data">
+          {{ convertDate(data.value) }}
         </template>
 
-        <!-- Column: lastTrading -->
+        <!-- Column: Gender -->
         <template #cell(gender)="data">
           {{ data.value == 1 ? 'Nam' : 'Nữ' }}
         </template>
@@ -231,6 +236,7 @@ import useUsersList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
 import UserListAddNew from "./UserListAddNew.vue";
 import Ripple from "vue-ripple-directive";
+import moment from "moment";
 
 export default {
   components: {
@@ -281,6 +287,10 @@ export default {
       { label: "Nữ", value: 1 },
     ];
 
+    const convertDate = (date) => {
+      return moment(date).format("DD-MM-YYYY");
+    };
+
     const {
       fetchUsers,
       Users,
@@ -322,6 +332,7 @@ export default {
       isSortDirDesc,
       refUserListTable,
       refetchData,
+      convertDate,
 
       // Filter
       avatarText,
