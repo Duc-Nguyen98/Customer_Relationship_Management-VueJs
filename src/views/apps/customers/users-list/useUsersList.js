@@ -14,13 +14,13 @@ export default function useUsersList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'stt', label: 'STT', sortable: true },
+    { key: 'stt', label: 'STT', sortable: false },
     { key: 'avatar', label: 'AVATAR', sortable: false },
     { key: 'name', label: 'NAME', sortable: true },
-    { key: 'telephone', label: 'TELEPHONE', sortable: false },
-    { key: 'email', label: 'EMAIL', sortable: false },
-    { key: 'birthDate', label: 'BIRTHDAY', sortable: false },
-    { key: 'gender', label: 'GENDER', sortable: false },
+    { key: 'telephone', label: 'TELEPHONE', sortable: true },
+    { key: 'email', label: 'EMAIL', sortable: true },
+    { key: 'birthDate', label: 'BIRTHDAY', sortable: true },
+    { key: 'gender', label: 'GENDER', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -92,25 +92,25 @@ export default function useUsersList() {
 
   const deleteUser = id => {
     store
-        .dispatch('app-user/deleteUser', {_id: id})
-        .then(response => {
-          if (response.data.success) {
-            alert("success", "Delete user successfully.")
-            fetchUsers()
-          } else {
-            alert("danger", "Delete user failed.")
-          }
+      .dispatch('app-user/deleteUser', { _id: id })
+      .then(response => {
+        if (response.data.success) {
+          alert("success", "Delete user successfully.")
+          fetchUsers()
+        } else {
+          alert("danger", "Delete user failed.")
+        }
+      })
+      .catch(() => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Error fetching users list',
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
         })
-        .catch(() => {
-          toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Error fetching users list',
-              icon: 'AlertTriangleIcon',
-              variant: 'danger',
-            },
-          })
-        })
+      })
   }
 
   fetchUsers()
