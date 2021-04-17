@@ -9,7 +9,7 @@
       <b-row>
         <b-col
           cols="12"
-          md="6"
+          md="4"
           class="mb-md-0 mb-2"
         >
           <label>Role</label>
@@ -24,7 +24,7 @@
         </b-col>
         <b-col
           cols="12"
-          md="6"
+          md="4"
           class="mb-md-0 mb-2"
         >
           <label>Gender</label>
@@ -35,6 +35,21 @@
             class="w-100"
             :reduce="val => val.value"
             @input="(val) => $emit('update:gender', val)"
+          />
+        </b-col>
+        <b-col
+                cols="12"
+                md="4"
+                class="mb-md-0 mb-2"
+        >
+          <label>Active</label>
+          <v-select
+                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                  :value="active"
+                  :options="activeOptions"
+                  class="w-100"
+                  :reduce="val => val.value"
+                  @input="(val) => $emit('update:active', val)"
           />
         </b-col>
       </b-row>
@@ -66,11 +81,15 @@ export default {
       type: [Number, null],
       default: null,
     },
+    active: {
+      type: [Number, null],
+      default: null,
+    },
     roleOptions: {
       type: Array,
       required: true,
     },
-    genderOptions: {
+    activeOptions: {
       type: Array,
       required: true,
     },

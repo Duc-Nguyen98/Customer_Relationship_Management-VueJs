@@ -4,8 +4,10 @@
     <users-list-filters
       :role.sync="role"
       :gender.sync="gender"
+      :active.sync="active"
       :role-options="roleOptions"
       :gender-options="genderOptions"
+      :active-options="activeOptions"
     />
 
     <!-- Table Container Card -->
@@ -120,11 +122,22 @@
               data.item.role == 0 ? 'Nhận viên' : 'Quản lý'
             }}</span>
           </div>
+
+        </template>
+        <!-- Column: birthDay -->
+        <template #cell(birthDay)="data">
+          {{ convertDate(data.value) }}
         </template>
 
-        <!-- Column: lastTrading -->
+        <!-- Column: Gender -->
         <template #cell(gender)="data">
           {{ data.value == 1 ? 'Nam' : 'Nữ' }}
+        </template>
+
+
+        <!-- Column: Active -->
+        <template #cell(active)="data">
+          <b-form-checkbox :value="data.value" name="check-button" switch></b-form-checkbox>
         </template>
 
         <!-- Column: Actions -->
@@ -221,6 +234,7 @@ import {
   BDropdown,
   BDropdownItem,
   BPagination,
+  BFormCheckbox,
 } from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
@@ -231,6 +245,7 @@ import useUsersList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
 import UserListAddNew from "./UserListAddNew.vue";
 import Ripple from "vue-ripple-directive";
+import moment from "moment";
 
 export default {
   components: {
@@ -250,7 +265,7 @@ export default {
     BDropdown,
     BDropdownItem,
     BPagination,
-
+    BFormCheckbox,
     vSelect,
   },
   directives: {
@@ -281,6 +296,15 @@ export default {
       { label: "Nữ", value: 1 },
     ];
 
+    const activeOptions = [
+      { label: "NonActive", value: 0 },
+      { label: "Active", value: 1 },
+    ];
+
+    const convertDate = (date) => {
+      return moment(date).format("DD-MM-YYYY");
+    };
+
     const {
       fetchUsers,
       Users,
@@ -303,6 +327,7 @@ export default {
       // Extra Filters
       role,
       gender,
+            active,
     } = useUsersList();
 
     return {
@@ -322,6 +347,7 @@ export default {
       isSortDirDesc,
       refUserListTable,
       refetchData,
+      convertDate,
 
       // Filter
       avatarText,
@@ -332,10 +358,11 @@ export default {
 
       roleOptions,
       genderOptions,
-
+      activeOptions,
       // Extra Filters
       role,
       gender,
+      active,
     };
   },
 };
