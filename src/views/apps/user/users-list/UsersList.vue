@@ -50,18 +50,28 @@
               <b-button
                 class="mr-1"
                 variant="primary"
-                @click="isAddNewUserSidebarActive = true"
+                :to="{ name: 'apps-users-add' }"
               >
-                <span class="text-nowrap">Add User</span>
+                 <span class="text-nowrap"
+                 ><feather-icon icon="PlusCircleIcon"
+                 /></span>
               </b-button>
               <b-dropdown
-                id="dropdown-1"
-                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                text="Export To"
-                variant="primary"
+                      id="dropdown-grouped"
+                      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                      variant="primary"
+                      right
+                      class="dropdown-icon-wrapper"
               >
-                <b-dropdown-item>PDF</b-dropdown-item>
-                <b-dropdown-item>Excel</b-dropdown-item>
+                <template #button-content>
+                  <feather-icon
+                          icon="DownloadIcon"
+                          size="14"
+                          class="align-middle"
+                  />
+                </template>
+                <b-dropdown-item>Export PDF</b-dropdown-item>
+                <b-dropdown-item>Export Excel</b-dropdown-item>
               </b-dropdown>
             </div>
           </b-col>
@@ -182,14 +192,16 @@
             class="d-flex align-items-center justify-content-center justify-content-sm-end"
           >
             <b-pagination
-              v-model="currentPage"
-              :total-rows="totalUsers"
-              :per-page="perPage"
-              first-number
-              last-number
-              class="mb-0 mt-1 mt-sm-0"
-              prev-class="prev-item"
-              next-class="next-item"
+                    :value="currentPage"
+                    :total-rows="totalUsers"
+                    :per-page="perPage"
+                    align="right"
+                    first-text="First"
+                    prev-text="Prev"
+                    next-text="Next"
+                    last-text="Last"
+                    class="mt-1 mb-0"
+                    @input="(value) => (currentPage = value)"
             >
               <template #prev-text>
                 <feather-icon icon="ChevronLeftIcon" size="18" />
