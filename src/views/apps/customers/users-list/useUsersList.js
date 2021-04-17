@@ -8,7 +8,7 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 
 export default function useUsersList() {
   // Use toast
-  const toast = useToast()
+  const toast = useToast();
 
   const refUserListTable = ref(null)
 
@@ -79,7 +79,7 @@ export default function useUsersList() {
   }
 
   const alert = (variant, message) => {
-    v.$toast({
+    toast({
       component: ToastificationContent,
       props: {
         title: "Notification",
