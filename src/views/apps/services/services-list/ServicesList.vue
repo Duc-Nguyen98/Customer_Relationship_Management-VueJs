@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Filters -->
-    <users-list-filters
+    <services-list-filters
       :group.sync="group"
       :gender.sync="gender"
       :group-options="groupOptions"
@@ -41,7 +41,7 @@
               <b-button
                 class="mr-1"
                 variant="primary"
-                :to="{ name: 'apps-customers-add' }"
+                :to="{ name: 'apps-services-add' }"
               >
                 <span class="text-nowrap"
                   ><feather-icon icon="PlusCircleIcon"
@@ -51,7 +51,7 @@
               <b-button
                 class="mr-1"
                 variant="primary"
-                :to="{ name: 'apps-customers-add' }"
+                :to="{ name: 'apps-services-add' }"
               >
                 <span class="text-nowrap"
                   ><feather-icon icon="Trash2Icon"
@@ -83,7 +83,7 @@
       <b-table
         ref="refUserListTable"
         class="position-relative"
-        :items="Users"
+        :items="Services"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -106,14 +106,14 @@
                 :text="avatarText(data.item.name)"
                 :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
                 :to="{
-                  name: 'apps-customers-view',
+                  name: 'apps-services-view',
                   params: { id: data.item._id },
                 }"
               />
             </template>
             <b-link
               :to="{
-                name: 'apps-customers-view',
+                name: 'apps-services-view',
                 params: { id: data.item._id },
               }"
               class="font-weight-bold d-block text-nowrap"
@@ -149,7 +149,7 @@
             </template>
             <b-dropdown-item
               :to="{
-                name: 'apps-customers-view',
+                name: 'apps-services-view',
                 params: { id: data.item._id },
               }"
             >
@@ -159,7 +159,7 @@
 
             <b-dropdown-item
               :to="{
-                name: 'apps-customers-edit',
+                name: 'apps-services-edit',
                 params: { id: data.item._id },
               }"
             >
@@ -168,7 +168,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteUser(data.item._id)"
+              @click="deleteService(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -196,7 +196,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalUsers"
+              :total-rows="totalServices"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -240,9 +240,9 @@ import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import UsersListFilters from "./UsersListFilters.vue";
-import useUsersList from "./useUsersList";
-import userStoreModule from "../userStoreModule";
+import ServicesListFilters from "./ServicesListFilters.vue";
+import useServicesList from "./useServicesList";
+import servicesStoreModule from "../servicesStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
@@ -254,8 +254,7 @@ const v = new Vue()
 
 export default {
   components: {
-    UsersListFilters,
-    ToastificationContent,
+    ServicesListFilters,
     BCard,
     BRow,
     BCol,
@@ -265,6 +264,7 @@ export default {
     BMedia,
     BAvatar,
     BLink,
+    ToastificationContent,
     // BBadge,
     BDropdown,
     BDropdownItem,
@@ -275,16 +275,16 @@ export default {
     Ripple,
   },
   setup() {
-    const USER_APP_STORE_MODULE_NAME = "app-user";
+    const SERVICES_APP_STORE_MODULE_NAME = "app-services";
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule);
+    if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(USER_APP_STORE_MODULE_NAME))
-        store.unregisterModule(USER_APP_STORE_MODULE_NAME);
+      if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
+        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
     });
 
     const groupOptions = [
@@ -303,19 +303,19 @@ export default {
     };
 
     const {
-      Users,
+      Services,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalServices,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
+      refServicesListTable,
       refetchData,
-      deleteUser,
+      deleteService,
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
@@ -324,23 +324,23 @@ export default {
       // Extra Filters
       group,
       gender,
-    } = useUsersList();
+    } = useServicesList();
 
     return {
-      Users,
+      Services,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalServices,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
+      refServicesListTable,
       convertDate,
       refetchData,
-      deleteUser,
+      deleteService,
 
       // Filter
       avatarText,

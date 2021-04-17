@@ -44,4 +44,23 @@ export default [
     component: () => import('@/views/apps/user/users-edit/UsersEdit.vue'),
   },
 
+  // *===============================================---*
+  // *--------- SERVICES ---- ---------------------------------------*
+  // *===============================================---*
+
+  {
+    path: '/apps/services/list',
+    name: 'apps-services-list',
+    component: () => import('@/views/apps/services/services-list/ServicesList.vue'),
+  },
+  {
+    path: '/apps/services/view/:id',
+    name: 'apps-users-view',
+    component: () => import('@/views/apps/services/services-view/ServicesView.vue'),
+  },
+  {
+    path: '/apps/services/edit/:id',
+    name: 'apps-services-edit',
+    component: () => import('@/views/apps/services/services-edit/ServicesEdit.vue'),
+  },
 ]

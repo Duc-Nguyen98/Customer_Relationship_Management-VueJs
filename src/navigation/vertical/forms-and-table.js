@@ -1,6 +1,6 @@
 export default [
   {
-    header: 'Users & Customers',
+    header: 'Users & Customers ...',
   },
   {
     title: 'Table Customers',
@@ -11,6 +11,11 @@ export default [
     title: 'Table Users',
     route: 'apps-users-list',
     icon: 'UserIcon',
+  },
+  {
+    title: 'Table Services',
+    route: 'apps-services-list',
+    icon: 'CodesandboxIcon',
   },
   // {
   //   title: 'Table Customers',
