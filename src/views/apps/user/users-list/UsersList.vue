@@ -45,22 +45,22 @@
                 variant="primary"
                 :to="{ name: 'apps-users-add' }"
               >
-                 <span class="text-nowrap"
-                 ><feather-icon icon="PlusCircleIcon"
-                 /></span>
+                <span class="text-nowrap"
+                  ><feather-icon icon="PlusCircleIcon"
+                /></span>
               </b-button>
               <b-dropdown
-                      id="dropdown-grouped"
-                      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                      variant="primary"
-                      right
-                      class="dropdown-icon-wrapper"
+                id="dropdown-grouped"
+                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                variant="primary"
+                right
+                class="dropdown-icon-wrapper"
               >
                 <template #button-content>
                   <feather-icon
-                          icon="DownloadIcon"
-                          size="14"
-                          class="align-middle"
+                    icon="DownloadIcon"
+                    size="14"
+                    class="align-middle"
                   />
                 </template>
                 <b-dropdown-item>Export PDF</b-dropdown-item>
@@ -85,7 +85,7 @@
       >
         <!-- Column: Stt -->
         <template #cell(stt)="data">
-            {{ data.index + 1 }}
+          {{ data.index + 1 }}
         </template>
 
         <!-- Column: name -->
@@ -119,10 +119,9 @@
               :class="`text-${resolveUserRoleVariant(data.item.role)}`"
             />
             <span class="align-text-top text-capitalize">{{
-              data.item.role == 0 ? 'Nhận viên' : 'Quản lý'
+              data.item.role == 0 ? "Nhận viên" : "Quản lý"
             }}</span>
           </div>
-
         </template>
         <!-- Column: birthDay -->
         <template #cell(birthDay)="data">
@@ -131,13 +130,16 @@
 
         <!-- Column: Gender -->
         <template #cell(gender)="data">
-          {{ data.value == 1 ? 'Nam' : 'Nữ' }}
+          {{ data.value == 1 ? "Nam" : "Nữ" }}
         </template>
-
 
         <!-- Column: Active -->
         <template #cell(active)="data">
-          <b-form-checkbox :value="data.value" name="check-button" switch></b-form-checkbox>
+          <b-form-checkbox
+            :value="data.value"
+            name="check-button"
+            switch
+          ></b-form-checkbox>
         </template>
 
         <!-- Column: Actions -->
@@ -194,16 +196,16 @@
             class="d-flex align-items-center justify-content-center justify-content-sm-end"
           >
             <b-pagination
-                    :value="currentPage"
-                    :total-rows="totalUsers"
-                    :per-page="perPage"
-                    align="right"
-                    first-text="First"
-                    prev-text="Prev"
-                    next-text="Next"
-                    last-text="Last"
-                    class="mt-1 mb-0"
-                    @input="(value) => (currentPage = value)"
+              :value="currentPage"
+              :total-rows="totalUsers"
+              :per-page="perPage"
+              align="right"
+              first-text="First"
+              prev-text="Prev"
+              next-text="Next"
+              last-text="Last"
+              class="mt-1 mb-0"
+              @input="(value) => (currentPage = value)"
             >
               <template #prev-text>
                 <feather-icon icon="ChevronLeftIcon" size="18" />
@@ -297,7 +299,7 @@ export default {
     ];
 
     const activeOptions = [
-      { label: "NonActive", value: 0 },
+      { label: "InActive", value: 0 },
       { label: "Active", value: 1 },
     ];
 
@@ -327,7 +329,7 @@ export default {
       // Extra Filters
       role,
       gender,
-            active,
+      active,
     } = useUsersList();
 
     return {
