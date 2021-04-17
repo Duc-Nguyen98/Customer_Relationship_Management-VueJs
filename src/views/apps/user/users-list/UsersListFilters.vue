@@ -9,47 +9,32 @@
       <b-row>
         <b-col
           cols="12"
-          md="4"
+          md="6"
           class="mb-md-0 mb-2"
         >
           <label>Role</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="roleFilter"
+            :value="role"
             :options="roleOptions"
             class="w-100"
             :reduce="val => val.value"
-            @input="(val) => $emit('update:roleFilter', val)"
+            @input="(val) => $emit('update:role', val)"
           />
         </b-col>
         <b-col
           cols="12"
-          md="4"
+          md="6"
           class="mb-md-0 mb-2"
         >
-          <label>Plan</label>
+          <label>Gender</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="planFilter"
-            :options="planOptions"
+            :value="gender"
+            :options="genderOptions"
             class="w-100"
             :reduce="val => val.value"
-            @input="(val) => $emit('update:planFilter', val)"
-          />
-        </b-col>
-        <b-col
-          cols="12"
-          md="4"
-          class="mb-md-0 mb-2"
-        >
-          <label>Status</label>
-          <v-select
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="statusFilter"
-            :options="statusOptions"
-            class="w-100"
-            :reduce="val => val.value"
-            @input="(val) => $emit('update:statusFilter', val)"
+            @input="(val) => $emit('update:gender', val)"
           />
         </b-col>
       </b-row>
@@ -73,27 +58,19 @@ export default {
     vSelect,
   },
   props: {
-    roleFilter: {
-      type: [String, null],
+    role: {
+      type: [Number, null],
       default: null,
     },
-    planFilter: {
-      type: [String, null],
-      default: null,
-    },
-    statusFilter: {
-      type: [String, null],
+    gender: {
+      type: [Number, null],
       default: null,
     },
     roleOptions: {
       type: Array,
       required: true,
     },
-    planOptions: {
-      type: Array,
-      required: true,
-    },
-    statusOptions: {
+    genderOptions: {
       type: Array,
       required: true,
     },

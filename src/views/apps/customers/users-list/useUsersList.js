@@ -64,7 +64,6 @@ export default function useUsersList() {
       .then(response => {
         const { data, totalRecords } = response.data
         totalUsers.value = totalRecords
-        console.log(data)
         Users.value = data
       })
       .catch(() => {
