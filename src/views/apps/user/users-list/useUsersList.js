@@ -50,7 +50,7 @@ export default function useUsersList() {
     refetchData()
   })
 
-  const fetchUsers = (ctx, callback) => {
+  const fetchUsers = () => {
     store
       .dispatch('app-user/fetchUsers', {
         q: searchQuery.value,
