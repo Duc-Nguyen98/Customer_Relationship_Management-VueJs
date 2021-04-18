@@ -1,13 +1,11 @@
 <template>
   <div>
     <!-- Filters -->
-    <users-list-filters
-      :role.sync="role"
+    <services-list-filters
+      :group.sync="group"
       :gender.sync="gender"
-      :active.sync="active"
-      :role-options="roleOptions"
+      :group-options="groupOptions"
       :gender-options="genderOptions"
-      :active-options="activeOptions"
     />
 
     <!-- Table Container Card -->
@@ -43,7 +41,7 @@
               <b-button
                 class="mr-1"
                 variant="primary"
-                :to="{ name: 'apps-users-add' }"
+                :to="{ name: 'apps-services-add' }"
               >
                 <span class="text-nowrap"
                   ><feather-icon icon="PlusCircleIcon"
@@ -53,12 +51,30 @@
               <b-button
                 class="mr-1"
                 variant="primary"
-                :to="{ name: 'apps-customers-add' }"
+                :to="{ name: 'apps-services-add' }"
               >
                 <span class="text-nowrap"
                   ><feather-icon icon="Trash2Icon"
                 /></span>
               </b-button>
+
+              <b-dropdown
+                id="dropdown-grouped"
+                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                variant="primary"
+                right
+                class="dropdown-icon-wrapper"
+              >
+                <template #button-content>
+                  <feather-icon
+                    icon="DownloadIcon"
+                    size="14"
+                    class="align-middle"
+                  />
+                </template>
+                <b-dropdown-item>Export PDF</b-dropdown-item>
+                <b-dropdown-item>Export Excel</b-dropdown-item>
+              </b-dropdown>
             </div>
           </b-col>
         </b-row>
@@ -67,7 +83,7 @@
       <b-table
         ref="refUserListTable"
         class="position-relative"
-        :items="Users"
+        :items="Services"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -76,82 +92,64 @@
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
       >
-        <!-- Column: Stt -->
+        <!-- Column: STT -->
         <template #cell(stt)="data">
           {{ data.index + 1 }}
         </template>
-
-        <!-- Column: name -->
-        <template #cell(name)="data">
+        <!-- Column: User -->
+        <template #cell(avatar)="data">
           <b-media vertical-align="center">
             <template #aside>
               <b-avatar
                 size="32"
-                :src="data.item.avatar"
+                src="/img/5-small.a4eb6d6e.png"
                 :text="avatarText(data.item.name)"
                 :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
-                :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
+                :to="{
+                  name: 'apps-services-view',
+                  params: { id: data.item._id },
+                }"
               />
             </template>
             <b-link
-              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
+              :to="{
+                name: 'apps-services-view',
+                params: { id: data.item._id },
+              }"
               class="font-weight-bold d-block text-nowrap"
             >
-              {{ data.item.name }}
+              {{ data.item.fullName }}
             </b-link>
           </b-media>
         </template>
 
-        <!-- Column: Role -->
-        <template #cell(role)="data">
-          <div class="text-nowrap">
-            <feather-icon
-              :icon="resolveUserRoleIcon(data.item.role)"
-              size="18"
-              class="mr-50"
-              :class="`text-${resolveUserRoleVariant(data.item.role)}`"
-            />
-            <span class="align-text-top text-capitalize">{{
-              data.item.role == 0 ? "Nhận viên" : "Quản lý"
-            }}</span>
-          </div>
-        </template>
-        <!-- Column: birthDay -->
-        <template #cell(birthDay)="data">
+        <!-- Column: birthDate -->
+        <template #cell(birthDate)="data">
           {{ convertDate(data.value) }}
         </template>
 
-        <!-- Column: Gender -->
+        <!-- Column: lastTrading -->
         <template #cell(gender)="data">
-          {{ data.value == 0 ? "Nam" : "Nữ" }}
-        </template>
-
-        <!-- Column: Active -->
-        <template #cell(active)="data">
-          <b-form-checkbox v-model="data.value == 0 ? checked = false : checked = true"
-            name="check-button"
-            @input="(val) => activeUser(val ? 1 : 0, data.item._id)"
-            switch
-          ></b-form-checkbox>
+          {{ data.value == 1 ? 'Nam' : 'Nữ' }}
         </template>
 
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
-                  variant="link"
-                  no-caret
-                  :right="$store.state.appConfig.isRTL"
+            variant="link"
+            no-caret
+            :right="$store.state.appConfig.isRTL"
           >
             <template #button-content>
               <feather-icon
-                      icon="MoreVerticalIcon"
-                      size="16"
-                      class="align-middle text-body"
+                icon="MoreVerticalIcon"
+                size="16"
+                class="align-middle text-body"
               />
             </template>
             <b-dropdown-item
-                    :to="{
-                name: 'apps-users-view',
+              :to="{
+                name: 'apps-services-view',
                 params: { id: data.item._id },
               }"
             >
@@ -160,8 +158,8 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-                    :to="{
-                name: 'apps-users-edit',
+              :to="{
+                name: 'apps-services-edit',
                 params: { id: data.item._id },
               }"
             >
@@ -170,7 +168,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-                    @click="deleteUser(data.item._id)"
+              @click="deleteService(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -198,7 +196,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalUsers"
+              :total-rows="totalServices"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -233,28 +231,30 @@ import {
   BMedia,
   BAvatar,
   BLink,
-  BBadge,
+  // BBadge,
   BDropdown,
   BDropdownItem,
   BPagination,
-  BFormCheckbox,
 } from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import UsersListFilters from "./UsersListFilters.vue";
-import useUsersList from "./useUsersList";
-import userStoreModule from "../userStoreModule";
-import UserListAddNew from "./UserListAddNew.vue";
+import ServicesListFilters from "./ServicesListFilters.vue";
+import useServicesList from "./useServicesList";
+import servicesStoreModule from "../servicesStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
+import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+import Vue from "vue";
+import {ToastPlugin} from "bootstrap-vue";
+
+Vue.use(ToastPlugin)
+const v = new Vue()
 
 export default {
   components: {
-    UsersListFilters,
-    UserListAddNew,
-
+    ServicesListFilters,
     BCard,
     BRow,
     BCol,
@@ -264,34 +264,33 @@ export default {
     BMedia,
     BAvatar,
     BLink,
-    BBadge,
+    ToastificationContent,
+    // BBadge,
     BDropdown,
     BDropdownItem,
     BPagination,
-    BFormCheckbox,
     vSelect,
   },
   directives: {
     Ripple,
   },
   setup() {
-    const USER_APP_STORE_MODULE_NAME = "app-user";
+    const SERVICES_APP_STORE_MODULE_NAME = "app-services";
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule);
+    if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(USER_APP_STORE_MODULE_NAME))
-        store.unregisterModule(USER_APP_STORE_MODULE_NAME);
+      if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
+        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
     });
 
-    const isAddNewUserSidebarActive = ref(false);
-
-    const roleOptions = [
-      { label: "Nhân viên", value: 0 },
-      { label: "Quản lí", value: 1 },
+    const groupOptions = [
+      { label: "Khách hàng thường", value: 0 },
+      { label: "khách hàng thân thiết", value: 1 },
+      { label: "Khách hàng tiềm năng", value: 2 },
     ];
 
     const genderOptions = [
@@ -299,62 +298,49 @@ export default {
       { label: "Nữ", value: 1 },
     ];
 
-    const activeOptions = [
-      { label: "InActive", value: 0 },
-      { label: "Active", value: 1 },
-    ];
-
     const convertDate = (date) => {
       return moment(date).format("DD-MM-YYYY");
     };
 
     const {
-      fetchUsers,
-      Users,
+      Services,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalServices,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
+      refServicesListTable,
       refetchData,
-      deleteUser,
-      activeUser,
-
+      deleteService,
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
+      resolveUserStatusVariant,
 
       // Extra Filters
-      role,
+      group,
       gender,
-      active,
-    } = useUsersList();
+    } = useServicesList();
 
     return {
-      // Sidebar
-      isAddNewUserSidebarActive,
-
-      fetchUsers,
-      Users,
+      Services,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalServices,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
-      refetchData,
+      refServicesListTable,
       convertDate,
-      deleteUser,
-      activeUser,
+      refetchData,
+      deleteService,
 
       // Filter
       avatarText,
@@ -362,14 +348,14 @@ export default {
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
+      resolveUserStatusVariant,
 
-      roleOptions,
+      groupOptions,
       genderOptions,
-      activeOptions,
+
       // Extra Filters
-      role,
       gender,
-      active,
+      group,
     };
   },
 };

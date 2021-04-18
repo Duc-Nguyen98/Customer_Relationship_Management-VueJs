@@ -8,20 +8,19 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 
 export default function useUsersList() {
   // Use toast
-  const toast = useToast()
+  const toast = useToast();
 
   const refUserListTable = ref(null)
 
   // Table Handlers
   const tableColumns = [
-
     { key: 'stt', label: 'STT', sortable: false },
+    { key: 'avatar', label: 'AVATAR', sortable: false },
     { key: 'name', label: 'NAME', formatter: title, sortable: true },
     { key: 'telephone', label: 'TELEPHONE', sortable: true },
     { key: 'email', label: 'EMAIL', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
     { key: 'gender', label: 'GENDER', sortable: true },
-    { key: 'active', label: 'ACTIVE', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -31,9 +30,8 @@ export default function useUsersList() {
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  const role = ref(null)
+  const group = ref(null)
   const gender = ref(null)
-  const active = ref(null)
   const Users = ref([])
 
   const dataMeta = computed(() => {
@@ -49,24 +47,24 @@ export default function useUsersList() {
     fetchUsers()
   }
 
-  watch([currentPage, perPage, searchQuery, role, gender, active], () => {
+  watch([currentPage, perPage, searchQuery, group, gender], () => {
     refetchData()
   })
 
-  const fetchUsers = () => {
+  const fetchUsers = (ctx, callback) => {
     store
       .dispatch('app-user/fetchUsers', {
         q: searchQuery.value,
         perPage: perPage.value,
         page: currentPage.value,
-        role: role.value,
+        sort: sortBy.value,
         gender: gender.value,
-        active: active.value,
+        group: group.value,
       })
       .then(response => {
-        const { users, totalRecords } = response.data
+        const { data, totalRecords } = response.data
         totalUsers.value = totalRecords
-        Users.value = users
+        Users.value = data
       })
       .catch(() => {
         toast({
@@ -92,50 +90,27 @@ export default function useUsersList() {
     });
   }
 
-  const activeUser = (val, _id) => {
-    store
-        .dispatch('app-user/activeUser', { active: val, _id: _id })
-        .then(response => {
-          if (response.data.success) {
-            alert("success", "Action change user successfully.")
-            fetchUsers()
-          } else {
-            alert("danger", "Action change user failed.")
-          }
-        })
-        .catch(() => {
-          toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Error fetching users list',
-              icon: 'AlertTriangleIcon',
-              variant: 'danger',
-            },
-          })
-        })
-  }
-
   const deleteUser = id => {
     store
-        .dispatch('app-user/deleteUser', { _id: id })
-        .then(response => {
-          if (response.data.success) {
-            alert("success", "Delete user successfully.")
-            fetchUsers()
-          } else {
-            alert("danger", "Delete user failed.")
-          }
+      .dispatch('app-user/deleteUser', { _id: id })
+      .then(response => {
+        if (response.data.success) {
+          alert("success", "Delete user successfully.")
+          fetchUsers()
+        } else {
+          alert("danger", "Delete user failed.")
+        }
+      })
+      .catch(() => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Error fetching users list',
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
         })
-        .catch(() => {
-          toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Error fetching users list',
-              icon: 'AlertTriangleIcon',
-              variant: 'danger',
-            },
-          })
-        })
+      })
   }
 
   fetchUsers()
@@ -161,8 +136,16 @@ export default function useUsersList() {
     return 'UserIcon'
   }
 
+  const resolveUserStatusVariant = status => {
+    if (status === 'pending') return 'warning'
+    if (status === 'active') return 'success'
+    if (status === 'inactive') return 'secondary'
+    return 'primary'
+  }
+
   return {
     fetchUsers,
+    deleteUser,
     Users,
     tableColumns,
     perPage,
@@ -177,13 +160,12 @@ export default function useUsersList() {
 
     resolveUserRoleVariant,
     resolveUserRoleIcon,
+    resolveUserStatusVariant,
     refetchData,
-    deleteUser,
-    activeUser,
 
     // Extra Filters
-    role,
+    group,
     gender,
-    active,
+    alert,
   }
 }

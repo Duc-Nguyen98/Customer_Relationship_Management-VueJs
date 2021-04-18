@@ -9,7 +9,7 @@ export default {
     fetchUsers(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + 'user/list', { params: queryParams })
+          .get(process.env.VUE_APP_ROOT_API + 'customer/list', { params: queryParams })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -17,7 +17,7 @@ export default {
     fetchUsersDel(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-            .get(process.env.VUE_APP_ROOT_API + 'user/list/trash', { params: queryParams })
+            .get(process.env.VUE_APP_ROOT_API + 'customer/list/trash', { params: queryParams })
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -25,7 +25,7 @@ export default {
     fetchUser(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + `user/detail/${_id}`)
+          .get(process.env.VUE_APP_ROOT_API + `customer/detail/${_id}`)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -33,23 +33,15 @@ export default {
     addUser(ctx, userData) {
       return new Promise((resolve, reject) => {
         axios
-          .post(process.env.VUE_APP_ROOT_API + `user/create`, userData)
+          .post(process.env.VUE_APP_ROOT_API + 'customer/create', userData)
           .then(response => resolve(response))
           .catch(error => reject(error))
-      })
-    },
-    activeUser(ctx, { active, _id }) {
-      return new Promise((resolve, reject) => {
-        axios
-            .patch(process.env.VUE_APP_ROOT_API + `user/active/${_id}`, {active: active})
-            .then(response => resolve(response))
-            .catch(error => reject(error))
       })
     },
     deleteUser(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `user/delete-soft/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `customer/delete-soft/${_id}`)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -57,7 +49,7 @@ export default {
     deleteUserR(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `user/delete/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `customer/delete/${_id}`)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -65,7 +57,7 @@ export default {
     restoreUser(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `user/trash/restore/${_id}`)
+            .patch(process.env.VUE_APP_ROOT_API + `customer/trash/restore/${_id}`)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })

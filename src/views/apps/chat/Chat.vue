@@ -3,44 +3,39 @@
   <div style="height: inherit">
     <div
       class="body-content-overlay"
-      :class="{'show': shallShowUserProfileSidebar || shallShowActiveChatContactSidebar || mqShallShowLeftSidebar}"
-      @click="mqShallShowLeftSidebar=shallShowActiveChatContactSidebar=shallShowUserProfileSidebar=false"
+      :class="{
+        show:
+          shallShowUserProfileSidebar ||
+          shallShowActiveChatContactSidebar ||
+          mqShallShowLeftSidebar,
+      }"
+      @click="
+        mqShallShowLeftSidebar = shallShowActiveChatContactSidebar = shallShowUserProfileSidebar = false
+      "
     />
 
     <!-- Main Area -->
     <section class="chat-app-window">
-
       <!-- Start Chat Logo -->
-      <div
-        v-if="!activeChat.contact"
-        class="start-chat-area"
-      >
+      <div v-if="!activeChat.contact" class="start-chat-area">
+        <h4 class="sidebar-toggle start-chat-text">
+          Customer Relationship Management
+        </h4>
         <div class="mb-1 start-chat-icon">
-          <feather-icon
-            icon="MessageSquareIcon"
-            size="56"
-          />
+          <feather-icon icon="MessageSquareIcon" size="56" />
         </div>
-        <h4
-          class="sidebar-toggle start-chat-text"
-          @click="startConversation"
-        >
+        <h4 class="sidebar-toggle start-chat-text" @click="startConversation">
           Start Conversation
         </h4>
       </div>
 
       <!-- Chat Content -->
-      <div
-        v-else
-        class="active-chat"
-      >
+      <div v-else class="active-chat">
         <!-- Chat Navbar -->
         <div class="chat-navbar">
           <header class="chat-header">
-
             <!-- Avatar & Name -->
             <div class="d-flex align-items-center">
-
               <!-- Toggle Icon -->
               <div class="sidebar-toggle d-block d-lg-none mr-1">
                 <feather-icon
@@ -56,8 +51,10 @@
                 :src="activeChat.contact.avatar"
                 class="mr-1 cursor-pointer badge-minimal"
                 badge
-                :badge-variant="resolveAvatarBadgeVariant(activeChat.contact.status)"
-                @click.native="shallShowActiveChatContactSidebar=true"
+                :badge-variant="
+                  resolveAvatarBadgeVariant(activeChat.contact.status)
+                "
+                @click.native="shallShowActiveChatContactSidebar = true"
               />
               <h6 class="mb-0">
                 {{ activeChat.contact.fullName }}
@@ -82,12 +79,7 @@
                 class="cursor-pointer d-sm-block d-none mr-50"
               />
               <div class="dropdown">
-                <b-dropdown
-                  variant="link"
-                  no-caret
-                  toggle-class="p-0"
-                  right
-                >
+                <b-dropdown variant="link" no-caret toggle-class="p-0" right>
                   <template #button-content>
                     <feather-icon
                       icon="MoreVerticalIcon"
@@ -95,21 +87,11 @@
                       class="align-middle text-body"
                     />
                   </template>
-                  <b-dropdown-item>
-                    View Contact
-                  </b-dropdown-item>
-                  <b-dropdown-item>
-                    Mute Notifications
-                  </b-dropdown-item>
-                  <b-dropdown-item>
-                    Block Contact
-                  </b-dropdown-item>
-                  <b-dropdown-item>
-                    Clear Chat
-                  </b-dropdown-item>
-                  <b-dropdown-item>
-                    Report
-                  </b-dropdown-item>
+                  <b-dropdown-item> View Contact </b-dropdown-item>
+                  <b-dropdown-item> Mute Notifications </b-dropdown-item>
+                  <b-dropdown-item> Block Contact </b-dropdown-item>
+                  <b-dropdown-item> Clear Chat </b-dropdown-item>
+                  <b-dropdown-item> Report </b-dropdown-item>
                 </b-dropdown>
               </div>
             </div>
@@ -129,29 +111,23 @@
         </vue-perfect-scrollbar>
 
         <!-- Message Input -->
-        <b-form
-          class="chat-app-form"
-          @submit.prevent="sendMessage"
-        >
+        <b-form class="chat-app-form" @submit.prevent="sendMessage">
           <b-input-group class="input-group-merge form-send-message mr-1">
             <b-form-input
               v-model="chatInputMessage"
               placeholder="Enter your message"
             />
           </b-input-group>
-          <b-button
-            variant="primary"
-            type="submit"
-          >
-            Send
-          </b-button>
+          <b-button variant="primary" type="submit"> Send </b-button>
         </b-form>
       </div>
     </section>
 
     <!-- Active Chat Contact Details Sidebar -->
     <chat-active-chat-content-details-sidedbar
-      :shall-show-active-chat-contact-sidebar.sync="shallShowActiveChatContactSidebar"
+      :shall-show-active-chat-contact-sidebar.sync="
+        shallShowActiveChatContactSidebar
+      "
       :contact="activeChat.contact || {}"
     />
 
@@ -160,7 +136,9 @@
       <chat-left-sidebar
         :chats-contacts="chatsContacts"
         :contacts="contacts"
-        :active-chat-contact-id="activeChat.contact ? activeChat.contact.id : null"
+        :active-chat-contact-id="
+          activeChat.contact ? activeChat.contact.id : null
+        "
         :shall-show-user-profile-sidebar.sync="shallShowUserProfileSidebar"
         :profile-user-data="profileUserData"
         :profile-user-minimal-data="profileUserDataMinimal"
@@ -173,26 +151,29 @@
 </template>
 
 <script>
-import store from '@/store'
+import store from "@/store";
+import { ref, onUnmounted, nextTick } from "@vue/composition-api";
 import {
-  ref, onUnmounted, nextTick,
-} from '@vue/composition-api'
-import {
-  BAvatar, BDropdown, BDropdownItem, BForm, BInputGroup, BFormInput, BButton,
-} from 'bootstrap-vue'
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+  BAvatar,
+  BDropdown,
+  BDropdownItem,
+  BForm,
+  BInputGroup,
+  BFormInput,
+  BButton,
+} from "bootstrap-vue";
+import VuePerfectScrollbar from "vue-perfect-scrollbar";
 // import { formatDate } from '@core/utils/filter'
-import { $themeBreakpoints } from '@themeConfig'
-import { useResponsiveAppLeftSidebarVisibility } from '@core/comp-functions/ui/app'
-import ChatLeftSidebar from './ChatLeftSidebar.vue'
-import chatStoreModule from './chatStoreModule'
-import ChatActiveChatContentDetailsSidedbar from './ChatActiveChatContentDetailsSidedbar.vue'
-import ChatLog from './ChatLog.vue'
-import useChat from './useChat'
+import { $themeBreakpoints } from "@themeConfig";
+import { useResponsiveAppLeftSidebarVisibility } from "@core/comp-functions/ui/app";
+import ChatLeftSidebar from "./ChatLeftSidebar.vue";
+import chatStoreModule from "./chatStoreModule";
+import ChatActiveChatContentDetailsSidedbar from "./ChatActiveChatContentDetailsSidedbar.vue";
+import ChatLog from "./ChatLog.vue";
+import useChat from "./useChat";
 
 export default {
   components: {
-
     // BSV
     BAvatar,
     BDropdown,
@@ -211,138 +192,142 @@ export default {
     ChatLog,
   },
   setup() {
-    const CHAT_APP_STORE_MODULE_NAME = 'app-chat'
+    const CHAT_APP_STORE_MODULE_NAME = "app-chat";
 
     // Register module
-    if (!store.hasModule(CHAT_APP_STORE_MODULE_NAME)) store.registerModule(CHAT_APP_STORE_MODULE_NAME, chatStoreModule)
+    if (!store.hasModule(CHAT_APP_STORE_MODULE_NAME))
+      store.registerModule(CHAT_APP_STORE_MODULE_NAME, chatStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(CHAT_APP_STORE_MODULE_NAME)) store.unregisterModule(CHAT_APP_STORE_MODULE_NAME)
-    })
+      if (store.hasModule(CHAT_APP_STORE_MODULE_NAME))
+        store.unregisterModule(CHAT_APP_STORE_MODULE_NAME);
+    });
 
-    const { resolveAvatarBadgeVariant } = useChat()
+    const { resolveAvatarBadgeVariant } = useChat();
 
     // Scroll to Bottom ChatLog
-    const refChatLogPS = ref(null)
+    const refChatLogPS = ref(null);
     const scrollToBottomInChatLog = () => {
-      const scrollEl = refChatLogPS.value.$el || refChatLogPS.value
-      scrollEl.scrollTop = scrollEl.scrollHeight
-    }
+      const scrollEl = refChatLogPS.value.$el || refChatLogPS.value;
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+    };
 
     // ------------------------------------------------
     // Chats & Contacts
     // ------------------------------------------------
-    const chatsContacts = ref([])
-    const contacts = ref([])
+    const chatsContacts = ref([]);
+    const contacts = ref([]);
 
     const fetchChatAndContacts = () => {
-      store.dispatch('app-chat/fetchChatsAndContacts')
-        .then(response => {
-          chatsContacts.value = response.data.chatsContacts
-          contacts.value = response.data.contacts
-          // eslint-disable-next-line no-use-before-define
-          profileUserDataMinimal.value = response.data.profileUser
-        })
-    }
+      store.dispatch("app-chat/fetchChatsAndContacts").then((response) => {
+        chatsContacts.value = response.data.chatsContacts;
+        contacts.value = response.data.contacts;
+        // eslint-disable-next-line no-use-before-define
+        profileUserDataMinimal.value = response.data.profileUser;
+      });
+    };
 
-    fetchChatAndContacts()
+    fetchChatAndContacts();
 
     // ------------------------------------------------
     // Single Chat
     // ------------------------------------------------
-    const activeChat = ref({})
-    const chatInputMessage = ref('')
-    const openChatOfContact = userId => {
+    const activeChat = ref({});
+    const chatInputMessage = ref("");
+    const openChatOfContact = (userId) => {
       // Reset send message input value
-      chatInputMessage.value = ''
+      chatInputMessage.value = "";
 
-      store.dispatch('app-chat/getChat', { userId })
-        .then(response => {
-          activeChat.value = response.data
+      store.dispatch("app-chat/getChat", { userId }).then((response) => {
+        activeChat.value = response.data;
 
-          // Set unseenMsgs to 0
-          const contact = chatsContacts.value.find(c => c.id === userId)
-          if (contact) contact.chat.unseenMsgs = 0
+        // Set unseenMsgs to 0
+        const contact = chatsContacts.value.find((c) => c.id === userId);
+        if (contact) contact.chat.unseenMsgs = 0;
 
-          // Scroll to bottom
-          nextTick(() => { scrollToBottomInChatLog() })
-        })
+        // Scroll to bottom
+        nextTick(() => {
+          scrollToBottomInChatLog();
+        });
+      });
 
       // if SM device =>  Close Chat & Contacts left sidebar
       // eslint-disable-next-line no-use-before-define
-      mqShallShowLeftSidebar.value = false
-    }
+      mqShallShowLeftSidebar.value = false;
+    };
     const sendMessage = () => {
-      if (!chatInputMessage.value) return
+      if (!chatInputMessage.value) return;
       const payload = {
         contactId: activeChat.value.contact.id,
         // eslint-disable-next-line no-use-before-define
         senderId: profileUserDataMinimal.value.id,
         message: chatInputMessage.value,
-      }
-      store.dispatch('app-chat/sendMessage', payload)
-        .then(response => {
-          const { newMessageData, chat } = response.data
+      };
+      store.dispatch("app-chat/sendMessage", payload).then((response) => {
+        const { newMessageData, chat } = response.data;
 
-          // ? If it's not undefined => New chat is created (Contact is not in list of chats)
-          if (chat !== undefined) {
-            activeChat.value = { chat, contact: activeChat.value.contact }
-            chatsContacts.value.push({
-              ...activeChat.value.contact,
-              chat: {
-                id: chat.id,
-                lastMessage: newMessageData,
-                unseenMsgs: 0,
-              },
-            })
-          } else {
-            // Add message to log
-            activeChat.value.chat.chat.push(newMessageData)
-          }
+        // ? If it's not undefined => New chat is created (Contact is not in list of chats)
+        if (chat !== undefined) {
+          activeChat.value = { chat, contact: activeChat.value.contact };
+          chatsContacts.value.push({
+            ...activeChat.value.contact,
+            chat: {
+              id: chat.id,
+              lastMessage: newMessageData,
+              unseenMsgs: 0,
+            },
+          });
+        } else {
+          // Add message to log
+          activeChat.value.chat.chat.push(newMessageData);
+        }
 
-          // Reset send message input value
-          chatInputMessage.value = ''
+        // Reset send message input value
+        chatInputMessage.value = "";
 
-          // Set Last Message for active contact
-          const contact = chatsContacts.value.find(c => c.id === activeChat.value.contact.id)
-          contact.chat.lastMessage = newMessageData
+        // Set Last Message for active contact
+        const contact = chatsContacts.value.find(
+          (c) => c.id === activeChat.value.contact.id
+        );
+        contact.chat.lastMessage = newMessageData;
 
-          // Scroll to bottom
-          nextTick(() => { scrollToBottomInChatLog() })
-        })
-    }
+        // Scroll to bottom
+        nextTick(() => {
+          scrollToBottomInChatLog();
+        });
+      });
+    };
 
     const perfectScrollbarSettings = {
       maxScrollbarLength: 150,
-    }
+    };
 
     // User Profile Sidebar
     // ? Will contain all details of profile user (e.g. settings, about etc.)
-    const profileUserData = ref({})
+    const profileUserData = ref({});
     // ? Will contain id, name and avatar & status
-    const profileUserDataMinimal = ref({})
+    const profileUserDataMinimal = ref({});
 
-    const shallShowUserProfileSidebar = ref(false)
+    const shallShowUserProfileSidebar = ref(false);
     const showUserProfileSidebar = () => {
-      store.dispatch('app-chat/getProfileUser')
-        .then(response => {
-          profileUserData.value = response.data
-          shallShowUserProfileSidebar.value = true
-        })
-    }
+      store.dispatch("app-chat/getProfileUser").then((response) => {
+        profileUserData.value = response.data;
+        shallShowUserProfileSidebar.value = true;
+      });
+    };
 
     // Active Chat Contact Details
-    const shallShowActiveChatContactSidebar = ref(false)
+    const shallShowActiveChatContactSidebar = ref(false);
 
     // UI + SM Devices
     // Left Sidebar Responsiveness
-    const { mqShallShowLeftSidebar } = useResponsiveAppLeftSidebarVisibility()
+    const { mqShallShowLeftSidebar } = useResponsiveAppLeftSidebarVisibility();
     const startConversation = () => {
       if (store.state.app.windowWidth < $themeBreakpoints.lg) {
-        mqShallShowLeftSidebar.value = true
+        mqShallShowLeftSidebar.value = true;
       }
-    }
+    };
 
     return {
       // Filters
@@ -379,13 +364,12 @@ export default {
       // UI + SM Devices
       startConversation,
       mqShallShowLeftSidebar,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
 </style>
 
 <style lang="scss">

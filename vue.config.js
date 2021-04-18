@@ -11,6 +11,9 @@ module.exports = {
       },
     },
   },
+  devServer: {
+    proxy: 'http://localhost:1509/',
+  },
   configureWebpack: {
     resolve: {
       alias: {

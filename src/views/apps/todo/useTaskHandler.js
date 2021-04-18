@@ -32,7 +32,7 @@ export default function useTaskHandler(props, emit) {
 
     // * If event has id => Edit Event
     // Emit event for add/update event
-    if (props.task.value.id) emit('update-task', taskData.value)
+    if (props.task.value._id) emit('update-task', taskData.value)
     else emit('add-task', taskData.value)
 
     // Close sidebar

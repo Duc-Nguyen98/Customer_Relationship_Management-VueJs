@@ -1,7 +1,7 @@
 <template>
   <b-sidebar
     id="add-new-user-sidebar"
-    :visible="isAddNewUserSidebarActive"
+    :visible="isAddNewServicesSidebarActive"
     bg-variant="white"
     sidebar-class="sidebar-lg"
     shadow
@@ -9,13 +9,13 @@
     no-header
     right
     @hidden="resetForm"
-    @change="(val) => $emit('update:is-add-new-user-sidebar-active', val)"
+    @change="(val) => $emit('update:is-add-new-services-sidebar-active', val)"
   >
     <template #default="{ hide }">
       <!-- Header -->
       <div class="d-flex justify-content-between align-items-center content-sidebar-header px-2 py-1">
         <h5 class="mb-0">
-          Add New User
+          Add New Customer
         </h5>
 
         <feather-icon
@@ -51,7 +51,7 @@
             >
               <b-form-input
                 id="full-name"
-                v-model="userData.name"
+                v-model="serviceData.fullName"
                 autofocus
                 :state="getValidationState(validationContext)"
                 trim
@@ -219,7 +219,7 @@
               <v-select
                 v-model="userData.currentPlan"
                 :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="genderOptions"
+                :options="planOptions"
                 :reduce="val => val.value"
                 :clearable="false"
                 input-id="plan"
@@ -287,8 +287,8 @@ export default {
     Ripple,
   },
   model: {
-    prop: 'isAddNewUserSidebarActive',
-    event: 'update:is-add-new-user-sidebar-active',
+    prop: 'isAddNewServicesSidebarActive',
+    event: 'update:is-add-new-services-sidebar-active',
   },
   props: {
     isAddNewUserSidebarActive: {
@@ -299,7 +299,7 @@ export default {
       type: Array,
       required: true,
     },
-    genderOptions: {
+    planOptions: {
       type: Array,
       required: true,
     },
@@ -314,7 +314,7 @@ export default {
   },
   setup(props, { emit }) {
     const blankUserData = {
-      name: '',
+      fullName: '',
       username: '',
       email: '',
       role: null,
@@ -324,16 +324,16 @@ export default {
       contact: '',
     }
 
-    const userData = ref(JSON.parse(JSON.stringify(blankUserData)))
+    const serviceData = ref(JSON.parse(JSON.stringify(blankUserData)))
     const resetuserData = () => {
-      userData.value = JSON.parse(JSON.stringify(blankUserData))
+      serviceData.value = JSON.parse(JSON.stringify(blankUserData))
     }
 
     const onSubmit = () => {
-      store.dispatch('app-user/addUser', userData.value)
+      store.dispatch('app-user/addService', serviceData.value)
         .then(() => {
           emit('refetch-data')
-          emit('update:is-add-new-user-sidebar-active', false)
+          emit('update:is-add-new-services-sidebar-active', false)
         })
     }
 
@@ -344,7 +344,7 @@ export default {
     } = formValidation(resetuserData)
 
     return {
-      userData,
+      serviceData,
       onSubmit,
 
       refFormObserver,

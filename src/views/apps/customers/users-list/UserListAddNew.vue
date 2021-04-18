@@ -15,7 +15,7 @@
       <!-- Header -->
       <div class="d-flex justify-content-between align-items-center content-sidebar-header px-2 py-1">
         <h5 class="mb-0">
-          Add New User
+          Add New Customer
         </h5>
 
         <feather-icon
@@ -51,7 +51,7 @@
             >
               <b-form-input
                 id="full-name"
-                v-model="userData.name"
+                v-model="userData.fullName"
                 autofocus
                 :state="getValidationState(validationContext)"
                 trim
@@ -219,7 +219,7 @@
               <v-select
                 v-model="userData.currentPlan"
                 :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="genderOptions"
+                :options="planOptions"
                 :reduce="val => val.value"
                 :clearable="false"
                 input-id="plan"
@@ -299,7 +299,7 @@ export default {
       type: Array,
       required: true,
     },
-    genderOptions: {
+    planOptions: {
       type: Array,
       required: true,
     },
@@ -314,7 +314,7 @@ export default {
   },
   setup(props, { emit }) {
     const blankUserData = {
-      name: '',
+      fullName: '',
       username: '',
       email: '',
       role: null,

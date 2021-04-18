@@ -6,73 +6,71 @@ import { title } from '@core/utils/filter'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-export default function useUsersList() {
+export default function useServicesList() {
   // Use toast
   const toast = useToast()
 
-  const refUserListTable = ref(null)
+  const refServicesListTable = ref(null)
 
   // Table Handlers
   const tableColumns = [
-
-    { key: 'stt', label: 'STT', sortable: false },
-    { key: 'name', label: 'NAME', formatter: title, sortable: true },
-    { key: 'telephone', label: 'TELEPHONE', sortable: true },
-    { key: 'email', label: 'EMAIL', sortable: true },
-    { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
-    { key: 'gender', label: 'GENDER', sortable: true },
-    { key: 'active', label: 'ACTIVE', sortable: true },
+    { key: 'stt', label: 'STT', sortable: true },
+    { key: 'title', label: 'TITLE', formatter: title, sortable: false },
+    { key: 'typeSupport', label: 'TYPESUPPORT', sortable: true },
+    { key: 'typeService', label: 'TYPESERVICE', sortable: false },
+    { key: 'note', label: 'NOTE', sortable: false },
+    { key: 'status', label: 'STATUS', sortable: false },
     { key: 'actions' },
   ]
   const perPage = ref(10)
-  const totalUsers = ref(0)
+  const totalServices = ref(0)
   const currentPage = ref(1)
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  const role = ref(null)
+  const group = ref(null)
   const gender = ref(null)
-  const active = ref(null)
-  const Users = ref([])
+  const Services = ref([])
 
   const dataMeta = computed(() => {
-    const localItemsCount = refUserListTable.value ? refUserListTable.value.localItems.length : 0
+    const localItemsCount = refServicesListTable.value ? refServicesListTable.value.localItems.length : 0
     return {
       from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
       to: perPage.value * (currentPage.value - 1) + localItemsCount,
-      of: totalUsers.value,
+      of: totalServices.value,
     }
   })
 
   const refetchData = () => {
-    fetchUsers()
+    fetchServices()
   }
 
-  watch([currentPage, perPage, searchQuery, role, gender, active], () => {
+  watch([currentPage, perPage, searchQuery, group, gender], () => {
     refetchData()
   })
 
-  const fetchUsers = () => {
+  const fetchServices = (ctx, callback) => {
     store
-      .dispatch('app-user/fetchUsers', {
+      .dispatch('app-services/fetchServices', {
         q: searchQuery.value,
         perPage: perPage.value,
         page: currentPage.value,
-        role: role.value,
+        sort: sortBy.value,
         gender: gender.value,
-        active: active.value,
+        group: group.value,
       })
       .then(response => {
-        const { users, totalRecords } = response.data
-        totalUsers.value = totalRecords
-        Users.value = users
+        const { data, totalRecords } = response.data
+        totalServices.value = totalRecords
+        console.log(data)
+        Services.value = data
       })
       .catch(() => {
         toast({
           component: ToastificationContent,
           props: {
-            title: 'Error fetching users list',
+            title: 'Error fetching services list',
             icon: 'AlertTriangleIcon',
             variant: 'danger',
           },
@@ -81,7 +79,7 @@ export default function useUsersList() {
   }
 
   const alert = (variant, message) => {
-    toast({
+    v.$toast({
       component: ToastificationContent,
       props: {
         title: "Notification",
@@ -92,22 +90,22 @@ export default function useUsersList() {
     });
   }
 
-  const activeUser = (val, _id) => {
+  const deleteService = id => {
     store
-        .dispatch('app-user/activeUser', { active: val, _id: _id })
+        .dispatch('app-services/deleteService', {_id: id})
         .then(response => {
           if (response.data.success) {
-            alert("success", "Action change user successfully.")
+            alert("success", "Delete services successfully.")
             fetchUsers()
           } else {
-            alert("danger", "Action change user failed.")
+            alert("danger", "Delete services failed.")
           }
         })
         .catch(() => {
           toast({
             component: ToastificationContent,
             props: {
-              title: 'Error fetching users list',
+              title: 'Error fetching services list',
               icon: 'AlertTriangleIcon',
               variant: 'danger',
             },
@@ -115,30 +113,7 @@ export default function useUsersList() {
         })
   }
 
-  const deleteUser = id => {
-    store
-        .dispatch('app-user/deleteUser', { _id: id })
-        .then(response => {
-          if (response.data.success) {
-            alert("success", "Delete user successfully.")
-            fetchUsers()
-          } else {
-            alert("danger", "Delete user failed.")
-          }
-        })
-        .catch(() => {
-          toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Error fetching users list',
-              icon: 'AlertTriangleIcon',
-              variant: 'danger',
-            },
-          })
-        })
-  }
-
-  fetchUsers()
+  fetchServices()
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
@@ -161,29 +136,36 @@ export default function useUsersList() {
     return 'UserIcon'
   }
 
+  const resolveUserStatusVariant = status => {
+    if (status === 'pending') return 'warning'
+    if (status === 'active') return 'success'
+    if (status === 'inactive') return 'secondary'
+    return 'primary'
+  }
+
   return {
-    fetchUsers,
-    Users,
+    fetchServices,
+    deleteService,
+    Services,
     tableColumns,
     perPage,
     currentPage,
-    totalUsers,
+    totalServices,
     dataMeta,
     perPageOptions,
     searchQuery,
     sortBy,
     isSortDirDesc,
-    refUserListTable,
+    refServicesListTable,
 
     resolveUserRoleVariant,
     resolveUserRoleIcon,
+    resolveUserStatusVariant,
     refetchData,
-    deleteUser,
-    activeUser,
 
     // Extra Filters
-    role,
+    group,
     gender,
-    active,
+    alert,
   }
 }

@@ -63,6 +63,14 @@
             <feather-icon icon="TrashIcon" />
             <span class="align-middle ml-50">Trash</span>
           </b-dropdown-item>
+
+          <b-dropdown-item
+                  v-show="$route.params.folder === 'trash'"
+                  @click="$emit('move-email-to-folder', 'delete')"
+          >
+            <feather-icon icon="TrashIcon" />
+            <span class="align-middle ml-50">Trash</span>
+          </b-dropdown-item>
         </b-dropdown>
 
         <!-- Update Label -->
@@ -98,14 +106,6 @@
           </b-dropdown-item>
         </b-dropdown>
 
-        <!-- Mark Un-Read -->
-        <feather-icon
-          icon="MailIcon"
-          class="ml-75 cursor-pointer"
-          size="17"
-          @click="$emit('mark-email-unread')"
-        />
-
         <!-- Move to Trash -->
         <feather-icon
           v-show="$route.params.folder !== 'trash'"
@@ -113,6 +113,14 @@
           class="ml-75"
           size="17"
           @click="$emit('move-email-to-folder', 'trash')"
+        />
+
+        <feather-icon
+                v-show="$route.params.folder === 'trash'"
+                icon="TrashIcon"
+                class="ml-75"
+                size="17"
+                @click="$emit('move-email-to-folder', 'delete')"
         />
 
         <!-- Show Previous Mail -->

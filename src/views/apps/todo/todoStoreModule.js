@@ -7,36 +7,62 @@ export default {
   mutations: {},
   actions: {
     fetchTasks(ctx, payload) {
+        if (payload.tag != undefined) {
+          return new Promise((resolve, reject) => {
+            axios
+                .get(process.env.VUE_APP_ROOT_API + 'todo/task/tag', { params: payload })
+                .then(response => resolve(response))
+                .catch(error => reject(error))
+          })
+        } else {
+          return new Promise((resolve, reject) => {
+            axios
+                .get(process.env.VUE_APP_ROOT_API + 'todo/task', { params: payload })
+                .then(response => resolve(response))
+                .catch(error => reject(error))
+          })
+      }
+    },
+    addTask(ctx, task) {
       return new Promise((resolve, reject) => {
         axios
-          .get('/apps/todo/tasks', { params: payload })
+          .patch('/todo/task/create', task)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
     },
-    addTask(ctx, taskData) {
+    updateTask(ctx, {taskData}) {
       return new Promise((resolve, reject) => {
         axios
-          .post('/apps/todo/tasks', { task: taskData })
+          .put(process.env.VUE_APP_ROOT_API + `todo/task/update/${taskData._id}`, taskData)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
     },
-    updateTask(ctx, { task }) {
+    updateStatusTask(ctx, task) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`/apps/todo/tasks/${task.id}`, { task })
-          .then(response => resolve(response))
-          .catch(error => reject(error))
+            .patch(process.env.VUE_APP_ROOT_API + `todo/task/change/${task._id}`, task)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
       })
     },
-    removeTask(ctx, { id }) {
-      return new Promise((resolve, reject) => {
-        axios
-          .delete(`/apps/todo/tasks/${id}`)
-          .then(response => resolve(response))
-          .catch(error => reject(error))
-      })
+    removeTask(ctx, task) {
+      if (task.isDeleted) {
+        return new Promise((resolve, reject) => {
+          axios
+              .delete(process.env.VUE_APP_ROOT_API + `todo/task/delete/${task._id}`)
+              .then(response => resolve(response))
+              .catch(error => reject(error))
+        })
+      } else {
+        return new Promise((resolve, reject) => {
+          axios
+              .delete(process.env.VUE_APP_ROOT_API + `todo/task/delete-soft/${task._id}`)
+              .then(response => resolve(response))
+              .catch(error => reject(error))
+        })
+      }
     },
   },
 }

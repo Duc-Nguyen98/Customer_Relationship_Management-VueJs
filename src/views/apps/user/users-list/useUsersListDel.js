@@ -6,7 +6,7 @@ import { title } from '@core/utils/filter'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-export default function useUsersList() {
+export default function useUsersListDel() {
   // Use toast
   const toast = useToast()
 
@@ -55,7 +55,7 @@ export default function useUsersList() {
 
   const fetchUsers = () => {
     store
-      .dispatch('app-user/fetchUsers', {
+      .dispatch('app-user/fetchUsersDel', {
         q: searchQuery.value,
         perPage: perPage.value,
         page: currentPage.value,
@@ -92,15 +92,15 @@ export default function useUsersList() {
     });
   }
 
-  const activeUser = (val, _id) => {
+  const deleteUser = id => {
     store
-        .dispatch('app-user/activeUser', { active: val, _id: _id })
+        .dispatch('app-user/deleteUserR', { _id: id })
         .then(response => {
           if (response.data.success) {
-            alert("success", "Action change user successfully.")
+            alert("success", "Delete user successfully.")
             fetchUsers()
           } else {
-            alert("danger", "Action change user failed.")
+            alert("danger", "Delete user failed.")
           }
         })
         .catch(() => {
@@ -115,15 +115,15 @@ export default function useUsersList() {
         })
   }
 
-  const deleteUser = id => {
+  const restoreUser = id => {
     store
-        .dispatch('app-user/deleteUser', { _id: id })
+        .dispatch('app-user/restoreUser', { _id: id })
         .then(response => {
           if (response.data.success) {
-            alert("success", "Delete user successfully.")
+            alert("success", "Restore user successfully.")
             fetchUsers()
           } else {
-            alert("danger", "Delete user failed.")
+            alert("danger", "Restore user failed.")
           }
         })
         .catch(() => {
@@ -179,8 +179,7 @@ export default function useUsersList() {
     resolveUserRoleIcon,
     refetchData,
     deleteUser,
-    activeUser,
-
+    restoreUser,
     // Extra Filters
     role,
     gender,

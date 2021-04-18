@@ -12,14 +12,14 @@
       </div>
     </b-alert>
 
-    <b-tabs pills>
-      <!-- Tab: New Account -->
+    <b-tabs v-if="userData" pills>
+      <!-- Tab: Info Account -->
       <b-tab active>
         <template #title>
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
-          <span class="d-none d-sm-inline">New Account</span>
+          <span class="d-none d-sm-inline">Info Account</span>
         </template>
-        <user-add-tab-information class="mt-2 pt-75" />
+        <user-edit-tab-information :userData="userData" class="mt-2 pt-75" />
       </b-tab>
     </b-tabs>
   </component>
@@ -31,8 +31,7 @@ import { ref, onUnmounted } from "@vue/composition-api";
 import router from "@/router";
 import store from "@/store";
 import userStoreModule from "../userStoreModule";
-import UserAddTabInformation from "./UserAddTabInformation.vue";
-import Ripple from "vue-ripple-directive";
+import UserEditTabInformation from "./UserEditTabInformation.vue";
 
 export default {
   components: {
@@ -42,7 +41,7 @@ export default {
     BAlert,
     BLink,
 
-    UserAddTabInformation,
+    UserEditTabInformation,
   },
   setup() {
     const userData = ref(null);
@@ -58,6 +57,17 @@ export default {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME))
         store.unregisterModule(USER_APP_STORE_MODULE_NAME);
     });
+
+    store
+      .dispatch("app-user/fetchUser", { _id: router.currentRoute.params.id })
+      .then((response) => {
+        userData.value = response.data.data;
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          userData.value = undefined;
+        }
+      });
 
     return {
       userData,
