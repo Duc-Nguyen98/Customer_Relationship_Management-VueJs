@@ -8,19 +8,20 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 
 export default function useUsersListDel() {
   // Use toast
-  const toast = useToast();
+  const toast = useToast()
 
   const refUserListTable = ref(null)
 
   // Table Handlers
   const tableColumns = [
+
     { key: 'stt', label: 'STT', sortable: false },
-    { key: 'avatar', label: 'AVATAR', sortable: false },
     { key: 'name', label: 'NAME', formatter: title, sortable: true },
     { key: 'telephone', label: 'TELEPHONE', sortable: true },
     { key: 'email', label: 'EMAIL', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
     { key: 'gender', label: 'GENDER', sortable: true },
+    { key: 'active', label: 'ACTIVE', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -30,8 +31,9 @@ export default function useUsersListDel() {
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  const group = ref(null)
+  const role = ref(null)
   const gender = ref(null)
+  const active = ref(null)
   const Users = ref([])
 
   const dataMeta = computed(() => {
@@ -47,24 +49,24 @@ export default function useUsersListDel() {
     fetchUsers()
   }
 
-  watch([currentPage, perPage, searchQuery, group, gender], () => {
+  watch([currentPage, perPage, searchQuery, role, gender, active], () => {
     refetchData()
   })
 
-  const fetchUsers = (ctx, callback) => {
+  const fetchUsers = () => {
     store
       .dispatch('app-user/fetchUsersDel', {
         q: searchQuery.value,
         perPage: perPage.value,
         page: currentPage.value,
-        sort: sortBy.value,
+        role: role.value,
         gender: gender.value,
-        group: group.value,
+        active: active.value,
       })
       .then(response => {
-        const { data, totalRecords } = response.data
+        const { users, totalRecords } = response.data
         totalUsers.value = totalRecords
-        Users.value = data
+        Users.value = users
       })
       .catch(() => {
         toast({
@@ -92,25 +94,25 @@ export default function useUsersListDel() {
 
   const deleteUser = id => {
     store
-      .dispatch('app-user/deleteUserR', { _id: id })
-      .then(response => {
-        if (response.data.success) {
-          alert("success", "Delete customer successfully.")
-          fetchUsers()
-        } else {
-          alert("danger", "Delete customer failed.")
-        }
-      })
-      .catch(() => {
-        toast({
-          component: ToastificationContent,
-          props: {
-            title: 'Error fetching users list',
-            icon: 'AlertTriangleIcon',
-            variant: 'danger',
-          },
+        .dispatch('app-user/deleteUserR', { _id: id })
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Delete user successfully.")
+            fetchUsers()
+          } else {
+            alert("danger", "Delete user failed.")
+          }
         })
-      })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching users list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
   }
 
   const restoreUser = id => {
@@ -118,10 +120,10 @@ export default function useUsersListDel() {
         .dispatch('app-user/restoreUser', { _id: id })
         .then(response => {
           if (response.data.success) {
-            alert("success", "Restore customer successfully.")
+            alert("success", "Restore user successfully.")
             fetchUsers()
           } else {
-            alert("danger", "Restore customer failed.")
+            alert("danger", "Restore user failed.")
           }
         })
         .catch(() => {
@@ -159,17 +161,8 @@ export default function useUsersListDel() {
     return 'UserIcon'
   }
 
-  const resolveUserStatusVariant = status => {
-    if (status === 'pending') return 'warning'
-    if (status === 'active') return 'success'
-    if (status === 'inactive') return 'secondary'
-    return 'primary'
-  }
-
   return {
     fetchUsers,
-    deleteUser,
-    restoreUser,
     Users,
     tableColumns,
     perPage,
@@ -184,12 +177,12 @@ export default function useUsersListDel() {
 
     resolveUserRoleVariant,
     resolveUserRoleIcon,
-    resolveUserStatusVariant,
     refetchData,
-
+    deleteUser,
+    restoreUser,
     // Extra Filters
-    group,
+    role,
     gender,
-    alert,
+    active,
   }
 }
