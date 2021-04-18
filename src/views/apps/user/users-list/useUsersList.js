@@ -16,7 +16,7 @@ export default function useUsersList() {
   const tableColumns = [
 
     { key: 'stt', label: 'STT', sortable: false },
-    { key: 'name', label: 'NAME', sortable: true },
+    { key: 'name', label: 'NAME', formatter: title, sortable: true },
     { key: 'telephone', label: 'TELEPHONE', sortable: true },
     { key: 'email', label: 'EMAIL', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
@@ -92,6 +92,29 @@ export default function useUsersList() {
     });
   }
 
+  const activeUser = (val, _id) => {
+    store
+        .dispatch('app-user/activeUser', { active: val, _id: _id })
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Action change user successfully.")
+            fetchUsers()
+          } else {
+            alert("danger", "Action change user failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching users list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
   const deleteUser = id => {
     store
         .dispatch('app-user/deleteUser', { _id: id })
@@ -156,6 +179,8 @@ export default function useUsersList() {
     resolveUserRoleIcon,
     refetchData,
     deleteUser,
+    activeUser,
+
     // Extra Filters
     role,
     gender,

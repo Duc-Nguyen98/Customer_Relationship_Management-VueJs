@@ -57,7 +57,7 @@ export default {
     restoreUser(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `customer/trash/restore/${_id}`)
+            .patch(process.env.VUE_APP_ROOT_API + `customer/trash/restore/${_id}`)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
