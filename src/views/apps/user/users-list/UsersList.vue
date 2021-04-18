@@ -1,5 +1,7 @@
 <template>
+
   <div>
+
     <user-list-add-new
       :is-add-new-user-sidebar-active.sync="isAddNewUserSidebarActive"
       :role-options="roleOptions"
@@ -18,10 +20,16 @@
     />
 
     <!-- Table Container Card -->
-    <b-card no-body class="mb-0">
+    <b-card
+      no-body
+      class="mb-0"
+    >
+
       <div class="m-2">
+
         <!-- Table Top -->
         <b-row>
+
           <!-- Per Page -->
           <b-col
             cols="12"
@@ -40,7 +48,10 @@
           </b-col>
 
           <!-- Search -->
-          <b-col cols="12" md="6">
+          <b-col
+            cols="12"
+            md="6"
+          >
             <div class="d-flex align-items-center justify-content-end">
               <b-form-input
                 v-model="searchQuery"
@@ -48,24 +59,15 @@
                 placeholder="Search..."
               />
               <b-button
-                class="mr-1"
                 variant="primary"
                 @click="isAddNewUserSidebarActive = true"
               >
                 <span class="text-nowrap">Add User</span>
               </b-button>
-              <b-dropdown
-                id="dropdown-1"
-                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                text="Export To"
-                variant="primary"
-              >
-                <b-dropdown-item>PDF</b-dropdown-item>
-                <b-dropdown-item>Excel</b-dropdown-item>
-              </b-dropdown>
             </div>
           </b-col>
         </b-row>
+
       </div>
 
       <b-table
@@ -80,6 +82,7 @@
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
       >
+
         <!-- Column: User -->
         <template #cell(user)="data">
           <b-media vertical-align="center">
@@ -111,9 +114,7 @@
               class="mr-50"
               :class="`text-${resolveUserRoleVariant(data.item.role)}`"
             />
-            <span class="align-text-top text-capitalize">{{
-              data.item.role
-            }}</span>
+            <span class="align-text-top text-capitalize">{{ data.item.role }}</span>
           </div>
         </template>
 
@@ -135,6 +136,7 @@
             no-caret
             :right="$store.state.appConfig.isRTL"
           >
+
             <template #button-content>
               <feather-icon
                 icon="MoreVerticalIcon"
@@ -142,16 +144,12 @@
                 class="align-middle text-body"
               />
             </template>
-            <b-dropdown-item
-              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
-            >
+            <b-dropdown-item :to="{ name: 'apps-users-view', params: { id: data.item.id } }">
               <feather-icon icon="FileTextIcon" />
               <span class="align-middle ml-50">Details</span>
             </b-dropdown-item>
 
-            <b-dropdown-item
-              :to="{ name: 'apps-users-edit', params: { id: data.item.id } }"
-            >
+            <b-dropdown-item :to="{ name: 'apps-users-edit', params: { id: data.item.id } }">
               <feather-icon icon="EditIcon" />
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
@@ -162,18 +160,17 @@
             </b-dropdown-item>
           </b-dropdown>
         </template>
+
       </b-table>
       <div class="mx-2 mb-2">
         <b-row>
+
           <b-col
             cols="12"
             sm="6"
             class="d-flex align-items-center justify-content-center justify-content-sm-start"
           >
-            <span class="text-muted"
-              >Showing {{ dataMeta.from }} to {{ dataMeta.to }} of
-              {{ dataMeta.of }} entries</span
-            >
+            <span class="text-muted">Showing {{ dataMeta.from }} to {{ dataMeta.to }} of {{ dataMeta.of }} entries</span>
           </b-col>
           <!-- Pagination -->
           <b-col
@@ -181,6 +178,7 @@
             sm="6"
             class="d-flex align-items-center justify-content-center justify-content-sm-end"
           >
+
             <b-pagination
               v-model="currentPage"
               :total-rows="totalUsers"
@@ -192,13 +190,21 @@
               next-class="next-item"
             >
               <template #prev-text>
-                <feather-icon icon="ChevronLeftIcon" size="18" />
+                <feather-icon
+                  icon="ChevronLeftIcon"
+                  size="18"
+                />
               </template>
               <template #next-text>
-                <feather-icon icon="ChevronRightIcon" size="18" />
+                <feather-icon
+                  icon="ChevronRightIcon"
+                  size="18"
+                />
               </template>
             </b-pagination>
+
           </b-col>
+
         </b-row>
       </div>
     </b-card>
@@ -207,28 +213,17 @@
 
 <script>
 import {
-  BCard,
-  BRow,
-  BCol,
-  BFormInput,
-  BButton,
-  BTable,
-  BMedia,
-  BAvatar,
-  BLink,
-  BBadge,
-  BDropdown,
-  BDropdownItem,
-  BPagination,
-} from "bootstrap-vue";
-import vSelect from "vue-select";
-import store from "@/store";
-import { ref, onUnmounted } from "@vue/composition-api";
-import { avatarText } from "@core/utils/filter";
-import UsersListFilters from "./UsersListFilters.vue";
-import useUsersList from "./useUsersList";
-import userStoreModule from "../userStoreModule";
-import UserListAddNew from "./UserListAddNew.vue";
+  BCard, BRow, BCol, BFormInput, BButton, BTable, BMedia, BAvatar, BLink,
+  BBadge, BDropdown, BDropdownItem, BPagination,
+} from 'bootstrap-vue'
+import vSelect from 'vue-select'
+import store from '@/store'
+import { ref, onUnmounted } from '@vue/composition-api'
+import { avatarText } from '@core/utils/filter'
+import UsersListFilters from './UsersListFilters.vue'
+import useUsersList from './useUsersList'
+import userStoreModule from '../userStoreModule'
+import UserListAddNew from './UserListAddNew.vue'
 
 export default {
   components: {
@@ -252,40 +247,38 @@ export default {
     vSelect,
   },
   setup() {
-    const USER_APP_STORE_MODULE_NAME = "app-user";
+    const USER_APP_STORE_MODULE_NAME = 'app-user'
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule);
+    if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(USER_APP_STORE_MODULE_NAME))
-        store.unregisterModule(USER_APP_STORE_MODULE_NAME);
-    });
+      if (store.hasModule(USER_APP_STORE_MODULE_NAME)) store.unregisterModule(USER_APP_STORE_MODULE_NAME)
+    })
 
-    const isAddNewUserSidebarActive = ref(false);
+    const isAddNewUserSidebarActive = ref(false)
 
     const roleOptions = [
-      { label: "Admin", value: "admin" },
-      { label: "Author", value: "author" },
-      { label: "Editor", value: "editor" },
-      { label: "Maintainer", value: "maintainer" },
-      { label: "Subscriber", value: "subscriber" },
-    ];
+      { label: 'Admin', value: 'admin' },
+      { label: 'Author', value: 'author' },
+      { label: 'Editor', value: 'editor' },
+      { label: 'Maintainer', value: 'maintainer' },
+      { label: 'Subscriber', value: 'subscriber' },
+    ]
 
     const planOptions = [
-      { label: "Basic", value: "basic" },
-      { label: "Company", value: "company" },
-      { label: "Enterprise", value: "enterprise" },
-      { label: "Team", value: "team" },
-    ];
+      { label: 'Basic', value: 'basic' },
+      { label: 'Company', value: 'company' },
+      { label: 'Enterprise', value: 'enterprise' },
+      { label: 'Team', value: 'team' },
+    ]
 
     const statusOptions = [
-      { label: "Pending", value: "pending" },
-      { label: "Active", value: "active" },
-      { label: "Inactive", value: "inactive" },
-    ];
+      { label: 'Pending', value: 'pending' },
+      { label: 'Active', value: 'active' },
+      { label: 'Inactive', value: 'inactive' },
+    ]
 
     const {
       fetchUsers,
@@ -310,9 +303,10 @@ export default {
       roleFilter,
       planFilter,
       statusFilter,
-    } = useUsersList();
+    } = useUsersList()
 
     return {
+
       // Sidebar
       isAddNewUserSidebarActive,
 
@@ -345,9 +339,9 @@ export default {
       roleFilter,
       planFilter,
       statusFilter,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -357,5 +351,5 @@ export default {
 </style>
 
 <style lang="scss">
-@import "@core/scss/vue/libs/vue-select.scss";
+@import '@core/scss/vue/libs/vue-select.scss';
 </style>

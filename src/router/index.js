@@ -8,7 +8,7 @@ import apps from './routes/apps'
 import dashboard from './routes/dashboard'
 import uiElements from './routes/ui-elements/index'
 import pages from './routes/pages'
-import chartsExports from './routes/charts-exports'
+import chartsMaps from './routes/charts-maps'
 import formsTable from './routes/forms-tables'
 import others from './routes/others'
 
@@ -21,15 +21,18 @@ const router = new VueRouter({
     return { x: 0, y: 0 }
   },
   routes: [
-    { path: '/', redirect: { name: 'dashboard-analytics' } },
+    { path: '/', redirect: { name: 'dashboard-ecommerce' } },
     ...apps,
     ...dashboard,
     ...pages,
-    ...chartsExports,
+    ...chartsMaps,
     ...formsTable,
     ...uiElements,
     ...others,
-    { path: '*', redirect: 'error-404' },
+    {
+      path: '*',
+      redirect: 'error-404',
+    },
   ],
 })
 

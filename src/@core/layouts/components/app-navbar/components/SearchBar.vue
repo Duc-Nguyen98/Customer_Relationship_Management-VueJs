@@ -27,7 +27,7 @@
       <b-form-input
         v-if="showSearchBar"
         v-model="searchQuery"
-        placeholder="Explore ANT - CVV"
+        placeholder="Explore Vuexy"
         autofocus
         autocomplete="off"
         @keyup.up="increaseIndex(false)"
@@ -117,7 +117,7 @@
               v-if="!suggestion_list.length && searchQuery"
               class="suggestion-group-suggestion no-results"
             >
-              <p>Không tìm thấy kết quả.</p>
+              <p>No Results Found.</p>
             </li>
           </ul>
         </li>

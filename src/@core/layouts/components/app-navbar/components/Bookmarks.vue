@@ -35,7 +35,7 @@
           <b-form-input
             id="boomark-search-input"
             v-model="searchQuery"
-            placeholder="Explore ANT-CVV..."
+            placeholder="Explore Vuexy..."
             autofocus
           />
         </div>
@@ -73,7 +73,7 @@
             v-show="!(filteredData.pages && filteredData.pages.length) && searchQuery"
             disabled
           >
-            Không tìm thấy kết quả.
+            No Results Found.
           </b-dropdown-item></vue-perfect-scrollbar>
       </li>
     </b-nav-item-dropdown>

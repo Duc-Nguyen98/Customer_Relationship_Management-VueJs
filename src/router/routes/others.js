@@ -1,8 +1,8 @@
 export default [
   {
-    path: '/permission-Control',
+    path: '/access-control',
     name: 'access-control',
-    component: () => import('@/views/extensions/acl/PermissionControl.vue'),
+    component: () => import('@/views/extensions/acl/AccessControl.vue'),
     meta: {
       resource: 'ACL',
       action: 'read',
