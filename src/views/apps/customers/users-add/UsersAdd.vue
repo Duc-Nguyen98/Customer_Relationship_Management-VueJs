@@ -59,17 +59,6 @@ export default {
         store.unregisterModule(USER_APP_STORE_MODULE_NAME);
     });
 
-    store
-      .dispatch("app-user/addUser", { })
-      .then((response) => {
-        userData.value = response.data;
-      })
-      .catch((error) => {
-        if (error.response.status === 404) {
-          userData.value = undefined;
-        }
-      });
-
     return {
       userData,
     };

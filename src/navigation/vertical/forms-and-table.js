@@ -22,8 +22,21 @@ export default [
     },
     {
         title: 'Table Users',
-        route: 'apps-users-list',
         icon: 'UserIcon',
+        children: [
+            {
+                title: 'List',
+                route: 'apps-users-list',
+            },
+            {
+                title: 'List-Delete',
+                route: 'apps-users-list-del',
+            },
+            {
+                title: 'Add',
+                route: 'apps-users-add',
+            },
+        ],
     },
     {
         title: 'Table Services',

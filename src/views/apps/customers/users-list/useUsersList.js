@@ -16,7 +16,7 @@ export default function useUsersList() {
   const tableColumns = [
     { key: 'stt', label: 'STT', sortable: false },
     { key: 'avatar', label: 'AVATAR', sortable: false },
-    { key: 'name', label: 'NAME', sortable: true },
+    { key: 'name', label: 'NAME', formatter: title, sortable: true },
     { key: 'telephone', label: 'TELEPHONE', sortable: true },
     { key: 'email', label: 'EMAIL', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },

@@ -39,6 +39,11 @@ export default [
     component: () => import('@/views/apps/user/users-list/UsersList.vue'),
   },
   {
+    path: '/apps/users/list/del',
+    name: 'apps-users-list-del',
+    component: () => import('@/views/apps/user/users-list/UsersListDel.vue'),
+  },
+  {
     path: '/apps/users/add',
     name: 'apps-users-add',
     component: () => import('@/views/apps/user/users-add/UsersAdd.vue'),

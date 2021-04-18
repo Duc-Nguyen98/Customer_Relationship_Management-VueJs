@@ -104,7 +104,7 @@
                                 :options="genderOptions"
                                 class="demo-inline-spacing"
                                 name="radio-validation"
-                                value="Male"
+                                value="0"
                         >
                         </b-form-radio-group>
                     </b-col>
@@ -381,10 +381,10 @@
                 store.dispatch('app-user/addUser', this.userData)
                     .then(response => {
                         if (response.data.success) {
-                            this.alert("success", "Delete user successfully.")
+                            this.alert("success", "Add user successfully.")
                             this.$router.push({name: 'apps-customers-list'});
                         } else {
-                            this.alert("danger", "Delete user failed.")
+                            this.alert("danger", "Add user failed.")
                         }
                     })
                     .catch(() => {

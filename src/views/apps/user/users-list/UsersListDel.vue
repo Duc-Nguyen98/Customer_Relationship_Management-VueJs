@@ -128,11 +128,7 @@
 
         <!-- Column: Active -->
         <template #cell(active)="data">
-          <b-form-checkbox v-model="data.value == 0 ? checked = false : checked = true"
-            name="check-button"
-            @input="(val) => activeUser(val ? 1 : 0, data.item._id)"
-            switch
-          ></b-form-checkbox>
+          {{ data.value == 0 ? "NonActive" : "Active" }}
         </template>
 
         <!-- Column: Actions -->
@@ -174,6 +170,13 @@
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
+            </b-dropdown-item>
+
+            <b-dropdown-item
+                    @click="restoreUser(data.item._id)"
+            >
+              <feather-icon icon="TrashIcon" />
+              <span class="align-middle ml-50">Restore</span>
             </b-dropdown-item>
           </b-dropdown>
         </template>
@@ -244,7 +247,7 @@ import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
 import UsersListFilters from "./UsersListFilters.vue";
-import useUsersList from "./useUsersList";
+import useUsersListDel from "./useUsersListDel";
 import userStoreModule from "../userStoreModule";
 import UserListAddNew from "./UserListAddNew.vue";
 import Ripple from "vue-ripple-directive";
@@ -323,8 +326,7 @@ export default {
       refUserListTable,
       refetchData,
       deleteUser,
-      activeUser,
-
+      restoreUser,
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
@@ -333,7 +335,7 @@ export default {
       role,
       gender,
       active,
-    } = useUsersList();
+    } = useUsersListDel();
 
     return {
       // Sidebar
@@ -354,7 +356,7 @@ export default {
       refetchData,
       convertDate,
       deleteUser,
-      activeUser,
+      restoreUser,
 
       // Filter
       avatarText,
