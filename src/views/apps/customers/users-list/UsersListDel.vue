@@ -48,16 +48,6 @@
                 /></span>
               </b-button>
 
-              <b-button
-                class="mr-1"
-                variant="primary"
-                :to="{ name: 'apps-customers-list-del' }"
-              >
-                <span class="text-nowrap"
-                  ><feather-icon icon="Trash2Icon"
-                /></span>
-              </b-button>
-
               <b-dropdown
                 id="dropdown-grouped"
                 v-ripple.400="'rgba(255, 255, 255, 0.15)'"
@@ -173,6 +163,14 @@
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>
+
+            <b-dropdown-item
+                    @click="restoreUser(data.item._id)"
+            >
+              <feather-icon icon="TrashIcon" />
+              <span class="align-middle ml-50">Restore</span>
+            </b-dropdown-item>
+
           </b-dropdown>
         </template>
       </b-table>
@@ -241,16 +239,12 @@ import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
 import UsersListFilters from "./UsersListFilters.vue";
-import useUsersList from "./useUsersList";
+import useUsersListDel from "./useUsersListDel";
 import userStoreModule from "../userStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
 import Vue from "vue";
-import {ToastPlugin} from "bootstrap-vue";
-
-Vue.use(ToastPlugin)
-const v = new Vue()
 
 export default {
   components: {
@@ -316,6 +310,7 @@ export default {
       refUserListTable,
       refetchData,
       deleteUser,
+      restoreUser,
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
@@ -324,7 +319,7 @@ export default {
       // Extra Filters
       group,
       gender,
-    } = useUsersList();
+    } = useUsersListDel();
 
     return {
       Users,
@@ -341,6 +336,7 @@ export default {
       convertDate,
       refetchData,
       deleteUser,
+      restoreUser,
 
       // Filter
       avatarText,

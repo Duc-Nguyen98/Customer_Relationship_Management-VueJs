@@ -14,10 +14,10 @@ export default {
           .catch(error => reject(error))
       })
     },
-    fetchUser(ctx, { id }) {
+    fetchUser(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + `user/detail/${id}`)
+          .get(process.env.VUE_APP_ROOT_API + `user/detail/${_id}`)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

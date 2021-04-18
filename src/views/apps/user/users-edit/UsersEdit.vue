@@ -93,7 +93,7 @@ export default {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME)) store.unregisterModule(USER_APP_STORE_MODULE_NAME)
     })
 
-    store.dispatch('app-user/fetchUser', { id: router.currentRoute.params.id })
+    store.dispatch('app-user/fetchUser', { _id: router.currentRoute.params.id })
       .then(response => {
         if (response.data.success) {
           userData.value = response.data.data
