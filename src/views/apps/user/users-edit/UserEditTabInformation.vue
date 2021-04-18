@@ -311,8 +311,8 @@ export default {
     ]
 
     const genderOptions = [
-      { text: 'Male', value: 'male' },
-      { text: 'Female', value: 'female' },
+      { text: 'Male', value: 0 },
+      { text: 'Female', value: 1 },
     ]
 
     const contactOptionsOptions = ['Email', 'Message', 'Phone']

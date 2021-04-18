@@ -9,6 +9,11 @@ export default [
     component: () => import('@/views/apps/customers/users-list/UsersList.vue'),
   },
   {
+    path: '/apps/customers/list/del',
+    name: 'apps-customers-list-del',
+    component: () => import('@/views/apps/customers/users-list/UsersListDel.vue'),
+  },
+  {
     path: '/apps/customers/view/:id',
     name: 'apps-customers-view',
     component: () => import('@/views/apps/customers/users-view/UsersView.vue'),

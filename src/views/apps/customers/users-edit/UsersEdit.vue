@@ -19,7 +19,7 @@
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
           <span class="d-none d-sm-inline">Info Account</span>
         </template>
-        <user-edit-tab-information :userinfo="userData" class="mt-2 pt-75" />
+        <user-edit-tab-information :userData="userData" class="mt-2 pt-75" />
       </b-tab>
     </b-tabs>
   </component>
@@ -59,9 +59,9 @@ export default {
     });
 
     store
-      .dispatch("app-user/fetchUser", { id: router.currentRoute.params.id })
+      .dispatch("app-user/fetchUser", { _id: router.currentRoute.params.id })
       .then((response) => {
-        userData.value = response.data;
+        userData.value = response.data.data;
       })
       .catch((error) => {
         if (error.response.status === 404) {
