@@ -168,13 +168,12 @@
           md="4"
         >
           <b-form-group
-            label="Password"
-            label-for="password"
+            label="Company"
+            label-for="company"
           >
             <b-form-input
               id="company"
-              type="password"
-              v-model="userData.password"
+              v-model="userData.company"
             />
           </b-form-group>
         </b-col>
@@ -285,9 +284,12 @@ export default {
     const { resolveUserRoleVariant } = useUsersList()
 
     const roleOptions = [
-      { label: "Nhân viên", value: 0 },
-        { label: "Quản lí", value: 1 },
-      ];
+      { label: 'Admin', value: 'admin' },
+      { label: 'Author', value: 'author' },
+      { label: 'Editor', value: 'editor' },
+      { label: 'Maintainer', value: 'maintainer' },
+      { label: 'Subscriber', value: 'subscriber' },
+    ]
 
     const genderOptions = [
       { text: 'Nam', value: 0 },

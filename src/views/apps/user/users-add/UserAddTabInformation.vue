@@ -18,7 +18,7 @@
                 name="Full Name"
               >
                 <b-form-input
-                  v-model="userData.name"
+                  v-model="blankData.C_Name"
                   :state="errors.length > 0 ? false : null"
                   placeholder="Enter Full Name"
                 />
@@ -37,7 +37,7 @@
                 rules="required|email"
               >
                 <b-form-input
-                  v-model="userData.email"
+                  v-model="blankData.C_Email"
                   :state="errors.length > 0 ? false : null"
                   placeholder="Email"
                 />
@@ -49,14 +49,14 @@
           <!-- Adress -->
           <b-col cols="12" md="6" lg="4">
             <b-form-group>
-              <label>Address</label>
+              <label>Adress</label>
               <validation-provider
                 #default="{ errors }"
                 name="Adress"
                 rules="required|"
               >
                 <b-form-input
-                  v-model="userData.address"
+                  v-model="blankData.C_Adress"
                   :state="errors.length > 0 ? false : null"
                   placeholder="Adress"
                 />
@@ -68,12 +68,12 @@
           <!-- Birth Day -->
           <b-col cols="12" md="6" lg="4">
             <b-form-group>
-              <label for="datepicker-placeholder">Birth Day</label>
+              <label for="datepicker-placeholder">Birth Date</label>
               <b-form-datepicker
                 id="datepicker-placeholder"
                 placeholder="Choose a date"
                 local="vi"
-                v-model="userData.birthDay"
+                v-model="blankData.C_DoB"
               />
             </b-form-group>
           </b-col>
@@ -88,7 +88,7 @@
                 name="Telephone Number"
               >
                 <b-form-input
-                  v-model="userData.telephone"
+                  v-model="blankData.C_Phone"
                   :state="errors.length > 0 ? false : null"
                   placeholder="Enter Telephone Number"
                 />
@@ -100,34 +100,13 @@
           <!--  Full Name-->
           <b-col cols="12" md="6" lg="4">
             <b-form-radio-group
-              v-model="userData.gender"
+              v-model="genderOptions.value"
               :options="genderOptions"
               class="demo-inline-spacing"
               name="radio-validation"
-              value="0"
+              value="Male"
             >
             </b-form-radio-group>
-          </b-col>
-
-          <!-- Role -->
-          <b-col>
-            <b-form-group>
-              <label>Role</label>
-              <validation-provider
-                      #default="{ errors }"
-                      rules="required"
-                      name="Role"
-              >
-                <v-select
-                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                        :options="roleOptions"
-                        class="w-100"
-                        :reduce="val => val.value"
-                        v-model="userData.role"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
           </b-col>
 
           <!-- Account Name -->
@@ -140,7 +119,7 @@
                 name="Account Name"
               >
                 <b-form-input
-                  v-model="userData.account"
+                  v-model="blankData.AccountName"
                   :state="
                     errors.length > 0 && errors.length <= 50 ? false : null
                   "
@@ -160,7 +139,7 @@
                 name="Password"
               >
                 <b-form-input
-                  v-model="userData.password"
+                  v-model="blankData.Password"
                   type="password"
                   :state="
                     errors.length > 0 && errors.length <= 50 ? false : null
@@ -169,6 +148,25 @@
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
+            </b-form-group>
+          </b-col>
+        </b-row>
+
+        <!-- Header: Personal Note -->
+        <div class="d-flex my-2">
+          <feather-icon icon="MapPinIcon" size="19" />
+          <h4 class="mb-0 ml-50">Note</h4>
+        </div>
+        <b-row>
+          <!--  Note -->
+          <b-col cols="12" md="12" lg="12">
+            <b-form-group label="Note Information" label-for="Note Information">
+              <b-form-textarea
+                id="textarea-rows"
+                placeholder="Note Here..."
+                rows="8"
+                v-model="blankData.C_Note"
+              />
             </b-form-group>
           </b-col>
         </b-row>
@@ -228,11 +226,6 @@ import {
   alphaDash,
   length,
 } from "@validations";
-import moment from "moment";
-import vSelect from 'vue-select'
-import ToastificationContent from "@core/components/toastification/ToastificationContent";
-import store from "@/store";
-import {useToast} from 'vue-toastification/composition'
 
 export default {
   components: {
@@ -248,20 +241,15 @@ export default {
     BRow,
     BCol,
     BButton,
-    vSelect
   },
   setup() {
-    const toast = useToast();
-    var today = moment();
-    const userData = ref({
-      name: "",
-      email: "",
-      address: "",
-      gender: 0,
-      role: "",
-      birthDay: moment(today._d).format("YYYY-MM-DD"),
-      account: "",
-      password: "",
+    const blankData = ref({
+      C_DoB: "1992-03-22",
+      C_Adress: "",
+      C_Name: "",
+      C_Email: "",
+      C_Phone: "",
+      C_Note: "",
     });
 
     const objSelectDistrict = {
@@ -294,14 +282,9 @@ export default {
       ],
     };
 
-    const roleOptions = [
-      { label: "Nhân viên", value: 0 },
-      { label: "Quản lí", value: 1 },
-    ];
-
     const genderOptions = [
-      { text: "Male", value: 0 },
-      { text: "Female", value: 1 },
+      { text: "Male", value: "Male" },
+      { text: "Female", value: "Female" },
     ];
 
     const validation = {
@@ -319,66 +302,27 @@ export default {
       length,
       alphaDash,
     };
-
+    ``;
     return {
-      userData,
+      blankData,
       objSelectDistrict,
       objSelectProvince,
       objSelectWard,
       genderOptions,
-      roleOptions,
       validation,
     };
   },
   methods: {
-    alert(variant, message) {
-      this.toast({
-        component: ToastificationContent,
-        props: {
-          title: "Notification",
-          icon: "BellIcon",
-          text: "👋 " + message,
-          variant,
-        },
-      });
-    },
-
     validationForm() {
       this.locale = this.locale === "en" ? "vi" : "en";
 
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
           // eslint-disable-next-line
-          this.addUser()
+          alert("form submitted!");
         }
       });
     },
-
-    addUser() {
-      store.dispatch('app-user/addUser', this.userData)
-              .then(response => {
-                console.log(response)
-                if (response.data.success) {
-                  this.alert("success", "Add user successfully.")
-                  this.$router.push({name: 'apps-users-list'});
-                } else {
-                  this.alert("danger", "Add user failed.")
-                }
-              })
-              .catch(() => {
-                toast({
-                  component: ToastificationContent,
-                  props: {
-                    title: 'Error fetching users list',
-                    icon: 'AlertTriangleIcon',
-                    variant: 'danger',
-                  },
-                });
-              });
-    }
   },
 };
 </script>
-<style lang="scss">
-  @import '@core/scss/vue/libs/vue-select.scss';
-</style>

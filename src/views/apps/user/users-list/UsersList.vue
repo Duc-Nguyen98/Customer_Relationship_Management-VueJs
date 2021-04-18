@@ -128,9 +128,9 @@
 
         <!-- Column: Active -->
         <template #cell(active)="data">
-          <b-form-checkbox v-model="data.value == 0 ? checked = false : checked = true"
+          <b-form-checkbox
+            :value="data.value"
             name="check-button"
-            @input="(val) => activeUser(val ? 1 : 0, data.item._id)"
             switch
           ></b-form-checkbox>
         </template>
@@ -323,8 +323,6 @@ export default {
       refUserListTable,
       refetchData,
       deleteUser,
-      activeUser,
-
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
@@ -354,7 +352,6 @@ export default {
       refetchData,
       convertDate,
       deleteUser,
-      activeUser,
 
       // Filter
       avatarText,

@@ -6,7 +6,7 @@ import { title } from '@core/utils/filter'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-export default function useUsersListDel() {
+export default function useUsersList() {
   // Use toast
   const toast = useToast();
 
@@ -16,7 +16,7 @@ export default function useUsersListDel() {
   const tableColumns = [
     { key: 'stt', label: 'STT', sortable: false },
     { key: 'avatar', label: 'AVATAR', sortable: false },
-    { key: 'name', label: 'NAME', formatter: title, sortable: true },
+    { key: 'name', label: 'NAME', sortable: true },
     { key: 'telephone', label: 'TELEPHONE', sortable: true },
     { key: 'email', label: 'EMAIL', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
@@ -95,10 +95,10 @@ export default function useUsersListDel() {
       .dispatch('app-user/deleteUserR', { _id: id })
       .then(response => {
         if (response.data.success) {
-          alert("success", "Delete customer successfully.")
+          alert("success", "Delete user successfully.")
           fetchUsers()
         } else {
-          alert("danger", "Delete customer failed.")
+          alert("danger", "Delete user failed.")
         }
       })
       .catch(() => {
@@ -118,10 +118,10 @@ export default function useUsersListDel() {
         .dispatch('app-user/restoreUser', { _id: id })
         .then(response => {
           if (response.data.success) {
-            alert("success", "Restore customer successfully.")
+            alert("success", "Delete user successfully.")
             fetchUsers()
           } else {
-            alert("danger", "Restore customer failed.")
+            alert("danger", "Delete user failed.")
           }
         })
         .catch(() => {
