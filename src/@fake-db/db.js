@@ -12,7 +12,6 @@ import './data/card/card-statistics'
 import './data/card/card-analytics'
 
 // Apps
-import './data/apps/calendar'
 import './data/apps/user'
 import './data/apps/email'
 import './data/apps/invoice'

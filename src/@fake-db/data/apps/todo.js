@@ -6,10 +6,10 @@ const data = {
   tasks: [
     {
       id: 1,
-      title: 'Entire change break our wife wide it daughter mention member.',
+      title: 'Xây dựng chương trình CRM cho CVV và ANT',
       dueDate: '2020-11-25',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Jacob Ramirez',
         avatar: require('@/assets/images/avatars/12.png'),
@@ -21,10 +21,10 @@ const data = {
     },
     {
       id: 2,
-      title: 'Citizen stand administration step agency century.',
+      title: 'Công dân đứng hành chính bước cơ quan thế kỷ.',
       dueDate: '2020-12-14',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Andrew Anderson',
         avatar: '',
@@ -36,10 +36,10 @@ const data = {
     },
     {
       id: 3,
-      title: 'Meet Jane and ask for coffee ❤️',
+      title: 'Gặp Jane và mời cà phê ❤️',
       dueDate: '2020-11-25',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Benjamin Jacobs',
         avatar: '',
@@ -51,10 +51,10 @@ const data = {
     },
     {
       id: 4,
-      title: 'Answer the support tickets and close completed tickets. ',
+      title: 'Trả lời các vé hỗ trợ và đóng các vé đã hoàn thành. ',
       dueDate: '2020-11-20',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Curtis Schmidt',
         avatar: require('@/assets/images/avatars/9.png'),
@@ -66,10 +66,10 @@ const data = {
     },
     {
       id: 5,
-      title: 'Test functionality of apps developed by dev team for enhancements. ',
+      title: 'Kiểm tra chức năng của các ứng dụng do nhóm nhà phát triển phát triển để có các cải tiến. ',
       dueDate: '2020-12-06',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Katherine Perkins',
         avatar: require('@/assets/images/avatars/9.png'),
@@ -84,7 +84,7 @@ const data = {
       title: 'Conduct a mini awareness meeting regarding health care. ',
       dueDate: '2020-12-06',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'David Murphy',
         avatar: '',
@@ -96,10 +96,10 @@ const data = {
     },
     {
       id: 7,
-      title: 'Plan new dashboard design with design team for Google app store. ',
+      title: 'Lên kế hoạch thiết kế trang tổng quan mới với nhóm thiết kế cho cửa hàng ứng dụng của Google. ',
       dueDate: '2020-12-05',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Karina Miller',
         avatar: require('@/assets/images/avatars/1.png'),
@@ -111,10 +111,10 @@ const data = {
     },
     {
       id: 8,
-      title: 'Pick up Nats from her school and drop at dance class😁 ',
+      title: 'Đón Nats từ trường của cô ấy và đến lớp học khiêu vũ😁 ',
       dueDate: '2020-12-08',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Thomas Moses',
         avatar: require('@/assets/images/avatars/7.png'),
@@ -129,7 +129,7 @@ const data = {
       title: 'Finish documentation and make it live',
       dueDate: '2020-11-25',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Angel Morrow',
         avatar: '',
@@ -141,10 +141,10 @@ const data = {
     },
     {
       id: 10,
-      title: 'List out all the SEO resources and send it to new SEO team. ',
+      title: 'Liệt kê tất cả các tài nguyên SEO và gửi nó cho nhóm SEO mới. ',
       dueDate: '2020-12-09',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Karen Carrillo',
         avatar: '',
@@ -156,10 +156,10 @@ const data = {
     },
     {
       id: 11,
-      title: 'Refactor Code and fix the bugs and test it on server ',
+      title: 'Refactor Code và sửa lỗi và kiểm tra nó trên máy chủ',
       dueDate: '2020-12-01',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Timothy Brewer',
         avatar: require('@/assets/images/avatars/1.png'),
@@ -171,10 +171,10 @@ const data = {
     },
     {
       id: 12,
-      title: 'Reminder to mail clients for holidays',
+      title: 'Nhắc nhở khách hàng qua thư cho ngày lễ',
       dueDate: '2020-12-09',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Brian Barry',
         avatar: '',
@@ -186,10 +186,10 @@ const data = {
     },
     {
       id: 13,
-      title: "Submit quotation for Abid's ecommerce website and admin project",
+      title: "Gửi báo giá cho trang web thương mại điện tử của Abid và dự án quản trị",
       dueDate: '2020-12-01',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Joshua Golden',
         avatar: require('@/assets/images/avatars/5.png'),
@@ -201,10 +201,10 @@ const data = {
     },
     {
       id: 14,
-      title: 'Send PPT with real-time reports',
+      title: 'Gửi PPT với báo cáo thời gian thực',
       dueDate: '2020-11-29',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Paula Hammond',
         avatar: require('@/assets/images/avatars/5.png'),
@@ -216,10 +216,10 @@ const data = {
     },
     {
       id: 15,
-      title: 'Skype Tommy for project status & report',
+      title: 'Skype Tommy để biết tình trạng dự án và báo cáo',
       dueDate: '2020-11-29',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Tyler Garcia',
         avatar: '',
@@ -231,10 +231,10 @@ const data = {
     },
     {
       id: 16,
-      title: 'Hire 5 new Fresher or Experienced, frontend and backend developers ',
+      title: 'Thuê 5 nhà phát triển mới hoặc có kinh nghiệm, giao diện người dùng và phụ trợ mới',
       dueDate: '2020-12-12',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Darlene Shields',
         avatar: require('@/assets/images/avatars/1.png'),
@@ -246,10 +246,10 @@ const data = {
     },
     {
       id: 17,
-      title: 'Plan a party for development team 🎁',
+      title: 'Lập kế hoạch tổ chức tiệc cho nhóm phát triển 🎁',
       dueDate: '2020-12-04',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Destiny Michael',
         avatar: '',
@@ -261,10 +261,10 @@ const data = {
     },
     {
       id: 18,
-      title: 'Fix Responsiveness for new structure 💻',
+      title: 'Sửa khả năng đáp ứng cho cấu trúc mới 💻',
       dueDate: '2020-11-18',
       description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
+        '<p>Nội dung demo của phần CRM Todo : ANT -CVV</p>',
       assignee: {
         fullName: 'Danielle Anderson',
         avatar: require('@/assets/images/avatars/12.png'),
