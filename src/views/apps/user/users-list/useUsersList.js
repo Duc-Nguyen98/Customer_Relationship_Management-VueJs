@@ -116,28 +116,6 @@ export default function useUsersList() {
         })
   }
 
-  const updateUser = userData => {
-    store
-        .dispatch('app-user/updateUser', userData)
-        .then(response => {
-          if (response.data.success) {
-            alert("success", "Update user successfully.")
-          } else {
-            alert("danger", "Update user failed.")
-          }
-        })
-        .catch(() => {
-          toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Error fetching users list',
-              icon: 'AlertTriangleIcon',
-              variant: 'danger',
-            },
-          })
-        })
-  }
-
   const deleteUser = id => {
     store
         .dispatch('app-user/deleteUser', { _id: id })
@@ -203,7 +181,6 @@ export default function useUsersList() {
     refetchData,
     deleteUser,
     activeUser,
-    updateUser,
     // Extra Filters
     role,
     gender,
