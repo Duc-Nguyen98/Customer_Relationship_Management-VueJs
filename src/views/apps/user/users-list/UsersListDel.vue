@@ -117,11 +117,6 @@
           {{ data.value == 0 ? "Nam" : "Nữ" }}
         </template>
 
-        <!-- Column: Active -->
-        <template #cell(active)="data">
-          {{ data.value == 0 ? "NonActive" : "Active" }}
-        </template>
-
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
@@ -285,23 +280,23 @@ export default {
     const isAddNewUserSidebarActive = ref(false);
 
     const roleOptions = [
-      { label: "Nhân viên", value: 0 },
-      { label: "Quản lí", value: 1 },
-    ];
+      { label: "Employee", value: "employee" },
+      { label: "Admin", value: "admin" },
+    ]
 
     const genderOptions = [
-      { label: "Nam", value: 0 },
-      { label: "Nữ", value: 1 },
-    ];
+      { label: "Male", value: 0 },
+      { label: "Female", value: 1 },
+    ]
 
     const activeOptions = [
       { label: "InActive", value: 0 },
       { label: "Active", value: 1 },
-    ];
+    ]
 
     const convertDate = (date) => {
       return moment(date).format("DD-MM-YYYY");
-    };
+    }
 
     const {
       fetchUsers,

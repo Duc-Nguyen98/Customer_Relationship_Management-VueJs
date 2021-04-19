@@ -74,7 +74,7 @@ export default {
   },
   props: {
     role: {
-      type: [Number, null],
+      type: [String, null],
       default: null,
     },
     gender: {
@@ -103,4 +103,9 @@ export default {
 
 <style lang="scss">
 @import '@core/scss/vue/libs/vue-select.scss';
+</style>
+<style>
+  .table {
+   min-height: 145px !important;
+  }
 </style>

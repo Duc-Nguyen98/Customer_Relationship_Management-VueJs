@@ -21,7 +21,6 @@ export default function useUsersListDel() {
     { key: 'email', label: 'EMAIL', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
     { key: 'gender', label: 'GENDER', sortable: true },
-    { key: 'active', label: 'ACTIVE', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)

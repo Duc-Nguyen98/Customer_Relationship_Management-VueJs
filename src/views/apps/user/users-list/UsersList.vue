@@ -286,28 +286,28 @@ export default {
     onUnmounted(() => {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME))
         store.unregisterModule(USER_APP_STORE_MODULE_NAME);
-    });
+    })
 
     const isAddNewUserSidebarActive = ref(false);
 
     const roleOptions = [
       { label: "Employee", value: "employee" },
       { label: "Admin", value: "admin" },
-    ];
+    ]
 
     const genderOptions = [
       { label: "Male", value: 0 },
-      { label: "Famale", value: 1 },
-    ];
+      { label: "Female", value: 1 },
+    ]
 
     const activeOptions = [
       { label: "InActive", value: 0 },
       { label: "Active", value: 1 },
-    ];
+    ]
 
     const convertDate = (date) => {
       return moment(date).format("DD-MM-YYYY");
-    };
+    }
 
     const {
       fetchUsers,

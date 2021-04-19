@@ -312,11 +312,11 @@ export default {
     const roleOptions = [
       { label: "Employee", value: "employee" },
       { label: "Admin", value: "admin" },
-    ];
+    ]
 
     const genderOptions = [
-      { text: 'Male', value: 0 },
-      { text: 'Famale', value: 1 },
+      { label: "Male", value: 0 },
+      { label: "Female", value: 1 },
     ]
 
     const permissionsData = [
