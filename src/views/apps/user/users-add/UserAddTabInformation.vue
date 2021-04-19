@@ -304,9 +304,9 @@ export default {
     ];
 
     const genderOptions = [
-      { label: "Male", value: 0 },
-      { label: "Female", value: 1 },
-    ];
+      { text: "Male", value: 0 },
+      { text: "Female", value: 1 },
+    ]
 
     const validation = {
       required,

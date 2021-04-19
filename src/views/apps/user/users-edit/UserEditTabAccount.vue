@@ -143,7 +143,7 @@
                   :options="genderOptions"
                   class="demo-inline-spacing"
                   name="radio-validation"
-                  value="Male"
+                  value="male"
           >
           </b-form-radio-group>
         </b-col>
@@ -315,8 +315,8 @@ export default {
     ]
 
     const genderOptions = [
-      { label: "Male", value: 0 },
-      { label: "Female", value: 1 },
+      { text: "Male", value: 0 },
+      { text: "Female", value: 1 },
     ]
 
     const permissionsData = [

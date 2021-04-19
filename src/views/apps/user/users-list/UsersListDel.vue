@@ -97,16 +97,15 @@
         <template #cell(role)="data">
           <div class="text-nowrap">
             <feather-icon
-              :icon="resolveUserRoleIcon(data.item.role)"
-              size="18"
-              class="mr-50"
-              :class="`text-${resolveUserRoleVariant(data.item.role)}`"
+                    :icon="resolveUserRoleIcon(data.item.role)"
+                    size="18"
+                    class="mr-50"
+                    :class="`text-${resolveUserRoleVariant(data.item.role)}`"
             />
-            <span class="align-text-top text-capitalize">{{
-              data.item.role == 0 ? "Nhận viên" : "Quản lý"
-            }}</span>
+            <span class="align-text-top text-capitalize">{{ data.item.role }}</span>
           </div>
         </template>
+
         <!-- Column: birthDay -->
         <template #cell(birthDay)="data">
           {{ convertDate(data.value) }}

@@ -19,6 +19,7 @@ export default function useUsersListDel() {
     { key: 'name', label: 'NAME', formatter: title, sortable: true },
     { key: 'telephone', label: 'TELEPHONE', sortable: true },
     { key: 'email', label: 'EMAIL', sortable: true },
+    { key: 'role', label: 'Role', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
     { key: 'gender', label: 'GENDER', sortable: true },
     { key: 'actions' },
