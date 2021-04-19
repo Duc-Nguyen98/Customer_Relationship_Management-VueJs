@@ -49,16 +49,6 @@
                   ><feather-icon icon="PlusCircleIcon"
                 /></span>
               </b-button>
-
-              <b-button
-                class="mr-1"
-                variant="primary"
-                :to="{ name: 'apps-customers-add' }"
-              >
-                <span class="text-nowrap"
-                  ><feather-icon icon="Trash2Icon"
-                /></span>
-              </b-button>
             </div>
           </b-col>
         </b-row>

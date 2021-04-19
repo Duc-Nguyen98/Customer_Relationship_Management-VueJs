@@ -19,6 +19,7 @@ export default function useUsersList() {
     { key: 'name', label: 'NAME', formatter: title, sortable: true },
     { key: 'telephone', label: 'TELEPHONE', sortable: true },
     { key: 'email', label: 'EMAIL', sortable: true },
+    { key: 'role', label: 'Role', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
     { key: 'gender', label: 'GENDER', sortable: true },
     { key: 'active', label: 'ACTIVE', sortable: true },
@@ -115,6 +116,28 @@ export default function useUsersList() {
         })
   }
 
+  const updateUser = userData => {
+    store
+        .dispatch('app-user/updateUser', userData)
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Update user successfully.")
+          } else {
+            alert("danger", "Update user failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching users list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
   const deleteUser = id => {
     store
         .dispatch('app-user/deleteUser', { _id: id })
@@ -144,7 +167,7 @@ export default function useUsersList() {
   // *===============================================---*
 
   const resolveUserRoleVariant = role => {
-    if (role === 'subscriber') return 'primary'
+    if (role === 'employee') return 'primary'
     if (role === 'author') return 'warning'
     if (role === 'maintainer') return 'success'
     if (role === 'editor') return 'info'
@@ -153,7 +176,7 @@ export default function useUsersList() {
   }
 
   const resolveUserRoleIcon = role => {
-    if (role === 'subscriber') return 'UserIcon'
+    if (role === 'employee') return 'UserIcon'
     if (role === 'author') return 'SettingsIcon'
     if (role === 'maintainer') return 'DatabaseIcon'
     if (role === 'editor') return 'Edit2Icon'
@@ -180,7 +203,7 @@ export default function useUsersList() {
     refetchData,
     deleteUser,
     activeUser,
-
+    updateUser,
     // Extra Filters
     role,
     gender,

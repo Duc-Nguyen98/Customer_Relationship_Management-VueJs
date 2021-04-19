@@ -111,9 +111,7 @@
               class="mr-50"
               :class="`text-${resolveUserRoleVariant(data.item.role)}`"
             />
-            <span class="align-text-top text-capitalize">{{
-              data.item.role == 0 ? "Nhận viên" : "Quản lý"
-            }}</span>
+            <span class="align-text-top text-capitalize">{{ data.item.role }}</span>
           </div>
         </template>
         <!-- Column: birthDay -->
@@ -123,7 +121,7 @@
 
         <!-- Column: Gender -->
         <template #cell(gender)="data">
-          {{ data.value == 0 ? "Nam" : "Nữ" }}
+          {{ data.value == 0 ? "Male" : "Famale" }}
         </template>
 
         <!-- Column: Active -->
@@ -292,13 +290,13 @@ export default {
     const isAddNewUserSidebarActive = ref(false);
 
     const roleOptions = [
-      { label: "Nhân viên", value: 0 },
-      { label: "Quản lí", value: 1 },
+      { label: "Employee", value: "employee" },
+      { label: "Admin", value: "admin" },
     ];
 
     const genderOptions = [
-      { label: "Nam", value: 0 },
-      { label: "Nữ", value: 1 },
+      { label: "Male", value: 0 },
+      { label: "Famale", value: 1 },
     ];
 
     const activeOptions = [

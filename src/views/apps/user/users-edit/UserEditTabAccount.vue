@@ -35,6 +35,7 @@
         <b-button
           variant="outline-secondary"
           class="ml-1"
+          @click="deleteUser(userData._id)"
         >
           <span class="d-none d-sm-inline">Remove</span>
           <feather-icon
@@ -60,6 +61,7 @@
           >
             <b-form-input
               id="full-name"
+              @input="follow"
               v-model="userData.name"
             />
           </b-form-group>
@@ -76,33 +78,35 @@
           >
             <b-form-input
               id="email"
+              @input="follow"
               v-model="userData.email"
             />
           </b-form-group>
         </b-col>
 
-        <!-- Field: Email -->
-        <b-col
-          cols="12"
-          md="4"
-        >
-          <b-form-group
-            label="Adress"
-            label-for="adress"
-          >
-            <b-form-input
-              id="adress"
-              v-model="userData.adress"
-              type="email"
-            />
-          </b-form-group>
-        </b-col>
+        <!-- Field: Address -->
+<!--        <b-col-->
+<!--          cols="12"-->
+<!--          md="4"-->
+<!--        >-->
+<!--          <b-form-group-->
+<!--            label="Address"-->
+<!--            label-for="address"-->
+<!--          >-->
+<!--            <b-form-input-->
+<!--              id="address"-->
+<!--              v-model="userData.address"-->
+<!--              type="email"-->
+<!--            />-->
+<!--          </b-form-group>-->
+<!--        </b-col>-->
 
         <!-- Birth Day -->
         <b-col cols="12" md="6" lg="4">
           <b-form-group>
             <label for="datepicker-placeholder">Birth Day</label>
             <b-form-datepicker
+                    @input="follow"
                     id="datepicker-placeholder"
                     placeholder="Choose a date"
                     local="vi"
@@ -121,6 +125,7 @@
                     name="Telephone Number"
             >
               <b-form-input
+                      @input="follow"
                       v-model="userData.telephone"
                       :state="errors.length > 0 ? false : null"
                       placeholder="Enter Telephone Number"
@@ -133,6 +138,7 @@
         <!-- Field: Gender -->
         <b-col cols="12" md="6" lg="4">
           <b-form-radio-group
+                  @input="follow"
                   v-model="userData.gender"
                   :options="genderOptions"
                   class="demo-inline-spacing"
@@ -152,6 +158,7 @@
             label-for="user-role"
           >
             <v-select
+                    @input="follow"
               v-model="userData.role"
               :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
               :options="roleOptions"
@@ -172,6 +179,7 @@
             label-for="password"
           >
             <b-form-input
+                    @input="follow"
               id="company"
               type="password"
               v-model="userData.password"
@@ -212,20 +220,23 @@
     </b-card>
 
     <!-- Action Buttons -->
-    <b-button
-      variant="primary"
-      class="mb-1 mb-sm-0 mr-0 mr-sm-1"
-      :block="$store.getters['app/currentBreakPoint'] === 'xs'"
-    >
-      Save Changes
-    </b-button>
-    <b-button
-      variant="outline-secondary"
-      type="reset"
-      :block="$store.getters['app/currentBreakPoint'] === 'xs'"
-    >
-      Reset
-    </b-button>
+    <div class="d-flex float-right mt-2">
+      <b-button
+              type="button"
+              variant="outline-secondary"
+              class="mr-2 text-uppercase"
+              @click="autoClose"
+      >
+        Cancel
+      </b-button>
+      <b-button @click="updateUser({userData: userData, _id: userData._id})"
+        variant="primary"
+        class="mb-1 mb-sm-0 mr-0 mr-sm-1"
+        :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+      >
+        Save Changes
+      </b-button>
+    </div>
   </div>
 </template>
 
@@ -238,7 +249,8 @@ import vSelect from 'vue-select'
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
 import { ref } from '@vue/composition-api'
 import useUsersList from '../users-list/useUsersList'
-import { ValidationProvider, ValidationObserver } from "vee-validate";
+import { ValidationProvider, ValidationObserver } from "vee-validate"
+
 import {
   required,
   email,
@@ -278,25 +290,27 @@ export default {
     ValidationObserver,
   },
   props: {
-    userData: {
+    userInfo: {
       type: Object,
       required: true,
     },
   },
   setup(props) {
 
-    const api = process.env.VUE_APP_ROOT_API;
+    const userData = ref(props.userInfo)
+console.log(userData.value)
+    const api = process.env.VUE_APP_ROOT_API
 
     const { resolveUserRoleVariant } = useUsersList()
 
     const roleOptions = [
-      { label: "Nhân viên", value: 0 },
-        { label: "Quản lí", value: 1 },
-      ];
+      { label: "Employee", value: "employee" },
+      { label: "Admin", value: "admin" },
+    ];
 
     const genderOptions = [
-      { text: 'Nam', value: 0 },
-      { text: 'Nữ', value: 1 },
+      { text: 'Male', value: 0 },
+      { text: 'Famale', value: 1 },
     ]
 
     const permissionsData = [
@@ -337,6 +351,11 @@ export default {
       },
     ]
 
+    const {
+      deleteUser,
+      updateUser,
+    } = useUsersList();
+
     // ? Demo Purpose => Update image on click of update
     const refInputEl = ref(null)
     const previewEl = ref(null)
@@ -358,17 +377,55 @@ export default {
 
     return {
       api,
+      userData,
       resolveUserRoleVariant,
       avatarText,
       roleOptions,
       genderOptions,
       permissionsData,
+      deleteUser,
+      updateUser,
 
       //  ? Demo - Update Image on click of update button
       refInputEl,
       previewEl,
       inputImageRenderer,
     }
+  },
+  methods: {
+    //check thay đổi
+    follow() {
+      this.change = true;
+    },
+
+    // auto close
+    autoClose() {
+      if (this.change) {
+        this.confirmChange()
+      } else {
+        this.$router.push({name: 'apps-users-list'})
+      }
+    },
+
+    confirmChange() {
+      this.$swal({
+        title: 'Have a litle change, are you sure cancel?',
+        html: "I will close in <strong>3</strong> seconds.",
+        icon: 'warning',
+        timer: 3000,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-outline-danger ml-1',
+        },
+        buttonsStyling: false,
+      }).then(result => {
+        if (result.value) {
+          this.$router.push({name: 'apps-users-list'})
+        }
+      })
+    },
   },
 }
 </script>
