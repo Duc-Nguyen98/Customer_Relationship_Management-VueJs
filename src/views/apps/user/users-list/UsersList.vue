@@ -122,7 +122,7 @@
 
         <!-- Column: Gender -->
         <template #cell(gender)="data">
-          {{ data.value == 0 ? "Male" : "Famale" }}
+          {{ data.value == 0 ? "Male" : "Female" }}
         </template>
 
         <!-- Column: Active -->

@@ -113,7 +113,7 @@
 
         <!-- Column: Gender -->
         <template #cell(gender)="data">
-          {{ data.value == 0 ? "Nam" : "Nữ" }}
+          {{ data.value == 0 ? "Male" : "Female" }}
         </template>
 
         <!-- Column: Actions -->
