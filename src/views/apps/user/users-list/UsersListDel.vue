@@ -117,11 +117,6 @@
           {{ data.value == 0 ? "Nam" : "Nữ" }}
         </template>
 
-        <!-- Column: Active -->
-        <template #cell(active)="data">
-          {{ data.value == 0 ? "NonActive" : "Active" }}
-        </template>
-
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
