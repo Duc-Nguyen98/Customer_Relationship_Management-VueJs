@@ -99,6 +99,7 @@
             >
               {{ data.item.name }}
             </b-link>
+            <small class="text-muted">@KH{{ data.item.idUser }}</small>
           </b-media>
         </template>
 
