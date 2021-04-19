@@ -299,8 +299,8 @@ export default {
     };
 
     const roleOptions = [
-      { label: "Nhân viên", value: 0 },
-      { label: "Quản lí", value: 1 },
+      { label: "Employee", value: "employee" },
+      { label: "Admin", value: "admin" },
     ];
 
     const genderOptions = [
