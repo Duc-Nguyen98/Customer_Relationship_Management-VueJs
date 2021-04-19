@@ -5,7 +5,7 @@
       <template #aside>
         <b-avatar
           ref="previewEl"
-          :src="userData.avatar"
+          :src="api + userData.avatar"
           :text="avatarText(userData.fullName)"
           :variant="`light-${resolveUserRoleVariant(userData.role)}`"
           size="90px"
@@ -254,6 +254,8 @@ import {
   alphaDash,
   length,
 } from "@validations";
+import store from "@/store";
+import router from "@/router";
 export default {
   components: {
     BButton,
@@ -282,6 +284,9 @@ export default {
     },
   },
   setup(props) {
+
+    const api = process.env.VUE_APP_ROOT_API;
+
     const { resolveUserRoleVariant } = useUsersList()
 
     const roleOptions = [
@@ -338,10 +343,21 @@ export default {
 
     const { inputImageRenderer } = useInputImageRenderer(refInputEl, base64 => {
       // eslint-disable-next-line no-param-reassign
-      props.userData.avatar = base64
+      // props.userData.avatar = base64
+
+      store.dispatch('app-user/uploadUser', { file: refInputEl.value.files[0], _id: router.currentRoute.params.id })
+              .then(response => {
+                if (response.data.success) {
+                  props.userData.avatar = response.data.data
+                }
+              })
+              .catch(error => {
+                props.userData.avatar = undefined
+              })
     })
 
     return {
+      api,
       resolveUserRoleVariant,
       avatarText,
       roleOptions,

@@ -70,5 +70,15 @@ export default {
             .catch(error => reject(error))
       })
     },
+    uploadUser(ctx, { file, _id }) {
+      let data = new FormData()
+      data.append('file', file)
+      return new Promise((resolve, reject) => {
+        axios
+            .post(process.env.VUE_APP_ROOT_API + `user/upload/${_id}`, data)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
   },
 }
