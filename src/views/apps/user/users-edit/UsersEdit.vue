@@ -37,23 +37,23 @@
           <span class="d-none d-sm-inline">Account</span>
         </template>
         <user-edit-tab-account
-          :user-data="userData"
+          :user-info="userData"
           class="mt-2 pt-75"
         />
       </b-tab>
 
       <!-- Tab: Information -->
-      <b-tab>
-        <template #title>
-          <feather-icon
-            icon="InfoIcon"
-            size="16"
-            class="mr-0 mr-sm-50"
-          />
-          <span class="d-none d-sm-inline">Information</span>
-        </template>
-        <user-edit-tab-information class="mt-2 pt-75" />
-      </b-tab>
+<!--      <b-tab>-->
+<!--        <template #title>-->
+<!--          <feather-icon-->
+<!--            icon="InfoIcon"-->
+<!--            size="16"-->
+<!--            class="mr-0 mr-sm-50"-->
+<!--          />-->
+<!--          <span class="d-none d-sm-inline">Information</span>-->
+<!--        </template>-->
+<!--        <user-edit-tab-information class="mt-2 pt-75" />-->
+<!--      </b-tab>-->
     </b-tabs>
   </component>
 </template>

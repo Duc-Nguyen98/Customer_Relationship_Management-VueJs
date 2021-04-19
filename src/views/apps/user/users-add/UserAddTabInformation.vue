@@ -47,23 +47,23 @@
           </b-col>
 
           <!-- Adress -->
-          <b-col cols="12" md="6" lg="4">
-            <b-form-group>
-              <label>Address</label>
-              <validation-provider
-                #default="{ errors }"
-                name="Adress"
-                rules="required|"
-              >
-                <b-form-input
-                  v-model="userData.address"
-                  :state="errors.length > 0 ? false : null"
-                  placeholder="Adress"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
+<!--          <b-col cols="12" md="6" lg="4">-->
+<!--            <b-form-group>-->
+<!--              <label>Address</label>-->
+<!--              <validation-provider-->
+<!--                #default="{ errors }"-->
+<!--                name="Adress"-->
+<!--                rules="required|"-->
+<!--              >-->
+<!--                <b-form-input-->
+<!--                  v-model="userData.address"-->
+<!--                  :state="errors.length > 0 ? false : null"-->
+<!--                  placeholder="Adress"-->
+<!--                />-->
+<!--                <small class="text-danger">{{ errors[0] }}</small>-->
+<!--              </validation-provider>-->
+<!--            </b-form-group>-->
+<!--          </b-col>-->
 
           <!-- Birth Day -->
           <b-col cols="12" md="6" lg="4">

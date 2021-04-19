@@ -164,12 +164,6 @@
             </validation-provider>
           </b-form-group>
         </b-col>
-
-        <b-col cols="12" md="6" lg="6">
-          <b-form-group label="Avatar" label-for="Avatar">
-            <b-form-file @input="follow" v-model="userDataInfo.avatar" ref="file-input"></b-form-file>
-          </b-form-group>
-        </b-col>
       </b-row>
 
       <!-- Header: Personal Info -->
