@@ -61,7 +61,6 @@
                     >
                         <b-form-input
                                 id="full-name"
-                                @input="follow"
                                 v-model="userData.name"
                         />
                     </b-form-group>
@@ -78,7 +77,6 @@
                     >
                         <b-form-input
                                 id="email"
-                                @input="follow"
                                 v-model="userData.email"
                         />
                     </b-form-group>
@@ -106,7 +104,6 @@
                     <b-form-group>
                         <label for="datepicker-placeholder">Birth Day</label>
                         <b-form-datepicker
-                                @input="follow"
                                 id="datepicker-placeholder"
                                 placeholder="Choose a date"
                                 local="vi"
@@ -125,7 +122,6 @@
                                 name="Telephone Number"
                         >
                             <b-form-input
-                                    @input="follow"
                                     v-model="userData.telephone"
                                     :state="errors.length > 0 ? false : null"
                                     placeholder="Enter Telephone Number"
@@ -138,7 +134,6 @@
                 <!-- Field: Gender -->
                 <b-col cols="12" md="6" lg="4">
                     <b-form-radio-group
-                            @input="follow"
                             v-model="userData.gender"
                             :options="genderOptions"
                             class="demo-inline-spacing"
@@ -158,7 +153,6 @@
                             label-for="user-role"
                     >
                         <v-select
-                                @input="follow"
                                 v-model="userData.role"
                                 :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                 :options="roleOptions"
@@ -179,7 +173,6 @@
                             label-for="password"
                     >
                         <b-form-input
-                                @input="follow"
                                 id="password"
                                 :type="type ? 'password' : 'text'"
                                 v-model="userData.password"
@@ -230,7 +223,7 @@
                     type="button"
                     variant="outline-secondary"
                     class="mr-2 text-uppercase"
-                    @click="autoClose"
+                    @click="$router.push({name: 'apps-users-list'})"
             >
                 Cancel
             </b-button>
@@ -464,40 +457,6 @@
                             },
                         })
                     })
-            },
-
-            //check thay đổi
-            follow() {
-                this.change = true;
-            },
-
-            // auto close
-            autoClose() {
-                if (this.change) {
-                    this.confirmChange()
-                } else {
-                    this.$router.push({name: 'apps-users-list'})
-                }
-            },
-
-            confirmChange() {
-                this.$swal({
-                    title: 'Have a litle change, are you sure cancel?',
-                    html: "I will close in <strong>3</strong> seconds.",
-                    icon: 'warning',
-                    timer: 3000,
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, redirect to list!',
-                    customClass: {
-                        confirmButton: 'btn btn-primary',
-                        cancelButton: 'btn btn-outline-danger ml-1',
-                    },
-                    buttonsStyling: false,
-                }).then(result => {
-                    if (result.value) {
-                        this.$router.push({name: 'apps-users-list'})
-                    }
-                })
             },
         },
     }
