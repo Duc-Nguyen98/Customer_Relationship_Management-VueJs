@@ -388,7 +388,7 @@
                         }
                     })
                     .catch(() => {
-                        toast({
+                        this.toast({
                             component: ToastificationContent,
                             props: {
                                 title: 'Error fetching users list',

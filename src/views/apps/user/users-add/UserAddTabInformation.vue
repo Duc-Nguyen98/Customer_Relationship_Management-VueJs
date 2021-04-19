@@ -179,6 +179,7 @@
               variant="outline-secondary"
               class="mr-2 text-uppercase"
               type="button"
+              :to="{name: 'apps-users-list'}"
             >
               Cancel
             </b-button>
@@ -248,7 +249,7 @@ export default {
     BRow,
     BCol,
     BButton,
-    vSelect
+    vSelect,
   },
   setup() {
     const toast = useToast();
@@ -258,12 +259,15 @@ export default {
       email: "",
       address: "",
       gender: 0,
+      telephone: "",
       role: "",
       birthDay: moment(today._d).format("YYYY-MM-DD"),
       account: "",
       password: "",
     });
 
+    console.log(userData.value.telephone);
+    console.log(userData.value.address);
     const objSelectDistrict = {
       selected: null,
       options: [
@@ -328,6 +332,7 @@ export default {
       genderOptions,
       roleOptions,
       validation,
+      toast,
     };
   },
   methods: {
@@ -357,7 +362,6 @@ export default {
     addUser() {
       store.dispatch('app-user/addUser', this.userData)
               .then(response => {
-                console.log(response)
                 if (response.data.success) {
                   this.alert("success", "Add user successfully.")
                   this.$router.push({name: 'apps-users-list'});
@@ -366,7 +370,7 @@ export default {
                 }
               })
               .catch(() => {
-                toast({
+                this.toast({
                   component: ToastificationContent,
                   props: {
                     title: 'Error fetching users list',
