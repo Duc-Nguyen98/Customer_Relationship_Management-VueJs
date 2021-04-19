@@ -87,7 +87,7 @@
             <template #aside>
               <b-avatar
                 size="32"
-                :src="data.item.avatar"
+                :src="api + data.item.avatar"
                 :text="avatarText(data.item.name)"
                 :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
                 :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
@@ -275,6 +275,8 @@ export default {
     Ripple,
   },
   setup() {
+
+    const api = process.env.VUE_APP_ROOT_API;
     const USER_APP_STORE_MODULE_NAME = "app-user";
 
     // Register module
@@ -338,7 +340,7 @@ export default {
     return {
       // Sidebar
       isAddNewUserSidebarActive,
-
+      api,
       fetchUsers,
       Users,
       tableColumns,
