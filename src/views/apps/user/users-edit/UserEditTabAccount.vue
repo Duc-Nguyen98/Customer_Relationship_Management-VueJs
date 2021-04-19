@@ -190,7 +190,6 @@
                     class="eye d-inline"
             />
           </b-form-group>
-          {{ userData.password }}
         </b-col>
 
       </b-row>
