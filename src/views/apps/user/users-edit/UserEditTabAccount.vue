@@ -180,11 +180,17 @@
           >
             <b-form-input
                     @input="follow"
-              id="company"
-              type="password"
+              id="password"
+              :type="type ? 'password' : 'text'"
               v-model="userData.password"
             />
+            <feather-icon
+                    @click="hidePass"
+                    :icon="type ? 'EyeOffIcon' : 'EyeIcon'"
+                    class="eye d-inline"
+            />
           </b-form-group>
+          {{ userData.password }}
         </b-col>
 
       </b-row>
@@ -298,7 +304,7 @@ export default {
   setup(props) {
 
     const userData = ref(props.userInfo)
-console.log(userData.value)
+
     const api = process.env.VUE_APP_ROOT_API
 
     const { resolveUserRoleVariant } = useUsersList()
@@ -350,6 +356,10 @@ console.log(userData.value)
         delete: true,
       },
     ]
+    const type = ref(true)
+    const hidePass = () => {
+      type.value = !type.value
+    }
 
     const {
       deleteUser,
@@ -390,9 +400,14 @@ console.log(userData.value)
       refInputEl,
       previewEl,
       inputImageRenderer,
+
+      //change Pass
+      hidePass,
+      type,
     }
   },
   methods: {
+
     //check thay đổi
     follow() {
       this.change = true;
@@ -432,4 +447,11 @@ console.log(userData.value)
 
 <style lang="scss">
 @import '@core/scss/vue/libs/vue-select.scss';
+</style>
+<style>
+  .eye {
+    position: absolute !important;
+    top: 32px !important;
+    right: 25px !important;
+  }
 </style>
