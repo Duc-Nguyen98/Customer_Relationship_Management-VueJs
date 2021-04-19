@@ -128,11 +128,11 @@
 
         <!-- Column: Active -->
         <template #cell(active)="data">
-          <b-form-checkbox v-model="data.value == 0 ? checked = false : checked = true"
-            name="check-button"
-            @input="(val) => activeUser(val ? 1 : 0, data.item._id)"
-            switch
-          ></b-form-checkbox>
+          <b-form-checkbox :checked="data.value == 0 ? false : true"
+                           @change="activeUser(data.value == 0 ? 1 : 0, data.item._id)"
+                           name="check-button"
+                           switch>
+          </b-form-checkbox>
         </template>
 
         <!-- Column: Actions -->
