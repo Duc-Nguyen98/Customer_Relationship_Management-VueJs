@@ -48,94 +48,125 @@
     </b-media>
 
     <!-- Form: Personal Info Form -->
-    <b-form class="mt-1">
+    <validation-observer ref="simpleRules">
+      <b-form class="mt-1">
       <b-row>
         <!-- Field: Name  -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Full Name" label-for="Full Name">
-            <b-form-input
-              id="fullname"
-              v-model="userData.name"
-              :state="userData.name.length > 0"
-              placeholder="Fullname"
-            />
-            <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
-            <b-form-invalid-feedback>
-              Please provide a valid input.
-            </b-form-invalid-feedback>
+          <b-form-group>
+            <label>Full Name</label>
+            <validation-provider
+                    #default="{ errors }"
+                    rules="required"
+                    name="Full Name"
+            >
+              <b-form-input
+                      v-model="userData.name"
+                      :state="errors.length > 0 ? false : null"
+                      placeholder="Enter Full Name"
+              />
+              <small class="text-danger">{{ errors[0] }}</small>
+            </validation-provider>
           </b-form-group>
         </b-col>
+
         <!-- Field: Email -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Email" label-for="Email">
-            <b-form-input
-              id="email"
-              v-model="userData.email"
-              :state="userData.email.length > 0"
-              placeholder="Email"
-            />
-            <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
-            <b-form-invalid-feedback>
-              Please provide a valid input.
-            </b-form-invalid-feedback>
+          <b-form-group>
+            <label>Email</label>
+            <validation-provider
+                    #default="{ errors }"
+                    name="Email"
+                    rules="required|email"
+            >
+              <b-form-input
+                      v-model="userData.email"
+                      :state="errors.length > 0 ? false : null"
+                      placeholder="Email"
+              />
+              <small class="text-danger">{{ errors[0] }}</small>
+            </validation-provider>
           </b-form-group>
         </b-col>
+
         <!-- Field: Adress  -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Adress" label-for="Adress">
-            <b-form-input
-              id="adress"
-
-              v-model="userData.address"
-              :state="userData.address.length > 0"
-              placeholder="Adress"
-            />
-            <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
-            <b-form-invalid-feedback>
-              Please provide a valid input.
-            </b-form-invalid-feedback>
+          <b-form-group>
+            <label>Address</label>
+            <validation-provider
+                    #default="{ errors }"
+                    name="Address"
+                    rules="required"
+            >
+              <b-form-input
+                      v-model="userData.address"
+                      :state="errors.length > 0 ? false : null"
+                      placeholder="Adress"
+              />
+              <small class="text-danger">{{ errors[0] }}</small>
+            </validation-provider>
           </b-form-group>
         </b-col>
+
         <!-- Field: Birth Date -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Birth Date" label-for="birth-date">
-            <b-form-datepicker
-              id="datepicker-valid"
-              v-model="userData.birthDay"
-              :state="userData.birthDay.length > 0"
-            />
-            <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
-            <b-form-invalid-feedback>
-              Please provide a valid input.
-            </b-form-invalid-feedback>
+          <b-form-group>
+            <label for="datepicker-placeholder">Birth Day</label>
+            <validation-provider
+                    #default="{ errors }"
+                    rules="required"
+                    name="Birth Day"
+            >
+              <b-form-datepicker
+                      id="datepicker-placeholder"
+                      placeholder="Choose a date"
+                      local="vi"
+                      v-model="userData.birthDay"
+                      :state="errors.length > 0 ? false : null"
+              />
+              <small class="text-danger">{{ errors[0] }}</small>
+            </validation-provider>
           </b-form-group>
         </b-col>
 
         <!-- Field: Telephone Number -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Telephone Number" label-for="Telephone Number">
-            <b-form-input
-              id="telephone"
-              v-model="userData.telephone"
-              :state="userData.telephone.length > 0"
-              placeholder="Telephone Number"
-            />
+          <b-form-group>
+            <label>Telephone Number</label>
+            <validation-provider
+                    #default="{ errors }"
+                    rules="required|regex:^([0-9]+)$|digits:10"
+                    name="Telephone Number"
+            >
+              <b-form-input
+                      v-model="userData.telephone"
+                      :state="errors.length > 0 ? false : null"
+                      placeholder="Enter Telephone Number"
+              />
+              <small class="text-danger">{{ errors[0] }}</small>
+            </validation-provider>
           </b-form-group>
-          <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
-          <b-form-invalid-feedback>
-            Please provide a valid input.
-          </b-form-invalid-feedback>
         </b-col>
 
         <!-- Field: Gender -->
         <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Gender" label-for="gender" label-class="mb-1">
-            <b-form-radio-group
-              id="gender"
-              v-model="userData.gender"
-              :options="genderOptions"
-              value="male"
-            />
+          <b-form-group label="Gender" label-for="Gender">
+            <validation-provider
+                    #default="{ errors }"
+                    rules="required"
+                    name="Gender"
+            >
+              <b-form-radio-group
+                      :state="errors.length > 0 ? false : null"
+                      v-model="userData.gender"
+                      :options="genderOptions"
+                      class="demo-inline-spacing"
+                      name="radio-validation"
+                      value="0"
+              >
+              </b-form-radio-group>
+              <small class="text-danger">{{ errors[0] }}</small>
+            </validation-provider>
           </b-form-group>
         </b-col>
 
@@ -144,7 +175,7 @@
             <validation-provider
                     #default="{ errors }"
                     name="Group"
-                    rules="required|"
+                    rules="required"
             >
               <v-select
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
@@ -163,10 +194,10 @@
       </b-row>
 
       <!-- Header: Personal Info -->
-      <div class="d-flex mt-2">
-        <feather-icon icon="MapPinIcon" size="19" />
-        <h4 class="mb-0 ml-50">Address</h4>
-      </div>
+<!--      <div class="d-flex mt-2">-->
+<!--        <feather-icon icon="MapPinIcon" size="19" />-->
+<!--        <h4 class="mb-0 ml-50">Address</h4>-->
+<!--      </div>-->
 
       <!-- Form: Personal Info Form -->
 <!--      <b-row class="mt-1">-->
@@ -217,13 +248,20 @@
         <!-- Field: Content -->
         <b-col cols="12" md="12" lg="12">
           <b-form-group label="Note Information" label-for="Note Information">
-            <b-form-textarea
-              id="textarea-state"
-              v-model="userData.note"
-              :state="userData.note.length > 0"
-              placeholder="Enter only 255 characters or less"
-              rows="3"
-            />
+            <validation-provider
+                    #default="{ errors }"
+                    name="Note"
+                    rules="required"
+            >
+              <b-form-textarea
+                      id="textarea-rows"
+                      placeholder="Note Here..."
+                      rows="8"
+                      v-model="userData.note"
+                      :state="errors.length > 0 ? false : null"
+              />
+              <small class="text-danger">{{ errors[0] }}</small>
+            </validation-provider>
           </b-form-group>
         </b-col>
       </b-row>
@@ -239,11 +277,12 @@
           Cancel
         </b-button>
 
-        <b-button variant="primary" @click="updateUser({userData: userData, _id: userData._id})" class="text-uppercase">
+        <b-button variant="primary" @click="validationForm({userData: userData, _id: userData._id})" class="text-uppercase">
           Save Changes
         </b-button>
       </div>
     </b-form>
+    </validation-observer>
   </div>
 </template>
 
@@ -429,27 +468,46 @@ export default {
   },
   methods: {
 
+    alert(variant, message) {
+      this.toast({
+        component: ToastificationContent,
+        props: {
+          title: "Notification",
+          icon: "BellIcon",
+          text: "👋 " + message,
+          variant,
+        },
+      });
+    },
     // Update one user
-    updateUser(userData) {
-      store.dispatch('app-user/updateUser', userData)
-              .then(response => {
-                if (response.data.success) {
-                  this.alert("success", "Update user successfully.")
-                  this.$router.push({name: 'apps-customers-list'});
-                } else {
-                  this.alert("danger", "Update user failed.")
-                }
-              })
-              .catch((error) => {
-                this.toast({
-                  component: ToastificationContent,
-                  props: {
-                    title: 'Error fetching users list',
-                    icon: 'AlertTriangleIcon',
-                    variant: 'danger',
-                  },
-                })
-              })
+    validationForm(userData) {
+      this.locale = this.locale === "en" ? "vi" : "en";
+
+      this.$refs.simpleRules.validate().then((success) => {
+        if (success) {
+          // eslint-disable-next-line
+          store.dispatch('app-user/updateUser', userData)
+                  .then(response => {
+                    if (response.data.success) {
+                      this.alert("success", "Update user successfully.")
+                      this.$router.push({name: 'apps-customers-list'});
+                    } else {
+                      this.alert("danger", "Update user failed.")
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    this.toast({
+                      component: ToastificationContent,
+                      props: {
+                        title: 'Error fetching users list',
+                        icon: 'AlertTriangleIcon',
+                        variant: 'danger',
+                      },
+                    })
+                  })
+        }
+      });
     },
 
     // Delete soft one user
