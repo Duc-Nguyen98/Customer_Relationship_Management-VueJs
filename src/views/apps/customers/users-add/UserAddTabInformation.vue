@@ -317,9 +317,9 @@
             };
 
             const groupOptions = [
-                {label: "Khách hàng thường", value: 0},
-                {label: "khách hàng thân thiết", value: 1},
-                {label: "Khách hàng tiềm năng", value: 2},
+                { label: "Normal customers", value: 0 },
+                { label: "Loyal customers", value: 1 },
+                { label: "Potential customers", value: 2 },
             ];
 
             const genderOptions = [

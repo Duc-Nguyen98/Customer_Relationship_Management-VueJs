@@ -5,7 +5,7 @@
       <template #aside>
         <b-avatar
                 ref="previewEl"
-                :src="userData.avatar"
+                :src="api + userData.avatar"
                 :text="avatarText(userData.fullName)"
                 :variant="`light-primary`"
                 size="90px"
@@ -33,6 +33,8 @@
           />
         </b-button>
         <b-button
+                v-if="userData.softDelete == 0"
+                @click="delUser(userData._id)"
                 variant="outline-secondary"
                 class="ml-1"
         >
@@ -52,10 +54,9 @@
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Full Name" label-for="Full Name">
             <b-form-input
-                    @input="follow"
               id="fullname"
-              v-model="userDataInfo.name"
-              :state="userDataInfo.name.length > 0"
+              v-model="userData.name"
+              :state="userData.name.length > 0"
               placeholder="Fullname"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -68,10 +69,9 @@
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Email" label-for="Email">
             <b-form-input
-                    @input="follow"
               id="email"
-              v-model="userDataInfo.email"
-              :state="userDataInfo.email.length > 0"
+              v-model="userData.email"
+              :state="userData.email.length > 0"
               placeholder="Email"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -85,9 +85,9 @@
           <b-form-group label="Adress" label-for="Adress">
             <b-form-input
               id="adress"
-              @input="follow"
-              v-model="userDataInfo.address"
-              :state="userDataInfo.address.length > 0"
+
+              v-model="userData.address"
+              :state="userData.address.length > 0"
               placeholder="Adress"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
@@ -100,10 +100,9 @@
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Birth Date" label-for="birth-date">
             <b-form-datepicker
-                    @input="follow"
               id="datepicker-valid"
-              v-model="userDataInfo.birthDay"
-              :state="userDataInfo.birthDay.length > 0"
+              v-model="userData.birthDay"
+              :state="userData.birthDay.length > 0"
             />
             <b-form-valid-feedback> Looks good! </b-form-valid-feedback>
             <b-form-invalid-feedback>
@@ -116,10 +115,9 @@
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Telephone Number" label-for="Telephone Number">
             <b-form-input
-                    @input="follow"
               id="telephone"
-              v-model="userDataInfo.telephone"
-              :state="userDataInfo.telephone.length > 0"
+              v-model="userData.telephone"
+              :state="userData.telephone.length > 0"
               placeholder="Telephone Number"
             />
           </b-form-group>
@@ -133,9 +131,8 @@
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Gender" label-for="gender" label-class="mb-1">
             <b-form-radio-group
-                    @input="follow"
               id="gender"
-              v-model="userDataInfo.gender"
+              v-model="userData.gender"
               :options="genderOptions"
               value="male"
             />
@@ -151,13 +148,12 @@
             >
               <v-select
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                      :value="userDataInfo.groups"
+                      :value="userData.groups"
                       :options="groupOptions"
                       class="w-100"
                       :reduce="(val) => val.value"
                       @input="(val) => {
-                          userDataInfo.groups = val;
-                           change = true;
+                          userData.groups = val;
                       }"
               />
               <small class="text-danger">{{ errors[0] }}</small>
@@ -178,7 +174,6 @@
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Province Name" label-for="city">
             <b-form-select
-                    @input="follow"
               v-model="objSelectProvince.selected"
               :options="objSelectProvince.options"
               :state="objSelectProvince.selected === null ? false : true"
@@ -192,7 +187,6 @@
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="District Name" label-for="state">
             <b-form-select
-                    @input="follow"
               v-model="objSelectDistrict.selected"
               :options="objSelectDistrict.options"
               :state="objSelectDistrict.selected === null ? false : true"
@@ -204,7 +198,6 @@
         <b-col cols="12" md="6" lg="4">
           <b-form-group label="Ward Name" label-for="country">
             <b-form-select
-                    @input="follow"
               v-model="objSelectWard.selected"
               :options="objSelectWard.options"
               :state="objSelectWard.selected === null ? false : true"
@@ -226,9 +219,8 @@
           <b-form-group label="Note Information" label-for="Note Information">
             <b-form-textarea
               id="textarea-state"
-              @input="follow"
-              v-model="userDataInfo.note"
-              :state="userDataInfo.note.length > 0"
+              v-model="userData.note"
+              :state="userData.note.length > 0"
               placeholder="Enter only 255 characters or less"
               rows="3"
             />
@@ -242,12 +234,12 @@
           type="button"
           variant="outline-secondary"
           class="mr-2 text-uppercase"
-          @click="autoClose"
+          @click="$router.push({name: 'apps-customers-list'})"
         >
           Cancel
         </b-button>
 
-        <b-button variant="primary" type="submit" class="text-uppercase">
+        <b-button variant="primary" @click="updateUser({userData: userData, _id: userData._id})" class="text-uppercase">
           Save Changes
         </b-button>
       </div>
@@ -273,13 +265,16 @@
     BMedia,
     BAvatar, BFormFile,
   } from "bootstrap-vue";
+
 import flatPickr from "vue-flatpickr-component";
 import { ref } from "@vue/composition-api";
 import vSelect from "vue-select";
 import Ripple from "vue-ripple-directive";
-import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
-import { avatarText } from '@core/utils/filter'
+import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils';
+import { avatarText } from '@core/utils/filter';
 import {ValidationProvider, ValidationObserver} from "vee-validate";
+import useUsersList from '../users-list/useUsersList';
+
   import {
     required,
     email,
@@ -295,6 +290,11 @@ import {ValidationProvider, ValidationObserver} from "vee-validate";
     alphaDash,
     length,
   } from "@validations";
+  import store from "@/store";
+  import router from "@/router";
+  import ToastificationContent from "@core/components/toastification/ToastificationContent";
+  import {useToast} from "vue-toastification/composition";
+
 export default {
   components: {
     BFormSelect,
@@ -323,15 +323,17 @@ export default {
     Ripple,
   },
   props: {
-    userData: {
+    userInfo: {
       type: Object,
       required: true,
     },
   },
-  setup({userData}) {
-    const userDataInfo = ref( userData )
-    userDataInfo.value.avatar = null
-    const change = false
+  setup({userInfo}) {
+    const toast = useToast()
+
+    const userData = ref( userInfo )
+
+    const api = process.env.VUE_APP_ROOT_API
 
     const objSelectDistrict = {
       selected: "a",
@@ -364,9 +366,9 @@ export default {
     };
 
     const groupOptions = [
-      {label: "Khách hàng thường", value: 0},
-      {label: "khách hàng thân thiết", value: 1},
-      {label: "Khách hàng tiềm năng", value: 2},
+      { label: "Normal customers", value: 0 },
+      { label: "Loyal customers", value: 1 },
+      { label: "Potential customers", value: 2 },
     ];
 
     const genderOptions = [
@@ -380,18 +382,44 @@ export default {
 
     const { inputImageRenderer } = useInputImageRenderer(refInputEl, base64 => {
       // eslint-disable-next-line no-param-reassign
-      userData.avatar = base64
+      // userData.avatar = base64
+
+      store.dispatch('app-user/uploadCustomer', {
+        file: refInputEl.value.files[0],
+        _id: router.currentRoute.params.id
+      })
+              .then(response => {
+                if (response.data.success) {
+                  userData.value.avatar = response.data.data
+                }
+              })
+              .catch(error => {
+                toast({
+                  component: ToastificationContent,
+                  props: {
+                    title: 'Error fetching users list',
+                    icon: 'AlertTriangleIcon',
+                    variant: 'danger',
+                  },
+                })
+              })
     })
 
+    const {
+      deleteUser,
+    } = useUsersList();
+
     return {
-      userDataInfo,
+      api,
+      toast,
+      userData,
       genderOptions,
       objSelectDistrict,
       objSelectProvince,
       objSelectWard,
-      change,
       groupOptions,
       avatarText,
+      deleteUser,
 
       //  ? Demo - Update Image on click of update button
       refInputEl,
@@ -400,39 +428,38 @@ export default {
     };
   },
   methods: {
-    //check thay đổi
-    follow() {
-      this.change = true;
+
+    // Update one user
+    updateUser(userData) {
+      store.dispatch('app-user/updateUser', userData)
+              .then(response => {
+                if (response.data.success) {
+                  this.alert("success", "Update user successfully.")
+                  this.$router.push({name: 'apps-customers-list'});
+                } else {
+                  this.alert("danger", "Update user failed.")
+                }
+              })
+              .catch((error) => {
+                this.toast({
+                  component: ToastificationContent,
+                  props: {
+                    title: 'Error fetching users list',
+                    icon: 'AlertTriangleIcon',
+                    variant: 'danger',
+                  },
+                })
+              })
     },
 
-    // auto close
-    autoClose() {
-      if (this.change) {
-          this.confirmChange()
-      } else {
-          this.$router.push({name: 'apps-customers-list'})
+    // Delete soft one user
+    async delUser(_id) {
+      const data = await this.deleteUser(_id);
+      if (data) {
+        this.userData.softDelete = 1;
+        this.$router.push({name: 'apps-customers-list-del'})
       }
-    },
-
-    confirmChange() {
-      this.$swal({
-        title: 'Have a litle change, are you sure cancel?',
-        html: "I will close in <strong>3</strong> seconds.",
-        icon: 'warning',
-        timer: 3000,
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        customClass: {
-          confirmButton: 'btn btn-primary',
-          cancelButton: 'btn btn-outline-danger ml-1',
-        },
-        buttonsStyling: false,
-      }).then(result => {
-        if (result.value) {
-          this.$router.push({name: 'apps-customers-list'})
-        }
-      })
-    },
+    }
   },
 };
 </script>

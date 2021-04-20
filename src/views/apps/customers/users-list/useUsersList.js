@@ -21,6 +21,7 @@ export default function useUsersList() {
     { key: 'email', label: 'EMAIL', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
     { key: 'gender', label: 'GENDER', sortable: true },
+    { key: 'groups', label: 'GROUP', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -90,13 +91,14 @@ export default function useUsersList() {
     });
   }
 
-  const deleteUser = id => {
-    store
-      .dispatch('app-user/deleteUser', { _id: id })
+  const deleteUser = (_id) => {
+    return store
+      .dispatch('app-user/deleteUser', { _id: _id })
       .then(response => {
         if (response.data.success) {
           alert("success", "Delete user successfully.")
           fetchUsers()
+          return true
         } else {
           alert("danger", "Delete user failed.")
         }
@@ -143,9 +145,24 @@ export default function useUsersList() {
     return 'primary'
   }
 
+  const checkGroup = (key) => {
+    switch (key) {
+      case 0:
+        return "Normal customers";
+        break;
+      case 1:
+        return "Loyal customers";
+        break;
+      case 2:
+        return "Potential customers";
+        break;
+    }
+  }
+
   return {
     fetchUsers,
     deleteUser,
+    checkGroup,
     Users,
     tableColumns,
     perPage,

@@ -120,7 +120,7 @@
 
         <!-- Column: lastTrading -->
         <template #cell(gender)="data">
-          {{ data.value == 0 ? 'Nam' : 'Nữ' }}
+          {{ data.value == 0 ? 'Male' : 'Female' }}
         </template>
 
         <!-- Column: Actions -->
@@ -243,13 +243,14 @@ import useUsersListDel from "./useUsersListDel";
 import userStoreModule from "../userStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
+
+// Notification
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
-import Vue from "vue";
+import { useToast } from 'vue-toastification/composition'
 
 export default {
   components: {
     UsersListFilters,
-    ToastificationContent,
     BCard,
     BRow,
     BCol,
@@ -269,6 +270,8 @@ export default {
     Ripple,
   },
   setup() {
+    const toast = useToast();
+
     const USER_APP_STORE_MODULE_NAME = "app-user";
 
     // Register module
@@ -282,14 +285,14 @@ export default {
     });
 
     const groupOptions = [
-      { label: "Khách hàng thường", value: 0 },
-      { label: "khách hàng thân thiết", value: 1 },
-      { label: "Khách hàng tiềm năng", value: 2 },
+      { label: "Normal customers", value: 0 },
+      { label: "Loyal customers", value: 1 },
+      { label: "Potential customers", value: 2 },
     ];
 
     const genderOptions = [
-      { label: "Nam", value: 0 },
-      { label: "Nữ", value: 1 },
+      { label: "Male", value: 0 },
+      { label: "Female", value: 1 },
     ];
 
     const convertDate = (date) => {
@@ -308,6 +311,7 @@ export default {
       sortBy,
       isSortDirDesc,
       refUserListTable,
+      checkGroup,
       refetchData,
       deleteUser,
       restoreUser,
@@ -333,6 +337,7 @@ export default {
       sortBy,
       isSortDirDesc,
       refUserListTable,
+      checkGroup,
       convertDate,
       refetchData,
       deleteUser,

@@ -166,6 +166,20 @@ export default function useUsersListDel() {
     return 'primary'
   }
 
+  const checkGroup = (key) => {
+    switch (key) {
+      case 0:
+        return "Khách hàng thường";
+        break;
+      case 1:
+        return "Khách hàng thân thiết";
+        break;
+      case 2:
+        return "Khách hàng tiềm năng";
+        break;
+    }
+  }
+
   return {
     fetchUsers,
     deleteUser,
@@ -186,7 +200,7 @@ export default function useUsersListDel() {
     resolveUserRoleIcon,
     resolveUserStatusVariant,
     refetchData,
-
+    checkGroup,
     // Extra Filters
     group,
     gender,

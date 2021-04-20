@@ -33,9 +33,10 @@
                     />
                 </b-button>
                 <b-button
+                        v-if="userData.softDelete == 0"
                         variant="outline-secondary"
                         class="ml-1"
-                        @click="deleteUser(userData._id)"
+                        @click="delUser(userData._id)"
                 >
                     <span class="d-none d-sm-inline">Remove</span>
                     <feather-icon
@@ -229,7 +230,7 @@
             </b-button>
             <b-button @click="updateUser({userData: userData, _id: userData._id})"
                       variant="primary"
-                      class="mb-1 mb-sm-0 mr-0 mr-sm-1"
+                      class="mb-1 mb-sm-0 mr-0 mr-sm-1 text-uppercase"
                       :block="$store.getters['app/currentBreakPoint'] === 'xs'"
             >
                 Save Changes
@@ -385,17 +386,24 @@
                 // eslint-disable-next-line no-param-reassign
                 // props.userData.avatar = base64
 
-                store.dispatch('app-user/uploadUser', {
+                store.dispatch('app-user/uploadCustomer', {
                     file: refInputEl.value.files[0],
                     _id: router.currentRoute.params.id
                 })
                     .then(response => {
                         if (response.data.success) {
-                            props.userData.avatar = response.data.data
+                            userData.value.avatar = response.data.data
                         }
                     })
                     .catch(error => {
-                        props.userData.avatar = undefined
+                        toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Error fetching users list',
+                                icon: 'AlertTriangleIcon',
+                                variant: 'danger',
+                            },
+                        })
                     })
             })
 
@@ -447,7 +455,6 @@
                         }
                     })
                     .catch((error) => {
-                        console.log(error)
                       this.toast({
                             component: ToastificationContent,
                             props: {
@@ -458,6 +465,15 @@
                         })
                     })
             },
+
+            // Delete soft one user
+            async delUser(_id) {
+                const data = await this.deleteUser(_id);
+                if (data) {
+                    this.userData.softDelete = 1;
+                    this.$router.push({name: 'apps-users-list-del'})
+                }
+            }
         },
     }
 </script>
