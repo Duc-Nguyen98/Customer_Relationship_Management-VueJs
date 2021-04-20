@@ -4,3 +4,24 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+//Custom scroll bars
+
+.scrollbar::-webkit-scrollbar-track
+ {
+   -webkit-box-shadow: 0px 0px 10px #00cfe8;
+   box-shadow: 0px 0px 10px #00cfe8;
+   background-color: #00cfe8;
+ }
+
+.scrollbar::-webkit-scrollbar
+{
+  width: 5px;
+  background-color: #00cfe8;
+}
+
+.scrollbar::-webkit-scrollbar-thumb
+{
+  background-color: #000000;
+  border: 2px solid #00cfe8;
+}

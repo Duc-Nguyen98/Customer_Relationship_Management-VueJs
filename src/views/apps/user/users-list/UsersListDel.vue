@@ -56,7 +56,7 @@
 
       <b-table
         ref="refUserListTable"
-        class="position-relative"
+        class="position-relative scrollbar"
         :items="Users"
         responsive
         :fields="tableColumns"
@@ -89,7 +89,7 @@
             >
               {{ data.item.name }}
             </b-link>
-            <small class="text-muted">@KH{{ data.item.idUser }}</small>
+            <small class="text-muted">@US{{ data.item.idUser }}</small>
           </b-media>
         </template>
 
