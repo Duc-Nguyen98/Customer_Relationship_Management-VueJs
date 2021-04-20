@@ -96,13 +96,14 @@
         <template #cell(stt)="data">
           {{ data.index + 1 }}
         </template>
+
         <!-- Column: User -->
-        <template #cell(avatar)="data">
+        <template #cell(name)="data">
           <b-media vertical-align="center">
             <template #aside>
               <b-avatar
                 size="32"
-                :src="api + data.value"
+                :src="api + data.item.avatar"
                 :text="avatarText(data.item.name)"
                 :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
                 :to="{

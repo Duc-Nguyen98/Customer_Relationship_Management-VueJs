@@ -125,9 +125,9 @@
                                 #default="{ errors }"
                                 rules="required"
                                 name="Telephone Number"
-                                :state="errors.length > 0 ? false : null"
                         >
                             <b-form-datepicker
+                                    :state="errors.length > 0 ? false : null"
                                     id="datepicker-placeholder"
                                     placeholder="Choose a date"
                                     local="vi"
@@ -148,8 +148,8 @@
                                 name="Telephone Number"
                         >
                             <b-form-input
-                                    v-model="userData.telephone"
                                     :state="errors.length > 0 ? false : null"
+                                    v-model="userData.telephone"
                                     placeholder="Enter Telephone Number"
                             />
                             <small class="text-danger">{{ errors[0] }}</small>
@@ -190,12 +190,12 @@
                             label-for="user-role"
                     >
                         <validation-provider
-                                :state="errors.length > 0 ? false : null"
                                 #default="{ errors }"
                                 rules="required"
                                 name="Role"
                         >
                             <v-select
+                                    :state="errors.length > 0 ? false : null"
                                     v-model="userData.role"
                                     :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                     :options="roleOptions"
@@ -218,12 +218,12 @@
                             label-for="password"
                     >
                         <validation-provider
-                                :state="errors.length > 0 ? false : null"
                                 #default="{ errors }"
                                 rules="required|digits:6|max:50"
                                 name="Password"
                         >
                         <b-form-input
+                                :state="errors.length > 0 ? false : null"
                                 id="password"
                                 :type="type ? 'password' : 'text'"
                                 v-model="userData.password"
