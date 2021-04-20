@@ -59,12 +59,20 @@
                 >
                     <b-form-group
                             label="Name"
-                            label-for="full-name"
+                            label-for="name"
                     >
-                        <b-form-input
-                                id="full-name"
-                                v-model="userData.name"
-                        />
+                        <validation-provider
+                                #default="{ errors }"
+                                rules="required"
+                                name="Name"
+                        >
+                            <b-form-input
+                                    id="name"
+                                    :state="errors.length > 0 ? false : null"
+                                    v-model="userData.name"
+                            />
+                            <small class="text-danger">{{ errors[0] }}</small>
+                        </validation-provider>
                     </b-form-group>
                 </b-col>
 
@@ -77,10 +85,18 @@
                             label="Email"
                             label-for="email"
                     >
+                        <validation-provider
+                                #default="{ errors }"
+                                rules="required"
+                                name="Email"
+                        >
                         <b-form-input
                                 id="email"
                                 v-model="userData.email"
+                                :state="errors.length > 0 ? false : null"
                         />
+                            <small class="text-danger">{{ errors[0] }}</small>
+                        </validation-provider>
                     </b-form-group>
                 </b-col>
 
@@ -105,12 +121,20 @@
                 <b-col cols="12" md="6" lg="4">
                     <b-form-group>
                         <label for="datepicker-placeholder">Birth Day</label>
-                        <b-form-datepicker
-                                id="datepicker-placeholder"
-                                placeholder="Choose a date"
-                                local="vi"
-                                v-model="userData.birthDay"
-                        />
+                        <validation-provider
+                                #default="{ errors }"
+                                rules="required"
+                                name="Telephone Number"
+                                :state="errors.length > 0 ? false : null"
+                        >
+                            <b-form-datepicker
+                                    id="datepicker-placeholder"
+                                    placeholder="Choose a date"
+                                    local="vi"
+                                    v-model="userData.birthDay"
+                            />
+                            <small class="text-danger">{{ errors[0] }}</small>
+                        </validation-provider>
                     </b-form-group>
                 </b-col>
 
@@ -135,14 +159,25 @@
 
                 <!-- Field: Gender -->
                 <b-col cols="12" md="6" lg="4">
-                    <b-form-radio-group
-                            v-model="userData.gender"
-                            :options="genderOptions"
-                            class="demo-inline-spacing"
-                            name="radio-validation"
-                            value="male"
-                    >
-                    </b-form-radio-group>
+                    <b-form-group>
+                        <label>Gender</label>
+                        <validation-provider
+                                #default="{ errors }"
+                                rules="required"
+                                name="Gender"
+                        >
+                            <b-form-radio-group
+                                    :state="errors.length > 0 ? false : null"
+                                    v-model="userData.gender"
+                                    :options="genderOptions"
+                                    class="demo-inline-spacing"
+                                    name="radio-validation"
+                                    value="male"
+                            >
+                            </b-form-radio-group>
+                            <small class="text-danger">{{ errors[0] }}</small>
+                        </validation-provider>
+                    </b-form-group>
                 </b-col>
 
                 <!-- Field: Role -->
@@ -154,14 +189,22 @@
                             label="User Role"
                             label-for="user-role"
                     >
-                        <v-select
-                                v-model="userData.role"
-                                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                :options="roleOptions"
-                                :reduce="val => val.value"
-                                :clearable="false"
-                                input-id="user-role"
-                        />
+                        <validation-provider
+                                :state="errors.length > 0 ? false : null"
+                                #default="{ errors }"
+                                rules="required"
+                                name="Role"
+                        >
+                            <v-select
+                                    v-model="userData.role"
+                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                    :options="roleOptions"
+                                    :reduce="val => val.value"
+                                    :clearable="false"
+                                    input-id="user-role"
+                            />
+                            <small class="text-danger">{{ errors[0] }}</small>
+                        </validation-provider>
                     </b-form-group>
                 </b-col>
 
@@ -174,6 +217,12 @@
                             label="Password"
                             label-for="password"
                     >
+                        <validation-provider
+                                :state="errors.length > 0 ? false : null"
+                                #default="{ errors }"
+                                rules="required|digits:6|max:50"
+                                name="Password"
+                        >
                         <b-form-input
                                 id="password"
                                 :type="type ? 'password' : 'text'"
@@ -184,6 +233,8 @@
                                 :icon="type ? 'EyeOffIcon' : 'EyeIcon'"
                                 class="eye d-inline"
                         />
+                            <small class="text-danger">{{ errors[0] }}</small>
+                        </validation-provider>
                     </b-form-group>
                 </b-col>
 
