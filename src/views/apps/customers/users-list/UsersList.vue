@@ -128,9 +128,14 @@
           {{ convertDate(data.value) }}
         </template>
 
-        <!-- Column: lastTrading -->
+        <!-- Column: Gender -->
         <template #cell(gender)="data">
-          {{ data.value == 0 ? 'Nam' : 'Nữ' }}
+          {{ data.value == 0 ? 'Male' : 'Female' }}
+        </template>
+
+        <!-- Column: Groups -->
+        <template #cell(groups)="data">
+          <b-badge pill :variant="pillGroups(data.value)" class="badge-glow">{{ checkGroup(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -231,7 +236,7 @@ import {
   BMedia,
   BAvatar,
   BLink,
-  // BBadge,
+  BBadge,
   BDropdown,
   BDropdownItem,
   BPagination,
@@ -245,17 +250,15 @@ import useUsersList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
-import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
-import Vue from "vue";
-import {ToastPlugin} from "bootstrap-vue";
 
-Vue.use(ToastPlugin)
-const v = new Vue()
+// Notification
+import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+import { useToast } from 'vue-toastification/composition'
+
 
 export default {
   components: {
     UsersListFilters,
-    ToastificationContent,
     BCard,
     BRow,
     BCol,
@@ -265,7 +268,7 @@ export default {
     BMedia,
     BAvatar,
     BLink,
-    // BBadge,
+    BBadge,
     BDropdown,
     BDropdownItem,
     BPagination,
@@ -275,6 +278,9 @@ export default {
     Ripple,
   },
   setup() {
+
+    const toast = useToast();
+
     const USER_APP_STORE_MODULE_NAME = "app-user";
 
     // Register module
@@ -288,14 +294,28 @@ export default {
     });
 
     const groupOptions = [
-      { label: "Khách hàng thường", value: 0 },
-      { label: "khách hàng thân thiết", value: 1 },
-      { label: "Khách hàng tiềm năng", value: 2 },
+      { label: "Normal customers", value: 0 },
+      { label: "Loyal customers", value: 1 },
+      { label: "Potential customers", value: 2 },
     ];
 
+    const pillGroups = (group) => {
+      switch (group) {
+        case 0:
+          return 'primary';
+          break;
+        case 1:
+          return 'success';
+          break;
+        case 2:
+          return 'info';
+          break;
+      }
+    };
+
     const genderOptions = [
-      { label: "Nam", value: 0 },
-      { label: "Nữ", value: 1 },
+      { label: "Male", value: 0 },
+      { label: "Female", value: 1 },
     ];
 
     const convertDate = (date) => {
@@ -316,6 +336,7 @@ export default {
       refUserListTable,
       refetchData,
       deleteUser,
+      checkGroup,
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
@@ -327,6 +348,7 @@ export default {
     } = useUsersList();
 
     return {
+      toast,
       Users,
       tableColumns,
       perPage,
@@ -338,9 +360,11 @@ export default {
       sortBy,
       isSortDirDesc,
       refUserListTable,
+      checkGroup,
       convertDate,
       refetchData,
       deleteUser,
+      pillGroups,
 
       // Filter
       avatarText,

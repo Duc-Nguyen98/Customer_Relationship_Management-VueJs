@@ -38,6 +38,14 @@ export default {
           .catch(error => reject(error))
       })
     },
+    updateUser(ctx, { userData, _id }) {
+      return new Promise((resolve, reject) => {
+        axios
+            .put(process.env.VUE_APP_ROOT_API + `user/update/${_id}`, userData)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
     deleteUser(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
@@ -58,6 +66,16 @@ export default {
       return new Promise((resolve, reject) => {
         axios
             .patch(process.env.VUE_APP_ROOT_API + `customer/trash/restore/${_id}`)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    uploadCustomer(ctx, { file, _id }) {
+      let data = new FormData()
+      data.append('file', file)
+      return new Promise((resolve, reject) => {
+        axios
+            .post(process.env.VUE_APP_ROOT_API + `customer/upload/${_id}`, data)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
