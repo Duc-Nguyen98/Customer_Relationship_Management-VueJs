@@ -141,16 +141,6 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-                    :to="{
-                name: 'apps-users-edit',
-                params: { id: data.item._id },
-              }"
-            >
-              <feather-icon icon="PlusCircleIcon" />
-              <span class="align-middle ml-50">Edit</span>
-            </b-dropdown-item>
-
-            <b-dropdown-item
                     @click="deleteUser(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
