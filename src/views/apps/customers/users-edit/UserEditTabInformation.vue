@@ -430,6 +430,15 @@ export default {
               .then(response => {
                 if (response.data.success) {
                   userData.value.avatar = response.data.data
+                  toast({
+                    component: ToastificationContent,
+                    props: {
+                      title: "Notification",
+                      icon: "BellIcon",
+                      text: "👋 Upload avatar success",
+                      variant: 'success',
+                    },
+                  })
                 }
               })
               .catch(error => {
