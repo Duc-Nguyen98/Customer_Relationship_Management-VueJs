@@ -15,7 +15,6 @@ export default function useUsersList() {
   // Table Handlers
   const tableColumns = [
     { key: 'stt', label: 'STT', sortable: false },
-    { key: 'avatar', label: 'AVATAR', sortable: false },
     { key: 'name', label: 'NAME', formatter: title, sortable: true },
     { key: 'telephone', label: 'TELEPHONE', sortable: true },
     { key: 'email', label: 'EMAIL', sortable: true },

@@ -92,7 +92,7 @@
             <template #aside>
               <b-avatar
                 size="32"
-                src="/img/5-small.a4eb6d6e.png"
+                :src="api + data.value"
                 :text="avatarText(data.item.name)"
                 :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
                 :to="{
@@ -108,7 +108,7 @@
               }"
               class="font-weight-bold d-block text-nowrap"
             >
-              {{ data.item.fullName }}
+              {{ data.item.name }}
             </b-link>
           </b-media>
         </template>
@@ -275,8 +275,10 @@ export default {
     Ripple,
   },
   setup() {
+
     const toast = useToast();
 
+    const api = process.env.VUE_APP_ROOT_API;
     const USER_APP_STORE_MODULE_NAME = "app-user";
 
     // Register module
@@ -345,6 +347,7 @@ export default {
     } = useUsersListDel();
 
     return {
+      api,
       Users,
       tableColumns,
       perPage,
