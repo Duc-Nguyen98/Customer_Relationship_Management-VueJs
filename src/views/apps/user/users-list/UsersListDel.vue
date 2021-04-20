@@ -56,7 +56,7 @@
 
       <b-table
         ref="refUserListTable"
-        class="position-relative"
+        class="position-relative scrollbar"
         :items="Users"
         responsive
         :fields="tableColumns"
