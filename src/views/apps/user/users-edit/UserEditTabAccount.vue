@@ -438,13 +438,22 @@
                 // eslint-disable-next-line no-param-reassign
                 // props.userData.avatar = base64
 
-                store.dispatch('app-user/uploadCustomer', {
+                store.dispatch('app-user/uploadUser', {
                     file: refInputEl.value.files[0],
                     _id: router.currentRoute.params.id
                 })
                     .then(response => {
                         if (response.data.success) {
                             userData.value.avatar = response.data.data
+                            toast({
+                                component: ToastificationContent,
+                                props: {
+                                    title: "Notification",
+                                    icon: "BellIcon",
+                                    text: "👋 Upload avatar success",
+                                    variant: 'success',
+                                },
+                            })
                         }
                     })
                     .catch(error => {
