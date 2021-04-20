@@ -134,45 +134,45 @@
                     <feather-icon icon="MapPinIcon" size="19"/>
                     <h4 class="mb-0 ml-50">Address</h4>
                 </div>
-                <b-row>
-                    <!--  Province Name-->
-                    <b-col cols="12" md="6" lg="4">
-                        <b-form-group>
-                            <label>Province Name</label>
-                            <validation-provider
-                                    #default="{ errors }"
-                                    rules="required"
-                                    name="Province Name"
-                            >
-                                <b-form-select
-                                        v-model="objSelectProvince.selected"
-                                        :options="objSelectProvince.options"
-                                />
-                                <small class="text-danger">{{ errors[0] }}</small>
-                            </validation-provider>
-                        </b-form-group>
-                    </b-col>
-                    <!--  District Name-->
-                    <b-col cols="12" md="6" lg="4">
-                        <b-form-group>
-                            <label>District Name</label>
-                            <b-form-select
-                                    v-model="objSelectDistrict.selected"
-                                    :options="objSelectDistrict.options"
-                            />
-                        </b-form-group>
-                    </b-col>
-                    <!--  Ward Name-->
-                    <b-col cols="12" md="6" lg="4">
-                        <b-form-group>
-                            <label>Ward Name</label>
-                            <b-form-select
-                                    v-model="objSelectWard.selected"
-                                    :options="objSelectWard.options"
-                            />
-                        </b-form-group>
-                    </b-col>
-                </b-row>
+<!--                <b-row>-->
+<!--                    &lt;!&ndash;  Province Name&ndash;&gt;-->
+<!--                    <b-col cols="12" md="6" lg="4">-->
+<!--                        <b-form-group>-->
+<!--                            <label>Province Name</label>-->
+<!--                            <validation-provider-->
+<!--                                    #default="{ errors }"-->
+<!--                                    rules="required"-->
+<!--                                    name="Province Name"-->
+<!--                            >-->
+<!--                                <b-form-select-->
+<!--                                        v-model="objSelectProvince.selected"-->
+<!--                                        :options="objSelectProvince.options"-->
+<!--                                />-->
+<!--                                <small class="text-danger">{{ errors[0] }}</small>-->
+<!--                            </validation-provider>-->
+<!--                        </b-form-group>-->
+<!--                    </b-col>-->
+<!--                    &lt;!&ndash;  District Name&ndash;&gt;-->
+<!--                    <b-col cols="12" md="6" lg="4">-->
+<!--                        <b-form-group>-->
+<!--                            <label>District Name</label>-->
+<!--                            <b-form-select-->
+<!--                                    v-model="objSelectDistrict.selected"-->
+<!--                                    :options="objSelectDistrict.options"-->
+<!--                            />-->
+<!--                        </b-form-group>-->
+<!--                    </b-col>-->
+<!--                    &lt;!&ndash;  Ward Name&ndash;&gt;-->
+<!--                    <b-col cols="12" md="6" lg="4">-->
+<!--                        <b-form-group>-->
+<!--                            <label>Ward Name</label>-->
+<!--                            <b-form-select-->
+<!--                                    v-model="objSelectWard.selected"-->
+<!--                                    :options="objSelectWard.options"-->
+<!--                            />-->
+<!--                        </b-form-group>-->
+<!--                    </b-col>-->
+<!--                </b-row>-->
                 <!-- Header: Personal Note -->
                 <div class="d-flex my-2">
                     <feather-icon icon="ClipboardIcon" size="19"/>

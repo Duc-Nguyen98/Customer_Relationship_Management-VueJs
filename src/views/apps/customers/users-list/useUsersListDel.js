@@ -21,6 +21,7 @@ export default function useUsersListDel() {
     { key: 'email', label: 'EMAIL', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
     { key: 'gender', label: 'GENDER', sortable: true },
+    { key: 'groups', label: 'GROUPS', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -169,13 +170,13 @@ export default function useUsersListDel() {
   const checkGroup = (key) => {
     switch (key) {
       case 0:
-        return "Khách hàng thường";
+        return "Normal customers";
         break;
       case 1:
-        return "Khách hàng thân thiết";
+        return "Loyal customers";
         break;
       case 2:
-        return "Khách hàng tiềm năng";
+        return "Potential customers";
         break;
     }
   }

@@ -169,42 +169,42 @@
       </div>
 
       <!-- Form: Personal Info Form -->
-      <b-row class="mt-1">
-        <!-- Field: Province Name -->
-        <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Province Name" label-for="city">
-            <b-form-select
-              v-model="objSelectProvince.selected"
-              :options="objSelectProvince.options"
-              :state="objSelectProvince.selected === null ? false : true"
-            />
+<!--      <b-row class="mt-1">-->
+<!--        &lt;!&ndash; Field: Province Name &ndash;&gt;-->
+<!--        <b-col cols="12" md="6" lg="4">-->
+<!--          <b-form-group label="Province Name" label-for="city">-->
+<!--            <b-form-select-->
+<!--              v-model="objSelectProvince.selected"-->
+<!--              :options="objSelectProvince.options"-->
+<!--              :state="objSelectProvince.selected === null ? false : true"-->
+<!--            />-->
 
-            <!-- <b-form-input id="city" v-model="userDataInfo.city" /> -->
-          </b-form-group>
-        </b-col>
+<!--            &lt;!&ndash; <b-form-input id="city" v-model="userDataInfo.city" /> &ndash;&gt;-->
+<!--          </b-form-group>-->
+<!--        </b-col>-->
 
-        <!-- Field: District Name -->
-        <b-col cols="12" md="6" lg="4">
-          <b-form-group label="District Name" label-for="state">
-            <b-form-select
-              v-model="objSelectDistrict.selected"
-              :options="objSelectDistrict.options"
-              :state="objSelectDistrict.selected === null ? false : true"
-            />
-          </b-form-group>
-        </b-col>
+<!--        &lt;!&ndash; Field: District Name &ndash;&gt;-->
+<!--        <b-col cols="12" md="6" lg="4">-->
+<!--          <b-form-group label="District Name" label-for="state">-->
+<!--            <b-form-select-->
+<!--              v-model="objSelectDistrict.selected"-->
+<!--              :options="objSelectDistrict.options"-->
+<!--              :state="objSelectDistrict.selected === null ? false : true"-->
+<!--            />-->
+<!--          </b-form-group>-->
+<!--        </b-col>-->
 
-        <!-- Field: Ward Name -->
-        <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Ward Name" label-for="country">
-            <b-form-select
-              v-model="objSelectWard.selected"
-              :options="objSelectWard.options"
-              :state="objSelectWard.selected === null ? false : true"
-            />
-          </b-form-group>
-        </b-col>
-      </b-row>
+<!--        &lt;!&ndash; Field: Ward Name &ndash;&gt;-->
+<!--        <b-col cols="12" md="6" lg="4">-->
+<!--          <b-form-group label="Ward Name" label-for="country">-->
+<!--            <b-form-select-->
+<!--              v-model="objSelectWard.selected"-->
+<!--              :options="objSelectWard.options"-->
+<!--              :state="objSelectWard.selected === null ? false : true"-->
+<!--            />-->
+<!--          </b-form-group>-->
+<!--        </b-col>-->
+<!--      </b-row>-->
 
       <!-- Header: Personal Info -->
       <div class="d-flex mt-2">

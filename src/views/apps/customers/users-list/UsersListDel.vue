@@ -123,6 +123,11 @@
           {{ data.value == 0 ? 'Male' : 'Female' }}
         </template>
 
+        <!-- Column: Groups -->
+        <template #cell(groups)="data">
+          <b-badge pill :variant="pillGroups(data.value)" class="badge-glow">{{ checkGroup(data.value) }}</b-badge>
+        </template>
+
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
@@ -229,7 +234,7 @@ import {
   BMedia,
   BAvatar,
   BLink,
-  // BBadge,
+  BBadge,
   BDropdown,
   BDropdownItem,
   BPagination,
@@ -260,7 +265,7 @@ export default {
     BMedia,
     BAvatar,
     BLink,
-    // BBadge,
+    BBadge,
     BDropdown,
     BDropdownItem,
     BPagination,
@@ -289,6 +294,20 @@ export default {
       { label: "Loyal customers", value: 1 },
       { label: "Potential customers", value: 2 },
     ];
+
+    const pillGroups = (group) => {
+      switch (group) {
+        case 0:
+          return 'primary';
+          break;
+        case 1:
+          return 'success';
+          break;
+        case 2:
+          return 'info';
+          break;
+      }
+    };
 
     const genderOptions = [
       { label: "Male", value: 0 },
@@ -342,7 +361,7 @@ export default {
       refetchData,
       deleteUser,
       restoreUser,
-
+      pillGroups,
       // Filter
       avatarText,
 
