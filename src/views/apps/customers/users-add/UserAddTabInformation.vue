@@ -53,7 +53,7 @@
                             <validation-provider
                                     #default="{ errors }"
                                     name="Address"
-                                    rules="required|"
+                                    rules="required"
                             >
                                 <b-form-input
                                         v-model="userData.address"
@@ -69,18 +69,26 @@
                     <b-col cols="12" md="6" lg="4">
                         <b-form-group>
                             <label for="datepicker-placeholder">Birth Day</label>
+                            <validation-provider
+                                    #default="{ errors }"
+                                    rules="required"
+                                    name="Birth Day"
+                            >
                             <b-form-datepicker
                                     id="datepicker-placeholder"
                                     placeholder="Choose a date"
                                     local="vi"
                                     v-model="userData.birthDay"
+                                    :state="errors.length > 0 ? false : null"
                             />
+                                <small class="text-danger">{{ errors[0] }}</small>
+                            </validation-provider>
                         </b-form-group>
                     </b-col>
 
                     <!-- Telephone Number -->
                     <b-col cols="12" md="6" lg="4">
-                        <b-form-group>
+                        <b-form-group label="Telephone" label-for="Telephone">
                             <label>Telephone Number</label>
                             <validation-provider
                                     #default="{ errors }"
@@ -97,16 +105,26 @@
                         </b-form-group>
                     </b-col>
 
-                    <!--  Full Name-->
+                    <!--  Gender -->
                     <b-col cols="12" md="6" lg="4">
-                        <b-form-radio-group
-                                v-model="userData.gender"
-                                :options="genderOptions"
-                                class="demo-inline-spacing"
-                                name="radio-validation"
-                                value="0"
-                        >
-                        </b-form-radio-group>
+                        <b-form-group label="Gender" label-for="Gender">
+                            <validation-provider
+                                    #default="{ errors }"
+                                    rules="required"
+                                    name="Gender"
+                            >
+                            <b-form-radio-group
+                                    :state="errors.length > 0 ? false : null"
+                                    v-model="userData.gender"
+                                    :options="genderOptions"
+                                    class="demo-inline-spacing"
+                                    name="radio-validation"
+                                    value="0"
+                            >
+                            </b-form-radio-group>
+                                <small class="text-danger">{{ errors[0] }}</small>
+                            </validation-provider>
+                        </b-form-group>
                     </b-col>
 
                     <b-col cols="12" md="6" lg="6">
@@ -114,9 +132,10 @@
                             <validation-provider
                                     #default="{ errors }"
                                     name="Group"
-                                    rules="required|"
+                                    rules="required"
                             >
                                 <v-select
+                                        :state="errors.length > 0 ? false : null"
                                         :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                         :value="userData.groups"
                                         :options="groupOptions"
@@ -130,49 +149,49 @@
                     </b-col>
                 </b-row>
                 <!-- Header: Personal Select -->
-                <div class="d-flex my-2">
-                    <feather-icon icon="MapPinIcon" size="19"/>
-                    <h4 class="mb-0 ml-50">Address</h4>
-                </div>
-                <b-row>
-                    <!--  Province Name-->
-                    <b-col cols="12" md="6" lg="4">
-                        <b-form-group>
-                            <label>Province Name</label>
-                            <validation-provider
-                                    #default="{ errors }"
-                                    rules="required"
-                                    name="Province Name"
-                            >
-                                <b-form-select
-                                        v-model="objSelectProvince.selected"
-                                        :options="objSelectProvince.options"
-                                />
-                                <small class="text-danger">{{ errors[0] }}</small>
-                            </validation-provider>
-                        </b-form-group>
-                    </b-col>
-                    <!--  District Name-->
-                    <b-col cols="12" md="6" lg="4">
-                        <b-form-group>
-                            <label>District Name</label>
-                            <b-form-select
-                                    v-model="objSelectDistrict.selected"
-                                    :options="objSelectDistrict.options"
-                            />
-                        </b-form-group>
-                    </b-col>
-                    <!--  Ward Name-->
-                    <b-col cols="12" md="6" lg="4">
-                        <b-form-group>
-                            <label>Ward Name</label>
-                            <b-form-select
-                                    v-model="objSelectWard.selected"
-                                    :options="objSelectWard.options"
-                            />
-                        </b-form-group>
-                    </b-col>
-                </b-row>
+<!--                <div class="d-flex my-2">-->
+<!--                    <feather-icon icon="MapPinIcon" size="19"/>-->
+<!--                    <h4 class="mb-0 ml-50">Address</h4>-->
+<!--                </div>-->
+<!--                <b-row>-->
+<!--                    &lt;!&ndash;  Province Name&ndash;&gt;-->
+<!--                    <b-col cols="12" md="6" lg="4">-->
+<!--                        <b-form-group>-->
+<!--                            <label>Province Name</label>-->
+<!--                            <validation-provider-->
+<!--                                    #default="{ errors }"-->
+<!--                                    rules="required"-->
+<!--                                    name="Province Name"-->
+<!--                            >-->
+<!--                                <b-form-select-->
+<!--                                        v-model="objSelectProvince.selected"-->
+<!--                                        :options="objSelectProvince.options"-->
+<!--                                />-->
+<!--                                <small class="text-danger">{{ errors[0] }}</small>-->
+<!--                            </validation-provider>-->
+<!--                        </b-form-group>-->
+<!--                    </b-col>-->
+<!--                    &lt;!&ndash;  District Name&ndash;&gt;-->
+<!--                    <b-col cols="12" md="6" lg="4">-->
+<!--                        <b-form-group>-->
+<!--                            <label>District Name</label>-->
+<!--                            <b-form-select-->
+<!--                                    v-model="objSelectDistrict.selected"-->
+<!--                                    :options="objSelectDistrict.options"-->
+<!--                            />-->
+<!--                        </b-form-group>-->
+<!--                    </b-col>-->
+<!--                    &lt;!&ndash;  Ward Name&ndash;&gt;-->
+<!--                    <b-col cols="12" md="6" lg="4">-->
+<!--                        <b-form-group>-->
+<!--                            <label>Ward Name</label>-->
+<!--                            <b-form-select-->
+<!--                                    v-model="objSelectWard.selected"-->
+<!--                                    :options="objSelectWard.options"-->
+<!--                            />-->
+<!--                        </b-form-group>-->
+<!--                    </b-col>-->
+<!--                </b-row>-->
                 <!-- Header: Personal Note -->
                 <div class="d-flex my-2">
                     <feather-icon icon="ClipboardIcon" size="19"/>
@@ -182,12 +201,20 @@
                     <!--  Note -->
                     <b-col cols="12" md="12" lg="12">
                         <b-form-group label="Note Information" label-for="Note Information">
-                            <b-form-textarea
-                                    id="textarea-rows"
-                                    placeholder="Note Here..."
-                                    rows="8"
-                                    v-model="userData.note"
-                            />
+                            <validation-provider
+                                    #default="{ errors }"
+                                    name="Note"
+                                    rules="required"
+                            >
+                                <b-form-textarea
+                                        id="textarea-rows"
+                                        placeholder="Note Here..."
+                                        rows="8"
+                                        v-model="userData.note"
+                                        :state="errors.length > 0 ? false : null"
+                                />
+                                <small class="text-danger">{{ errors[0] }}</small>
+                            </validation-provider>
                         </b-form-group>
                     </b-col>
                 </b-row>

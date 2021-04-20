@@ -48,7 +48,8 @@
         </b-media>
 
         <!-- User Info: Input Fields -->
-        <b-form>
+        <validation-observer ref="simpleRules">
+            <b-form>
             <b-row>
 
                 <!-- Field: Username -->
@@ -188,7 +189,7 @@
 
             </b-row>
         </b-form>
-
+        </validation-observer>
         <!-- PERMISSION TABLE -->
         <b-card
                 no-body
@@ -228,7 +229,7 @@
             >
                 Cancel
             </b-button>
-            <b-button @click="updateUser({userData: userData, _id: userData._id})"
+            <b-button @click="validationForm({userData: userData, _id: userData._id})"
                       variant="primary"
                       class="mb-1 mb-sm-0 mr-0 mr-sm-1 text-uppercase"
                       :block="$store.getters['app/currentBreakPoint'] === 'xs'"
@@ -442,28 +443,33 @@
                 });
             },
 
-            // Update one user
-            updateUser(userData) {
-                store
-                    .dispatch('app-user/updateUser', userData)
-                    .then(response => {
-                        if (response.data.success) {
-                            this.alert("success", "Update user successfully.")
-                            this.$router.push({name: 'apps-users-list'});
-                        } else {
-                            this.alert("danger", "Update user failed.")
-                        }
-                    })
-                    .catch((error) => {
-                      this.toast({
-                            component: ToastificationContent,
-                            props: {
-                                title: 'Error fetching users list',
-                                icon: 'AlertTriangleIcon',
-                                variant: 'danger',
-                            },
-                        })
-                    })
+            validationForm(userData) {
+                this.locale = this.locale === "en" ? "vi" : "en";
+
+                this.$refs.simpleRules.validate().then((success) => {
+                    if (success) {
+                        // eslint-disable-next-line
+                        store.dispatch('app-user/updateUser', userData)
+                            .then(response => {
+                                if (response.data.success) {
+                                    this.alert("success", "Update user successfully.")
+                                    this.$router.push({name: 'apps-users-list'});
+                                } else {
+                                    this.alert("danger", "Update user failed.")
+                                }
+                            })
+                            .catch((error) => {
+                                this.toast({
+                                    component: ToastificationContent,
+                                    props: {
+                                        title: 'Error fetching users list',
+                                        icon: 'AlertTriangleIcon',
+                                        variant: 'danger',
+                                    },
+                                })
+                            })
+                    }
+                });
             },
 
             // Delete soft one user
