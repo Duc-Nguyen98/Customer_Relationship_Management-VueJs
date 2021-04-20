@@ -111,6 +111,7 @@
             >
               {{ data.item.name }}
             </b-link>
+            <small class="text-muted">@CS{{ data.item.idCustomer }}</small>
           </b-media>
         </template>
 
