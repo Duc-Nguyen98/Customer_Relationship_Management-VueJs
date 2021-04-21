@@ -159,7 +159,7 @@ import {
   BCard, BButton, BAvatar, BRow, BCol,
 } from 'bootstrap-vue'
 import { avatarText } from '@core/utils/filter'
-import useServicesList from '../services-list/useServicesList'
+import useServicesListSMS from '../services-list/useServicesListSMS'
 
 export default {
   components: {
@@ -172,7 +172,7 @@ export default {
     },
   },
   setup() {
-    const { resolveUserRoleVariant } = useServicesList()
+    const { resolveUserRoleVariant } = useServicesListSMS()
     return {
       avatarText,
       resolveUserRoleVariant,

@@ -73,6 +73,7 @@
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
+        :busy="isBusy"
       >
         <!-- Column: STT -->
         <template #cell(stt)="data">
@@ -136,15 +137,15 @@
                 class="align-middle text-body"
               />
             </template>
-            <b-dropdown-item
-              :to="{
-                name: 'apps-customers-view',
-                params: { id: data.item._id },
-              }"
-            >
-              <feather-icon icon="FileTextIcon" />
-              <span class="align-middle ml-50">Details</span>
-            </b-dropdown-item>
+<!--            <b-dropdown-item-->
+<!--              :to="{-->
+<!--                name: 'apps-customers-view',-->
+<!--                params: { id: data.item._id },-->
+<!--              }"-->
+<!--            >-->
+<!--              <feather-icon icon="FileTextIcon" />-->
+<!--              <span class="align-middle ml-50">Details</span>-->
+<!--            </b-dropdown-item>-->
 
             <b-dropdown-item
               :to="{
@@ -328,6 +329,7 @@ export default {
       resolveUserStatusVariant,
 
       // Extra Filters
+      isBusy,
       group,
       gender,
     } = useUsersList();
@@ -364,6 +366,7 @@ export default {
       genderOptions,
 
       // Extra Filters
+      isBusy,
       gender,
       group,
     };

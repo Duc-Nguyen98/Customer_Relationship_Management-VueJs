@@ -81,6 +81,7 @@
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
+        :busy="isBusy"
       >
         <!-- Column: STT -->
         <template #cell(stt)="data">
@@ -334,6 +335,7 @@ export default {
       resolveUserStatusVariant,
 
       // Extra Filters
+      isBusy,
       group,
       gender,
     } = useUsersListDel();
@@ -369,6 +371,7 @@ export default {
       genderOptions,
 
       // Extra Filters
+      isBusy,
       gender,
       group,
     };

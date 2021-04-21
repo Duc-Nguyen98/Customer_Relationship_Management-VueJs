@@ -53,31 +53,40 @@ export default function useUsersListDel() {
     refetchData()
   })
 
-  const fetchUsers = () => {
-    store
-      .dispatch('app-user/fetchUsersDel', {
-        q: searchQuery.value,
-        perPage: perPage.value,
-        page: currentPage.value,
-        role: role.value,
-        gender: gender.value,
-        active: active.value,
-      })
-      .then(response => {
-        const { users, totalRecords } = response.data
-        totalUsers.value = totalRecords
-        Users.value = users
-      })
-      .catch(() => {
-        toast({
-          component: ToastificationContent,
-          props: {
-            title: 'Error fetching users list',
-            icon: 'AlertTriangleIcon',
-            variant: 'danger',
-          },
-        })
-      })
+  const time = ref(null);
+  const isBusy = ref(null);
+  const fetchUsers = (ctx, callback) => {
+    isBusy.value = true
+    if (time.value) {
+      clearTimeout(time.value)
+    }
+    time.value = setTimeout(() => {
+      store
+          .dispatch('app-user/fetchUsersDel', {
+            q: searchQuery.value,
+            perPage: perPage.value,
+            page: currentPage.value,
+            role: role.value,
+            gender: gender.value,
+            active: active.value,
+          })
+          .then(response => {
+            const { users, totalRecords } = response.data
+            totalUsers.value = totalRecords
+            Users.value = users
+            isBusy.value = false
+          })
+          .catch(() => {
+            toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Error fetching users list',
+                icon: 'AlertTriangleIcon',
+                variant: 'danger',
+              },
+            })
+          })
+    }, searchQuery.value ? 1000 : 0)
   }
 
   const alert = (variant, message) => {
@@ -180,7 +189,10 @@ export default function useUsersListDel() {
     refetchData,
     deleteUser,
     restoreUser,
+
     // Extra Filters
+    time,
+    isBusy,
     role,
     gender,
     active,
