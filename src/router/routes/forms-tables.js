@@ -64,9 +64,14 @@ export default [
   // *===============================================---*
 
   {
-    path: '/apps/services/list',
-    name: 'apps-services-list',
-    component: () => import('@/views/apps/services/services-list/ServicesList.vue'),
+    path: '/apps/services/list/sms',
+    name: 'apps-services-list-sms',
+    component: () => import('@/views/apps/services/services-list/ServicesListSMS.vue'),
+  },
+  {
+    path: '/apps/services/add/sms',
+    name: 'apps-users-add-sms',
+    component: () => import('@/views/apps/services/services-add/ServicesAdd.vue'),
   },
   {
     path: '/apps/services/view/:id',

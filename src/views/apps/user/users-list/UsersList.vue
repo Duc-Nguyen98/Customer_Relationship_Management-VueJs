@@ -75,6 +75,7 @@
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
+        :busy="isBusy"
       >
         <!-- Column: Stt -->
         <template #cell(stt)="data">
@@ -331,6 +332,7 @@ export default {
       resolveUserRoleIcon,
 
       // Extra Filters
+      isBusy,
       role,
       gender,
       active,
@@ -367,7 +369,9 @@ export default {
       roleOptions,
       genderOptions,
       activeOptions,
+
       // Extra Filters
+      isBusy,
       role,
       gender,
       active,

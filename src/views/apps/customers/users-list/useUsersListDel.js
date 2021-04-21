@@ -51,31 +51,40 @@ export default function useUsersListDel() {
     refetchData()
   })
 
+  const time = ref(null);
+  const isBusy = ref(null);
   const fetchUsers = (ctx, callback) => {
-    store
-      .dispatch('app-user/fetchUsersDel', {
-        q: searchQuery.value,
-        perPage: perPage.value,
-        page: currentPage.value,
-        sort: sortBy.value,
-        gender: gender.value,
-        group: group.value,
-      })
-      .then(response => {
-        const { data, totalRecords } = response.data
-        totalUsers.value = totalRecords
-        Users.value = data
-      })
-      .catch(() => {
-        toast({
-          component: ToastificationContent,
-          props: {
-            title: 'Error fetching users list',
-            icon: 'AlertTriangleIcon',
-            variant: 'danger',
-          },
-        })
-      })
+    isBusy.value = true;
+    if (time.value) {
+      clearTimeout(time.value)
+    }
+    time.value = setTimeout(() => {
+      store
+          .dispatch('app-user/fetchUsersDel', {
+            q: searchQuery.value,
+            perPage: perPage.value,
+            page: currentPage.value,
+            sort: sortBy.value,
+            gender: gender.value,
+            group: group.value,
+          })
+          .then(response => {
+            const { data, totalRecords } = response.data
+            totalUsers.value = totalRecords
+            Users.value = data
+            isBusy.value = false
+          })
+          .catch(() => {
+            toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Error fetching users list',
+                icon: 'AlertTriangleIcon',
+                variant: 'danger',
+              },
+            })
+          })
+    }, searchQuery.value ? 1000 : 0)
   }
 
   const alert = (variant, message) => {
@@ -202,6 +211,8 @@ export default function useUsersListDel() {
     refetchData,
     checkGroup,
     // Extra Filters
+    time,
+    isBusy,
     group,
     gender,
     alert,

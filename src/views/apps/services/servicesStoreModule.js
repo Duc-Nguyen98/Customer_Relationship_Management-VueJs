@@ -6,10 +6,11 @@ export default {
   getters: {},
   mutations: {},
   actions: {
-    fetchServices(ctx, queryParams) {
+    fetchServices(ctx, {type, queryParams}) {
+      console.log(queryParams);
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + 'services/list', { params: queryParams })
+          .get(process.env.VUE_APP_ROOT_API + `services/${type}/list`, { params: queryParams })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -22,10 +23,10 @@ export default {
           .catch(error => reject(error))
       })
     },
-    addService(ctx, userData) {
+    sendSMS(ctx, smsData) {
       return new Promise((resolve, reject) => {
         axios
-          .post(process.env.VUE_APP_ROOT_API + '/services', { user: userData })
+          .post(process.env.VUE_APP_ROOT_API + '/services', { user: smsData })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

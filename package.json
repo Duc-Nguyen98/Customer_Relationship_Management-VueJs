@@ -28,8 +28,10 @@
     "dotenv": "^8.2.0",
     "echarts": "4.8.0",
     "eslint-loader": "^4.0.2",
+    "faker": "^5.5.3",
     "jsonwebtoken": "8.5.1",
     "leaflet": "1.6.0",
+    "moment": "^2.28.0",
     "portal-vue": "2.1.7",
     "postcss-rtl": "1.7.3",
     "prismjs": "1.19.0",
@@ -50,6 +52,7 @@
     "vue-form-wizard": "0.8.4",
     "vue-good-table": "2.21.0",
     "vue-i18n": "8.22.2",
+    "vue-multiselect": "^2.1.6",
     "vue-perfect-scrollbar": "0.2.1",
     "vue-prism-component": "1.1.1",
     "vue-quill-editor": "3.0.6",
@@ -63,8 +66,7 @@
     "vue-tree-halower": "1.8.3",
     "vue2-leaflet": "2.5.2",
     "vuedraggable": "2.24.3",
-    "vuex": "3.6.0",
-    "moment": "^2.28.0"
+    "vuex": "3.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.9",

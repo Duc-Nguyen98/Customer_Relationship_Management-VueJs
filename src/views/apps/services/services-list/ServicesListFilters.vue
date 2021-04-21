@@ -6,25 +6,25 @@
     <b-card-body>
       <b-row>
         <b-col cols="12" md="6" class="mb-md-0 mb-2">
-          <label>Type Support</label>
-          <v-select
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="group"
-            :options="groupOptions"
-            class="w-100"
-            :reduce="(val) => val.value"
-            @input="(val) => $emit('update:group', val)"
-          />
-        </b-col>
-        <b-col cols="12" md="6" class="mb-md-0 mb-2">
           <label>Type Services</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="gender"
-            :options="genderOptions"
+            :value="type"
+            :options="typeOptions"
             class="w-100"
             :reduce="(val) => val.value"
-            @input="(val) => $emit('update:gender', val)"
+            @input="(val) => $emit('update:type', val)"
+          />
+        </b-col>
+        <b-col cols="12" md="6" class="mb-md-0 mb-2">
+          <label>Status Services</label>
+          <v-select
+            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :value="status"
+            :options="statusOptions"
+            class="w-100"
+            :reduce="(val) => val.value"
+            @input="(val) => $emit('update:status', val)"
           />
         </b-col>
       </b-row>
@@ -46,19 +46,19 @@ export default {
     vSelect,
   },
   props: {
-    group: {
+    type: {
       type: [Number, null],
       default: null,
     },
-    gender: {
+    status: {
       type: [Number, null],
       default: null,
     },
-    groupOptions: {
+    typeOptions: {
       type: Array,
       required: true,
     },
-    genderOptions: {
+    statusOptions: {
       type: Array,
       required: true,
     },

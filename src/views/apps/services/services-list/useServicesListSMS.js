@@ -6,7 +6,7 @@ import { title } from '@core/utils/filter'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-export default function useServicesList() {
+export default function useServicesListSMS() {
   // Use toast
   const toast = useToast()
 
@@ -16,9 +16,9 @@ export default function useServicesList() {
   const tableColumns = [
     { key: 'stt', label: 'STT', sortable: true },
     { key: 'title', label: 'TITLE', formatter: title, sortable: false },
-    { key: 'typeSupport', label: 'TYPESUPPORT', sortable: true },
-    { key: 'typeService', label: 'TYPESERVICE', sortable: false },
-    { key: 'note', label: 'NOTE', sortable: false },
+    { key: 'type', label: 'TYPE', sortable: true },
+    { key: 'name', label: 'NAME', sortable: false },
+    { key: 'telephone', label: 'TELEPHONE', sortable: false },
     { key: 'status', label: 'STATUS', sortable: false },
     { key: 'actions' },
   ]
@@ -29,8 +29,8 @@ export default function useServicesList() {
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  const group = ref(null)
-  const gender = ref(null)
+  const type = ref(null)
+  const status = ref(null)
   const Services = ref([])
 
   const dataMeta = computed(() => {
@@ -46,25 +46,24 @@ export default function useServicesList() {
     fetchServices()
   }
 
-  watch([currentPage, perPage, searchQuery, group, gender], () => {
+  watch([currentPage, perPage, searchQuery, type, status], () => {
     refetchData()
   })
 
   const fetchServices = (ctx, callback) => {
     store
-      .dispatch('app-services/fetchServices', {
-        q: searchQuery.value,
-        perPage: perPage.value,
-        page: currentPage.value,
-        sort: sortBy.value,
-        gender: gender.value,
-        group: group.value,
-      })
+      .dispatch('app-services-sms/fetchServices', {type: 'sms', queryParams: {
+      q: searchQuery.value,
+          perPage: perPage.value,
+          page: currentPage.value,
+          sort: sortBy.value,
+          type: type.value,
+          status: status.value,
+    }})
       .then(response => {
-        const { data, totalRecords } = response.data
+        const { users, totalRecords } = response.data
         totalServices.value = totalRecords
-        console.log(data)
-        Services.value = data
+        Services.value = users
       })
       .catch(() => {
         toast({
@@ -92,7 +91,7 @@ export default function useServicesList() {
 
   const deleteService = id => {
     store
-        .dispatch('app-services/deleteService', {_id: id})
+        .dispatch('app-services-sms/deleteService', {_id: id})
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete services successfully.")
@@ -136,16 +135,22 @@ export default function useServicesList() {
     return 'UserIcon'
   }
 
-  const resolveUserStatusVariant = status => {
-    if (status === 'pending') return 'warning'
-    if (status === 'active') return 'success'
-    if (status === 'inactive') return 'secondary'
+  const resolveUserStatusVariant = stt => {
+    if (stt === 0) return 'warning'
+    if (stt === 1) return 'success'
+    return 'primary'
+  }
+
+  const checkStatus = stt => {
+    if (stt === 0) return 'Pending'
+    if (stt === 1) return 'Send'
     return 'primary'
   }
 
   return {
     fetchServices,
     deleteService,
+    checkStatus,
     Services,
     tableColumns,
     perPage,
@@ -164,8 +169,8 @@ export default function useServicesList() {
     refetchData,
 
     // Extra Filters
-    group,
-    gender,
+    type,
+    status,
     alert,
   }
 }
