@@ -47,7 +47,7 @@ export default {
   setup() {
     const userData = ref(null);
 
-    const USER_APP_STORE_MODULE_NAME = "app-user";
+    const USER_APP_STORE_MODULE_NAME = "app-customers";
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))

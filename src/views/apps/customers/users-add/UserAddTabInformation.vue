@@ -30,8 +30,9 @@
                     <!-- email -->
                     <b-col cols="12" md="6" lg="4">
                         <b-form-group>
-                            <label>Email</label>
+                            <label for="email">Email</label>
                             <validation-provider
+                                    id="email"
                                     #default="{ errors }"
                                     name="Email"
                                     rules="required|email"
@@ -88,9 +89,10 @@
 
                     <!-- Telephone Number -->
                     <b-col cols="12" md="6" lg="4">
-                        <b-form-group label="Telephone" label-for="Telephone">
-                            <label>Telephone Number</label>
+                        <b-form-group>
+                            <label for="telephone">Telephone Number</label>
                             <validation-provider
+                                    id="telephone"
                                     #default="{ errors }"
                                     rules="required|regex:^([0-9]+)$|digits:10"
                                     name="Telephone Number"
@@ -405,7 +407,7 @@
             },
 
             addUser() {
-                store.dispatch('app-user/addUser', this.userData)
+                store.dispatch('app-customers/addUser', this.userData)
                     .then(response => {
                         if (response.data.success) {
                             this.alert("success", "Add user successfully.")

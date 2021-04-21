@@ -46,7 +46,7 @@ export default {
   setup() {
     const userData = ref(null);
 
-    const USER_APP_STORE_MODULE_NAME = "app-user";
+    const USER_APP_STORE_MODULE_NAME = "app-customers";
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
@@ -59,7 +59,7 @@ export default {
     });
 
     store
-      .dispatch("app-user/fetchUser", { _id: router.currentRoute.params.id })
+      .dispatch("app-customers/fetchUser", { _id: router.currentRoute.params.id })
       .then((response) => {
         userData.value = response.data.data;
       })

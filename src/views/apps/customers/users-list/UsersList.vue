@@ -267,7 +267,7 @@ export default {
     const toast = useToast();
 
     const api = process.env.VUE_APP_ROOT_API;
-    const USER_APP_STORE_MODULE_NAME = "app-user";
+    const USER_APP_STORE_MODULE_NAME = "app-customers";
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))

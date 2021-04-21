@@ -60,7 +60,7 @@ export default function useUsersList() {
     }
     time.value = setTimeout(() => {
       store
-          .dispatch('app-user/fetchUsers', {
+          .dispatch('app-customers/fetchUsers', {
             q: searchQuery.value,
             perPage: perPage.value,
             page: currentPage.value,
@@ -101,7 +101,7 @@ export default function useUsersList() {
 
   const deleteUser = (_id) => {
     return store
-      .dispatch('app-user/deleteUser', { _id: _id })
+      .dispatch('app-customers/deleteUser', { _id: _id })
       .then(response => {
         if (response.data.success) {
           alert("success", "Delete user successfully.")
