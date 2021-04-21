@@ -47,9 +47,22 @@
                 ><feather-icon icon="PlusCircleIcon"
                 /></span>
               </b-button>
-
+              <b-dropdown
+                      id="dropdown-grouped"
+                      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                      variant="primary"
+                      class="dropdown-icon-wrapper mr-1"
+              >
+                <template #button-content>
+                  <feather-icon
+                          icon="DownloadIcon"
+                          size="14"
+                  />
+                </template>
+                <b-dropdown-item>Export PDF</b-dropdown-item>
+                <b-dropdown-item>Export Excel</b-dropdown-item>
+              </b-dropdown>
               <b-button
-                      class="mr-1"
                       variant="primary"
                       :to="{ name: 'apps-customers-add' }"
               >

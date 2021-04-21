@@ -219,7 +219,7 @@
                     >
                         <validation-provider
                                 #default="{ errors }"
-                                rules="required|digits:6|max:50"
+                                rules="required|max:50|min:6"
                                 name="Password"
                         >
                         <b-form-input
@@ -437,7 +437,6 @@
             const {inputImageRenderer} = useInputImageRenderer(refInputEl, base64 => {
                 // eslint-disable-next-line no-param-reassign
                 // props.userData.avatar = base64
-
                 store.dispatch('app-user/uploadUser', {
                     file: refInputEl.value.files[0],
                     _id: router.currentRoute.params.id

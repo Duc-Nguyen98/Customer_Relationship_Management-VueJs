@@ -34,37 +34,29 @@
           <b-col cols="12" md="6">
             <div class="d-flex align-items-center justify-content-end">
               <b-form-input
-                v-model="searchQuery"
-                class="d-inline-block mr-1"
-                placeholder="Search..."
+                      v-model="searchQuery"
+                      class="d-inline-block mr-1"
+                      placeholder="Search..."
               />
               <b-button
-                class="mr-1"
-                variant="primary"
-                :to="{ name: 'apps-customers-add' }"
+                      class="mr-1"
+                      variant="primary"
+                      :to="{ name: 'apps-users-add' }"
               >
                 <span class="text-nowrap"
-                  ><feather-icon icon="PlusCircleIcon"
+                ><feather-icon icon="PlusCircleIcon"
                 /></span>
               </b-button>
 
-              <b-dropdown
-                id="dropdown-grouped"
-                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                variant="primary"
-                right
-                class="dropdown-icon-wrapper"
+              <b-button
+                      class="mr-1"
+                      variant="primary"
+                      :to="{ name: 'apps-customers-add' }"
               >
-                <template #button-content>
-                  <feather-icon
-                    icon="DownloadIcon"
-                    size="14"
-                    class="align-middle"
-                  />
-                </template>
-                <b-dropdown-item>Export PDF</b-dropdown-item>
-                <b-dropdown-item>Export Excel</b-dropdown-item>
-              </b-dropdown>
+                <span class="text-nowrap"
+                ><feather-icon icon="Trash2Icon"
+                /></span>
+              </b-button>
             </div>
           </b-col>
         </b-row>
