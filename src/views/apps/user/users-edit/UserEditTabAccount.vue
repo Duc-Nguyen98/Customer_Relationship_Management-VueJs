@@ -437,7 +437,6 @@
             const {inputImageRenderer} = useInputImageRenderer(refInputEl, base64 => {
                 // eslint-disable-next-line no-param-reassign
                 // props.userData.avatar = base64
-
                 store.dispatch('app-user/uploadUser', {
                     file: refInputEl.value.files[0],
                     _id: router.currentRoute.params.id

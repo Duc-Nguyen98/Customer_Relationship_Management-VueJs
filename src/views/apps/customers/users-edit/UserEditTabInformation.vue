@@ -423,7 +423,7 @@ export default {
       // eslint-disable-next-line no-param-reassign
       // userData.avatar = base64
 
-      store.dispatch('app-user/uploadCustomer', {
+      store.dispatch('app-customers/uploadCustomer', {
         file: refInputEl.value.files[0],
         _id: router.currentRoute.params.id
       })
