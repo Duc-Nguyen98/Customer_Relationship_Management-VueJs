@@ -60,7 +60,7 @@ export default function useUsersListDel() {
     }
     time.value = setTimeout(() => {
       store
-          .dispatch('app-user/fetchUsersDel', {
+          .dispatch('app-customers/fetchUsersDel', {
             q: searchQuery.value,
             perPage: perPage.value,
             page: currentPage.value,
@@ -101,7 +101,7 @@ export default function useUsersListDel() {
 
   const deleteUser = id => {
     store
-      .dispatch('app-user/deleteUserR', { _id: id })
+      .dispatch('app-customers/deleteUserR', { _id: id })
       .then(response => {
         if (response.data.success) {
           alert("success", "Delete customer successfully.")
@@ -124,7 +124,7 @@ export default function useUsersListDel() {
 
   const restoreUser = id => {
     store
-        .dispatch('app-user/restoreUser', { _id: id })
+        .dispatch('app-customers/restoreUser', { _id: id })
         .then(response => {
           if (response.data.success) {
             alert("success", "Restore customer successfully.")

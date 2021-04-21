@@ -41,7 +41,7 @@ export default {
     updateUser(ctx, { userData, _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .put(process.env.VUE_APP_ROOT_API + `user/update/${_id}`, userData)
+            .put(process.env.VUE_APP_ROOT_API + `customer/update/${_id}`, userData)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })

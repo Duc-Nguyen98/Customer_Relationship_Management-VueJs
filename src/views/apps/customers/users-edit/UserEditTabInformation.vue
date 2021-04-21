@@ -495,7 +495,7 @@ export default {
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
           // eslint-disable-next-line
-          store.dispatch('app-user/updateUser', userData)
+          store.dispatch('app-customers/updateUser', userData)
                   .then(response => {
                     if (response.data.success) {
                       this.alert("success", "Update user successfully.")
