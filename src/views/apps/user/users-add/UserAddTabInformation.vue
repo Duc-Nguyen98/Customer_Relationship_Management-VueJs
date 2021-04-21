@@ -156,7 +156,7 @@
               <label>Password</label>
               <validation-provider
                 #default="{ errors }"
-                rules="required|max:50|digits:6"
+                rules="required|max:50|min:6"
                 name="Password"
               >
                 <b-form-input

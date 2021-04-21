@@ -219,7 +219,7 @@
                     >
                         <validation-provider
                                 #default="{ errors }"
-                                rules="required|digits:6|max:50"
+                                rules="required|max:50|min:6"
                                 name="Password"
                         >
                         <b-form-input
