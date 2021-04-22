@@ -159,7 +159,7 @@ import {
   BCard, BButton, BAvatar, BRow, BCol,
 } from 'bootstrap-vue'
 import { avatarText } from '@core/utils/filter'
-import useServicesListSMS from '../services-list/useServicesListSMS'
+import useServicesListVoucher from '../services-list/useServicesListSMS'
 
 export default {
   components: {

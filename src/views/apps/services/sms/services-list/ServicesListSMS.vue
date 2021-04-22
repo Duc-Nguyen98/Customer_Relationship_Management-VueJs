@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- Filters -->
-    <users-list-filters
-      :group.sync="group"
-      :gender.sync="gender"
-      :group-options="groupOptions"
-      :gender-options="genderOptions"
+    <services-list-filters
+      :type.sync="type"
+      :status.sync="status"
+      :type-options="typeOptions"
+      :status-options="statusOptions"
     />
 
     <!-- Table Container Card -->
@@ -41,28 +41,15 @@
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{ name: 'apps-users-add' }"
+                      :to="{ name: 'apps-users-add-sms' }"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
                 /></span>
               </b-button>
-              <b-dropdown
-                      id="dropdown-grouped"
-                      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                      variant="primary"
-                      class="dropdown-icon-wrapper mr-1"
-              >
-                <template #button-content>
-                  <feather-icon
-                          icon="DownloadIcon"
-                          size="14"
-                  />
-                </template>
-                <b-dropdown-item>Export PDF</b-dropdown-item>
-                <b-dropdown-item>Export Excel</b-dropdown-item>
-              </b-dropdown>
+
               <b-button
+                      class="mr-1"
                       variant="primary"
                       :to="{ name: 'apps-customers-add' }"
               >
@@ -77,8 +64,8 @@
 
       <b-table
         ref="refUserListTable"
-        class="position-relative scrollbar"
-        :items="Users"
+        class="position-relative"
+        :items="Services"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -86,54 +73,20 @@
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
-        :busy="isBusy"
       >
         <!-- Column: STT -->
         <template #cell(stt)="data">
           {{ data.index + 1 }}
         </template>
 
-        <!-- Column: User -->
-        <template #cell(name)="data">
-          <b-media vertical-align="center">
-            <template #aside>
-              <b-avatar
-                size="32"
-                :src="api + data.item.avatar"
-                :text="avatarText(data.item.name)"
-                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
-                :to="{
-                  name: 'apps-customers-edit',
-                  params: { id: data.item._id },
-                }"
-              />
-            </template>
-            <b-link
-              :to="{
-                name: 'apps-customers-edit',
-                params: { id: data.item._id },
-              }"
-              class="font-weight-bold d-block text-nowrap"
-            >
-              {{ data.item.name }}
-            </b-link>
-            <small class="text-muted">@CS{{ data.item.idCustomer }}</small>
-          </b-media>
-        </template>
-
-        <!-- Column: birthDay -->
-        <template #cell(birthDay)="data">
+        <!-- Column: birthDate -->
+        <template #cell(birthDate)="data">
           {{ convertDate(data.value) }}
         </template>
 
-        <!-- Column: Gender -->
-        <template #cell(gender)="data">
-          {{ data.value == 0 ? 'Male' : 'Female' }}
-        </template>
-
-        <!-- Column: Groups -->
-        <template #cell(groups)="data">
-          <b-badge pill :variant="pillGroups(data.value)" class="badge-glow">{{ checkGroup(data.value) }}</b-badge>
+        <!-- Column: Status -->
+        <template #cell(status)="data">
+          <b-badge pill :variant="resolveUserStatusVariant(data.value)" class="badge-glow">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -152,7 +105,7 @@
             </template>
 <!--            <b-dropdown-item-->
 <!--              :to="{-->
-<!--                name: 'apps-customers-view',-->
+<!--                name: 'apps-services-view-sms',-->
 <!--                params: { id: data.item._id },-->
 <!--              }"-->
 <!--            >-->
@@ -162,7 +115,7 @@
 
             <b-dropdown-item
               :to="{
-                name: 'apps-customers-edit',
+                name: 'apps-services-edit-sms',
                 params: { id: data.item._id },
               }"
             >
@@ -171,7 +124,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteUser(data.item._id)"
+              @click="deleteService(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -199,7 +152,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalUsers"
+              :total-rows="totalServices"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -243,20 +196,21 @@ import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import UsersListFilters from "./UsersListFilters.vue";
-import useUsersList from "./useUsersList";
-import userStoreModule from "../userStoreModule";
+import ServicesListFilters from "./ServicesListFilters.vue";
+import useServicesListVoucher from "./useServicesListSMS";
+import servicesStoreModule from "../servicesStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
-
-// Notification
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
-import { useToast } from 'vue-toastification/composition'
+import Vue from "vue";
+import {ToastPlugin} from "bootstrap-vue";
 
+Vue.use(ToastPlugin)
+const v = new Vue()
 
 export default {
   components: {
-    UsersListFilters,
+    ServicesListFilters,
     BCard,
     BRow,
     BCol,
@@ -276,45 +230,27 @@ export default {
     Ripple,
   },
   setup() {
-
-    const toast = useToast();
-
-    const api = process.env.VUE_APP_ROOT_API;
-    const USER_APP_STORE_MODULE_NAME = "app-customers";
+    const SERVICES_APP_STORE_MODULE_NAME = "app-services-sms";
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule);
+    if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(USER_APP_STORE_MODULE_NAME))
-        store.unregisterModule(USER_APP_STORE_MODULE_NAME);
+      if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
+        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
     });
 
-    const groupOptions = [
-      { label: "Normal customers", value: 0 },
-      { label: "Loyal customers", value: 1 },
-      { label: "Potential customers", value: 2 },
+    const typeOptions = [
+      { label: "Khách hàng thường", value: 0 },
+      { label: "khách hàng thân thiết", value: 1 },
+      { label: "Khách hàng tiềm năng", value: 2 },
     ];
 
-    const pillGroups = (group) => {
-      switch (group) {
-        case 0:
-          return 'primary';
-          break;
-        case 1:
-          return 'success';
-          break;
-        case 2:
-          return 'info';
-          break;
-      }
-    };
-
-    const genderOptions = [
-      { label: "Male", value: 0 },
-      { label: "Female", value: 1 },
+    const statusOptions = [
+      { label: "Pending", value: 0 },
+      { label: "Send", value: 1 },
     ];
 
     const convertDate = (date) => {
@@ -322,50 +258,47 @@ export default {
     };
 
     const {
-      Users,
+      Services,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalServices,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
+      refServicesListTable,
       refetchData,
-      deleteUser,
-      checkGroup,
+      deleteService,
+      checkStatus,
+
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
 
       // Extra Filters
-      isBusy,
-      group,
-      gender,
-    } = useUsersList();
+      type,
+      status,
+    } = useServicesListSMS();
 
     return {
-      api,
-      toast,
-      Users,
+      Services,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalServices,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
-      checkGroup,
+      refServicesListTable,
       convertDate,
       refetchData,
-      deleteUser,
-      pillGroups,
+      deleteService,
+      checkStatus,
 
       // Filter
       avatarText,
@@ -375,13 +308,12 @@ export default {
       resolveUserRoleIcon,
       resolveUserStatusVariant,
 
-      groupOptions,
-      genderOptions,
+      typeOptions,
+      statusOptions,
 
       // Extra Filters
-      isBusy,
-      gender,
-      group,
+      type,
+      status,
     };
   },
 };

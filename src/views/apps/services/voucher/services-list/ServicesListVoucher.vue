@@ -197,16 +197,11 @@ import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
 import ServicesListFilters from "./ServicesListFilters.vue";
-import useServicesListSMS from "./useServicesListSMS";
+import useServicesListVoucher from "./useServicesListVoucher";
 import servicesStoreModule from "../servicesStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
-import Vue from "vue";
-import {ToastPlugin} from "bootstrap-vue";
-
-Vue.use(ToastPlugin)
-const v = new Vue()
 
 export default {
   components: {
@@ -281,7 +276,7 @@ export default {
       // Extra Filters
       type,
       status,
-    } = useServicesListSMS();
+    } = useServicesListVoucher();
 
     return {
       Services,

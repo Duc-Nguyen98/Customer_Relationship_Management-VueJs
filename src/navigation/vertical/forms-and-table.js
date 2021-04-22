@@ -48,12 +48,12 @@ export default [
             },
             {
                 title: 'List Email',
-                route: 'apps-users-list-del',
+                route: 'apps-services-list-email',
             },
-            // {
-            //     title: 'Add',
-            //     route: 'apps-users-add',
-            // },
+            {
+                title: 'List Voucher',
+                route: 'apps-services-list-voucher',
+            },
         ],
     },
 

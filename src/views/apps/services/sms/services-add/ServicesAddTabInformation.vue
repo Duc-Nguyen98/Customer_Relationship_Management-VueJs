@@ -9,7 +9,7 @@
         </div>
         <b-row>
           <!-- Customer -->
-          <b-col cols="12" md="6" lg="6">
+          <b-col cols="12" md="6" lg="4">
             <b-form-group>
               <label>Customer</label>
               <validation-provider
@@ -31,7 +31,7 @@
           </b-col>
 
           <!-- Type -->
-          <b-col cols="12" md="6" lg="6">
+          <b-col cols="12" md="6" lg="4">
             <b-form-group label="Type" label-for="Type">
               <validation-provider
                       #default="{ errors }"
@@ -45,6 +45,27 @@
                         :options="typeOptions"
                         class="w-100"
                         @input="changeType($event)"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+          <!-- Voucher -->
+          <b-col cols="12" md="6" lg="4">
+            <b-form-group label="Voucher" label-for="Voucher">
+              <validation-provider
+                      #default="{ errors }"
+                      name="Voucher"
+                      rules="required"
+              >
+                <v-select
+                        :state="errors.length > 0 ? false : null"
+                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                        v-model="smsData.voucher_name"
+                        :options="voucherOptions"
+                        class="w-100"
+                        @input="changeVoucher($event)"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
@@ -198,6 +219,8 @@ export default {
       category: "",
       telephone: "",
       content: "",
+      voucher_name: "",
+      voucher: "",
     });
 
     const typeOptions = [
@@ -205,6 +228,13 @@ export default {
       { label: "By Week", value: 1 },
       { label: "By Month", value: 2 },
       { label: "Other", value: 3 },
+    ];
+
+    const voucherOptions = [
+      { label: "25%", value: 0 },
+      { label: "50%", value: 1 },
+      { label: "75%", value: 2 },
+      { label: "100%", value: 3 },
     ];
 
     const validation = {
@@ -228,6 +258,7 @@ export default {
       smsData,
       typeOptions,
       validation,
+      voucherOptions,
     };
   },
 
@@ -244,6 +275,11 @@ export default {
       this.smsData.content = this.smsData.customer + ' - Voucher ' + this.smsData.type_name + ':"' + faker.finance.bic() + '" - '
     },
 
+    changeVoucher(data) {
+      this.smsData.voucher_name = data?.label??""
+      this.smsData.voucher = data?.value??""
+    },
+
     validationForm() {
       this.locale = this.locale === "en" ? "vi" : "en";
 
@@ -256,25 +292,26 @@ export default {
     },
 
     sendSMS() {
-      store.dispatch('app-services-sms/sendSMS', this.userData)
-              .then(response => {
-                if (response.data.success) {
-                  this.alert("success", "Send sms successfully.")
-                  this.$router.push({name: 'apps-customers-list'});
-                } else {
-                  this.alert("danger", "Send sms failed.")
-                }
-              })
-              .catch(() => {
-                this.toast({
-                  component: ToastificationContent,
-                  props: {
-                    title: 'Error send sms',
-                    icon: 'AlertTriangleIcon',
-                    variant: 'danger',
-                  },
-                });
-              });
+      console.log(this.userData)
+      // store.dispatch('app-services-sms/sendSMS', this.userData)
+      //         .then(response => {
+      //           if (response.data.success) {
+      //             this.alert("success", "Send sms successfully.")
+      //             this.$router.push({name: 'apps-customers-list'});
+      //           } else {
+      //             this.alert("danger", "Send sms failed.")
+      //           }
+      //         })
+      //         .catch(() => {
+      //           this.toast({
+      //             component: ToastificationContent,
+      //             props: {
+      //               title: 'Error send sms',
+      //               icon: 'AlertTriangleIcon',
+      //               variant: 'danger',
+      //             },
+      //           });
+      //         });
     }
   },
 };
