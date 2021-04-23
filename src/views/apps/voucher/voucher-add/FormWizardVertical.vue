@@ -145,7 +145,7 @@
               <v-select
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                       :value="type"
-                      :options="issueOptions"
+                      :options="typeDateOptions"
                       class="w-100"
                       :reduce="(val) => val.value"
                       @input="(val) => $emit('update:type', val)"
@@ -370,6 +370,10 @@ export default {
       issueOptions: [
         { label: "Pending", value: 0 },
         { label: "Send", value: 1 },
+      ],
+      typeDateOptions: [
+        { label: "Day", value: 0 },
+        { label: "Month", value: 1 },
       ],
       sysOptions: [
         { name: "All Systems", item: 0 },
