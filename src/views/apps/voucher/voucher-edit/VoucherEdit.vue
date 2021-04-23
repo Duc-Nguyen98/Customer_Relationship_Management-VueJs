@@ -19,7 +19,7 @@
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
           <span class="d-none d-sm-inline">Info Service</span>
         </template>
-        <user-edit-tab-information :userinfo="serviceData" class="mt-2 pt-75" />
+        <voucher-edit-tab-information :userinfo="serviceData" class="mt-2 pt-75" />
       </b-tab>
     </b-tabs>
   </component>
@@ -30,8 +30,8 @@ import { BTab, BTabs, BCard, BAlert, BLink } from "bootstrap-vue";
 import { ref, onUnmounted } from "@vue/composition-api";
 import router from "@/router";
 import store from "@/store";
-import servicesStoreModule from "../servicesStoreModule";
-import servicesEditTabInformation from "./ServicesEditTabInformation.vue";
+import voucherStoreModule from "../voucherStoreModule";
+import VoucherEditTabInformation from "./VoucherEditTabInformation.vue";
 
 
 export default {
@@ -42,16 +42,16 @@ export default {
     BAlert,
     BLink,
 
-    servicesEditTabInformation,
+    VoucherEditTabInformation,
   },
   setup() {
     const userData = ref(null);
 
-    const SERVICES_APP_STORE_MODULE_NAME = "app-services";
+    const SERVICES_APP_STORE_MODULE_NAME = "app-voucher";
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule);
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, voucherStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
@@ -60,7 +60,7 @@ export default {
     });
 
     store
-      .dispatch("app-services/fetchService", { id: router.currentRoute.params.id })
+      .dispatch("app-voucher/fetchService", { id: router.currentRoute.params.id })
       .then((response) => {
         serviceData.value = response.data;
       })

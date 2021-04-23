@@ -5,9 +5,9 @@
       <b-tab active>
         <template #title>
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
-          <span class="d-none d-sm-inline">New SMS</span>
+          <span class="d-none d-sm-inline">New Group Voucher</span>
         </template>
-        <services-add-tab-information class="mt-2 pt-75" />
+        <form-wizard-vertical class="mt-2 pt-75" />
       </b-tab>
     </b-tabs>
   </component>
@@ -17,8 +17,8 @@
 import { BTab, BTabs, BCard, BAlert, BLink } from "bootstrap-vue";
 import { ref, onUnmounted } from "@vue/composition-api";
 import store from "@/store";
-import servicesStoreModule from "../servicesStoreModule";
-import ServicesAddTabInformation from "./ServicesAddTabInformation.vue";
+import voucherStoreModule from "../voucherStoreModule";
+import FormWizardVertical from './FormWizardVertical.vue'
 import Ripple from "vue-ripple-directive";
 
 export default {
@@ -29,16 +29,16 @@ export default {
     BAlert,
     BLink,
 
-    ServicesAddTabInformation,
+    FormWizardVertical,
   },
   setup() {
     const userData = ref(null);
 
-    const SERVICE_APP_STORE_MODULE_NAME = "app-services-sms";
+    const SERVICE_APP_STORE_MODULE_NAME = "app-voucher";
 
     // Register module
     if (!store.hasModule(SERVICE_APP_STORE_MODULE_NAME))
-      store.registerModule(SERVICE_APP_STORE_MODULE_NAME, servicesStoreModule);
+      store.registerModule(SERVICE_APP_STORE_MODULE_NAME, voucherStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
@@ -64,5 +64,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+  @import '@core/scss/vue/libs/vue-wizard.scss';
+  @import '@core/scss/vue/libs/vue-select.scss';
 </style>
+

@@ -41,7 +41,7 @@
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{ name: 'apps-users-add' }"
+                      :to="{ name: 'apps-customers-add' }"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"

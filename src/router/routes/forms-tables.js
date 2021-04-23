@@ -85,27 +85,27 @@ export default [
   },
 
   // *===============================================---*
-  // *--------- SERVICES VOUCHER ---- ---------------------------------------*
+  // *--------- VOUCHER ---- ---------------------------------------*
   // *===============================================---*
 
   {
-    path: '/apps/services/list/voucher',
-    name: 'apps-services-list-voucher',
-    component: () => import('@/views/apps/services/voucher/services-list/ServicesListVoucher.vue'),
+    path: '/apps/voucher/list',
+    name: 'apps-voucher-list',
+    component: () => import('@/views/apps/voucher/voucher-list/VoucherList.vue'),
   },
   {
-    path: '/apps/services/add/voucher',
-    name: 'apps-users-add-voucher',
-    component: () => import('@/views/apps/services/voucher/services-add/ServicesAdd.vue'),
+    path: '/apps/voucher/add',
+    name: 'apps-voucher-add',
+    component: () => import('@/views/apps/voucher/voucher-add/VoucherAdd.vue'),
   },
   {
-    path: '/apps/services/view/:id',
-    name: 'apps-users-view',
-    component: () => import('@/views/apps/services/voucher/services-view/ServicesView.vue'),
+    path: '/apps/voucher/view/:id',
+    name: 'apps-voucher-view',
+    component: () => import('@/views/apps/voucher/voucher-view/VoucherView.vue'),
   },
   {
-    path: '/apps/services/edit/:id',
-    name: 'apps-services-edit',
-    component: () => import('@/views/apps/services/voucher/services-edit/ServicesEdit.vue'),
+    path: '/apps/voucher/edit/:id',
+    name: 'apps-voucher-edit',
+    component: () => import('@/views/apps/voucher/voucher-edit/VoucherEdit.vue'),
   },
 ]

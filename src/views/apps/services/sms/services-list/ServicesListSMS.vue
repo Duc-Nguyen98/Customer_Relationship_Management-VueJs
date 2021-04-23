@@ -197,7 +197,7 @@ import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
 import ServicesListFilters from "./ServicesListFilters.vue";
-import useServicesListVoucher from "./useServicesListSMS";
+import useVoucherList from "./useServicesListSMS";
 import servicesStoreModule from "../servicesStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";

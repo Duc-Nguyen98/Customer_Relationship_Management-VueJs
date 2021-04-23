@@ -6,8 +6,7 @@ export default {
   getters: {},
   mutations: {},
   actions: {
-    fetchServices(ctx, {type, queryParams}) {
-      console.log(queryParams);
+    fetchVouchers(ctx, {type, queryParams}) {
       return new Promise((resolve, reject) => {
         axios
           .get(process.env.VUE_APP_ROOT_API + `services/${type}/list`, { params: queryParams })

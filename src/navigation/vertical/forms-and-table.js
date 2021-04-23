@@ -50,9 +50,23 @@ export default [
                 title: 'List Email',
                 route: 'apps-services-list-email',
             },
+        ],
+    },
+    {
+        title: 'Voucher',
+        icon: 'UserIcon',
+        children: [
             {
-                title: 'List Voucher',
-                route: 'apps-services-list-voucher',
+                title: 'List',
+                route: 'apps-voucher-list',
+            },
+            {
+                title: 'List-Delete',
+                route: 'apps-voucher-list-del',
+            },
+            {
+                title: 'Add',
+                route: 'apps-voucher-add',
             },
         ],
     },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Filters -->
-    <services-list-filters
+    <voucher-list-filters
       :type.sync="type"
       :status.sync="status"
       :type-options="typeOptions"
@@ -41,7 +41,7 @@
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{ name: 'apps-users-add-sms' }"
+                      :to="{ name: 'apps-voucher-add' }"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
@@ -51,7 +51,7 @@
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{ name: 'apps-customers-add' }"
+                      :to="{ name: 'apps-voucher-add' }"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="Trash2Icon"
@@ -196,16 +196,16 @@ import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import ServicesListFilters from "./ServicesListFilters.vue";
-import useServicesListVoucher from "./useServicesListVoucher";
-import servicesStoreModule from "../servicesStoreModule";
+import VoucherListFilters from "./VoucherListFilters.vue";
+import useVoucherList from "./useVoucherList";
+import voucherStoreModule from "../voucherStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
 
 export default {
   components: {
-    ServicesListFilters,
+    VoucherListFilters,
     BCard,
     BRow,
     BCol,
@@ -225,11 +225,11 @@ export default {
     Ripple,
   },
   setup() {
-    const SERVICES_APP_STORE_MODULE_NAME = "app-services-sms";
+    const SERVICES_APP_STORE_MODULE_NAME = "app-voucher";
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule);
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, voucherStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
@@ -276,7 +276,7 @@ export default {
       // Extra Filters
       type,
       status,
-    } = useServicesListVoucher();
+    } = useVoucherList();
 
     return {
       Services,

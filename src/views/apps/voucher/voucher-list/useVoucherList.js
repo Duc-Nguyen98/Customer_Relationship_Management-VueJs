@@ -6,7 +6,7 @@ import { title } from '@core/utils/filter'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-export default function useServicesListVoucher() {
+export default function useVoucherList() {
   // Use toast
   const toast = useToast()
 
@@ -43,16 +43,16 @@ export default function useServicesListVoucher() {
   })
 
   const refetchData = () => {
-    fetchServices()
+    fetchVouchers()
   }
 
   watch([currentPage, perPage, searchQuery, type, status], () => {
     refetchData()
   })
 
-  const fetchServices = (ctx, callback) => {
+  const fetchVouchers = (ctx, callback) => {
     store
-      .dispatch('app-services-sms/fetchServices', {type: 'sms', queryParams: {
+      .dispatch('app-voucher/fetchVouchers', {type: 'sms', queryParams: {
       q: searchQuery.value,
           perPage: perPage.value,
           page: currentPage.value,
@@ -91,11 +91,11 @@ export default function useServicesListVoucher() {
 
   const deleteService = id => {
     store
-        .dispatch('app-services-sms/deleteService', {_id: id})
+        .dispatch('app-voucher/deleteService', {_id: id})
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete services successfully.")
-            fetchUsers()
+            fetchVouchers()
           } else {
             alert("danger", "Delete services failed.")
           }
@@ -112,7 +112,7 @@ export default function useServicesListVoucher() {
         })
   }
 
-  fetchServices()
+  fetchVouchers()
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
@@ -148,7 +148,7 @@ export default function useServicesListVoucher() {
   }
 
   return {
-    fetchServices,
+    fetchVouchers,
     deleteService,
     checkStatus,
     Services,
