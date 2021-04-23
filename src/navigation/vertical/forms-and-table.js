@@ -48,12 +48,26 @@ export default [
             },
             {
                 title: 'List Email',
-                route: 'apps-users-list-del',
+                route: 'apps-services-list-email',
             },
-            // {
-            //     title: 'Add',
-            //     route: 'apps-users-add',
-            // },
+        ],
+    },
+    {
+        title: 'Voucher',
+        icon: 'UserIcon',
+        children: [
+            {
+                title: 'List',
+                route: 'apps-voucher-list',
+            },
+            {
+                title: 'List-Delete',
+                route: 'apps-voucher-list-del',
+            },
+            {
+                title: 'Add',
+                route: 'apps-voucher-add',
+            },
         ],
     },
 
