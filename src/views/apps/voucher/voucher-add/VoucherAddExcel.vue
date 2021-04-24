@@ -17,7 +17,13 @@
                         <b-row>
                             <b-col md="12">
                                 <label for="Number-Of-Vouchers">You can download sample here: <a href="">Excel File Demo</a></label>
-                                <b-alert variant="warning"></b-alert>
+                                <b-alert show variant="warning">
+                                    <feather-icon
+                                            icon="MicIcon"
+                                            class="cursor-pointer"
+                                    />
+                                    Lưu ý: Hệ thống cho phép nhận tối đa 5.000 voucher mỗi lần từ file
+                                </b-alert>
                                 <b-form-group>
                                     <!-- Styled -->
                                     <b-form-file
