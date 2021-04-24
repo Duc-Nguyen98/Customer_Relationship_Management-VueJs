@@ -41,15 +41,14 @@
               label="Form Applies"
               label-for="v-email"
             >
-              <b-form-radio-group
-                      id="v-email"
-                      v-model="form"
-                      :options="optionsForm"
-                      class="mb-3"
-                      value-field="item"
-                      text-field="name"
-                      disabled-field="notEnabled"
-              ></b-form-radio-group>
+              <v-select
+                      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                      :value="typeDate"
+                      :options="typeDateOptions"
+                      class="w-100"
+                      :reduce="(val) => val.value"
+                      @input="(val) => $emit('update:type', val)"
+              />
             </b-form-group>
           </b-col>
           <b-col md="3">
@@ -57,28 +56,108 @@
               label="Status Group"
               label-for="v-password"
             >
-              <b-form-radio-group
-                      v-model="active"
-                      :options="optionsActive"
-                      class="mb-3"
-                      value-field="item"
-                      text-field="name"
-                      disabled-field="notEnabled"
-              ></b-form-radio-group>
+              <v-select
+                      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                      :value="typeDate"
+                      :options="typeDateOptions"
+                      class="w-100"
+                      :reduce="(val) => val.value"
+                      @input="(val) => $emit('update:type', val)"
+              />
             </b-form-group>
           </b-col>
           <b-col md="12">
+             <p>Discount</p>
+          </b-col>
+          <b-col md="6">
             <b-form-group
-                    label="Note"
+                    label-for="v-password"
+            >
+              <b-col md="12">
+                <b-form-group
+                        label-for="v-password"
+                >
+                  <b-form-radio v-model="effect" name="some-radios" value="0">Percent And Maximum</b-form-radio>
+                </b-form-group>
+              </b-col>
+              <b-col md="12">
+                <b-form-group>
+                  <label for="Percent">Percent</label>
+                  <b-input-group>
+                    <b-form-input
+                            id="Percent"
+                            placeholder="Your Percent"
+                    />
+                    <b-input-group-append is-text>
+                      <feather-icon
+                              icon="PercentIcon"
+                              class="cursor-pointer"
+                      />
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+
+                <b-form-group>
+                  <label for="Mmoney">Maximum money</label>
+                  <b-input-group>
+                    <b-form-input
+                            id="Mmoney"
+                            placeholder="Your maximum money"
+                    />
+                    <b-input-group-append is-text>
+                      <feather-icon
+                              icon="ChevronsUpIcon"
+                              class="cursor-pointer"
+                      />
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+            </b-form-group>
+          </b-col>
+          <b-col md="6">
+            <b-form-group
+                    label-for="v-reduction-money"
+            >
+              <b-col md="12">
+                <b-form-group
+                        label-for="v-reduction-money"
+                >
+                  <b-form-radio v-model="effect" id="v-reduction-money" name="some-radios" value="0">Reduction Money</b-form-radio>
+                </b-form-group>
+              </b-col>
+              <b-col md="12">
+                <b-form-group>
+                  <label for="Reduction">Reduction</label>
+                  <b-input-group>
+                    <b-form-input
+                            id="Reduction"
+                            placeholder="Your Reduction"
+                    />
+                    <b-input-group-append is-text>
+                      <feather-icon
+                              icon="ChevronsDownIcon"
+                              class="cursor-pointer"
+                      />
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+            </b-form-group>
+          </b-col>
+          <b-col md="12">
+            <p>Note</p>
+          </b-col>
+          <b-col md="12">
+            <b-form-group
                     label-for="v-note"
             >
               <b-form-textarea
-                      id="textarea"
+                      id="textarea-default"
+                      placeholder="Textarea"
+                      rows="6.5"
                       v-model="note"
-                      placeholder="Enter something..."
-                      rows="3"
-                      max-rows="6"
-              ></b-form-textarea>
+              />
             </b-form-group>
           </b-col>
         </b-row>
@@ -101,7 +180,7 @@
               label="Effect From"
               label-for="v-effect-from"
             >
-              <b-form-radio v-model="effect" name="some-radios" value="0"></b-form-radio>
+              <b-form-radio @input="chooseEffect" v-model="effect" name="some-radios" value="0"></b-form-radio>
             </b-form-group>
           </b-col>
           <b-col md="4">
@@ -109,7 +188,7 @@
               label="Từ ngày"
               label-for="v-last-name"
             >
-              <b-form-datepicker placeholder="From Date" :date-disabled-fn="dateEffDisabled" locale="en"></b-form-datepicker>
+              <b-form-datepicker v-model="from_date" placeholder="From Date"  :disabled="expiry!=null" :date-disabled-fn="dateEffDisabled" locale="en"></b-form-datepicker>
             </b-form-group>
           </b-col>
           <b-col md="4">
@@ -117,7 +196,7 @@
                     label="Tới ngày"
                     label-for="v-last-name"
             >
-              <b-form-datepicker placeholder="To Date" :date-disabled-fn="dateExpDisabled" locale="en"></b-form-datepicker>
+              <b-form-datepicker v-model="to_date" placeholder="To Date" :disabled="expiry!=null" :date-disabled-fn="dateExpDisabled" locale="en"></b-form-datepicker>
             </b-form-group>
           </b-col>
 
@@ -126,7 +205,7 @@
                     label="Expiry Date"
                     label-for="v-expiry-from"
             >
-              <b-form-radio v-model="expiry" name="some-radios" value="1"></b-form-radio>
+              <b-form-radio @input="chooseExpiry" v-model="expiry" name="some-radios" value="1"></b-form-radio>
             </b-form-group>
           </b-col>
           <b-col md="4">
@@ -134,7 +213,7 @@
                     label="Choose Date Number"
                     label-for="v-last-name"
             >
-              <b-form-input type="number" placeholder="Enter your name"></b-form-input>
+              <b-form-input type="number" v-model="date_number" :disabled="effect!=null" placeholder="Enter your date number"></b-form-input>
             </b-form-group>
           </b-col>
           <b-col md="4">
@@ -143,12 +222,12 @@
                     label-for="v-last-name"
             >
               <v-select
+                      placeholder="Choose release date type"
+                      :disabled="effect!=null"
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                      :value="type"
-                      :options="issueOptions"
+                      v-model="typeDate"
+                      :options="typeDateOptions"
                       class="w-100"
-                      :reduce="(val) => val.value"
-                      @input="(val) => $emit('update:type', val)"
               />
             </b-form-group>
           </b-col>
@@ -190,13 +269,21 @@
               label-for="v-landmark"
             >
               <v-select
+                      v-model="selected1"
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                      :value="type"
-                      :options="issueOptions"
-                      class="w-100"
-                      :reduce="(val) => val.value"
-                      @input="(val) => $emit('update:type', val)"
-              />
+                      multiple
+                      :options="books"
+                      label="title"
+              >
+                <template #option="{ title, icon }">
+                  <feather-icon
+                          :icon="icon"
+                          size="16"
+                          class="align-middle mr-25"
+                  />
+                  <span> {{ title }}</span>
+                </template>
+              </v-select>
             </b-form-group>
           </b-col>
           <b-col md="6">
@@ -221,13 +308,21 @@
               label-for="v-city"
             >
               <v-select
+                      v-model="selected1"
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                      :value="type"
-                      :options="issueOptions"
-                      class="w-100"
-                      :reduce="(val) => val.value"
-                      @input="(val) => $emit('update:type', val)"
-              />
+                      multiple
+                      :options="books"
+                      label="title"
+              >
+                <template #option="{ title, icon }">
+                  <feather-icon
+                          :icon="icon"
+                          size="16"
+                          class="align-middle mr-25"
+                  />
+                  <span> {{ title }}</span>
+                </template>
+              </v-select>
             </b-form-group>
           </b-col>
         </b-row>
@@ -245,49 +340,8 @@
             </h5>
             <small class="text-muted">Enter Your Voucher List</small>
           </b-col>
-          <b-col md="6">
-            <b-form-group
-              label="Twitter"
-              label-for="v-twitter"
-            >
-              <b-form-input
-                id="v-twitter"
-                placeholder="https://twitter.com/abc"
-              />
-            </b-form-group>
-          </b-col>
-          <b-col md="6">
-            <b-form-group
-              label="Facebook"
-              label-for="v-facebook"
-            >
-              <b-form-input
-                id="v-facebook"
-                placeholder="https://facebook.com/abc"
-              />
-            </b-form-group>
-          </b-col>
-          <b-col md="6">
-            <b-form-group
-              label="Google+"
-              label-for="v-google-plus"
-            >
-              <b-form-input
-                id="v-google-plus"
-                placeholder="https://plus.google.com/abc"
-              />
-            </b-form-group>
-          </b-col>
-          <b-col md="6">
-            <b-form-group
-              label="LinkedIn"
-              label-for="v-linked-in"
-            >
-              <b-form-input
-                id="v-linked-in"
-                placeholder="https://linkedin.com/abc"
-              />
-            </b-form-group>
+          <b-col md="12">
+            <VoucherList />
           </b-col>
         </b-row>
       </tab-content>
@@ -300,6 +354,8 @@
 import { FormWizard, TabContent } from 'vue-form-wizard'
 import vSelect from 'vue-select'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+import VoucherList from "../voucher-list/VoucherList.vue";
+
 import {
   BRow,
   BCol,
@@ -308,12 +364,16 @@ import {
   BFormRadioGroup,
   BFormTextarea,
   BFormRadio,
+  BButton,
   BFormDatepicker,
+  BInputGroup,
+  BInputGroupAppend,
 } from 'bootstrap-vue'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
+    VoucherList,
     FormWizard,
     TabContent,
     BRow,
@@ -324,37 +384,18 @@ export default {
     BFormTextarea,
     BFormDatepicker,
     BFormRadio,
+    BButton,
+    BInputGroup,
+    BInputGroupAppend,
     vSelect,
     // eslint-disable-next-line vue/no-unused-components
     ToastificationContent,
   },
   data() {
     return {
-      selectedContry: 'select_value',
-      selectedLanguage: 'nothing_selected',
-      countryName: [
-        { value: 'select_value', text: 'Select Value' },
-        { value: 'Russia', text: 'Russia' },
-        { value: 'Canada', text: 'Canada' },
-        { value: 'China', text: 'China' },
-        { value: 'United States', text: 'United States' },
-        { value: 'Brazil', text: 'Brazil' },
-        { value: 'Australia', text: 'Australia' },
-        { value: 'India', text: 'India' },
-      ],
-      languageName: [
-        { value: 'nothing_selected', text: 'Nothing Selected' },
-        { value: 'English', text: 'English' },
-        { value: 'Chinese', text: 'Mandarin Chinese' },
-        { value: 'Hindi', text: 'Hindi' },
-        { value: 'Spanish', text: 'Spanish' },
-        { value: 'Arabic', text: 'Arabic' },
-        { value: 'Malay', text: 'Malay' },
-        { value: 'Russian', text: 'Russian' },
-      ],
       active: 0,
       optionsActive: [
-        { item: 0, name: 'Nonactive' },
+        { item: 0, name: 'Inactive' },
         { item: 1, name: 'Active' },
       ],
       form: 0,
@@ -371,19 +412,56 @@ export default {
         { label: "Pending", value: 0 },
         { label: "Send", value: 1 },
       ],
+      typeDate: null,
+      typeDateOptions: [
+        { label: "Day", value: 0 },
+        { label: "Month", value: 1 },
+      ],
       sysOptions: [
         { name: "All Systems", item: 0 },
         { name: "Branch Systems", item: 1 },
       ],
       cusOptions: [
         { name: "All Customer", item: 0 },
-        { name: "Branch Systems", item: 1 },
+        { name: "Group Customer", item: 1 },
+      ],
+      selected1: [
+        {
+          title: 'Command',
+          icon: 'CommandIcon',
+        },
+      ],
+      books: [
+        {
+          title: 'Database',
+          icon: 'DatabaseIcon',
+        },
+        {
+          title: 'Codepen',
+          icon: 'CodepenIcon',
+        },
+        {
+          title: 'Aperture ',
+          icon: 'ApertureIcon',
+        },
+        {
+          title: 'Command',
+          icon: 'CommandIcon',
+        },
       ],
       note: "",
+
+      //Màn 2
       effect: 0,
       expiry: null,
       effect_date: null,
+      from_date: null,
+      to_date: null,
       expiry_date: null,
+      date_number: null,
+
+      //Màn 4
+
     }
   },
   methods: {
@@ -403,6 +481,18 @@ export default {
       const day = date.getDate()
       // Return `true` if the date should be disabled
       return weekday === 0 || weekday === 6 || day === 13
+    },
+
+    chooseEffect() {
+      this.expiry = null
+      this.date_number = null
+      this.typeDate = null
+    },
+
+    chooseExpiry() {
+      this.effect = null
+      this.from_date = null
+      this.to_date = null
     },
 
     formSubmitted() {

@@ -54,21 +54,8 @@ export default [
     },
     {
         title: 'Voucher',
+        route: 'apps-voucher-add',
         icon: 'UserIcon',
-        children: [
-            {
-                title: 'List',
-                route: 'apps-voucher-list',
-            },
-            {
-                title: 'List-Delete',
-                route: 'apps-voucher-list-del',
-            },
-            {
-                title: 'Add',
-                route: 'apps-voucher-add',
-            },
-        ],
     },
 
 ]

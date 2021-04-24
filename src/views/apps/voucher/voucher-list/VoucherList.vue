@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- Filters -->
-    <voucher-list-filters
-      :type.sync="type"
-      :status.sync="status"
-      :type-options="typeOptions"
-      :status-options="statusOptions"
-    />
+<!--    <voucher-list-filters-->
+<!--      :type.sync="type"-->
+<!--      :status.sync="status"-->
+<!--      :type-options="typeOptions"-->
+<!--      :status-options="statusOptions"-->
+<!--    />-->
 
     <!-- Table Container Card -->
     <b-card no-body class="mb-0">
@@ -16,7 +16,7 @@
           <!-- Per Page -->
           <b-col
             cols="12"
-            md="6"
+            md="3"
             class="d-flex align-items-center justify-content-start mb-1 mb-md-0"
           >
             <label>Show</label>
@@ -31,32 +31,59 @@
           </b-col>
 
           <!-- Search -->
-          <b-col cols="12" md="6">
+          <b-col cols="12" md="9">
             <div class="d-flex align-items-center justify-content-end">
               <b-form-input
                       v-model="searchQuery"
                       class="d-inline-block mr-1"
                       placeholder="Search..."
               />
-              <b-button
-                      class="mr-1"
-                      variant="primary"
-                      :to="{ name: 'apps-voucher-add' }"
-              >
-                <span class="text-nowrap"
-                ><feather-icon icon="PlusCircleIcon"
-                /></span>
-              </b-button>
+
+              <!--              Start add voucher -->
 
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{ name: 'apps-voucher-add' }"
+                      v-b-modal.modal-lg
               >
                 <span class="text-nowrap"
-                ><feather-icon icon="Trash2Icon"
-                /></span>
+                ><feather-icon icon="PlusCircleIcon"
+                /> + Voucher</span>
               </b-button>
+
+              <b-modal id="modal-lg" size="lg" title="Add Vouchers" hide-footer>
+                <VoucherAddMultil />
+              </b-modal>
+
+              <!--              End add voucher -->
+
+              <b-button
+                      class="mr-1"
+                      variant="primary"
+                      v-b-modal.modal-lg2
+              >
+                <span class="text-nowrap"
+                ><feather-icon icon="PlusCircleIcon"
+                /> + Voucher Automatic</span>
+              </b-button>
+
+              <b-modal id="modal-lg2" size="lg" title="Add Vouchers Automatic" hide-footer>
+                <VoucherAddAuto />
+              </b-modal>
+
+              <b-button
+                      class="mr-1"
+                      variant="primary"
+                      v-b-modal.modal-lg3
+              >
+                <span class="text-nowrap"
+                ><feather-icon icon="UploadIcon"
+                /> + Import Excel</span>
+              </b-button>
+
+              <b-modal id="modal-lg3" size="lg" title="Import voucher from file Excel" hide-footer>
+                <VoucherAddExcel />
+              </b-modal>
             </div>
           </b-col>
         </b-row>
@@ -196,8 +223,10 @@ import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import VoucherListFilters from "./VoucherListFilters.vue";
 import useVoucherList from "./useVoucherList";
+import VoucherAddMultil from "../voucher-add/VoucherAddMultil";
+import VoucherAddAuto from "../voucher-add/VoucherAddAuto";
+import VoucherAddExcel from "../voucher-add/VoucherAddExcel";
 import voucherStoreModule from "../voucherStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
@@ -205,7 +234,9 @@ import ToastificationContent from "@core/components/toastification/Toastificatio
 
 export default {
   components: {
-    VoucherListFilters,
+    VoucherAddMultil,
+    VoucherAddAuto,
+    VoucherAddExcel,
     BCard,
     BRow,
     BCol,

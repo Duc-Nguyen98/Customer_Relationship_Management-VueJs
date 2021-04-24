@@ -15,11 +15,15 @@ export default function useVoucherList() {
   // Table Handlers
   const tableColumns = [
     { key: 'stt', label: 'STT', sortable: true },
-    { key: 'title', label: 'TITLE', formatter: title, sortable: false },
-    { key: 'type', label: 'TYPE', sortable: true },
-    { key: 'name', label: 'NAME', sortable: false },
-    { key: 'telephone', label: 'TELEPHONE', sortable: false },
-    { key: 'status', label: 'STATUS', sortable: false },
+    { key: 'title', label: 'Voucher code', formatter: title, sortable: false },
+    { key: 'type', label: 'Release date', sortable: true },
+    { key: 'name', label: 'Expiration date', sortable: false },
+    { key: 'telephone', label: 'Percent', sortable: false },
+    { key: 'status', label: 'Maximum money', sortable: false },
+    { key: 'reduction_money', label: 'Reduction Money', sortable: false },
+    { key: 'price', label: 'Price', sortable: false },
+    { key: 'status-voucher', label: 'Status voucher', sortable: false },
+    { key: 'created_by', label: 'Created By', sortable: false },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -51,30 +55,30 @@ export default function useVoucherList() {
   })
 
   const fetchVouchers = (ctx, callback) => {
-    store
-      .dispatch('app-voucher/fetchVouchers', {type: 'sms', queryParams: {
-      q: searchQuery.value,
-          perPage: perPage.value,
-          page: currentPage.value,
-          sort: sortBy.value,
-          type: type.value,
-          status: status.value,
-    }})
-      .then(response => {
-        const { users, totalRecords } = response.data
-        totalServices.value = totalRecords
-        Services.value = users
-      })
-      .catch(() => {
-        toast({
-          component: ToastificationContent,
-          props: {
-            title: 'Error fetching services list',
-            icon: 'AlertTriangleIcon',
-            variant: 'danger',
-          },
-        })
-      })
+    // store
+    //   .dispatch('app-voucher/fetchVouchers', {type: 'sms', queryParams: {
+    //   q: searchQuery.value,
+    //       perPage: perPage.value,
+    //       page: currentPage.value,
+    //       sort: sortBy.value,
+    //       type: type.value,
+    //       status: status.value,
+    // }})
+    //   .then(response => {
+    //     const { users, totalRecords } = response.data
+    //     totalServices.value = totalRecords
+    //     Services.value = users
+    //   })
+    //   .catch(() => {
+    //     toast({
+    //       component: ToastificationContent,
+    //       props: {
+    //         title: 'Error fetching services list',
+    //         icon: 'AlertTriangleIcon',
+    //         variant: 'danger',
+    //       },
+    //     })
+    //   })
   }
 
   const alert = (variant, message) => {
