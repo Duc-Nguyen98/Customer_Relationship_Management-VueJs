@@ -136,7 +136,7 @@
                     />
                     <b-input-group-append is-text>
                       <feather-icon
-                              icon="ChevronsDownIcon"
+                              icon="DollarSignIcon"
                               class="cursor-pointer"
                       />
                     </b-input-group-append>
