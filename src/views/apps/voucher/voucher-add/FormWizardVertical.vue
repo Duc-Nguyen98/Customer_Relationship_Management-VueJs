@@ -293,7 +293,7 @@
             >
               <b-form-radio-group
                       id="v-customer-apply"
-                      v-model="active"
+                      v-model="cus"
                       :options="cusOptions"
                       class="mb-3"
                       value-field="item"
@@ -394,6 +394,7 @@ export default {
   data() {
     return {
       active: 0,
+      cus: null,
       optionsActive: [
         { item: 0, name: 'Inactive' },
         { item: 1, name: 'Active' },
