@@ -1,6 +1,7 @@
 <template>
   <div>
-    <form-wizard
+    <validation-observer ref="simpleRules">
+      <form-wizard
       color="#7367F0"
       :title="null"
       :subtitle="null"
@@ -43,11 +44,9 @@
             >
               <v-select
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                      :value="typeDate"
-                      :options="typeDateOptions"
+                      v-model="applies"
+                      :options="appliesOptions"
                       class="w-100"
-                      :reduce="(val) => val.value"
-                      @input="(val) => $emit('update:type', val)"
               />
             </b-form-group>
           </b-col>
@@ -58,11 +57,9 @@
             >
               <v-select
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                      :value="typeDate"
-                      :options="typeDateOptions"
+                      v-model="active"
+                      :options="optionsActive"
                       class="w-100"
-                      :reduce="(val) => val.value"
-                      @input="(val) => $emit('update:type', val)"
               />
             </b-form-group>
           </b-col>
@@ -71,22 +68,29 @@
           </b-col>
           <b-col md="6">
             <b-form-group
-                    label-for="v-password"
+                    label-for="v-discount"
             >
               <b-col md="12">
-                <b-form-group
-                        label-for="v-password"
-                >
-                  <b-form-radio v-model="effect" name="some-radios" value="0">Percent And Maximum</b-form-radio>
+                <b-form-group>
+                  <b-form-radio v-model="discount" :autofocus="true" :value="0">Percent And Maximum</b-form-radio>
                 </b-form-group>
               </b-col>
               <b-col md="12">
                 <b-form-group>
                   <label for="Percent">Percent</label>
+                  <validation-provider
+                          #default="{ errors }"
+                          name="Percent"
+                          rules="between:5,95"
+                  >
                   <b-input-group>
                     <b-form-input
+                            v-model="percent"
+                            :state="errors.length > 0 ? false : null"
                             id="Percent"
+                            type="number"
                             placeholder="Your Percent"
+                            :disabled="discount == 1"
                     />
                     <b-input-group-append is-text>
                       <feather-icon
@@ -95,22 +99,29 @@
                       />
                     </b-input-group-append>
                   </b-input-group>
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
                 </b-form-group>
 
                 <b-form-group>
                   <label for="Mmoney">Maximum money</label>
                   <b-input-group>
                     <b-form-input
+                            :disabled="discount == 1"
+                            v-model="Mmoney"
                             id="Mmoney"
                             placeholder="Your maximum money"
                     />
                     <b-input-group-append is-text>
                       <feather-icon
-                              icon="ChevronsUpIcon"
+                              icon="DollarSignIcon"
                               class="cursor-pointer"
                       />
                     </b-input-group-append>
                   </b-input-group>
+                  <div v-if="Mmoney != null" class="p-1">
+                    Format money: {{ formatMoney }}
+                  </div>
                 </b-form-group>
               </b-col>
             </b-form-group>
@@ -123,7 +134,7 @@
                 <b-form-group
                         label-for="v-reduction-money"
                 >
-                  <b-form-radio v-model="effect" id="v-reduction-money" name="some-radios" value="0">Reduction Money</b-form-radio>
+                  <b-form-radio v-model="discount" id="v-reduction-money" name="some-radios" :value="1">Reduction Money</b-form-radio>
                 </b-form-group>
               </b-col>
               <b-col md="12">
@@ -131,6 +142,7 @@
                   <label for="Reduction">Reduction</label>
                   <b-input-group>
                     <b-form-input
+                            :disabled="discount == 0"
                             id="Reduction"
                             placeholder="Your Reduction"
                     />
@@ -152,12 +164,19 @@
             <b-form-group
                     label-for="v-note"
             >
+              <validation-provider
+                      #default="{ errors }"
+                      name="Percent"
+                      rules="max:1000"
+              >
               <b-form-textarea
                       id="textarea-default"
                       placeholder="Textarea"
                       rows="6.5"
                       v-model="note"
               />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
             </b-form-group>
           </b-col>
         </b-row>
@@ -180,7 +199,7 @@
               label="Effect From"
               label-for="v-effect-from"
             >
-              <b-form-radio @input="chooseEffect" v-model="effect" name="some-radios" value="0"></b-form-radio>
+              <b-form-radio @input="chooseEffect" v-model="effect" name="some-radios" :value="0"></b-form-radio>
             </b-form-group>
           </b-col>
           <b-col md="4">
@@ -205,15 +224,15 @@
                     label="Expiry Date"
                     label-for="v-expiry-from"
             >
-              <b-form-radio @input="chooseExpiry" v-model="expiry" name="some-radios" value="1"></b-form-radio>
+              <b-form-radio @input="chooseExpiry" v-model="expiry" name="some-radios" :value="1"></b-form-radio>
             </b-form-group>
           </b-col>
           <b-col md="4">
             <b-form-group
-                    label="Choose Date Number"
+                    label="Date Number"
                     label-for="v-last-name"
             >
-              <b-form-input type="number" v-model="date_number" :disabled="effect!=null" :placeholder="effect==null ? 'Enter your date number' : 'Disabled date number'"></b-form-input>
+              <b-form-input type="number" min="1" v-model="date_number" :disabled="effect!=null" :placeholder="effect==null ? 'Enter your date number' : 'Disabled date number'"></b-form-input>
             </b-form-group>
           </b-col>
           <b-col md="4">
@@ -349,7 +368,7 @@
         </b-row>
       </tab-content>
     </form-wizard>
-
+    </validation-observer>
   </div>
 </template>
 
@@ -358,7 +377,37 @@ import { FormWizard, TabContent } from 'vue-form-wizard'
 import vSelect from 'vue-select'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import VoucherList from "../voucher-list/VoucherList.vue";
-
+import {ValidationProvider, ValidationObserver} from "vee-validate";
+import {
+  required,
+  email,
+  confirmed,
+  url,
+  between,
+  alpha,
+  integer,
+  password,
+  min,
+  max,
+  digits,
+  alphaDash,
+  length,
+} from "@validations";
+const validation = {
+  required,
+  confirmed,
+  password,
+  email,
+  min,
+  max,
+  integer,
+  url,
+  alpha,
+  between,
+  digits,
+  length,
+  alphaDash,
+};
 import {
   BRow,
   BCol,
@@ -378,6 +427,7 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 
 export default {
   components: {
+    ValidationProvider, ValidationObserver,
     VoucherList,
     FormWizard,
     TabContent,
@@ -400,16 +450,17 @@ export default {
   },
   data() {
     return {
-      active: 0,
-      cus: null,
-      optionsActive: [
-        { item: 0, name: 'Inactive' },
-        { item: 1, name: 'Active' },
+      discount: 0,
+      applies: 0,
+      appliesOptions: [
+        { value: 0, label: 'Trade Voucher' },
+        { value: 1, label: 'Gift Voucher' },
       ],
-      form: 0,
-      optionsForm: [
-        { item: 0, name: 'Trade' },
-        { item: 1, name: 'Gift' },
+      active: 0,
+      cus: 0,
+      optionsActive: [
+        { value: 0, label: 'Inactive' },
+        { value: 1, label: 'Active' },
       ],
       system: 0,
       optionsSystem: [
@@ -458,6 +509,8 @@ export default {
         },
       ],
       note: "",
+      percent: null,
+      Mmoney: null,
 
       //Màn 2
       effect: 0,
@@ -472,6 +525,15 @@ export default {
 
     }
   },
+  created() {
+
+  },
+  computed: {
+    formatMoney() {
+      let val = (this.Mmoney/1).toFixed(2).replace('.', ',')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    }
+  },
   methods: {
     dateEffDisabled(ymd, date) {
       // Disable weekends (Sunday = `0`, Saturday = `6`) and
@@ -483,7 +545,7 @@ export default {
       const year = date.getFullYear()
 
       // Return `true` if the date should be disabled
-      return day < today.getDate() || month < today.getMonth() || year < today.getFullYear()
+      return date < today.setDate(today.getDate()-1)
     },
 
     dateExpDisabled(ymd, date) {
@@ -495,7 +557,7 @@ export default {
       const month = date.getMonth()
       const year = date.getFullYear()
       // Return `true` if the date should be disabled
-      return day < today.getDate() || month < today.getMonth() || year < today.getFullYear()
+      return date < today
     },
 
     chooseEffect() {
@@ -505,6 +567,7 @@ export default {
     },
 
     chooseExpiry() {
+      this.date_number = 1
       this.effect = null
       this.from_date = null
       this.to_date = null

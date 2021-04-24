@@ -12,20 +12,20 @@
                 <b-row
                         v-for="(item, index) in items"
                         :id="item.id"
-                        :key="item.id"
+                        :key="index"
                         ref="row"
                 >
 
                     <!-- Item Name -->
                     <b-col lg="9" md="9">
                         <b-form-group
-                                label="Item Name"
+                                :label="'Voucher ' + (index + 1)"
                                 label-for="item-name"
                         >
                             <b-form-input
                                     id="item-name"
                                     type="text"
-                                    placeholder="Vuexy Admin Template"
+                                    placeholder="Enter voucher"
                             />
                         </b-form-group>
                     </b-col>
