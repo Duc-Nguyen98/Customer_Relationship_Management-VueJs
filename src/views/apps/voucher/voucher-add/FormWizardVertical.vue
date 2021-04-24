@@ -213,7 +213,7 @@
                     label="Choose Date Number"
                     label-for="v-last-name"
             >
-              <b-form-input type="number" v-model="date_number" :disabled="effect!=null" placeholder="Enter your date number"></b-form-input>
+              <b-form-input type="number" v-model="date_number" :disabled="effect!=null" :placeholder="effect==null ? 'Enter your date number' : 'Disabled date number'"></b-form-input>
             </b-form-group>
           </b-col>
           <b-col md="4">
@@ -221,14 +221,17 @@
                     label="Release date type"
                     label-for="v-last-name"
             >
-              <v-select
-                      placeholder="Choose release date type"
+              <b-form-select
                       :disabled="effect!=null"
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                       v-model="typeDate"
                       :options="typeDateOptions"
                       class="w-100"
-              />
+              >
+                <template #first>
+                  <b-form-select-option :value="null" disabled>{{ effect==null ? 'Choose release date type' : 'Disabled release date type' }}</b-form-select-option>
+                </template>
+              </b-form-select>
             </b-form-group>
           </b-col>
 
@@ -364,6 +367,8 @@ import {
   BFormRadioGroup,
   BFormTextarea,
   BFormRadio,
+  BFormSelect,
+  BFormSelectOption,
   BButton,
   BFormDatepicker,
   BInputGroup,
@@ -380,10 +385,12 @@ export default {
     BCol,
     BFormGroup,
     BFormInput,
+    BFormSelect,
     BFormRadioGroup,
     BFormTextarea,
     BFormDatepicker,
     BFormRadio,
+    BFormSelectOption,
     BButton,
     BInputGroup,
     BInputGroupAppend,
@@ -415,8 +422,8 @@ export default {
       ],
       typeDate: null,
       typeDateOptions: [
-        { label: "Day", value: 0 },
-        { label: "Month", value: 1 },
+        { text: "Day", value: 0 },
+        { text: "Month", value: 1 },
       ],
       sysOptions: [
         { name: "All Systems", item: 0 },
@@ -469,19 +476,26 @@ export default {
     dateEffDisabled(ymd, date) {
       // Disable weekends (Sunday = `0`, Saturday = `6`) and
       // disable days that fall on the 13th of the month
-      const weekday = date.getDay()
+      var today = new Date();
+
       const day = date.getDate()
+      const month = date.getMonth()
+      const year = date.getFullYear()
+
       // Return `true` if the date should be disabled
-      return weekday === 0 || weekday === 6 || day === 13
+      return day < today.getDate() || month < today.getMonth() || year < today.getFullYear()
     },
 
     dateExpDisabled(ymd, date) {
       // Disable weekends (Sunday = `0`, Saturday = `6`) and
       // disable days that fall on the 13th of the month
-      const weekday = date.getDay()
+      var today = new Date();
+
       const day = date.getDate()
+      const month = date.getMonth()
+      const year = date.getFullYear()
       // Return `true` if the date should be disabled
-      return weekday === 0 || weekday === 6 || day === 13
+      return day < today.getDate() || month < today.getMonth() || year < today.getFullYear()
     },
 
     chooseEffect() {
