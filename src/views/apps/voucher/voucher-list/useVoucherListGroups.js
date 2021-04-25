@@ -10,7 +10,7 @@ export default function useVoucherListGroups() {
   // Use toast
   const toast = useToast()
 
-  const refServicesListTable = ref(null)
+  const refVoucherListTable = ref(null)
 
   // Table Handlers
   const tableColumns = [
@@ -29,12 +29,12 @@ export default function useVoucherListGroups() {
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  const type = ref(null)
+  const classified = ref(null)
   const status = ref(null)
   const Vouchers = ref([])
 
   const dataMeta = computed(() => {
-    const localItemsCount = refServicesListTable.value ? refServicesListTable.value.localItems.length : 0
+    const localItemsCount = refVoucherListTable.value ? refVoucherListTable.value.localItems.length : 0
     return {
       from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
       to: perPage.value * (currentPage.value - 1) + localItemsCount,
@@ -46,7 +46,7 @@ export default function useVoucherListGroups() {
     fetchVouchers()
   }
 
-  watch([currentPage, perPage, searchQuery, type, status], () => {
+  watch([currentPage, perPage, searchQuery, classified, status], () => {
     refetchData()
   })
 
@@ -56,14 +56,13 @@ export default function useVoucherListGroups() {
       q: searchQuery.value,
           perPage: perPage.value,
           page: currentPage.value,
-          sort: sortBy.value,
-          type: type.value,
+        classified: classified.value,
           status: status.value,
     })
       .then(response => {
-        const { vouchers } = response.data
-        Vouchers.value = vouchers
-        console.log(vouchers)
+        const { groupVouchers, countGroupVoucher } = response.data
+        Vouchers.value = groupVouchers
+        totalVoucher.value = countGroupVoucher
       })
       .catch(() => {
         toast({
@@ -147,10 +146,23 @@ export default function useVoucherListGroups() {
     return 'primary'
   }
 
+  const resolveUserClassifiedVariant = stt => {
+    if (stt === 0) return 'info'
+    if (stt === 1) return 'success'
+    return 'info'
+  }
+
+  const checkClassified = stt => {
+    if (stt === 0) return 'Trade Voucher'
+    if (stt === 1) return 'Gift Voucher'
+    return 'Trade Voucher'
+  }
+
   return {
     fetchVouchers,
     deleteVoucherSoft,
     checkStatus,
+    checkClassified,
     Vouchers,
     tableColumns,
     perPage,
@@ -161,15 +173,15 @@ export default function useVoucherListGroups() {
     searchQuery,
     sortBy,
     isSortDirDesc,
-    refServicesListTable,
+    refVoucherListTable,
 
     resolveUserRoleVariant,
     resolveUserRoleIcon,
     resolveUserStatusVariant,
     refetchData,
-
+    resolveUserClassifiedVariant,
     // Extra Filters
-    type,
+    classified,
     status,
     alert,
   }

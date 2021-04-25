@@ -293,6 +293,7 @@ export default {
     });
 
     const groupOptions = [
+      { label: "Choose a group", value: null },
       { label: "Normal customers", value: 0 },
       { label: "Loyal customers", value: 1 },
       { label: "Potential customers", value: 2 },
@@ -313,6 +314,7 @@ export default {
     };
 
     const genderOptions = [
+      { label: "Choose a gender", value: null },
       { label: "Male", value: 0 },
       { label: "Female", value: 1 },
     ];

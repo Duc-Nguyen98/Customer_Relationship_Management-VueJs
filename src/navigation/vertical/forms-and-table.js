@@ -52,23 +52,5 @@ export default [
             },
         ],
     },
-    {
-        title: 'Voucher',
-        icon: 'UserIcon',
-        children: [
-            {
-                title: 'G-Voucher',
-                route: 'apps-voucher-list',
-            },
-            {
-                title: 'G-Voucher Delete',
-                route: 'apps-voucher-list-del',
-            },
-            {
-                title: 'Add',
-                route: 'apps-voucher-add',
-            },
-        ],
-    },
 
 ]

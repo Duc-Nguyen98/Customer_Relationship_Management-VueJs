@@ -293,16 +293,19 @@ export default {
     const isAddNewUserSidebarActive = ref(false);
 
     const roleOptions = [
+      { label: "Choose a role", value: null },
       { label: "Employee", value: "employee" },
       { label: "Admin", value: "admin" },
     ]
 
     const genderOptions = [
+      { label: "Choose a gender", value: null },
       { label: "Male", value: 0 },
       { label: "Female", value: 1 },
     ]
 
     const activeOptions = [
+      { label: "Choose a status", value: null },
       { label: "InActive", value: 0 },
       { label: "Active", value: 1 },
     ]

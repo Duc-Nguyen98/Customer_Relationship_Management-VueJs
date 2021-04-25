@@ -2,9 +2,9 @@
   <div>
      Filters
     <voucher-list-filters
-      :type.sync="type"
+      :classified.sync="classified"
       :status.sync="status"
-      :type-options="typeOptions"
+      :classified-options="classifiedOptions"
       :status-options="statusOptions"
     />
 
@@ -44,53 +44,19 @@
               <b-button
                       class="mr-1"
                       variant="primary"
-                      v-b-modal.modal-lg
+                      :to="{name: 'apps-group-voucher-list'}"
               >
                 <span class="text-nowrap"
-                ><feather-icon icon="PlusCircleIcon"
-                /> + Voucher</span>
+                ><feather-icon icon="RotateCwIcon"
+                /> Groups Voucher</span>
               </b-button>
-
-              <b-modal id="modal-lg" size="lg" title="Add Vouchers" hide-footer>
-                <VoucherAddMultil />
-              </b-modal>
-
-              <!--              End add voucher -->
-
-              <b-button
-                      class="mr-1"
-                      variant="primary"
-                      v-b-modal.modal-lg2
-              >
-                <span class="text-nowrap"
-                ><feather-icon icon="PlusCircleIcon"
-                /> + Voucher Automatic</span>
-              </b-button>
-
-              <b-modal id="modal-lg2" size="lg" title="Add Vouchers Automatic" hide-footer>
-                <VoucherAddAuto />
-              </b-modal>
-
-              <b-button
-                      class="mr-1"
-                      variant="primary"
-                      v-b-modal.modal-lg3
-              >
-                <span class="text-nowrap"
-                ><feather-icon icon="UploadIcon"
-                /> + Import Excel</span>
-              </b-button>
-
-              <b-modal id="modal-lg3" size="lg" title="Import voucher from file Excel" hide-footer>
-                <VoucherAddExcel />
-              </b-modal>
             </div>
           </b-col>
         </b-row>
       </div>
 
       <b-table
-        ref="refUserListTable"
+        ref="refVoucherListTable"
         class="position-relative"
         :items="Vouchers"
         responsive
@@ -281,13 +247,14 @@ export default {
         store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
     });
 
-    const typeOptions = [
-      { label: "Khách hàng thường", value: 0 },
-      { label: "khách hàng thân thiết", value: 1 },
-      { label: "Khách hàng tiềm năng", value: 2 },
+    const classifiedOptions = [
+      { label: "Choose 1 classified", value: null },
+      { label: "Trade Voucher", value: 0 },
+      { label: "Gift Voucher", value: 1 },
     ];
 
     const statusOptions = [
+      { label: "Choose 1 status", value: null },
       { label: "Inactive", value: 0 },
       { label: "Active", value: 1 },
     ];
@@ -312,14 +279,14 @@ export default {
       deleteVoucher,
       restoreVoucher,
       checkStatus,
-
+      checkClassified,
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
-
+      resolveUserClassifiedVariant,
       // Extra Filters
-      type,
+      classified,
       status,
     } = useVoucherListGroupsDel();
 
@@ -340,7 +307,7 @@ export default {
       deleteVoucher,
       restoreVoucher,
       checkStatus,
-
+      checkClassified,
       // Filter
       avatarText,
 
@@ -348,12 +315,12 @@ export default {
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
-
-      typeOptions,
+      resolveUserClassifiedVariant,
+      classifiedOptions,
       statusOptions,
 
       // Extra Filters
-      type,
+      classified,
       status,
     };
   },
