@@ -1,13 +1,11 @@
 <template>
   <div>
-    <!-- Filters -->
-    <users-list-filters
-      :role.sync="role"
-      :gender.sync="gender"
-      :active.sync="active"
-      :role-options="roleOptions"
-      :gender-options="genderOptions"
-      :active-options="activeOptions"
+     Filters
+    <voucher-list-filters
+      :type.sync="type"
+      :status.sync="status"
+      :type-options="typeOptions"
+      :status-options="statusOptions"
     />
 
     <!-- Table Container Card -->
@@ -18,7 +16,7 @@
           <!-- Per Page -->
           <b-col
             cols="12"
-            md="6"
+            md="3"
             class="d-flex align-items-center justify-content-start mb-1 mb-md-0"
           >
             <label>Show</label>
@@ -33,32 +31,59 @@
           </b-col>
 
           <!-- Search -->
-          <b-col cols="12" md="6">
+          <b-col cols="12" md="9">
             <div class="d-flex align-items-center justify-content-end">
               <b-form-input
-                v-model="searchQuery"
-                class="d-inline-block mr-1"
-                placeholder="Search..."
+                      v-model="searchQuery"
+                      class="d-inline-block mr-1"
+                      placeholder="Search..."
               />
-              <b-button
-                class="mr-1"
-                variant="primary"
-                :to="{ name: 'apps-users-add' }"
-              >
-                <span class="text-nowrap"
-                  ><feather-icon icon="PlusCircleIcon"
-                /></span>
-              </b-button>
+
+              <!--              Start add voucher -->
 
               <b-button
-                class="mr-1"
-                variant="primary"
-                :to="{ name: 'apps-customers-add' }"
+                      class="mr-1"
+                      variant="primary"
+                      v-b-modal.modal-lg
               >
                 <span class="text-nowrap"
-                  ><feather-icon icon="Trash2Icon"
-                /></span>
+                ><feather-icon icon="PlusCircleIcon"
+                /> + Voucher</span>
               </b-button>
+
+              <b-modal id="modal-lg" size="lg" title="Add Vouchers" hide-footer>
+                <VoucherAddMultil />
+              </b-modal>
+
+              <!--              End add voucher -->
+
+              <b-button
+                      class="mr-1"
+                      variant="primary"
+                      v-b-modal.modal-lg2
+              >
+                <span class="text-nowrap"
+                ><feather-icon icon="PlusCircleIcon"
+                /> + Voucher Automatic</span>
+              </b-button>
+
+              <b-modal id="modal-lg2" size="lg" title="Add Vouchers Automatic" hide-footer>
+                <VoucherAddAuto />
+              </b-modal>
+
+              <b-button
+                      class="mr-1"
+                      variant="primary"
+                      v-b-modal.modal-lg3
+              >
+                <span class="text-nowrap"
+                ><feather-icon icon="UploadIcon"
+                /> + Import Excel</span>
+              </b-button>
+
+              <b-modal id="modal-lg3" size="lg" title="Import voucher from file Excel" hide-footer>
+                <VoucherAddExcel />
+              </b-modal>
             </div>
           </b-col>
         </b-row>
@@ -66,8 +91,8 @@
 
       <b-table
         ref="refUserListTable"
-        class="position-relative scrollbar"
-        :items="Users"
+        class="position-relative"
+        :items="Vouchers"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -75,94 +100,68 @@
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
-        :busy="isBusy"
       >
-        <!-- Column: Stt -->
+        <!-- Column: STT -->
         <template #cell(stt)="data">
           {{ data.index + 1 }}
         </template>
 
-        <!-- Column: name -->
-        <template #cell(name)="data">
-          <b-media vertical-align="center">
-            <template #aside>
-              <b-avatar
-                size="32"
-                :src="api + data.item.avatar"
-                :text="avatarText(data.item.name)"
-                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
-                :to="{ name: 'apps-users-edit', params: { id: data.item.id } }"
-              />
-            </template>
-            <b-link
-              :to="{ name: 'apps-users-edit', params: { id: data.item.id } }"
-              class="font-weight-bold d-block text-nowrap"
-            >
-              {{ data.item.name }}
-            </b-link>
-            <small class="text-muted">@US{{ data.item.idUser }}</small>
-          </b-media>
+        <!-- Column: Title -->
+        <template #cell(title)="data">
+          {{ data.value }} <br />
+            <small class="text-muted">@GVC{{ data.item.idGroupVoucher }}</small>
         </template>
 
-        <!-- Column: Role -->
-        <template #cell(role)="data">
+        <!-- Column: Created at -->
+        <template #cell(created_at)="data">
+          {{ convertDate(data.item.created.time) }}
+        </template>
+
+        <!-- Column: Created at -->
+        <template #cell(created_by)="data">
           <div class="text-nowrap">
             <feather-icon
-              :icon="resolveUserRoleIcon(data.item.role)"
-              size="18"
-              class="mr-50"
-              :class="`text-${resolveUserRoleVariant(data.item.role)}`"
+                    :icon="resolveUserRoleIcon(data.item.created.createBy)"
+                    size="18"
+                    class="mr-50"
+                    :class="`text-${resolveUserRoleVariant(data.item.created.createBy)}`"
             />
-            <span class="align-text-top text-capitalize">{{ data.item.role }}</span>
+            <span class="align-text-top text-capitalize">{{ data.item.created.createBy }}</span>
           </div>
         </template>
 
-        <!-- Column: birthDay -->
-        <template #cell(birthDay)="data">
-          {{ convertDate(data.value) }}
-        </template>
-
-        <!-- Column: Gender -->
-        <template #cell(gender)="data">
-          {{ data.value == 0 ? "Male" : "Female" }}
-        </template>
-
-        <!-- Column: Active -->
-        <template #cell(active)="data">
-          <b-form-checkbox :checked="data.value == 0 ? false : true"
-                           @change="activeUser(data.value == 0 ? 1 : 0, data.item._id)"
-                           name="check-button"
-                           switch>
-          </b-form-checkbox>
+        <!-- Column: Status -->
+        <template #cell(status)="data">
+          <b-badge pill :variant="resolveUserStatusVariant(data.value)" class="badge-glow">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
-                  variant="link"
-                  no-caret
-                  :right="$store.state.appConfig.isRTL"
+            variant="link"
+            no-caret
+            :right="$store.state.appConfig.isRTL"
           >
             <template #button-content>
               <feather-icon
-                      icon="MoreVerticalIcon"
-                      size="16"
-                      class="align-middle text-body"
+                icon="MoreVerticalIcon"
+                size="16"
+                class="align-middle text-body"
               />
             </template>
-            <b-dropdown-item
-                    :to="{
-                name: 'apps-users-view',
-                params: { id: data.item._id },
-              }"
-            >
-              <feather-icon icon="FileTextIcon" />
-              <span class="align-middle ml-50">Details</span>
-            </b-dropdown-item>
+<!--            <b-dropdown-item-->
+<!--              :to="{-->
+<!--                name: 'apps-services-view-sms',-->
+<!--                params: { id: data.item._id },-->
+<!--              }"-->
+<!--            >-->
+<!--              <feather-icon icon="FileTextIcon" />-->
+<!--              <span class="align-middle ml-50">Details</span>-->
+<!--            </b-dropdown-item>-->
 
             <b-dropdown-item
-                    :to="{
-                name: 'apps-users-edit',
+              :to="{
+                name: 'apps-services-edit-sms',
                 params: { id: data.item._id },
               }"
             >
@@ -171,7 +170,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-                    @click="deleteUser(data.item._id)"
+              @click="deleteVoucherSoft(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -199,7 +198,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalUsers"
+              :total-rows="totalVoucher"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -238,24 +237,27 @@ import {
   BDropdown,
   BDropdownItem,
   BPagination,
-  BFormCheckbox,
 } from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import UsersListFilters from "./UsersListFilters.vue";
-import useUsersList from "./useUsersList";
-import userStoreModule from "../userStoreModule";
-import UserListAddNew from "./UserListAddNew.vue";
+import useVoucherListGroups from "./useVoucherListGroups";
+import VoucherListFilters from "./VoucherListFilters";
+import VoucherAddMultil from "../voucher-add/VoucherAddMultil";
+import VoucherAddAuto from "../voucher-add/VoucherAddAuto";
+import VoucherAddExcel from "../voucher-add/VoucherAddExcel";
+import voucherStoreModule from "../voucherStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
+import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
 
 export default {
   components: {
-    UsersListFilters,
-    UserListAddNew,
-
+    VoucherAddMultil,
+    VoucherAddAuto,
+    VoucherAddExcel,
+    VoucherListFilters,
     BCard,
     BRow,
     BCol,
@@ -269,96 +271,81 @@ export default {
     BDropdown,
     BDropdownItem,
     BPagination,
-    BFormCheckbox,
     vSelect,
   },
   directives: {
     Ripple,
   },
   setup() {
-
-    const api = process.env.VUE_APP_ROOT_API;
-    const USER_APP_STORE_MODULE_NAME = "app-user";
+    const SERVICES_APP_STORE_MODULE_NAME = "app-voucher";
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule);
+    if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, voucherStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(USER_APP_STORE_MODULE_NAME))
-        store.unregisterModule(USER_APP_STORE_MODULE_NAME);
-    })
+      if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
+        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
+    });
 
-    const isAddNewUserSidebarActive = ref(false);
+    const typeOptions = [
+      { label: "Khách hàng thường", value: 0 },
+      { label: "khách hàng thân thiết", value: 1 },
+      { label: "Khách hàng tiềm năng", value: 2 },
+    ];
 
-    const roleOptions = [
-      { label: "Employee", value: "employee" },
-      { label: "Admin", value: "admin" },
-    ]
-
-    const genderOptions = [
-      { label: "Male", value: 0 },
-      { label: "Female", value: 1 },
-    ]
-
-    const activeOptions = [
-      { label: "InActive", value: 0 },
+    const statusOptions = [
+      { label: "Inactive", value: 0 },
       { label: "Active", value: 1 },
-    ]
+    ];
 
     const convertDate = (date) => {
       return moment(date).format("DD-MM-YYYY");
-    }
+    };
 
     const {
-      fetchUsers,
-      Users,
+      Vouchers,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalVoucher,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
+      refServicesListTable,
       refetchData,
-      deleteUser,
-      activeUser,
+      deleteVoucherSoft,
+      checkStatus,
 
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
+      resolveUserStatusVariant,
 
       // Extra Filters
-      isBusy,
-      role,
-      gender,
-      active,
-    } = useUsersList();
+      type,
+      status,
+    } = useVoucherListGroups();
 
     return {
-      // Sidebar
-      isAddNewUserSidebarActive,
-      api,
-      fetchUsers,
-      Users,
+      Vouchers,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalVoucher,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
-      refetchData,
+      refServicesListTable,
       convertDate,
-      deleteUser,
-      activeUser,
+      refetchData,
+      deleteVoucherSoft,
+      checkStatus,
 
       // Filter
       avatarText,
@@ -366,16 +353,14 @@ export default {
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
+      resolveUserStatusVariant,
 
-      roleOptions,
-      genderOptions,
-      activeOptions,
+      typeOptions,
+      statusOptions,
 
       // Extra Filters
-      isBusy,
-      role,
-      gender,
-      active,
+      type,
+      status,
     };
   },
 };

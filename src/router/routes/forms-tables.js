@@ -91,7 +91,12 @@ export default [
   {
     path: '/apps/voucher/list',
     name: 'apps-voucher-list',
-    component: () => import('@/views/apps/voucher/voucher-list/VoucherList.vue'),
+    component: () => import('@/views/apps/voucher/voucher-list/VoucherListGroups.vue'),
+  },
+  {
+    path: '/apps/voucher/list/del',
+    name: 'apps-voucher-list-del',
+    component: () => import('@/views/apps/voucher/voucher-list/VoucherListGroupsDel.vue'),
   },
   {
     path: '/apps/voucher/add',
