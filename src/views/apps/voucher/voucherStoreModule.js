@@ -6,7 +6,7 @@ export default {
   getters: {},
   mutations: {},
   actions: {
-    fetchVouchers(ctx, { queryParams }) {
+    fetchVouchers(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
           .get(process.env.VUE_APP_ROOT_API + `voucher/group/list`, { params: queryParams })
@@ -14,7 +14,7 @@ export default {
           .catch(error => reject(error))
       })
     },
-    fetchVouchersDel(ctx, { queryParams }) {
+    fetchVouchersDel(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
             .get(process.env.VUE_APP_ROOT_API + `voucher/group/trash`, { params: queryParams })

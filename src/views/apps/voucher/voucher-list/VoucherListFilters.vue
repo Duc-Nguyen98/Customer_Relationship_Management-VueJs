@@ -9,11 +9,11 @@
           <label>Classified</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="type"
-            :options="typeOptions"
+            :value="classified"
+            :options="classifiedOptions"
             class="w-100"
             :reduce="(val) => val.value"
-            @input="(val) => $emit('update:type', val)"
+            @input="(val) => $emit('update:classified', val)"
           />
         </b-col>
         <b-col cols="12" md="6" class="mb-md-0 mb-2">
@@ -46,7 +46,7 @@ export default {
     vSelect,
   },
   props: {
-    type: {
+    classified: {
       type: [Number, null],
       default: null,
     },
@@ -54,7 +54,7 @@ export default {
       type: [Number, null],
       default: null,
     },
-    typeOptions: {
+    classifiedOptions: {
       type: Array,
       required: true,
     },

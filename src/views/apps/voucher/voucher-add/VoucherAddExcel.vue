@@ -22,7 +22,7 @@
                                             icon="MicIcon"
                                             class="cursor-pointer"
                                     />
-                                    Lưu ý: Hệ thống cho phép nhận tối đa 5.000 voucher mỗi lần từ file
+                                    Note: The system allows to receive a maximum of 5,000 vouchers each time from the file
                                 </b-alert>
                                 <b-form-group>
                                     <!-- Styled -->

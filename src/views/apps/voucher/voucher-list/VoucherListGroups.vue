@@ -2,9 +2,9 @@
   <div>
      Filters
     <voucher-list-filters
-      :type.sync="type"
+      :classified.sync="classified"
       :status.sync="status"
-      :type-options="typeOptions"
+      :classified-options="classifiedOptions"
       :status-options="statusOptions"
     />
 
@@ -48,7 +48,7 @@
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
-                /> + Voucher</span>
+                /> Voucher</span>
               </b-button>
 
               <b-modal id="modal-lg" size="lg" title="Add Vouchers" hide-footer>
@@ -64,7 +64,7 @@
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
-                /> + Voucher Automatic</span>
+                /> Voucher Automatic</span>
               </b-button>
 
               <b-modal id="modal-lg2" size="lg" title="Add Vouchers Automatic" hide-footer>
@@ -78,7 +78,7 @@
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="UploadIcon"
-                /> + Import Excel</span>
+                /> Import Excel</span>
               </b-button>
 
               <b-modal id="modal-lg3" size="lg" title="Import voucher from file Excel" hide-footer>
@@ -90,7 +90,7 @@
       </div>
 
       <b-table
-        ref="refUserListTable"
+        ref="refVoucherListTable"
         class="position-relative"
         :items="Vouchers"
         responsive
@@ -108,11 +108,62 @@
 
         <!-- Column: Title -->
         <template #cell(title)="data">
-          {{ data.value }} <br />
+          <span class="cursor-pointer" @click="data.toggleDetails">{{ data.value }} <br />
             <small class="text-muted">@GVC{{ data.item.idGroupVoucher }}</small>
+          </span>
         </template>
 
-        <!-- Column: Created at -->
+        <template #row-details="row">
+          <b-tabs>
+            <b-tab>
+              <template #title>
+                <feather-icon icon="EditIcon" />
+                <span>Detail</span>
+              </template>
+
+              <b-card-text>
+                Candy canes donut chupa chups candy canes lemon drops oat cake wafer. Cotton candy candy canes marzipan carrot cake. Sesame snaps lemon drops candy marzipan donut brownie tootsie roll. Icing croissant bonbon biscuit gummi bears. Pudding candy canes sugar plum cookie chocolate cake powder croissant.
+              </b-card-text>
+              <b-card-text>
+                Carrot cake tiramisu danish candy cake muffin croissant tart dessert. Tiramisu caramels candy canes chocolate cake sweet roll liquorice icing cupcake. Candy cookie sweet roll bear claw sweet roll
+              </b-card-text>
+            </b-tab>
+            <b-tab active>
+              <template #title>
+                <feather-icon icon="BookmarkIcon" />
+                <span>Vouchers</span>
+              </template>
+
+              <b-card-text>
+                Muffin cupcake candy chocolate cake gummi bears fruitcake donut dessert pie. Wafer toffee bonbon dragée. Jujubes cotton candy gummies chupa chups. Sweet fruitcake cheesecake biscuit cotton candy. Cookie powder marshmallow donut. Candy cookie sweet roll bear claw sweet roll. Cake tiramisu cotton candy gingerbread cheesecake toffee cake. Cookie liquorice dessert candy canes jelly.
+              </b-card-text>
+              <b-card-text>
+                Sweet chocolate muffin fruitcake gummies jujubes pie lollipop. Brownie marshmallow caramels gingerbread jelly beans chocolate bar oat cake wafer. Chocolate bar danish icing sweet apple pie jelly-o carrot cake cookie cake.
+              </b-card-text>
+            </b-tab>
+            <b-tab>
+              <template #title>
+                <feather-icon icon="UserIcon" />
+                <span>Account</span>
+              </template>
+
+              <b-card-text>
+                Chocolate croissant cupcake croissant jelly donut. Cheesecake toffee apple pie chocolate bar biscuit tart croissant. Lemon drops danish cookie. Oat cake macaroon icing tart lollipop cookie sweet bear claw.
+              </b-card-text>
+              <b-card-text>
+                Carrot cake dragée chocolate. Lemon drops ice cream wafer gummies dragée. Chocolate bar liquorice cheesecake cookie chupa chups marshmallow oat cake biscuit. Dessert toffee fruitcake ice cream powder tootsie roll cake.
+              </b-card-text>
+            </b-tab>
+          </b-tabs>
+        </template>
+
+          <!-- Column: Classified -->
+          <template #cell(classified)="data">
+              <b-badge pill :variant="resolveUserClassifiedVariant(data.value)" class="badge-glow">{{ checkClassified(data.value) }}</b-badge>
+          </template>
+
+
+          <!-- Column: Created at -->
         <template #cell(created_at)="data">
           {{ convertDate(data.item.created.time) }}
         </template>
@@ -237,6 +288,8 @@ import {
   BDropdown,
   BDropdownItem,
   BPagination,
+  BTabs,
+  BTab,
 } from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
@@ -268,6 +321,8 @@ export default {
     BAvatar,
     BLink,
     BBadge,
+    BTabs,
+    BTab,
     BDropdown,
     BDropdownItem,
     BPagination,
@@ -289,13 +344,14 @@ export default {
         store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
     });
 
-    const typeOptions = [
-      { label: "Khách hàng thường", value: 0 },
-      { label: "khách hàng thân thiết", value: 1 },
-      { label: "Khách hàng tiềm năng", value: 2 },
+    const classifiedOptions = [
+      { label: "Choose 1 classified", value: null },
+      { label: "Trade Voucher", value: 0 },
+      { label: "Gift Voucher", value: 1 },
     ];
 
     const statusOptions = [
+      { label: "Choose 1 status", value: null },
       { label: "Inactive", value: 0 },
       { label: "Active", value: 1 },
     ];
@@ -319,14 +375,16 @@ export default {
       refetchData,
       deleteVoucherSoft,
       checkStatus,
+        checkClassified,
 
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
+       resolveUserClassifiedVariant,
 
       // Extra Filters
-      type,
+        classified,
       status,
     } = useVoucherListGroups();
 
@@ -346,6 +404,7 @@ export default {
       refetchData,
       deleteVoucherSoft,
       checkStatus,
+        checkClassified,
 
       // Filter
       avatarText,
@@ -354,12 +413,13 @@ export default {
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
+        resolveUserClassifiedVariant,
 
-      typeOptions,
+        classifiedOptions,
       statusOptions,
 
       // Extra Filters
-      type,
+        classified,
       status,
     };
   },
