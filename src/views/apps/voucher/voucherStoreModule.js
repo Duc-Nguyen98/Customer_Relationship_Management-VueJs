@@ -6,15 +6,23 @@ export default {
   getters: {},
   mutations: {},
   actions: {
-    fetchVouchers(ctx, {type, queryParams}) {
+    fetchVouchers(ctx, { queryParams }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + `services/${type}/list`, { params: queryParams })
+          .get(process.env.VUE_APP_ROOT_API + `voucher/group/list`, { params: queryParams })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
     },
-    fetchService(ctx, { _id }) {
+    fetchVouchersDel(ctx, { queryParams }) {
+      return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.VUE_APP_ROOT_API + `voucher/group/trash`, { params: queryParams })
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    fetchVoucher(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
           .get(process.env.VUE_APP_ROOT_API + `/services/${_id}`)
@@ -30,10 +38,26 @@ export default {
           .catch(error => reject(error))
       })
     },
-    deleteService(ctx, { _id }) {
+    deleteVoucherSoft(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `services/delete-soft/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/delete-soft/${_id}`)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    restoreVoucher(ctx, { _id }) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/trash/restore/${_id}`)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    deleteVoucher(ctx, { _id }) {
+      return new Promise((resolve, reject) => {
+        axios
+            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/delete/${_id}`)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })

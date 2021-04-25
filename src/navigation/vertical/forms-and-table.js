@@ -57,8 +57,12 @@ export default [
         icon: 'UserIcon',
         children: [
             {
-                title: 'List Groups Voucher',
+                title: 'G-Voucher',
                 route: 'apps-voucher-list',
+            },
+            {
+                title: 'G-Voucher Delete',
+                route: 'apps-voucher-list-del',
             },
             {
                 title: 'Add',

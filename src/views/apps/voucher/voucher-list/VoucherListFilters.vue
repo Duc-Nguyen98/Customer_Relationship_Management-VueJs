@@ -6,7 +6,7 @@
     <b-card-body>
       <b-row>
         <b-col cols="12" md="6" class="mb-md-0 mb-2">
-          <label>Type Services</label>
+          <label>Classified</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
             :value="type"
@@ -17,7 +17,7 @@
           />
         </b-col>
         <b-col cols="12" md="6" class="mb-md-0 mb-2">
-          <label>Status Services</label>
+          <label>Status Voucher</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
             :value="status"
