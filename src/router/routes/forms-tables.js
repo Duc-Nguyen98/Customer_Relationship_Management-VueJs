@@ -99,18 +99,18 @@ export default [
     component: () => import('@/views/apps/voucher/voucher-list/VoucherListGroupsDel.vue'),
   },
   {
-    path: '/apps/voucher/add',
-    name: 'apps-voucher-add',
+    path: '/apps/group/voucher/add',
+    name: 'apps-group-voucher-add',
     component: () => import('@/views/apps/voucher/voucher-add/VoucherAdd.vue'),
   },
   {
-    path: '/apps/voucher/view/:id',
-    name: 'apps-voucher-view',
+    path: '/apps/group/voucher/view/:id',
+    name: 'apps-group-voucher-view',
     component: () => import('@/views/apps/voucher/voucher-view/VoucherView.vue'),
   },
   {
-    path: '/apps/voucher/edit/:id',
-    name: 'apps-voucher-edit',
+    path: '/apps/group/voucher/edit/:id',
+    name: 'apps-group-voucher-edit',
     component: () => import('@/views/apps/voucher/voucher-edit/VoucherEdit.vue'),
   },
 ]

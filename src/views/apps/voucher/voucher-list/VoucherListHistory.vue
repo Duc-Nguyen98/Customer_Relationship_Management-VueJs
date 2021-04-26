@@ -1,12 +1,12 @@
 <template>
   <div>
-     Filters
-    <voucher-list-filters
-      :classified.sync="classified"
-      :status.sync="status"
-      :classified-options="classifiedOptions"
-      :status-options="statusOptions"
-    />
+    <!-- Filters -->
+<!--    <voucher-list-filters-->
+<!--      :type.sync="type"-->
+<!--      :status.sync="status"-->
+<!--      :type-options="typeOptions"-->
+<!--      :status-options="statusOptions"-->
+<!--    />-->
 
     <!-- Table Container Card -->
     <b-card no-body class="mb-0">
@@ -64,7 +64,7 @@
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
-                /> Voucher Automatic</span>
+                /> + Voucher Automatic</span>
               </b-button>
 
               <b-modal id="modal-lg2" size="lg" title="Add Vouchers Automatic" hide-footer>
@@ -78,7 +78,7 @@
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="UploadIcon"
-                /> Import Excel</span>
+                /> + Import Excel</span>
               </b-button>
 
               <b-modal id="modal-lg3" size="lg" title="Import voucher from file Excel" hide-footer>
@@ -90,13 +90,12 @@
       </div>
 
       <b-table
-        ref="refVoucherListTable"
+        ref="refVouchersListTable"
         class="position-relative"
         :items="Vouchers"
         responsive
         :fields="tableColumns"
         primary-key="id"
-        :sort-by.sync="sortBy"
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
@@ -106,39 +105,31 @@
           {{ data.index + 1 }}
         </template>
 
-        <!-- Column: Title -->
-        <template #cell(title)="data">
+        <!-- Column: Classified -->
+        <template #cell(classified)="data">
+          <b-badge pill :variant="resolveUserClassifiedVariant(data.value)" class="badge-glow">{{ checkClassified(data.value) }}</b-badge>
+        </template>
+
+        <!-- Column: voucherCode -->
+        <template #cell(voucherCode)="data">
           <span class="cursor-pointer">{{ data.value }} <br />
-            <small class="text-muted">@GVC{{ data.item.idGroupVoucher }}</small>
+            <small class="text-muted">@GVC{{ data.item.idVoucher }}</small>
           </span>
-        </template>
-
-          <!-- Column: Classified -->
-          <template #cell(classified)="data">
-              <b-badge pill :variant="resolveUserClassifiedVariant(data.value)" class="badge-glow">{{ checkClassified(data.value) }}</b-badge>
-          </template>
-
-          <!-- Column: Created at -->
-        <template #cell(created_at)="data">
-          {{ convertDate(data.item.created.time) }}
-        </template>
-
-        <!-- Column: Created at -->
-        <template #cell(created_by)="data">
-          <div class="text-nowrap">
-            <feather-icon
-                    :icon="resolveUserRoleIcon(data.item.created.createBy)"
-                    size="18"
-                    class="mr-50"
-                    :class="`text-${resolveUserRoleVariant(data.item.created.createBy)}`"
-            />
-            <span class="align-text-top text-capitalize">{{ data.item.created.createBy }}</span>
-          </div>
         </template>
 
         <!-- Column: Status -->
         <template #cell(status)="data">
-          <b-badge pill :variant="resolveUserStatusVariant(data.value)" class="badge-glow">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge pill :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+        </template>
+
+        <!-- Column: Used Day -->
+        <template #cell(usedDate)="data">
+          {{ convertDate(data.value) }}
+        </template>
+
+        <!-- Column: Created at -->
+        <template #cell(created)="data">
+          {{ convertDate(data.value.time) }}
         </template>
 
         <!-- Column: Actions -->
@@ -155,18 +146,19 @@
                 class="align-middle text-body"
               />
             </template>
+
             <b-dropdown-item
               :to="{
-                name: 'apps-group-voucher-edit',
+                name: 'apps-voucher-edit',
                 params: { id: data.item._id },
               }"
             >
-              <feather-icon icon="EditIcon" />
+              <feather-icon icon="PlusCircleIcon" />
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteVoucherSoft(data.item._id)"
+              @click="deleteService(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -194,7 +186,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalVoucher"
+              :total-rows="totalVouchers"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -238,8 +230,7 @@ import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import useVoucherListGroups from "./useVoucherListGroups";
-import VoucherListFilters from "./VoucherListFilters";
+import useVoucherListHistory from "./useVoucherListHistory";
 import VoucherAddMultil from "../voucher-add/VoucherAddMultil";
 import VoucherAddAuto from "../voucher-add/VoucherAddAuto";
 import VoucherAddExcel from "../voucher-add/VoucherAddExcel";
@@ -253,7 +244,6 @@ export default {
     VoucherAddMultil,
     VoucherAddAuto,
     VoucherAddExcel,
-    VoucherListFilters,
     BCard,
     BRow,
     BCol,
@@ -272,7 +262,13 @@ export default {
   directives: {
     Ripple,
   },
-  setup() {
+  props: {
+    _id: {
+      default: null
+    }
+  },
+  setup({_id}) {
+
     const SERVICES_APP_STORE_MODULE_NAME = "app-voucher";
 
     // Register module
@@ -285,18 +281,6 @@ export default {
         store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
     });
 
-    const classifiedOptions = [
-      { label: "Choose 1 classified", value: null },
-      { label: "Trade Voucher", value: 0 },
-      { label: "Gift Voucher", value: 1 },
-    ];
-
-    const statusOptions = [
-      { label: "Choose 1 status", value: null },
-      { label: "Inactive", value: 0 },
-      { label: "Active", value: 1 },
-    ];
-
     const convertDate = (date) => {
       return moment(date).format("DD-MM-YYYY");
     };
@@ -306,46 +290,49 @@ export default {
       tableColumns,
       perPage,
       currentPage,
-      totalVoucher,
+      totalVouchers,
       dataMeta,
       perPageOptions,
       searchQuery,
-      sortBy,
       isSortDirDesc,
-      refServicesListTable,
+      refVouchersListTable,
       refetchData,
-      deleteVoucherSoft,
+      deleteService,
       checkStatus,
-        checkClassified,
 
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
-       resolveUserClassifiedVariant,
+      checkClassified,
+      resolveUserClassifiedVariant,
 
       // Extra Filters
-        classified,
+      type,
       status,
-    } = useVoucherListGroups();
+    } = useVoucherListHistory();
+
+    if (_id != null) {
+      refetchData(_id)
+    }
 
     return {
       Vouchers,
       tableColumns,
       perPage,
       currentPage,
-      totalVoucher,
+      totalVouchers,
       dataMeta,
       perPageOptions,
       searchQuery,
-      sortBy,
       isSortDirDesc,
-      refServicesListTable,
+      refVouchersListTable,
       convertDate,
       refetchData,
-      deleteVoucherSoft,
+      deleteService,
       checkStatus,
-        checkClassified,
+      checkClassified,
+      resolveUserClassifiedVariant,
 
       // Filter
       avatarText,
@@ -354,13 +341,9 @@ export default {
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
-        resolveUserClassifiedVariant,
-
-        classifiedOptions,
-      statusOptions,
 
       // Extra Filters
-        classified,
+      type,
       status,
     };
   },

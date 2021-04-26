@@ -204,7 +204,7 @@
           </b-col>
           <b-col md="4">
             <b-form-group
-              label="Từ ngày"
+              label="From date"
               label-for="v-last-name"
             >
               <b-form-datepicker v-model="from_date" placeholder="From Date"  :disabled="expiry!=null" :date-disabled-fn="dateEffDisabled" locale="en"></b-form-datepicker>
@@ -212,7 +212,7 @@
           </b-col>
           <b-col md="4">
             <b-form-group
-                    label="Tới ngày"
+                    label="To date"
                     label-for="v-last-name"
             >
               <b-form-datepicker v-model="to_date" placeholder="To Date" :disabled="expiry!=null" :date-disabled-fn="dateExpDisabled" locale="en"></b-form-datepicker>
@@ -459,8 +459,9 @@ export default {
       active: 0,
       cus: 0,
       optionsActive: [
-        { value: 0, label: 'Inactive' },
-        { value: 1, label: 'Active' },
+        { label: "Choose 1 status", value: null },
+        { label: "Inactive", value: 0 },
+        { label: "Active", value: 1 },
       ],
       system: 0,
       optionsSystem: [

@@ -1,6 +1,5 @@
 import { ref, watch, computed } from '@vue/composition-api'
 import store from '@/store'
-import { title } from '@core/utils/filter'
 
 // Notification
 import { useToast } from 'vue-toastification/composition'
@@ -15,7 +14,10 @@ export default function useVoucherList() {
   // Table Handlers
   const tableColumns = [
     { key: 'stt', label: 'STT', sortable: true },
-    { key: 'voucherCode', label: 'Voucher code', formatter: title, sortable: false },
+    { key: 'voucherCode', label: 'Voucher code', sortable: false },
+    { key: 'idCustomersUse', label: 'Customers use', sortable: false },
+    { key: 'idLocationUse', label: 'Location use', sortable: false },
+    { key: 'usedDate', label: 'Used day', sortable: false },
     { key: 'classified', label: 'Classified', sortable: true },
     { key: 'status', label: 'Status', sortable: false },
     { key: 'created', label: 'Created At', sortable: false },
@@ -28,7 +30,7 @@ export default function useVoucherList() {
   const searchQuery = ref('')
   const isSortDirDesc = ref(true)
   const type = ref(null)
-  const status = ref(null)
+  const status = ref(3)
   const Vouchers = ref([])
 
   const dataMeta = computed(() => {
@@ -43,16 +45,16 @@ export default function useVoucherList() {
 
   const refetchData = (_id) => {
     group.value = _id
-    fetchListVouchers(_id)
+    fetchHisListVouchers(_id)
   }
 
   watch([currentPage, perPage, searchQuery, type, status], () => {
     refetchData(group.value)
   })
 
-  const fetchListVouchers = (_id) => {
+  const fetchHisListVouchers = (_id) => {
     store
-      .dispatch('app-voucher/fetchListVouchers', {_id: _id, queryParams: {
+      .dispatch('app-voucher/fetchHisListVouchers', {_id: _id, queryParams: {
           q: searchQuery.value,
           perPage: perPage.value,
           page: currentPage.value,
@@ -164,7 +166,7 @@ export default function useVoucherList() {
   return {
     checkClassified,
     resolveUserClassifiedVariant,
-    fetchListVouchers,
+    fetchHisListVouchers,
     deleteService,
     checkStatus,
     Vouchers,

@@ -1,25 +1,25 @@
 <template>
-  <component :is="serviceData === undefined ? 'div' : 'b-card'">
+  <component :is="groupsData === undefined ? 'div' : 'b-card'">
     <!-- Alert: No item found -->
-    <b-alert variant="danger" :show="serviceData === undefined">
-      <h4 class="alert-heading">Error fetching user data</h4>
+    <b-alert variant="danger" :show="groupsData === undefined">
+      <h4 class="alert-heading">Error fetching group voucher data</h4>
       <div class="alert-body">
-        No user found with this user id. Check
-        <b-link class="alert-link" :to="{ name: 'apps-users-list' }">
-          User List
+        No group voucher found with this user id. Check
+        <b-link class="alert-link" :to="{ name: 'apps-group-voucher-list' }">
+          Groups voucher
         </b-link>
-        for other users.
+        for Groups.
       </div>
     </b-alert>
 
-    <b-tabs v-if="serviceData" pills>
+    <b-tabs v-if="groupsData" pills>
       <!-- Tab: Info Account -->
       <b-tab active>
         <template #title>
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
-          <span class="d-none d-sm-inline">Info Service</span>
+          <span class="d-none d-sm-inline">Info  Groups Voucher</span>
         </template>
-        <voucher-edit-tab-information :userinfo="serviceData" class="mt-2 pt-75" />
+        <voucher-edit-tab-information :groupinfo="groupsData" class="mt-2 pt-75" />
       </b-tab>
     </b-tabs>
   </component>
@@ -33,7 +33,6 @@ import store from "@/store";
 import voucherStoreModule from "../voucherStoreModule";
 import VoucherEditTabInformation from "./VoucherEditTabInformation.vue";
 
-
 export default {
   components: {
     BTab,
@@ -45,7 +44,7 @@ export default {
     VoucherEditTabInformation,
   },
   setup() {
-    const userData = ref(null);
+    const groupsData = ref(null);
 
     const SERVICES_APP_STORE_MODULE_NAME = "app-voucher";
 
@@ -60,18 +59,18 @@ export default {
     });
 
     store
-      .dispatch("app-voucher/fetchService", { id: router.currentRoute.params.id })
+      .dispatch("app-voucher/fetchGVoucher", { _id: router.currentRoute.params.id })
       .then((response) => {
-        serviceData.value = response.data;
+        groupsData.value = response.data.data;
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          userData.value = undefined;
+          groupsData.value = undefined;
         }
       });
 
     return {
-      serviceData,
+      groupsData,
     };
   },
 };

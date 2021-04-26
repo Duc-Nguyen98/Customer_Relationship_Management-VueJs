@@ -16,7 +16,7 @@ export default [
             },
             {
                 title: 'Add',
-                route: 'apps-voucher-add',
+                route: 'apps-group-voucher-add',
             },
         ],
     },
