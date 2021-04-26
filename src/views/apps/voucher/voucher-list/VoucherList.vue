@@ -48,7 +48,7 @@
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
-                /> + Voucher</span>
+                /> Voucher</span>
               </b-button>
 
               <b-modal id="modal-lg" size="lg" title="Add Vouchers" hide-footer>
@@ -90,13 +90,12 @@
       </div>
 
       <b-table
-        ref="refUserListTable"
+        ref="refVouchersListTable"
         class="position-relative"
-        :items="Services"
+        :items="Vouchers"
         responsive
         :fields="tableColumns"
         primary-key="id"
-        :sort-by.sync="sortBy"
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
@@ -106,14 +105,26 @@
           {{ data.index + 1 }}
         </template>
 
-        <!-- Column: birthDate -->
-        <template #cell(birthDate)="data">
-          {{ convertDate(data.value) }}
+        <!-- Column: Classified -->
+        <template #cell(classified)="data">
+          <b-badge pill :variant="resolveUserClassifiedVariant(data.value)" class="badge-glow">{{ checkClassified(data.value) }}</b-badge>
+        </template>
+
+        <!-- Column: voucherCode -->
+        <template #cell(voucherCode)="data">
+          <span class="cursor-pointer">{{ data.value }} <br />
+            <small class="text-muted">@GVC{{ data.item.idVoucher }}</small>
+          </span>
         </template>
 
         <!-- Column: Status -->
         <template #cell(status)="data">
-          <b-badge pill :variant="resolveUserStatusVariant(data.value)" class="badge-glow">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge pill :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+        </template>
+
+        <!-- Column: STT -->
+        <template #cell(created)="data">
+          {{ convertDate(data.value.time) }}
         </template>
 
         <!-- Column: Actions -->
@@ -130,19 +141,10 @@
                 class="align-middle text-body"
               />
             </template>
-<!--            <b-dropdown-item-->
-<!--              :to="{-->
-<!--                name: 'apps-services-view-sms',-->
-<!--                params: { id: data.item._id },-->
-<!--              }"-->
-<!--            >-->
-<!--              <feather-icon icon="FileTextIcon" />-->
-<!--              <span class="align-middle ml-50">Details</span>-->
-<!--            </b-dropdown-item>-->
 
             <b-dropdown-item
               :to="{
-                name: 'apps-services-edit-sms',
+                name: 'apps-voucher-edit',
                 params: { id: data.item._id },
               }"
             >
@@ -179,7 +181,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalServices"
+              :total-rows="totalVouchers"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -255,7 +257,13 @@ export default {
   directives: {
     Ripple,
   },
-  setup() {
+  props: {
+    _id: {
+      default: null
+    }
+  },
+  setup({_id}) {
+
     const SERVICES_APP_STORE_MODULE_NAME = "app-voucher";
 
     // Register module
@@ -268,33 +276,21 @@ export default {
         store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
     });
 
-    const typeOptions = [
-      { label: "Khách hàng thường", value: 0 },
-      { label: "khách hàng thân thiết", value: 1 },
-      { label: "Khách hàng tiềm năng", value: 2 },
-    ];
-
-    const statusOptions = [
-      { label: "Pending", value: 0 },
-      { label: "Send", value: 1 },
-    ];
-
     const convertDate = (date) => {
       return moment(date).format("DD-MM-YYYY");
     };
 
     const {
-      Services,
+      Vouchers,
       tableColumns,
       perPage,
       currentPage,
-      totalServices,
+      totalVouchers,
       dataMeta,
       perPageOptions,
       searchQuery,
-      sortBy,
       isSortDirDesc,
-      refServicesListTable,
+      refVouchersListTable,
       refetchData,
       deleteService,
       checkStatus,
@@ -303,28 +299,35 @@ export default {
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
+      checkClassified,
+      resolveUserClassifiedVariant,
 
       // Extra Filters
       type,
       status,
     } = useVoucherList();
 
+    if (_id != null) {
+      refetchData(_id)
+    }
+
     return {
-      Services,
+      Vouchers,
       tableColumns,
       perPage,
       currentPage,
-      totalServices,
+      totalVouchers,
       dataMeta,
       perPageOptions,
       searchQuery,
-      sortBy,
       isSortDirDesc,
-      refServicesListTable,
+      refVouchersListTable,
       convertDate,
       refetchData,
       deleteService,
       checkStatus,
+      checkClassified,
+      resolveUserClassifiedVariant,
 
       // Filter
       avatarText,
@@ -333,9 +336,6 @@ export default {
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
-
-      typeOptions,
-      statusOptions,
 
       // Extra Filters
       type,

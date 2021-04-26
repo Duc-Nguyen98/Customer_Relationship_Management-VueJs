@@ -14,6 +14,22 @@ export default {
           .catch(error => reject(error))
       })
     },
+    fetchListVouchers(ctx, {_id, queryParams}) {
+      return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.VUE_APP_ROOT_API + `voucher/group/list/voucher/item/${_id}`, { params: queryParams })
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    fetchHisListVouchers(ctx, {_id, queryParams}) {
+      return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.VUE_APP_ROOT_API + `voucher/group/history/voucher/item/${_id}`, { params: queryParams })
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
     fetchVouchersDel(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
@@ -22,10 +38,10 @@ export default {
             .catch(error => reject(error))
       })
     },
-    fetchVoucher(ctx, { _id }) {
+    fetchGVoucher(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + `/services/${_id}`)
+          .get(process.env.VUE_APP_ROOT_API + `voucher/group/detail/${_id}`)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
