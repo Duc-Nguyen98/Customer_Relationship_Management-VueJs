@@ -14,12 +14,11 @@ export default function useVoucherList() {
   // Table Handlers
   const tableColumns = [
     { key: 'stt', label: 'STT', sortable: true },
-    { key: 'voucherCode', label: 'Voucher code', sortable: false },
-    { key: 'idCustomersUse', label: 'Customers use', sortable: false },
-    { key: 'idLocationUse', label: 'Location use', sortable: false },
-    { key: 'usedDate', label: 'Used day', sortable: false },
-    { key: 'classified', label: 'Classified', sortable: true },
-    { key: 'status', label: 'Status', sortable: false },
+    { key: 'voucherCode', label: 'Voucher code', sortable: true },
+    { key: 'nameCustomerUse', label: 'Customers use', sortable: true },
+    { key: 'nameLocationUse', label: 'Location use', sortable: true },
+    { key: 'usedDate', label: 'Used day', sortable: true },
+    { key: 'status', label: 'Status', sortable: true },
     { key: 'created', label: 'Created At', sortable: false },
     { key: 'actions' },
   ]
@@ -30,7 +29,7 @@ export default function useVoucherList() {
   const searchQuery = ref('')
   const isSortDirDesc = ref(true)
   const type = ref(null)
-  const status = ref(3)
+  const status = ref(1)
   const Vouchers = ref([])
 
   const dataMeta = computed(() => {

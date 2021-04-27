@@ -28,7 +28,7 @@ export default function useVoucherList() {
   const searchQuery = ref('')
   const isSortDirDesc = ref(true)
   const type = ref(null)
-  const status = ref(null)
+  const status = ref(0)
   const Vouchers = ref([])
 
   const dataMeta = computed(() => {
