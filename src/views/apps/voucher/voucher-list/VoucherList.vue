@@ -52,7 +52,7 @@
               </b-button>
 
               <b-modal id="modal-lg" size="lg" title="Add Vouchers" hide-footer>
-                <VoucherAddMultil />
+                <VoucherAddMultil @update="dataVoucher" />
               </b-modal>
 
               <!--              End add voucher -->
@@ -107,7 +107,10 @@
 
         <!-- Column: Classified -->
         <template #cell(classified)="data">
-          <b-badge pill :variant="resolveUserClassifiedVariant(data.value)" class="badge-glow">{{ checkClassified(data.value) }}</b-badge>
+         <b-badge v-if="data.value" pill :variant="resolveUserClassifiedVariant(data.value)" class="badge-glow">
+           {{ checkClassified(data.value) }}
+         </b-badge>
+          <span v-else>Unknow</span>
         </template>
 
         <!-- Column: voucherCode -->
@@ -223,7 +226,7 @@ import {
 } from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
-import { ref, onUnmounted } from "@vue/composition-api";
+import { ref, watch, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
 import useVoucherList from "./useVoucherList";
 import VoucherAddMultil from "../voucher-add/VoucherAddMultil";
@@ -342,6 +345,12 @@ export default {
       status,
     };
   },
+  methods: {
+    dataVoucher(voucher) {
+      console.log(voucher)
+      this.Vouchers = voucher;
+    }
+  }
 };
 </script>
 

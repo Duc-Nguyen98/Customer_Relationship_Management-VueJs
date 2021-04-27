@@ -63,6 +63,7 @@ export default function useVoucherListGroups() {
         const { groupVouchers, countGroupVoucher } = response.data
         Vouchers.value = groupVouchers
         totalVoucher.value = countGroupVoucher
+        console.log(groupVouchers)
       })
       .catch(() => {
         toast({
@@ -77,7 +78,7 @@ export default function useVoucherListGroups() {
   }
 
   const alert = (variant, message) => {
-    v.$toast({
+    toast({
       component: ToastificationContent,
       props: {
         title: "Notification",

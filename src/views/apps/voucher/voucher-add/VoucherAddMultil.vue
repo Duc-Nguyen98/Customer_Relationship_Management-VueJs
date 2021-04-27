@@ -20,10 +20,11 @@
                     <b-col lg="9" md="9">
                         <b-form-group
                                 :label="'Voucher ' + (index + 1)"
-                                label-for="item-name"
+                                :label-for="'voucher' + index"
                         >
                             <b-form-input
-                                    id="item-name"
+                                    :id="'voucher' + index"
+                                    @change="addVoucher(index)"
                                     type="text"
                                     placeholder="Enter voucher"
                             />
@@ -79,6 +80,7 @@
                                 class="text-uppercase"
                                 variant="primary"
                                 type="button"
+                                @click="emitData"
                         >
                             Save
                         </b-button>
@@ -111,12 +113,28 @@
         mixins: [heightTransition],
         data() {
             return {
-                items: [{
-                    id: 1,
-                    selected: 'male',
-                    selected1: 'designer',
-                    prevHeight: 0,
-                }],
+                items: [
+                    {
+                        idVoucher : 10000,
+                        voucherCode : "",
+                        idGroupVoucher : 10002,
+                        idCustomersUse : null,
+                        idLocationUse : null,
+                        status : 0,
+                        nameCustomerUse : null,
+                        nameLocationUse : null,
+                        usedDate : null,
+                        softDelete : 0,
+                        created : {
+                            createBy : "admin",
+                            time : Date.now()
+                        },
+                        modified : {
+                            modifyBy : "admin",
+                            time : Date.now()
+                        }
+                    }
+                ],
                 nextTodoId: 2,
             }
         },
@@ -130,6 +148,33 @@
             window.removeEventListener('resize', this.initTrHeight)
         },
         methods: {
+            addVoucher(index) {
+                 const val = document.getElementById('voucher' + index).value
+                    this.items[index] = {
+                        idVoucher : 10000,
+                        voucherCode : val,
+                        idGroupVoucher : 10002,
+                        idCustomersUse : null,
+                        idLocationUse : null,
+                        status : 0,
+                        nameCustomerUse : null,
+                        nameLocationUse : null,
+                        usedDate : null,
+                        softDelete : 0,
+                        created : {
+                            createBy : "admin",
+                            time : Date.now()
+                        },
+                        modified : {
+                            modifyBy : "admin",
+                            time : Date.now()
+                        }
+                    }
+            },
+            emitData() {
+                this.$emit('update', this.items)
+                this.$bvModal.hide("modal-lg")
+            },
             repeateAgain() {
                 this.items.push({
                     id: this.nextTodoId += this.nextTodoId,

@@ -129,7 +129,7 @@
                   <b-form-group
                           label-for="v-reduction-money"
                   >
-                    <b-form-radio v-model="discount" id="v-reduction-money" name="some-radios" :value="1">Reduction Money</b-form-radio>
+                    <b-form-radio v-model="discount" id="v-reduction-money" :value="1">Reduction Money</b-form-radio>
                   </b-form-group>
                 </b-col>
                 <b-col md="12">
@@ -282,7 +282,10 @@
                       label="Select Branch"
                       label-for="v-landmark"
               >
+                <span v-show="system == 0">Choose all systems</span>
                 <v-select
+                        v-show="system != 0"
+                        :disabled="system == 0"
                         v-model="selected1"
                         :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                         multiple
@@ -321,7 +324,9 @@
                       label="Select Branch"
                       label-for="v-city"
               >
+                <span v-show="GroupDataInfo.scopeApply.customer.all == 0">Choose all customers</span>
                 <v-select
+                        v-show="GroupDataInfo.scopeApply.customer.all != 0"
                         v-model="selected1"
                         :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                         multiple
@@ -520,10 +525,10 @@ console.log(GroupDataInfo.value)
     }
 
     const viewVouchers = () => {
-      console.log('drgdfgsds')
+
     }
 
-    if (groupinfo.discount.reduction.money == 0) {
+    if (groupinfo.discount.reduction.money == null) {
         discount.value = 0
     }
 

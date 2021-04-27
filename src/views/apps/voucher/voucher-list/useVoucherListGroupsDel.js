@@ -77,7 +77,7 @@ export default function useVoucherListGroupsDel() {
   }
 
   const alert = (variant, message) => {
-    v.$toast({
+    toast({
       component: ToastificationContent,
       props: {
         title: "Notification",

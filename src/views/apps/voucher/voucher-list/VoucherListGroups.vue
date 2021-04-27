@@ -108,9 +108,16 @@
 
         <!-- Column: Title -->
         <template #cell(title)="data">
-          <span class="cursor-pointer">{{ data.value }} <br />
-            <small class="text-muted">@GVC{{ data.item.idGroupVoucher }}</small>
-          </span>
+          <b-link
+                  :to="{
+                name: 'apps-group-voucher-edit',
+                params: { id: data.item._id },
+              }"
+                  class="font-weight-bold d-block text-nowrap"
+          >
+            {{ data.value }}
+          </b-link>
+          <small class="text-muted">@CS{{ data.item.idGroupVoucher }}</small>
         </template>
 
           <!-- Column: Classified -->
