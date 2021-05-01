@@ -46,7 +46,7 @@ export default {
   setup() {
     const groupsData = ref(null);
 
-    const SERVICES_APP_STORE_MODULE_NAME = "app-voucher";
+    const SERVICES_APP_STORE_MODULE_NAME = "app_voucher";
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
@@ -59,7 +59,7 @@ export default {
     });
 
     store
-      .dispatch("app-voucher/fetchGVoucher", { _id: router.currentRoute.params.id })
+      .dispatch("app_voucher/fetchGVoucher", { _id: router.currentRoute.params.id })
       .then((response) => {
         groupsData.value = response.data.data;
       })

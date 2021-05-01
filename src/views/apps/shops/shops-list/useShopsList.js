@@ -6,77 +6,79 @@ import { title } from '@core/utils/filter'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-export default function useVoucherListGroups() {
+export default function useShopsList() {
   // Use toast
-  const toast = useToast()
+  const toast = useToast();
 
-  const refVoucherListTable = ref(null)
+  const refUserListTable = ref(null)
 
   // Table Handlers
   const tableColumns = [
-    { key: 'stt', label: 'STT', sortable: true },
-    { key: 'title', label: 'Name Group', formatter: title, sortable: true },
-    { key: 'classified', label: 'Class Ified', sortable: true },
-    { key: 'status', label: 'Status Voucher', sortable: true },
-    { key: 'created_at', label: 'Created At', sortable: true },
-    { key: 'created_by', label: 'Created By', sortable: true },
+    { key: 'stt', label: 'STT', sortable: false },
+    { key: 'name', label: 'NAME', formatter: title, sortable: true },
+    { key: 'telephone', label: 'TELEPHONE', sortable: true },
+    { key: 'email', label: 'EMAIL', sortable: true },
+    { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
+    { key: 'gender', label: 'GENDER', sortable: true },
+    { key: 'groups', label: 'GROUP', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
-  const totalVoucher = ref(0)
+  const totalUsers = ref(0)
   const currentPage = ref(1)
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  const classified = ref(null)
-  const status = ref(null)
-  const Vouchers = ref([])
+  const group = ref(null)
+  const gender = ref(null)
+  const Users = ref([])
 
   const dataMeta = computed(() => {
-    const localItemsCount = refVoucherListTable.value ? refVoucherListTable.value.localItems.length : 0
+    const localItemsCount = refUserListTable.value ? refUserListTable.value.localItems.length : 0
     return {
       from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
       to: perPage.value * (currentPage.value - 1) + localItemsCount,
-      of: totalVoucher.value,
+      of: totalUsers.value,
     }
   })
 
   const refetchData = () => {
-    fetchVouchers()
+    fetchUsers()
   }
 
-  watch([currentPage, perPage, searchQuery, classified, status], () => {
+  watch([currentPage, perPage, searchQuery, group, gender], () => {
     refetchData()
   })
 
   const time = ref(null);
   const isBusy = ref(null);
-  const fetchVouchers = (ctx, callback) => {
-    isBusy.value = true
+  const fetchUsers = (ctx, callback) => {
+    isBusy.value = true;
     if (time.value) {
       clearTimeout(time.value)
     }
     time.value = setTimeout(() => {
       store
-          .dispatch('app_voucher/fetchVouchers', {
+          .dispatch('app-customers/fetchUsers', {
             q: searchQuery.value,
             perPage: perPage.value,
             page: currentPage.value,
-            classified: classified.value,
-            status: status.value,
+            sort: sortBy.value,
+            gender: gender.value,
+            group: group.value,
           })
           .then(response => {
-            const {groupVouchers, countGroupVoucher} = response.data
-            Vouchers.value = groupVouchers
-            totalVoucher.value = countGroupVoucher
+            const { data, totalRecords } = response.data
+            totalUsers.value = totalRecords
+            Users.value = data
             isBusy.value = false
           })
           .catch(() => {
             toast({
               component: ToastificationContent,
               props: {
-                title: 'Error fetching services list',
+                title: 'Error fetching users list',
                 icon: 'AlertTriangleIcon',
                 variant: 'danger',
               },
@@ -97,30 +99,31 @@ export default function useVoucherListGroups() {
     });
   }
 
-  const deleteVoucherSoft = id => {
-    store
-        .dispatch('app-voucher/deleteVoucherSoft', {_id: id})
-        .then(response => {
-          if (response.data.success) {
-            alert("success", "Delete services successfully.")
-            fetchVouchers()
-          } else {
-            alert("danger", "Delete services failed.")
-          }
+  const deleteUser = (_id) => {
+    return store
+      .dispatch('app-customers/deleteUser', { _id: _id })
+      .then(response => {
+        if (response.data.success) {
+          alert("success", "Delete user successfully.")
+          fetchUsers()
+          return true
+        } else {
+          alert("danger", "Delete user failed.")
+        }
+      })
+      .catch(() => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Error fetching users list',
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
         })
-        .catch(() => {
-          toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Error fetching services list',
-              icon: 'AlertTriangleIcon',
-              variant: 'danger',
-            },
-          })
-        })
+      })
   }
 
-  fetchVouchers()
+  fetchUsers()
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
@@ -143,56 +146,53 @@ export default function useVoucherListGroups() {
     return 'UserIcon'
   }
 
-  const resolveUserStatusVariant = stt => {
-    if (stt === 0) return 'primary'
-    if (stt === 1) return 'success'
+  const resolveUserStatusVariant = status => {
+    if (status === 'pending') return 'warning'
+    if (status === 'active') return 'success'
+    if (status === 'inactive') return 'secondary'
     return 'primary'
   }
 
-  const checkStatus = stt => {
-    if (stt === 0) return 'Inactive'
-    if (stt === 1) return 'Active'
-    return 'primary'
-  }
-
-  const resolveUserClassifiedVariant = stt => {
-    if (stt === 0) return 'info'
-    if (stt === 1) return 'success'
-    return 'info'
-  }
-
-  const checkClassified = stt => {
-    if (stt === 0) return 'Trade Voucher'
-    if (stt === 1) return 'Gift Voucher'
-    return 'Trade Voucher'
+  const checkGroup = (key) => {
+    switch (key) {
+      case 0:
+        return "Normal customers";
+        break;
+      case 1:
+        return "Loyal customers";
+        break;
+      case 2:
+        return "Potential customers";
+        break;
+    }
   }
 
   return {
-    fetchVouchers,
-    deleteVoucherSoft,
-    checkStatus,
-    checkClassified,
-    Vouchers,
+    fetchUsers,
+    deleteUser,
+    checkGroup,
+    Users,
     tableColumns,
     perPage,
     currentPage,
-    totalVoucher,
+    totalUsers,
     dataMeta,
     perPageOptions,
     searchQuery,
     sortBy,
     isSortDirDesc,
-    refVoucherListTable,
+    refUserListTable,
 
     resolveUserRoleVariant,
     resolveUserRoleIcon,
     resolveUserStatusVariant,
     refetchData,
-    resolveUserClassifiedVariant,
+
     // Extra Filters
-    classified,
-    status,
-    alert,
+    time,
     isBusy,
+    group,
+    gender,
+    alert,
   }
 }

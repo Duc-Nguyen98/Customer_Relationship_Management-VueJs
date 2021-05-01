@@ -51,9 +51,16 @@ export default function useVoucherList() {
     refetchData(group.value)
   })
 
+  const time = ref(null);
+  const isBusy = ref(null);
   const fetchHisListVouchers = (_id) => {
+    isBusy.value = true
+    if (time.value) {
+      clearTimeout(time.value)
+    }
+    time.value = setTimeout(() => {
     store
-      .dispatch('app-voucher/fetchHisListVouchers', {_id: _id, queryParams: {
+      .dispatch('app_voucher/fetchHisListVouchers', {_id: _id, queryParams: {
           q: searchQuery.value,
           perPage: perPage.value,
           page: currentPage.value,
@@ -75,6 +82,7 @@ export default function useVoucherList() {
           },
         })
       })
+    }, searchQuery.value ? 1000 : 0)
   }
 
   const alert = (variant, message) => {
@@ -91,7 +99,7 @@ export default function useVoucherList() {
 
   const deleteService = id => {
     store
-        .dispatch('app-voucher/deleteService', {_id: id})
+        .dispatch('app_voucher/deleteService', {_id: id})
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete services successfully.")
@@ -188,5 +196,6 @@ export default function useVoucherList() {
     type,
     status,
     alert,
+    isBusy,
   }
 }

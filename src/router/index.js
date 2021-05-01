@@ -11,6 +11,7 @@ import pages from './routes/pages'
 import chartsExports from './routes/charts-exports'
 import formsTable from './routes/forms-tables'
 import others from './routes/others'
+import interactive from './routes/interactive'
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,7 @@ const router = new VueRouter({
     ...apps,
     ...dashboard,
     ...pages,
+    ...interactive,
     ...chartsExports,
     ...formsTable,
     ...uiElements,
