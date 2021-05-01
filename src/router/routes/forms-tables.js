@@ -83,5 +83,4 @@ export default [
     name: 'apps-services-edit',
     component: () => import('@/views/apps/services/sms/services-edit/ServicesEdit.vue'),
   },
-
 ]
