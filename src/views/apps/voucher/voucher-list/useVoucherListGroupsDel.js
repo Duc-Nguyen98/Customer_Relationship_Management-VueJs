@@ -70,6 +70,7 @@ export default function useVoucherListGroupsDel() {
             const {groupVouchers, countGroupVoucher} = response.data
             Vouchers.value = groupVouchers
             totalVoucher.value = countGroupVoucher
+            isBusy.value = false
           })
           .catch(() => {
             toast({

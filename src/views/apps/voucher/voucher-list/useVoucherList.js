@@ -126,7 +126,8 @@ export default function useVoucherList() {
   const one = ref(false)
   const all = ref(false)
 
-  const deleteVouchersInGroup = () => {
+  const deleteVouchersInGroup = (_id) => {
+    selected.value.push(_id)
     store
         .dispatch('app_voucher/deleteVouchersInGroup', {VoucherIdArray: selected.value})
         .then(response => {

@@ -26,15 +26,15 @@ export default [
         children: [
             {
                 title: 'List Shops',
-                route: 'apps-shop-list',
+                route: 'apps-shops-list',
             },
             {
                 title: 'L-Shops Delete',
-                route: 'apps-shop-list-del',
+                route: 'apps-shops-list-del',
             },
             {
                 title: 'Add',
-                route: 'apps-shop-add',
+                route: 'apps-shops-add',
             },
         ],
     },

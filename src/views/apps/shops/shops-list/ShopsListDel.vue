@@ -2,10 +2,10 @@
   <div>
     <!-- Filters -->
     <shops-list-filters
-      :group.sync="group"
-      :gender.sync="gender"
-      :group-options="groupOptions"
-      :gender-options="genderOptions"
+      :status.sync="status"
+      :region.sync="region"
+      :status-options="statusOptions"
+      :region-options="regionOptions"
     />
 
     <!-- Table Container Card -->
@@ -63,9 +63,9 @@
       </div>
 
       <b-table
-        ref="refUserListTable"
+        ref="refShopListTable"
         class="position-relative scrollbar"
-        :items="Users"
+        :items="Shops"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -88,39 +88,34 @@
                 size="32"
                 :src="api + data.item.avatar"
                 :text="avatarText(data.item.name)"
-                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
+                variant="light-primary"
                 :to="{
-                  name: 'apps-customers-view',
+                  name: 'apps-shops-edit',
                   params: { id: data.item._id },
                 }"
               />
             </template>
             <b-link
               :to="{
-                name: 'apps-customers-view',
+                name: 'apps-shops-edit',
                 params: { id: data.item._id },
               }"
               class="font-weight-bold d-block text-nowrap"
             >
               {{ data.item.name }}
             </b-link>
-            <small class="text-muted">@CS{{ data.item.idCustomer }}</small>
+            <small class="text-muted">@CS{{ data.item.idShop }}</small>
           </b-media>
         </template>
 
-        <!-- Column: birthDay -->
-        <template #cell(birthDay)="data">
-          {{ convertDate(data.value) }}
+        <!-- Column: Status -->
+        <template #cell(status)="data">
+          <b-badge :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
-        <!-- Column: lastTrading -->
-        <template #cell(gender)="data">
-          {{ data.value == 0 ? 'Male' : 'Female' }}
-        </template>
-
-        <!-- Column: Groups -->
-        <template #cell(groups)="data">
-          <b-badge pill :variant="pillGroups(data.value)" class="badge-glow">{{ checkGroup(data.value) }}</b-badge>
+        <!-- Column: Region -->
+        <template #cell(region)="data">
+          <b-badge :variant="pillRegion(data.value)">{{ checkRegion(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -184,7 +179,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalUsers"
+              :total-rows="totalShops"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -223,23 +218,24 @@ import {
   BDropdown,
   BDropdownItem,
   BPagination,
-} from "bootstrap-vue";
-import vSelect from "vue-select";
-import store from "@/store";
-import { ref, onUnmounted } from "@vue/composition-api";
-import { avatarText } from "@core/utils/filter";
-import ShopsListFilters from "./ShopsListFilters.vue";
-import useShopsListDel from "./useShopsListDel";
-import shopStoreModule from "../shopStoreModule";
-import Ripple from "vue-ripple-directive";
-import moment from "moment";
+} from 'bootstrap-vue'
+import vSelect from 'vue-select'
+import store from '@/store'
+import { ref, onUnmounted } from '@vue/composition-api'
+import { avatarText } from '@core/utils/filter'
+import ShopsListFilters from './ShopsListFilters.vue'
+import useShopsListDel from './useShopsListDel'
+import shopStoreModule from '../shopStoreModule'
+import Ripple from 'vue-ripple-directive'
+import moment from 'moment'
 
 // Notification
-import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import { useToast } from 'vue-toastification/composition'
 
 export default {
   components: {
+    ToastificationContent,
     ShopsListFilters,
     BCard,
     BRow,
@@ -261,113 +257,103 @@ export default {
   },
   setup() {
 
-    const toast = useToast();
+    const toast = useToast()
 
-    const api = process.env.VUE_APP_ROOT_API;
-    const USER_APP_STORE_MODULE_NAME = "app-customers";
+    const api = process.env.VUE_APP_ROOT_API
+    const USER_APP_STORE_MODULE_NAME = 'app-shops'
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule);
+      store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME))
-        store.unregisterModule(USER_APP_STORE_MODULE_NAME);
-    });
+        store.unregisterModule(USER_APP_STORE_MODULE_NAME)
+    })
 
-    const groupOptions = [
-      { label: "Choose a group", value: null },
-      { label: "Normal customers", value: 0 },
-      { label: "Loyal customers", value: 1 },
-      { label: "Potential customers", value: 2 },
-    ];
 
-    const pillGroups = (group) => {
-      switch (group) {
+    const regionOptions = [
+      { label: 'Choose a region', value: null },
+      { label: 'TP.Ha Noi', value: 0 },
+      { label: 'TP.Ho Chi Minh', value: 1 },
+    ]
+
+    const pillRegion = (region) => {
+      switch (region) {
         case 0:
-          return 'primary';
+          return 'primary'
           break;
         case 1:
-          return 'success';
-          break;
-        case 2:
-          return 'info';
+          return 'success'
           break;
       }
-    };
+    }
 
-    const genderOptions = [
-      { label: "Choose a gender", value: null },
-      { label: "Male", value: 0 },
-      { label: "Female", value: 1 },
+    const statusOptions = [
+      { label: "Choose a status", value: null },
+      { label: "Inactive", value: 0 },
+      { label: "Active", value: 1 },
     ];
 
-    const convertDate = (date) => {
-      return moment(date).format("DD-MM-YYYY");
-    };
-
     const {
-      Users,
+      Shops,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalShops,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
-      checkGroup,
+      refShopListTable,
+      checkRegion,
+      checkStatus,
       refetchData,
-      deleteUser,
-      restoreUser,
+      deleteShop,
+      restoreShop,
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
 
       // Extra Filters
       isBusy,
-      group,
-      gender,
+      region,
+      status,
     } = useShopsListDel();
 
     return {
       api,
-      Users,
+      Shops,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalShops,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
-      checkGroup,
-      convertDate,
+      refShopListTable,
+      checkRegion,
+      checkStatus,
       refetchData,
-      deleteUser,
-      restoreUser,
-      pillGroups,
+      deleteShop,
+      restoreShop,
+      pillRegion,
       // Filter
       avatarText,
 
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
 
-      groupOptions,
-      genderOptions,
+      statusOptions,
+      regionOptions,
 
       // Extra Filters
       isBusy,
-      gender,
-      group,
+      region,
+      status,
     };
   },
 };

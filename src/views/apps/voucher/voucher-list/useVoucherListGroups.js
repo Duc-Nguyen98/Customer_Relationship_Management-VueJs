@@ -99,7 +99,7 @@ export default function useVoucherListGroups() {
 
   const deleteVoucherSoft = id => {
     store
-        .dispatch('app-voucher/deleteVoucherSoft', {_id: id})
+        .dispatch('app_voucher/deleteVoucherSoft', {_id: id})
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete services successfully.")
