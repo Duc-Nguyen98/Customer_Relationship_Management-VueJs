@@ -307,14 +307,6 @@
                                         :options="$store.state.app_voucher.allSystem"
                                         label="title"
                                 >
-                                    <template #option="{ title, icon }">
-                                        <feather-icon
-                                                :icon="icon"
-                                                size="16"
-                                                class="align-middle mr-25"
-                                        />
-                                        <span> {{ title }}</span>
-                                    </template>
                                 </v-select>
                             </b-form-group>
                         </b-col>
@@ -348,14 +340,6 @@
                                         :options="$store.state.app_voucher.allCustomers"
                                         label="title"
                                 >
-                                    <template #option="{ title, icon }">
-                                        <feather-icon
-                                                :icon="icon"
-                                                size="16"
-                                                class="align-middle mr-25"
-                                        />
-                                        <span> {{ title }}</span>
-                                    </template>
                                 </v-select>
                             </b-form-group>
                         </b-col>
@@ -570,7 +554,6 @@
                                 allSystem.push({
                                   value: obj.idShop,
                                   title: obj.name,
-                                  icon: ""
                                 })
                               })
                               store.commit('app_voucher/updateSystems', allSystem)
@@ -599,7 +582,6 @@
                                     allCustomers.push({
                                         value: obj.idGroupCustomer,
                                         title: obj.title,
-                                        icon: ""
                                     })
                                 })
                                 store.commit('app_voucher/updateCustomers', allCustomers)

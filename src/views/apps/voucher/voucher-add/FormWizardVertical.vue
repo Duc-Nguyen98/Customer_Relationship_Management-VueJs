@@ -393,14 +393,6 @@
                       :options="$store.state.app_voucher.allSystem"
                       label="title"
               >
-                <template #option="{ title, icon }">
-                  <feather-icon
-                          :icon="icon"
-                          size="16"
-                          class="align-middle mr-25"
-                  />
-                  <span> {{ title }}</span>
-                </template>
               </v-select>
             </b-form-group>
           </b-col>
@@ -434,14 +426,6 @@
                       :options="$store.state.app_voucher.allCustomers"
                       label="title"
               >
-                <template #option="{ title, icon }">
-                  <feather-icon
-                          :icon="icon"
-                          size="16"
-                          class="align-middle mr-25"
-                  />
-                  <span> {{ title }}</span>
-                </template>
               </v-select>
             </b-form-group>
           </b-col>
@@ -465,10 +449,7 @@
           </b-col>
         </b-row>
       </tab-content>
-
-
     </form-wizard>
-    </validation-observer>
   </div>
 </template>
 
@@ -476,8 +457,8 @@
 import { FormWizard, TabContent } from 'vue-form-wizard'
 import vSelect from 'vue-select'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-import VoucherList from "../voucher-list/VoucherList.vue";
-import {ValidationProvider, ValidationObserver } from "vee-validate";
+import VoucherList from '../voucher-list/VoucherList.vue'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
 
 import {
   required,
@@ -493,7 +474,8 @@ import {
   digits,
   alphaDash,
   length,
-} from "@validations";
+} from '@validations'
+
 const validation = {
   required,
   confirmed,
@@ -508,7 +490,8 @@ const validation = {
   digits,
   length,
   alphaDash,
-};
+}
+
 import {
   BRow,
   BCol,
@@ -650,7 +633,6 @@ export default {
                       allSystem.push({
                         value: obj.idShop,
                         title: obj.name,
-                        icon: ""
                       })
                     })
                     store.commit('app_voucher/updateSystems', allSystem)
@@ -679,7 +661,6 @@ export default {
                       allCustomers.push({
                         value: obj.idGroupCustomer,
                         title: obj.title,
-                        icon: ""
                       })
                     })
                     store.commit('app_voucher/updateCustomers', allCustomers)
