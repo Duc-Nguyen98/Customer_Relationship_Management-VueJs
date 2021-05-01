@@ -31,27 +31,27 @@ export default [
     },
 
     // *===============================================---*
-    // *--------- VOUCHER ---- ---------------------------------------*
+    // *--------- SHOPS ---- ---------------------------------------*
     // *===============================================---*
 
     {
-        path: '/apps/shop/list',
-        name: 'apps-shop-list',
+        path: '/apps/shops/list',
+        name: 'apps-shops-list',
         component: () => import('@/views/apps/shops/shops-list/ShopsList.vue'),
     },
     {
-        path: '/apps/shop/list/del',
-        name: 'apps-shop-list-del',
+        path: '/apps/shops/list/del',
+        name: 'apps-shops-list-del',
         component: () => import('@/views/apps/shops/shops-list/ShopsListDel.vue'),
     },
     {
-        path: '/apps/shop/add',
-        name: 'apps-shop-add',
+        path: '/apps/shops/add',
+        name: 'apps-shops-add',
         component: () => import('@/views/apps/shops/shops-add/ShopsAdd.vue'),
     },
     {
-        path: '/apps/shop/edit/:id',
-        name: 'apps-shop-edit',
+        path: '/apps/shops/edit/:id',
+        name: 'apps-shops-edit',
         component: () => import('@/views/apps/shops/shops-edit/ShopsEdit.vue'),
     },
 ]

@@ -10,68 +10,69 @@ export default function useShopsListDel() {
   // Use toast
   const toast = useToast();
 
-  const refUserListTable = ref(null)
+  const refShopListTable = ref(null)
 
   // Table Handlers
   const tableColumns = [
     { key: 'stt', label: 'STT', sortable: false },
     { key: 'name', label: 'NAME', formatter: title, sortable: true },
-    { key: 'telephone', label: 'TELEPHONE', sortable: true },
-    { key: 'email', label: 'EMAIL', sortable: true },
-    { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
-    { key: 'gender', label: 'GENDER', sortable: true },
-    { key: 'groups', label: 'GROUPS', sortable: true },
+    { key: 'telephoneShop', label: 'TELEPHONE SHOP', sortable: true },
+    { key: 'mail', label: 'EMAIL', sortable: true },
+    { key: 'ownerShop', label: 'Owner Shop', sortable: true },
+    { key: 'region', label: 'REGION', sortable: true },
+    { key: 'status', label: 'STATUS', sortable: true },
     { key: 'actions' },
   ]
+
   const perPage = ref(10)
-  const totalUsers = ref(0)
+  const totalShops = ref(0)
   const currentPage = ref(1)
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  const group = ref(null)
-  const gender = ref(null)
-  const Users = ref([])
+  const status = ref(null)
+  const region = ref(null)
+  const Shops = ref([])
 
   const dataMeta = computed(() => {
-    const localItemsCount = refUserListTable.value ? refUserListTable.value.localItems.length : 0
+    const localItemsCount = refShopListTable.value ? refShopListTable.value.localItems.length : 0
     return {
       from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
       to: perPage.value * (currentPage.value - 1) + localItemsCount,
-      of: totalUsers.value,
+      of: totalShops.value,
     }
   })
 
   const refetchData = () => {
-    fetchUsers()
+    fetchShopsDel()
   }
 
-  watch([currentPage, perPage, searchQuery, group, gender], () => {
+  watch([currentPage, perPage, searchQuery, region, status], () => {
     refetchData()
   })
 
   const time = ref(null);
   const isBusy = ref(null);
-  const fetchUsers = (ctx, callback) => {
+
+  const fetchShopsDel = (ctx, callback) => {
     isBusy.value = true;
     if (time.value) {
       clearTimeout(time.value)
     }
     time.value = setTimeout(() => {
       store
-          .dispatch('app-customers/fetchUsersDel', {
+          .dispatch('app-shops/fetchShopsDel', {
             q: searchQuery.value,
             perPage: perPage.value,
             page: currentPage.value,
-            sort: sortBy.value,
-            gender: gender.value,
-            group: group.value,
+            region: region.value,
+            status: status.value,
           })
           .then(response => {
             const { data, totalRecords } = response.data
-            totalUsers.value = totalRecords
-            Users.value = data
+            totalShops.value = totalRecords
+            Shops.value = data
             isBusy.value = false
           })
           .catch(() => {
@@ -99,9 +100,9 @@ export default function useShopsListDel() {
     });
   }
 
-  const deleteUser = id => {
+  const deleteShop = id => {
     store
-      .dispatch('app-customers/deleteUserR', { _id: id })
+      .dispatch('app-customers/deleteShopR', { _id: id })
       .then(response => {
         if (response.data.success) {
           alert("success", "Delete customer successfully.")
@@ -122,9 +123,9 @@ export default function useShopsListDel() {
       })
   }
 
-  const restoreUser = id => {
+  const restoreShop = id => {
     store
-        .dispatch('app-customers/restoreUser', { _id: id })
+        .dispatch('app-customers/restoreShop', { _id: id })
         .then(response => {
           if (response.data.success) {
             alert("success", "Restore customer successfully.")
@@ -145,28 +146,10 @@ export default function useShopsListDel() {
         })
   }
 
-  fetchUsers()
+  fetchShopsDel()
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
-
-  const resolveUserRoleVariant = role => {
-    if (role === 'subscriber') return 'primary'
-    if (role === 'author') return 'warning'
-    if (role === 'maintainer') return 'success'
-    if (role === 'editor') return 'info'
-    if (role === 'admin') return 'danger'
-    return 'primary'
-  }
-
-  const resolveUserRoleIcon = role => {
-    if (role === 'subscriber') return 'UserIcon'
-    if (role === 'author') return 'SettingsIcon'
-    if (role === 'maintainer') return 'DatabaseIcon'
-    if (role === 'editor') return 'Edit2Icon'
-    if (role === 'admin') return 'ServerIcon'
-    return 'UserIcon'
-  }
 
   const resolveUserStatusVariant = status => {
     if (status === 'pending') return 'warning'
@@ -175,46 +158,51 @@ export default function useShopsListDel() {
     return 'primary'
   }
 
-  const checkGroup = (key) => {
+  const checkRegion = (key) => {
     switch (key) {
       case 0:
-        return "Normal customers";
+        return "TP.Ha Noi";
         break;
       case 1:
-        return "Loyal customers";
+        return "TP.Ho Chi Minh";
         break;
-      case 2:
-        return "Potential customers";
+      default:
+        return "TP.Ha Noi";
         break;
     }
   }
 
+  const checkStatus = stt => {
+    if (stt === 0) return 'Inactive'
+    if (stt === 1) return 'Active'
+    return 'Inactive'
+  }
+
   return {
-    fetchUsers,
-    deleteUser,
-    restoreUser,
-    Users,
+    fetchShopsDel,
+    deleteShop,
+    restoreShop,
+    Shops,
     tableColumns,
     perPage,
     currentPage,
-    totalUsers,
+    totalShops,
     dataMeta,
     perPageOptions,
     searchQuery,
     sortBy,
     isSortDirDesc,
-    refUserListTable,
+    refShopListTable,
 
-    resolveUserRoleVariant,
-    resolveUserRoleIcon,
     resolveUserStatusVariant,
     refetchData,
-    checkGroup,
+    checkRegion,
+    checkStatus,
     // Extra Filters
     time,
     isBusy,
-    group,
-    gender,
+    status,
+    region,
     alert,
   }
 }

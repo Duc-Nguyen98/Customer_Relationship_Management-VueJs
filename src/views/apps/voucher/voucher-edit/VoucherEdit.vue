@@ -17,7 +17,7 @@
       <b-tab active>
         <template #title>
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
-          <span class="d-none d-sm-inline">Info  Groups Voucher</span>
+          <span class="d-none d-sm-inline">Manager Groups Voucher</span>
         </template>
         <voucher-edit-tab-information :groupinfo="groupsData" class="mt-2 pt-75" />
       </b-tab>

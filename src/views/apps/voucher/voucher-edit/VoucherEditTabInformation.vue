@@ -107,7 +107,7 @@
                                                     :disabled="discount == 1"
                                                     v-model="Mmoney"
                                                     @blur="blurMoney"
-                                                    @focus="Mmoney = data.discount.PercentAMaximum.maximumMoney"
+                                                    @focus="Mmoney = GroupDataInfo.discount.PercentAMaximum.maximumMoney"
                                                     id="Mmoney"
                                                     placeholder="Your maximum money"
                                             />
@@ -140,9 +140,9 @@
                                         <label for="Reduction">Reduction</label>
                                         <b-input-group>
                                             <b-form-input
-                                                    @blur="blurReduction"
-                                                    @focus="reduction = GroupDataInfo.discount.reduction.money"
                                                     v-model="reduction"
+                                                    @focus="reduction = GroupDataInfo.discount.reduction.money"
+                                                    @blur="blurReduction"
                                                     :disabled="discount == 0"
                                                     id="Reduction"
                                                     placeholder="Your Reduction"
@@ -345,7 +345,7 @@
                         </b-col>
                     </b-row>
                 </b-tab>
-                <b-tab>
+                <b-tab v-if="GroupDataInfo.status != 0">
                     <template #title>
             <span>
               <feather-icon icon="BookmarkIcon"/>
@@ -363,6 +363,22 @@
                     <VoucherListHistory :_id="GroupDataInfo.idGroupVoucher"/>
                 </b-tab>
             </b-tabs>
+
+            <!-- Form Actions -->
+            <div class="d-flex float-right mt-2">
+                <b-button
+                        type="button"
+                        variant="outline-secondary"
+                        class="mr-2 text-uppercase"
+                        @click="$router.push({name: 'apps-shops-list'})"
+                >
+                    Cancel
+                </b-button>
+
+                <b-button variant="primary" @click="validationForm({GroupDataInfo: GroupDataInfo, _id: GroupDataInfo._id})" class="text-uppercase">
+                    Save Changes
+                </b-button>
+            </div>
         </div>
     </div>
 </template>

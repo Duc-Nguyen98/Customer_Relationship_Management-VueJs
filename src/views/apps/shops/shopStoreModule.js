@@ -6,26 +6,26 @@ export default {
   getters: {},
   mutations: {},
   actions: {
-    fetchUsers(ctx, queryParams) {
+    fetchShops(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + 'customer/list', { params: queryParams })
+          .get(process.env.VUE_APP_ROOT_API + 'shop/list', { params: queryParams })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
     },
-    fetchUsersDel(ctx, queryParams) {
+    fetchShopsDel(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-            .get(process.env.VUE_APP_ROOT_API + 'customer/list/trash', { params: queryParams })
+            .get(process.env.VUE_APP_ROOT_API + 'shop/list/trash', { params: queryParams })
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
     },
-    fetchUser(ctx, { _id }) {
+    fetchShop(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + `customer/detail/${_id}`)
+          .get(process.env.VUE_APP_ROOT_API + `shop/detail/${_id}`)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -46,18 +46,18 @@ export default {
             .catch(error => reject(error))
       })
     },
-    deleteUser(ctx, { _id }) {
+    deleteShop(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `customer/delete-soft/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `shop/delete-soft/${_id}`)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
     },
-    deleteUserR(ctx, { _id }) {
+    deleteShopR(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `customer/delete/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `shop/delete/${_id}`)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -65,7 +65,7 @@ export default {
     restoreUser(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `customer/trash/restore/${_id}`)
+            .patch(process.env.VUE_APP_ROOT_API + `shop/trash/restore/${_id}`)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })

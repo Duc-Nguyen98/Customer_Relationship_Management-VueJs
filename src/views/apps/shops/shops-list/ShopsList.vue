@@ -2,10 +2,10 @@
   <div>
     <!-- Filters -->
     <shops-list-filters
-      :group.sync="group"
-      :gender.sync="gender"
-      :group-options="groupOptions"
-      :gender-options="genderOptions"
+      :status.sync="status"
+      :region.sync="region"
+      :status-options="statusOptions"
+      :region-options="regionOptions"
     />
 
     <!-- Table Container Card -->
@@ -41,30 +41,15 @@
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{ name: 'apps-customers-add' }"
+                      :to="{ name: 'apps-shops-add' }"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
                 /></span>
               </b-button>
-              <b-dropdown
-                      id="dropdown-grouped"
-                      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                      variant="primary"
-                      class="dropdown-icon-wrapper mr-1"
-              >
-                <template #button-content>
-                  <feather-icon
-                          icon="DownloadIcon"
-                          size="14"
-                  />
-                </template>
-                <b-dropdown-item>Export PDF</b-dropdown-item>
-                <b-dropdown-item>Export Excel</b-dropdown-item>
-              </b-dropdown>
               <b-button
                       variant="primary"
-                      :to="{ name: 'apps-customers-add' }"
+                      :to="{ name: 'apps-shops-list-del' }"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="Trash2Icon"
@@ -76,9 +61,9 @@
       </div>
 
       <b-table
-        ref="refUserListTable"
+        ref="refShopListTable"
         class="position-relative scrollbar"
-        :items="Users"
+        :items="Shops"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -101,39 +86,34 @@
                 size="32"
                 :src="api + data.item.avatar"
                 :text="avatarText(data.item.name)"
-                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
+                variant="light-primary"
                 :to="{
-                  name: 'apps-customers-edit',
+                  name: 'apps-shops-edit',
                   params: { id: data.item._id },
                 }"
               />
             </template>
             <b-link
               :to="{
-                name: 'apps-customers-edit',
+                name: 'apps-shops-edit',
                 params: { id: data.item._id },
               }"
               class="font-weight-bold d-block text-nowrap"
             >
               {{ data.item.name }}
             </b-link>
-            <small class="text-muted">@CS{{ data.item.idCustomer }}</small>
+            <small class="text-muted">@SA{{ data.item.idShop }}</small>
           </b-media>
         </template>
 
-        <!-- Column: birthDay -->
-        <template #cell(birthDay)="data">
-          {{ convertDate(data.value) }}
+        <!-- Column: Status -->
+        <template #cell(status)="data">
+          <b-badge :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
-        <!-- Column: Gender -->
-        <template #cell(gender)="data">
-          {{ data.value == 0 ? 'Male' : 'Female' }}
-        </template>
-
-        <!-- Column: Groups -->
-        <template #cell(groups)="data">
-          <b-badge pill :variant="pillGroups(data.value)" class="badge-glow">{{ checkGroup(data.value) }}</b-badge>
+        <!-- Column: Region -->
+        <template #cell(region)="data">
+          <b-badge :variant="pillRegion(data.value)">{{ checkRegion(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -150,15 +130,6 @@
                 class="align-middle text-body"
               />
             </template>
-<!--            <b-dropdown-item-->
-<!--              :to="{-->
-<!--                name: 'apps-customers-view',-->
-<!--                params: { id: data.item._id },-->
-<!--              }"-->
-<!--            >-->
-<!--              <feather-icon icon="FileTextIcon" />-->
-<!--              <span class="align-middle ml-50">Details</span>-->
-<!--            </b-dropdown-item>-->
 
             <b-dropdown-item
               :to="{
@@ -171,7 +142,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteUser(data.item._id)"
+              @click="deleteShop(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -199,7 +170,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalUsers"
+              :total-rows="totalShops"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -256,6 +227,7 @@ import { useToast } from 'vue-toastification/composition'
 
 export default {
   components: {
+    ToastificationContent,
     ShopsListFilters,
     BCard,
     BRow,
@@ -277,46 +249,42 @@ export default {
   },
   setup() {
 
-    const toast = useToast();
+    const toast = useToast()
 
-    const api = process.env.VUE_APP_ROOT_API;
-    const USER_APP_STORE_MODULE_NAME = "app-customers";
+    const api = process.env.VUE_APP_ROOT_API
+    const USER_APP_STORE_MODULE_NAME = 'app-shops'
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule);
+      store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME))
         store.unregisterModule(USER_APP_STORE_MODULE_NAME);
-    });
+    })
 
-    const groupOptions = [
-      { label: "Choose a group", value: null },
-      { label: "Normal customers", value: 0 },
-      { label: "Loyal customers", value: 1 },
-      { label: "Potential customers", value: 2 },
-    ];
+    const regionOptions = [
+      { label: 'Choose a region', value: null },
+      { label: 'TP.Ha Noi', value: 0 },
+      { label: 'TP.Ho Chi Minh', value: 1 },
+    ]
 
-    const pillGroups = (group) => {
-      switch (group) {
+    const pillRegion = (region) => {
+      switch (region) {
         case 0:
-          return 'primary';
+          return 'primary'
           break;
         case 1:
-          return 'success';
-          break;
-        case 2:
-          return 'info';
+          return 'success'
           break;
       }
-    };
+    }
 
-    const genderOptions = [
-      { label: "Choose a gender", value: null },
-      { label: "Male", value: 0 },
-      { label: "Female", value: 1 },
+    const statusOptions = [
+      { label: "Choose a status", value: null },
+      { label: "Inactive", value: 0 },
+      { label: "Active", value: 1 },
     ];
 
     const convertDate = (date) => {
@@ -324,66 +292,65 @@ export default {
     };
 
     const {
-      Users,
+      Shops,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalShops,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
+      refShopListTable,
       refetchData,
-      deleteUser,
-      checkGroup,
+      deleteShop,
+      checkRegion,
+      checkStatus,
+
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
 
       // Extra Filters
       isBusy,
-      group,
-      gender,
+      status,
+      region,
     } = useShopsList();
 
     return {
       api,
       toast,
-      Users,
+      Shops,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalShops,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
-      checkGroup,
+      refShopListTable,
+      checkRegion,
+      checkStatus,
       convertDate,
       refetchData,
-      deleteUser,
-      pillGroups,
+      deleteShop,
+      pillRegion,
 
       // Filter
       avatarText,
 
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
 
-      groupOptions,
-      genderOptions,
+      regionOptions,
+      statusOptions,
 
       // Extra Filters
       isBusy,
-      gender,
-      group,
+      status,
+      region,
     };
   },
 };

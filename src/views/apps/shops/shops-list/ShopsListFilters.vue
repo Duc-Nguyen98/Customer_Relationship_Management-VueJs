@@ -6,25 +6,25 @@
     <b-card-body>
       <b-row>
         <b-col cols="12" md="6" class="mb-md-0 mb-2">
-          <label>Groups Customer</label>
+          <label>Region</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="group"
-            :options="groupOptions"
+            :value="region"
+            :options="regionOptions"
             class="w-100"
             :reduce="(val) => val.value"
-            @input="(val) => $emit('update:group', val)"
+            @input="(val) => $emit('update:region', val)"
           />
         </b-col>
         <b-col cols="12" md="6" class="mb-md-0 mb-2">
-          <label>Gender</label>
+          <label>Status</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="gender"
-            :options="genderOptions"
+            :value="status"
+            :options="statusOptions"
             class="w-100"
             :reduce="(val) => val.value"
-            @input="(val) => $emit('update:gender', val)"
+            @input="(val) => $emit('update:status', val)"
           />
         </b-col>
       </b-row>
@@ -46,19 +46,19 @@ export default {
     vSelect,
   },
   props: {
-    group: {
+    status: {
       type: [Number, null],
       default: null,
     },
-    gender: {
+    region: {
       type: [Number, null],
       default: null,
     },
-    groupOptions: {
+    statusOptions: {
       type: Array,
       required: true,
     },
-    genderOptions: {
+    regionOptions: {
       type: Array,
       required: true,
     },

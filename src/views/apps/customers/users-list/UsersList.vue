@@ -238,21 +238,16 @@ import {
   BDropdown,
   BDropdownItem,
   BPagination,
-} from "bootstrap-vue";
-import vSelect from "vue-select";
-import store from "@/store";
-import { ref, onUnmounted } from "@vue/composition-api";
-import { avatarText } from "@core/utils/filter";
-import UsersListFilters from "./UsersListFilters.vue";
-import useShopsList from "./useUsersList";
-import userStoreModule from "../userStoreModule";
-import Ripple from "vue-ripple-directive";
-import moment from "moment";
-
-// Notification
-import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
-import { useToast } from 'vue-toastification/composition'
-
+} from 'bootstrap-vue'
+import vSelect from 'vue-select'
+import store from '@/store'
+import { ref, onUnmounted } from '@vue/composition-api'
+import { avatarText } from '@core/utils/filter'
+import UsersListFilters from './UsersListFilters.vue'
+import useUsersList  from './useUsersList'
+import userStoreModule from '../userStoreModule'
+import Ripple from 'vue-ripple-directive'
+import moment from 'moment'
 
 export default {
   components: {
@@ -276,8 +271,6 @@ export default {
     Ripple,
   },
   setup() {
-
-    const toast = useToast();
 
     const api = process.env.VUE_APP_ROOT_API;
     const USER_APP_STORE_MODULE_NAME = "app-customers";
@@ -351,7 +344,6 @@ export default {
 
     return {
       api,
-      toast,
       Users,
       tableColumns,
       perPage,
