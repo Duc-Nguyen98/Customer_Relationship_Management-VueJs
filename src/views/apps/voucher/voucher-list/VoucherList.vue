@@ -52,7 +52,7 @@
               </b-button>
 
               <b-modal id="modal-lg" size="lg" title="Add Vouchers" hide-footer>
-                <VoucherAddMultil @update="dataVoucher" />
+                <VoucherAddMultil :_id="idGroup" @update="dataVoucher" />
               </b-modal>
 
               <!--              End add voucher -->
@@ -64,11 +64,11 @@
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
-                /> + Voucher Automatic</span>
+                /> Voucher Automatic</span>
               </b-button>
 
               <b-modal id="modal-lg2" size="lg" title="Add Vouchers Automatic" hide-footer>
-                <VoucherAddAuto />
+                <VoucherAddAuto :_id="idGroup" @update="dataVoucher" />
               </b-modal>
 
               <b-button
@@ -78,7 +78,7 @@
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="UploadIcon"
-                /> + Import Excel</span>
+                /> Import Excel</span>
               </b-button>
 
               <b-modal id="modal-lg3" size="lg" title="Import voucher from file Excel" hide-footer>
@@ -92,6 +92,7 @@
       <b-table
         ref="refVouchersListTable"
         class="position-relative"
+        :busy="isBusy"
         :items="Vouchers"
         responsive
         :fields="tableColumns"
@@ -100,17 +101,32 @@
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
       >
+
+        <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
+        <template #head(selected)="scope">
+          <b-form-checkbox
+                  class="float-left"
+                  id="checkbox-1"
+                  name="checkbox-1"
+                  @input="chooseAll()"
+          >
+          </b-form-checkbox>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteVouchersInGroup"><feather-icon icon="TrashIcon" /></span>
+        </template>
+
+        <!-- Column: Delete -->
+        <template #cell(selected)="data">
+          <b-form-checkbox
+                  :id="data.item._id"
+                  :checked="all"
+                  @input="chooseOne(data.item._id)"
+          ></b-form-checkbox>
+
+        </template>
+
         <!-- Column: STT -->
         <template #cell(stt)="data">
           {{ data.index + 1 }}
-        </template>
-
-        <!-- Column: Classified -->
-        <template #cell(classified)="data">
-         <b-badge v-if="data.value" pill :variant="resolveUserClassifiedVariant(data.value)" class="badge-glow">
-           {{ checkClassified(data.value) }}
-         </b-badge>
-          <span v-else>Unknow</span>
         </template>
 
         <!-- Column: voucherCode -->
@@ -123,6 +139,19 @@
         <!-- Column: Status -->
         <template #cell(status)="data">
           <b-badge pill :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+        </template>
+
+        <!-- Column: Created by -->
+        <template #cell(created_by)="data">
+          <div class="text-nowrap">
+            <feather-icon
+                    :icon="resolveUserRoleIcon(data.item.created.createBy)"
+                    size="18"
+                    class="mr-50"
+                    :class="`text-${resolveUserRoleVariant(data.item.created.createBy)}`"
+            />
+            <span class="align-text-top text-capitalize">{{ data.item.created.createBy }}</span>
+          </div>
         </template>
 
         <!-- Column: STT -->
@@ -156,7 +185,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteService(data.item._id)"
+              @click="deleteVouchersInGroup(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -221,6 +250,7 @@ import {
   BLink,
   BBadge,
   BDropdown,
+  BFormCheckbox,
   BDropdownItem,
   BPagination,
 } from "bootstrap-vue";
@@ -242,6 +272,7 @@ export default {
     VoucherAddMultil,
     VoucherAddAuto,
     VoucherAddExcel,
+    BFormCheckbox,
     BCard,
     BRow,
     BCol,
@@ -263,11 +294,14 @@ export default {
   props: {
     _id: {
       default: null
+    },
+    idGroup: {
+      default: null
     }
   },
-  setup({_id}) {
+  setup({_id, idGroup}) {
 
-    const SERVICES_APP_STORE_MODULE_NAME = "app-voucher";
+    const SERVICES_APP_STORE_MODULE_NAME = "app_voucher";
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
@@ -277,11 +311,11 @@ export default {
     onUnmounted(() => {
       if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
         store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
-    });
+    })
 
     const convertDate = (date) => {
       return moment(date).format("DD-MM-YYYY");
-    };
+    }
 
     const {
       Vouchers,
@@ -295,7 +329,8 @@ export default {
       isSortDirDesc,
       refVouchersListTable,
       refetchData,
-      deleteService,
+      deleteVouchersInGroup,
+      addVouchersInGroup,
       checkStatus,
 
       // UI
@@ -304,18 +339,38 @@ export default {
       resolveUserStatusVariant,
       checkClassified,
       resolveUserClassifiedVariant,
-
       // Extra Filters
       type,
       status,
-    } = useVoucherList();
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
+      isBusy,
+    } = useVoucherList()
 
-    if (_id != null) {
-      refetchData(_id)
+    if (idGroup != null) {
+      refetchData(idGroup)
+    }
+
+    const dataVoucher = (vouchers) => {
+      if (_id == null) {
+        Vouchers.value = [...Vouchers.value, vouchers]
+      } else {
+        addVouchersInGroup(_id, vouchers)
+      }
     }
 
     return {
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
       Vouchers,
+      dataVoucher,
+      addVouchersInGroup,
       tableColumns,
       perPage,
       currentPage,
@@ -327,7 +382,7 @@ export default {
       refVouchersListTable,
       convertDate,
       refetchData,
-      deleteService,
+      deleteVouchersInGroup,
       checkStatus,
       checkClassified,
       resolveUserClassifiedVariant,
@@ -343,13 +398,8 @@ export default {
       // Extra Filters
       type,
       status,
+      isBusy,
     };
-  },
-  methods: {
-    dataVoucher(voucher) {
-      console.log(voucher)
-      this.Vouchers = voucher;
-    }
   }
 };
 </script>

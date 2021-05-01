@@ -34,7 +34,7 @@ export default {
   setup() {
     const userData = ref(null);
 
-    const SERVICE_APP_STORE_MODULE_NAME = "app-voucher";
+    const SERVICE_APP_STORE_MODULE_NAME = "app_voucher";
 
     // Register module
     if (!store.hasModule(SERVICE_APP_STORE_MODULE_NAME))

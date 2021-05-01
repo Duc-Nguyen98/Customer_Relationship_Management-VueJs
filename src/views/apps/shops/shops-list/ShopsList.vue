@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Filters -->
-    <users-list-filters
+    <shops-list-filters
       :group.sync="group"
       :gender.sync="gender"
       :group-options="groupOptions"
@@ -41,15 +41,28 @@
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{ name: 'apps-users-add' }"
+                      :to="{ name: 'apps-customers-add' }"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
                 /></span>
               </b-button>
-
+              <b-dropdown
+                      id="dropdown-grouped"
+                      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                      variant="primary"
+                      class="dropdown-icon-wrapper mr-1"
+              >
+                <template #button-content>
+                  <feather-icon
+                          icon="DownloadIcon"
+                          size="14"
+                  />
+                </template>
+                <b-dropdown-item>Export PDF</b-dropdown-item>
+                <b-dropdown-item>Export Excel</b-dropdown-item>
+              </b-dropdown>
               <b-button
-                      class="mr-1"
                       variant="primary"
                       :to="{ name: 'apps-customers-add' }"
               >
@@ -90,14 +103,14 @@
                 :text="avatarText(data.item.name)"
                 :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
                 :to="{
-                  name: 'apps-customers-view',
+                  name: 'apps-customers-edit',
                   params: { id: data.item._id },
                 }"
               />
             </template>
             <b-link
               :to="{
-                name: 'apps-customers-view',
+                name: 'apps-customers-edit',
                 params: { id: data.item._id },
               }"
               class="font-weight-bold d-block text-nowrap"
@@ -113,7 +126,7 @@
           {{ convertDate(data.value) }}
         </template>
 
-        <!-- Column: lastTrading -->
+        <!-- Column: Gender -->
         <template #cell(gender)="data">
           {{ data.value == 0 ? 'Male' : 'Female' }}
         </template>
@@ -137,14 +150,24 @@
                 class="align-middle text-body"
               />
             </template>
+<!--            <b-dropdown-item-->
+<!--              :to="{-->
+<!--                name: 'apps-customers-view',-->
+<!--                params: { id: data.item._id },-->
+<!--              }"-->
+<!--            >-->
+<!--              <feather-icon icon="FileTextIcon" />-->
+<!--              <span class="align-middle ml-50">Details</span>-->
+<!--            </b-dropdown-item>-->
+
             <b-dropdown-item
               :to="{
-                name: 'apps-customers-view',
+                name: 'apps-customers-edit',
                 params: { id: data.item._id },
               }"
             >
-              <feather-icon icon="FileTextIcon" />
-              <span class="align-middle ml-50">Details</span>
+              <feather-icon icon="PlusCircleIcon" />
+              <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
 
             <b-dropdown-item
@@ -153,14 +176,6 @@
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>
-
-            <b-dropdown-item
-                    @click="restoreUser(data.item._id)"
-            >
-              <feather-icon icon="TrashIcon" />
-              <span class="align-middle ml-50">Restore</span>
-            </b-dropdown-item>
-
           </b-dropdown>
         </template>
       </b-table>
@@ -228,9 +243,9 @@ import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import UsersListFilters from "./UsersListFilters.vue";
-import useShopsListDel from "./useUsersListDel";
-import userStoreModule from "../userStoreModule";
+import ShopsListFilters from "./ShopsListFilters.vue";
+import useShopsList from "./useShopsList";
+import shopStoreModule from "../shopStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 
@@ -238,9 +253,10 @@ import moment from "moment";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
 import { useToast } from 'vue-toastification/composition'
 
+
 export default {
   components: {
-    UsersListFilters,
+    ShopsListFilters,
     BCard,
     BRow,
     BCol,
@@ -268,7 +284,7 @@ export default {
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule);
+      store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
@@ -319,10 +335,9 @@ export default {
       sortBy,
       isSortDirDesc,
       refUserListTable,
-      checkGroup,
       refetchData,
       deleteUser,
-      restoreUser,
+      checkGroup,
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
@@ -332,10 +347,11 @@ export default {
       isBusy,
       group,
       gender,
-    } = useUsersListDel();
+    } = useShopsList();
 
     return {
       api,
+      toast,
       Users,
       tableColumns,
       perPage,
@@ -351,8 +367,8 @@ export default {
       convertDate,
       refetchData,
       deleteUser,
-      restoreUser,
       pillGroups,
+
       // Filter
       avatarText,
 

@@ -313,7 +313,7 @@
     import vSelect from 'vue-select'
     import {useInputImageRenderer} from '@core/comp-functions/forms/form-utils'
     import {ref} from '@vue/composition-api'
-    import useUsersList from '../users-list/useUsersList'
+    import useShopsList from '../users-list/useUsersList'
     import {ValidationProvider, ValidationObserver} from "vee-validate"
     // Notification
     import {useToast} from 'vue-toastification/composition'

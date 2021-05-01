@@ -312,7 +312,7 @@ import Ripple from "vue-ripple-directive";
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils';
 import { avatarText } from '@core/utils/filter';
 import {ValidationProvider, ValidationObserver} from "vee-validate";
-import useShopsList from '../users-list/useUsersList';
+import useShopsList from '../shops-list/useShopsList';
 
   import {
     required,

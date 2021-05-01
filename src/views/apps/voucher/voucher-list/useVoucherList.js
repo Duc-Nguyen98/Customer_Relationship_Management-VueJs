@@ -14,11 +14,12 @@ export default function useVoucherList() {
 
   // Table Handlers
   const tableColumns = [
+    { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: true },
     { key: 'voucherCode', label: 'Voucher code', formatter: title, sortable: false },
-    { key: 'classified', label: 'Classified', sortable: true },
     { key: 'status', label: 'Status', sortable: false },
     { key: 'created', label: 'Created At', sortable: false },
+    { key: 'created_by', label: 'Created By', sortable: false },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -41,43 +42,53 @@ export default function useVoucherList() {
   })
   const group = ref(null);
 
-  const refetchData = (_id) => {
-    group.value = _id
-    fetchListVouchers(_id)
+  const refetchData = (idGroup) => {
+    group.value = idGroup
+    fetchListVouchers(idGroup)
   }
 
   watch([currentPage, perPage, searchQuery, type, status], () => {
     refetchData(group.value)
   })
 
-  const fetchListVouchers = (_id) => {
-    store
-      .dispatch('app-voucher/fetchListVouchers', {_id: _id, queryParams: {
-          q: searchQuery.value,
-          perPage: perPage.value,
-          page: currentPage.value,
-          status: status.value,
-    }})
-      .then(response => {
-        const { groupVoucherItems, countGroupVoucherItems } = response.data
-        totalVouchers.value = countGroupVoucherItems
-        Vouchers.value = groupVoucherItems
-        console.log(groupVoucherItems)
-      })
-      .catch(() => {
-        toast({
-          component: ToastificationContent,
-          props: {
-            title: 'Error fetching services list',
-            icon: 'AlertTriangleIcon',
-            variant: 'danger',
-          },
-        })
-      })
+  const time = ref(null);
+  const isBusy = ref(null);
+  const fetchListVouchers = (idGroup) => {
+    isBusy.value = true
+    if (time.value) {
+      clearTimeout(time.value)
+    }
+    time.value = setTimeout(() => {
+      store
+          .dispatch('app_voucher/fetchListVouchers', {
+            _id: idGroup, queryParams: {
+              q: searchQuery.value,
+              perPage: perPage.value,
+              page: currentPage.value,
+              status: status.value,
+            }
+          })
+          .then(response => {
+            const {groupVoucherItems, countGroupVoucherItems} = response.data
+            totalVouchers.value = countGroupVoucherItems
+            Vouchers.value = groupVoucherItems
+            isBusy.value = false
+          })
+          .catch(() => {
+            toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Error fetching services list',
+                icon: 'AlertTriangleIcon',
+                variant: 'danger',
+              },
+            })
+          })
+    }, searchQuery.value ? 1000 : 0)
   }
 
   const alert = (variant, message) => {
-    v.$toast({
+    toast({
       component: ToastificationContent,
       props: {
         title: "Notification",
@@ -88,15 +99,15 @@ export default function useVoucherList() {
     });
   }
 
-  const deleteService = id => {
+  const addVouchersInGroup = (_id, vouchers) => {
     store
-        .dispatch('app-voucher/deleteService', {_id: id})
+        .dispatch('app_voucher/addVouchersInGroup', {_id: _id, voucherCode: vouchers})
         .then(response => {
           if (response.data.success) {
-            alert("success", "Delete services successfully.")
-            fetchVouchers()
+            alert("success", "Add vouchers successfully.")
+            fetchListVouchers(group.value)
           } else {
-            alert("danger", "Delete services failed.")
+            alert("danger", "Add vouchers failed.")
           }
         })
         .catch(() => {
@@ -109,6 +120,49 @@ export default function useVoucherList() {
             },
           })
         })
+  }
+
+  const selected = ref([])
+  const one = ref(false)
+  const all = ref(false)
+
+  const deleteVouchersInGroup = () => {
+    store
+        .dispatch('app_voucher/deleteVouchersInGroup', {VoucherIdArray: selected.value})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Delete vouchers successfully.")
+            fetchListVouchers(group.value)
+          } else {
+            alert("danger", "Delete vouchers failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching services list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
+  const chooseOne = (item) => {
+    one.value = !one.value;
+    if (selected.value.indexOf(item) != -1) {
+      selected.value = selected.value.filter(val => val != item)
+    } else {
+      selected.value.push(item)
+    }
+  }
+
+  const chooseAll = () => {
+    all.value = !all.value
+    Vouchers.value.map(obj => {
+      chooseOne(obj._id)
+    })
   }
 
   // *===============================================---*
@@ -162,10 +216,16 @@ export default function useVoucherList() {
   }
 
   return {
+    one,
+    all,
+    selected,
+    chooseOne,
+    chooseAll,
     checkClassified,
     resolveUserClassifiedVariant,
     fetchListVouchers,
-    deleteService,
+    deleteVouchersInGroup,
+    addVouchersInGroup,
     checkStatus,
     Vouchers,
     tableColumns,
@@ -182,10 +242,10 @@ export default function useVoucherList() {
     resolveUserRoleIcon,
     resolveUserStatusVariant,
     refetchData,
-
     // Extra Filters
     type,
     status,
     alert,
+    isBusy,
   }
 }

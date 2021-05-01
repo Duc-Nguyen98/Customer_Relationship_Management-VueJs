@@ -1,6 +1,5 @@
 <template>
   <div>
-    <validation-observer ref="simpleRules">
       <form-wizard
       color="#7367F0"
       :title="null"
@@ -13,7 +12,8 @@
     >
 
       <!-- Information Group tab -->
-      <tab-content title="Information Group">
+      <tab-content title="Information Group" :before-change="validateStep1">
+        <validation-observer ref="step1">
         <b-row>
           <b-col
             cols="12"
@@ -31,23 +31,43 @@
               label="Title Group"
               label-for="v-title"
             >
-              <b-form-input
-                id="v-title"
-                placeholder="Enter title group"
-              />
+              <validation-provider
+                      #default="{ errors }"
+                      name="Title"
+                      rules="required"
+              >
+                <b-form-input
+                        v-model="data.title"
+                        :state="errors.length > 0 ? false : null"
+                    id="v-title"
+                    placeholder="Enter title group"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
             </b-form-group>
           </b-col>
           <b-col md="3">
             <b-form-group
-              label="Form Applies"
-              label-for="v-email"
+              label="Classify"
+              label-for="v-classified"
             >
-              <v-select
-                      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                      v-model="applies"
-                      :options="appliesOptions"
-                      class="w-100"
-              />
+              <validation-provider
+                      #default="{ errors }"
+                      name="Classify"
+                      rules="required"
+              >
+                <v-select
+                        id="v-classified"
+                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                        :value="data.classified"
+                        :state="errors.length > 0 ? false : null"
+                        :options="appliesOptions"
+                        :reduce="(val) => val.value"
+                        @input="(val) => data.classified = val"
+                        class="w-100"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
             </b-form-group>
           </b-col>
           <b-col md="3">
@@ -55,12 +75,22 @@
               label="Status Group"
               label-for="v-password"
             >
-              <v-select
-                      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                      v-model="active"
-                      :options="optionsActive"
-                      class="w-100"
-              />
+              <validation-provider
+                      #default="{ errors }"
+                      name="Status"
+                      rules="required"
+              >
+                <v-select
+                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                        :state="errors.length > 0 ? false : null"
+                        :value="data.status"
+                        :options="optionsActive"
+                        :reduce="(val) => val.value"
+                        @input="(val) => data.status = val"
+                        class="w-100"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
             </b-form-group>
           </b-col>
           <b-col md="12">
@@ -81,11 +111,11 @@
                   <validation-provider
                           #default="{ errors }"
                           name="Percent"
-                          rules="between:5,95"
+                          rules="required|between:5,95|integer"
                   >
                   <b-input-group>
                     <b-form-input
-                            v-model="percent"
+                            v-model="data.discount.PercentAMaximum.percent"
                             :state="errors.length > 0 ? false : null"
                             id="Percent"
                             type="number"
@@ -105,23 +135,30 @@
 
                 <b-form-group>
                   <label for="Mmoney">Maximum money</label>
-                  <b-input-group>
-                    <b-form-input
-                            :disabled="discount == 1"
-                            v-model="Mmoney"
-                            id="Mmoney"
-                            placeholder="Your maximum money"
-                    />
-                    <b-input-group-append is-text>
-                      <feather-icon
-                              icon="DollarSignIcon"
-                              class="cursor-pointer"
+                  <validation-provider
+                          #default="{ errors }"
+                          name="Maximum money"
+                          rules="required"
+                  >
+                    <b-input-group>
+                      <b-form-input
+                              :disabled="discount == 1"
+                              v-model="Mmoney"
+                              @blur="blurMoney"
+                              @focus="Mmoney = data.discount.PercentAMaximum.maximumMoney"
+                              :state="errors.length > 0 ? false : null"
+                              id="Mmoney"
+                              placeholder="Your maximum money"
                       />
-                    </b-input-group-append>
-                  </b-input-group>
-                  <div v-if="Mmoney != null" class="p-1">
-                    Format money: {{ formatMoney }}
-                  </div>
+                      <b-input-group-append is-text>
+                        <feather-icon
+                                icon="DollarSignIcon"
+                                class="cursor-pointer"
+                        />
+                      </b-input-group-append>
+                    </b-input-group>
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
                 </b-form-group>
               </b-col>
             </b-form-group>
@@ -140,19 +177,30 @@
               <b-col md="12">
                 <b-form-group>
                   <label for="Reduction">Reduction</label>
-                  <b-input-group>
-                    <b-form-input
-                            :disabled="discount == 0"
-                            id="Reduction"
-                            placeholder="Your Reduction"
-                    />
-                    <b-input-group-append is-text>
-                      <feather-icon
-                              icon="DollarSignIcon"
-                              class="cursor-pointer"
+                  <validation-provider
+                          #default="{ errors }"
+                          name="Maximum money"
+                          rules="required"
+                  >
+                    <b-input-group>
+                      <b-form-input
+                              :disabled="discount == 0"
+                              id="Reduction"
+                              v-model="reduction"
+                              :state="errors.length > 0 ? false : null"
+                              @blur="blurReduction"
+                              @focus="reduction = data.discount.reduction.money"
+                              placeholder="Your Reduction"
                       />
-                    </b-input-group-append>
-                  </b-input-group>
+                      <b-input-group-append is-text>
+                        <feather-icon
+                                icon="DollarSignIcon"
+                                class="cursor-pointer"
+                        />
+                      </b-input-group-append>
+                    </b-input-group>
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
                 </b-form-group>
               </b-col>
             </b-form-group>
@@ -173,6 +221,7 @@
                       id="textarea-default"
                       placeholder="Textarea"
                       rows="6.5"
+                      :state="errors.length > 0 ? false : null"
                       v-model="note"
               />
                 <small class="text-danger">{{ errors[0] }}</small>
@@ -180,12 +229,13 @@
             </b-form-group>
           </b-col>
         </b-row>
+        </validation-observer>
       </tab-content>
 
       <!-- Retention Period tab -->
-      <tab-content title="Retention Period">
+      <tab-content title="Retention Period" :before-change="validateStep2">
         <b-row>
-          <b-col
+           <b-col
             cols="12"
             class="mb-2"
           >
@@ -194,66 +244,110 @@
             </h5>
             <small class="text-muted">Enter Your Retention Period.</small>
           </b-col>
-          <b-col md="4">
-            <b-form-group
-              label="Effect From"
-              label-for="v-effect-from"
-            >
-              <b-form-radio @input="chooseEffect" v-model="effect" name="some-radios" :value="0"></b-form-radio>
-            </b-form-group>
-          </b-col>
-          <b-col md="4">
-            <b-form-group
-              label="From date"
-              label-for="v-last-name"
-            >
-              <b-form-datepicker v-model="from_date" placeholder="From Date"  :disabled="expiry!=null" :date-disabled-fn="dateEffDisabled" locale="en"></b-form-datepicker>
-            </b-form-group>
-          </b-col>
-          <b-col md="4">
-            <b-form-group
-                    label="To date"
-                    label-for="v-last-name"
-            >
-              <b-form-datepicker v-model="to_date" placeholder="To Date" :disabled="expiry!=null" :date-disabled-fn="dateExpDisabled" locale="en"></b-form-datepicker>
-            </b-form-group>
-          </b-col>
+           <b-col md="12">
+             <validation-observer ref="effect">
+              <b-row>
+                <b-col md="4">
+                  <b-form-group
+                          label="Effect From"
+                          label-for="v-effect-from"
+                  >
+                    <b-form-radio v-model="chooseE" name="some-radios" :value="0"></b-form-radio>
+                  </b-form-group>
+                </b-col>
+                <b-col md="4">
+                  <b-form-group
+                          label="From date"
+                          label-for="v-last-name"
+                  >
+                    <validation-provider
+                            #default="{ errors }"
+                            name="From date"
+                            rules="required"
+                    >
+                      <b-form-datepicker :state="errors.length > 0 && chooseE==0 ? false : null" v-model="data.timeLine.effective.release" placeholder="From Date"  :disabled="chooseE!=0" :date-disabled-fn="dateEffDisabled" locale="en">
+                      </b-form-datepicker>
+                      <small v-if="chooseE==0" class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
+                  </b-form-group>
+                </b-col>
+                <b-col md="4">
+                  <b-form-group
+                          label="To date"
+                          label-for="v-last-name"
+                  >
+                    <validation-provider
+                            #default="{ errors }"
+                            name="To date"
+                            rules="required"
+                    >
+                      <b-form-datepicker :state="errors.length > 0 && chooseE==0 ? false : null" v-model="data.timeLine.effective.expiration" placeholder="To Date" :disabled="chooseE!=0" :date-disabled-fn="dateExpDisabled" locale="en">
+                      </b-form-datepicker>
+                      <small v-if="chooseE==0" class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+             </validation-observer>
+           </b-col>
 
-          <b-col md="4">
-            <b-form-group
-                    label="Expiry Date"
-                    label-for="v-expiry-from"
-            >
-              <b-form-radio @input="chooseExpiry" v-model="expiry" name="some-radios" :value="1"></b-form-radio>
-            </b-form-group>
+          <b-col md="12">
+            <validation-observer ref="expiry">
+              <b-row>
+                <b-col md="4">
+                  <b-form-group
+                          label="Expiry Date"
+                          label-for="v-expiry-from"
+                  >
+                    <b-form-radio v-model="chooseE" name="some-radios" :value="1"></b-form-radio>
+                  </b-form-group>
+                </b-col>
+                <b-col md="4">
+                  <b-form-group
+                          label="Date Number"
+                          label-for="v-last-name"
+                  >
+                    <validation-provider
+                            #default="{ errors }"
+                            name="Date Number"
+                            rules="required"
+                    >
+                    <b-form-input :state="errors.length > 0 && chooseE==1 ? false : null" type="number" min="1"
+                                  v-model="data.timeLine.expiry.number" :disabled="chooseE!=1"
+                                  :placeholder="chooseE==1 ? 'Enter your date number' : 'Disabled date number'"></b-form-input>
+                      <small v-if="chooseE==1" class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
+                  </b-form-group>
+                </b-col>
+                <b-col md="4">
+                  <b-form-group
+                          label="Release date type"
+                          label-for="v-last-name"
+                  >
+                    <validation-provider
+                            #default="{ errors }"
+                            name="Release date type"
+                            rules="required"
+                    >
+                      <b-form-select
+                              :state="errors.length > 0 && chooseE==1 ? false : null"
+                              :disabled="chooseE!=1"
+                              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                              v-model="data.timeLine.expiry.type"
+                              :options="typeDateOptions"
+                              class="w-100"
+                      >
+                        <template #first>
+                          <b-form-select-option :value="null" disabled>{{ chooseE==1 ? 'Choose release date type' : 'Disabled release date type' }}</b-form-select-option>
+                        </template>
+                      </b-form-select>
+                      <small v-if="chooseE==1" class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+            </validation-observer>
           </b-col>
-          <b-col md="4">
-            <b-form-group
-                    label="Date Number"
-                    label-for="v-last-name"
-            >
-              <b-form-input type="number" min="1" v-model="date_number" :disabled="effect!=null" :placeholder="effect==null ? 'Enter your date number' : 'Disabled date number'"></b-form-input>
-            </b-form-group>
-          </b-col>
-          <b-col md="4">
-            <b-form-group
-                    label="Release date type"
-                    label-for="v-last-name"
-            >
-              <b-form-select
-                      :disabled="effect!=null"
-                      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                      v-model="typeDate"
-                      :options="typeDateOptions"
-                      class="w-100"
-              >
-                <template #first>
-                  <b-form-select-option :value="null" disabled>{{ effect==null ? 'Choose release date type' : 'Disabled release date type' }}</b-form-select-option>
-                </template>
-              </b-form-select>
-            </b-form-group>
-          </b-col>
-
         </b-row>
       </tab-content>
 
@@ -271,12 +365,12 @@
           </b-col>
           <b-col md="6">
             <b-form-group
-              label="Systems Apply"
+              label="Shops"
               label-for="v-systems-apply"
             >
               <b-form-radio-group
                       id="v-systems-apply"
-                      v-model="active"
+                      v-model="data.scopeApply.shop.all"
                       :options="sysOptions"
                       class="mb-3"
                       value-field="item"
@@ -287,14 +381,16 @@
           </b-col>
           <b-col md="6">
             <b-form-group
-              label="Select Branch"
+              label="Select Shops"
               label-for="v-landmark"
             >
+              <span v-show="data.scopeApply.shop.all == 0">Choose all shops</span>
               <v-select
-                      v-model="selected1"
+                      v-show="data.scopeApply.shop.all != 0"
+                      v-model="data.scopeApply.shop.listShop"
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                       multiple
-                      :options="books"
+                      :options="$store.state.app_voucher.allSystem"
                       label="title"
               >
                 <template #option="{ title, icon }">
@@ -315,7 +411,7 @@
             >
               <b-form-radio-group
                       id="v-customer-apply"
-                      v-model="cus"
+                      v-model="data.scopeApply.customer.all"
                       :options="cusOptions"
                       class="mb-3"
                       value-field="item"
@@ -326,14 +422,16 @@
           </b-col>
           <b-col md="6">
             <b-form-group
-              label="Select Branch"
+              label="Select Groups Customer"
               label-for="v-city"
             >
+              <span v-show="data.scopeApply.customer.all == 1">Choose all shops</span>
               <v-select
-                      v-model="selected1"
+                      v-show="data.scopeApply.customer.all != 1"
+                      v-model="data.scopeApply.customer.listGroupCustomer"
                       :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                       multiple
-                      :options="books"
+                      :options="$store.state.app_voucher.allCustomers"
                       label="title"
               >
                 <template #option="{ title, icon }">
@@ -367,6 +465,8 @@
           </b-col>
         </b-row>
       </tab-content>
+
+
     </form-wizard>
     </validation-observer>
   </div>
@@ -377,7 +477,8 @@ import { FormWizard, TabContent } from 'vue-form-wizard'
 import vSelect from 'vue-select'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import VoucherList from "../voucher-list/VoucherList.vue";
-import {ValidationProvider, ValidationObserver} from "vee-validate";
+import {ValidationProvider, ValidationObserver } from "vee-validate";
+
 import {
   required,
   email,
@@ -424,6 +525,8 @@ import {
   BInputGroupAppend,
 } from 'bootstrap-vue'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import {ref} from "@vue/composition-api";
+import store from "@/store";
 
 export default {
   components: {
@@ -450,6 +553,42 @@ export default {
   },
   data() {
     return {
+      data: {
+        title: null,
+        classified: 1,
+        status: 0,
+        note: null,
+        discount: {
+          PercentAMaximum: {
+            percent: 5,
+            maximumMoney: 0,
+          },
+          reduction: {
+            money: 0,
+          },
+        },
+        timeLine: {
+          effective: {
+            release: null,
+            expiration: null,
+          },
+          expiry: {
+            number: null,
+            type: null,
+          },
+        },
+        scopeApply: {
+          shop: {
+            all: 0,
+            listShop: [],
+          },
+          customer: {
+            all: 0,
+            listGroupCustomer: [],
+          },
+        },
+        memberGroup: [],
+      },
       discount: 0,
       applies: 0,
       appliesOptions: [
@@ -459,7 +598,6 @@ export default {
       active: 0,
       cus: 0,
       optionsActive: [
-        { label: "Choose 1 status", value: null },
         { label: "Inactive", value: 0 },
         { label: "Active", value: 1 },
       ],
@@ -478,64 +616,100 @@ export default {
         { text: "Month", value: 1 },
       ],
       sysOptions: [
-        { name: "All Systems", item: 0 },
-        { name: "Branch Systems", item: 1 },
+        { name: "All Shops", item: 0 },
+        { name: "Shops", item: 1 },
       ],
       cusOptions: [
-        { name: "All Customer", item: 0 },
-        { name: "Group Customer", item: 1 },
-      ],
-      selected1: [
-        {
-          title: 'Command',
-          icon: 'CommandIcon',
-        },
-      ],
-      books: [
-        {
-          title: 'Database',
-          icon: 'DatabaseIcon',
-        },
-        {
-          title: 'Codepen',
-          icon: 'CodepenIcon',
-        },
-        {
-          title: 'Aperture ',
-          icon: 'ApertureIcon',
-        },
-        {
-          title: 'Command',
-          icon: 'CommandIcon',
-        },
+        { name: "All Groups Customer", item: 0 },
+        { name: "Groups Customer", item: 1 },
       ],
       note: "",
-      percent: null,
-      Mmoney: null,
+      Mmoney: '1.000,00',
+      reduction: 0,
 
       //Màn 2
-      effect: 0,
-      expiry: null,
-      effect_date: null,
-      from_date: null,
-      to_date: null,
-      expiry_date: null,
-      date_number: null,
-
+      chooseE: 0,
       //Màn 4
 
     }
   },
-  created() {
-
+  async created() {
+    await this.chooseRange()
   },
   computed: {
-    formatMoney() {
-      let val = (this.Mmoney/1).toFixed(2).replace('.', ',')
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-    }
+
   },
   methods: {
+    chooseRange() {
+      if (store.state.app_voucher.allSystem.length == 0) {
+        store.dispatch('app_voucher/fetchSystems')
+                .then(response => {
+                  if (response.data.success) {
+                    let allSystem = []
+                    response.data.listShop.map(obj => {
+                      allSystem.push({
+                        value: obj.idShop,
+                        title: obj.name,
+                        icon: ""
+                      })
+                    })
+                    store.commit('app_voucher/updateSystems', allSystem)
+                  } else {
+                    alert("danger", "Get list systems failed.")
+                  }
+                })
+                .catch((err) => {
+                  this.$toast({
+                    component: ToastificationContent,
+                    props: {
+                      title: 'Error fetching services list',
+                      icon: 'AlertTriangleIcon',
+                      variant: 'danger',
+                    },
+                  })
+                })
+      }
+
+      if (store.state.app_voucher.allCustomers.length == 0) {
+        store.dispatch('app_voucher/fetchCustomers')
+                .then(response => {
+                  if (response.data.success) {
+                    let allCustomers = []
+                    response.data.listGroupCustomer.map(obj => {
+                      allCustomers.push({
+                        value: obj.idGroupCustomer,
+                        title: obj.title,
+                        icon: ""
+                      })
+                    })
+                    store.commit('app_voucher/updateCustomers', allCustomers)
+                  } else {
+                    alert("danger", "Get list customers failed.")
+                  }
+                })
+                .catch((err) => {
+                  console.log(err)
+                  this.$toast({
+                    component: ToastificationContent,
+                    props: {
+                      title: 'Error fetching services list',
+                      icon: 'AlertTriangleIcon',
+                      variant: 'danger',
+                    },
+                  })
+                })
+      }
+    },
+    blurMoney() {
+      this.data.discount.PercentAMaximum.maximumMoney = this.Mmoney
+      let val = (this.Mmoney/1).toFixed(2).replace('.', ',')
+      this.Mmoney = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
+    blurReduction() {
+      this.data.discount.reduction.money = this.reduction
+      let val = (this.reduction/1).toFixed(2).replace('.', ',')
+      this.reduction = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
     dateEffDisabled(ymd, date) {
       // Disable weekends (Sunday = `0`, Saturday = `6`) and
       // disable days that fall on the 13th of the month
@@ -561,17 +735,17 @@ export default {
       return date < today
     },
 
-    chooseEffect() {
-      this.expiry = null
-      this.date_number = null
-      this.typeDate = null
+    validateStep1() {
+      this.locale = this.locale === "en" ? "vi" : "en";
+      return this.$refs.step1.validate();
     },
 
-    chooseExpiry() {
-      this.date_number = 1
-      this.effect = null
-      this.from_date = null
-      this.to_date = null
+    validateStep2() {
+      this.locale = this.locale === "en" ? "vi" : "en";
+      if (this.chooseE == 0) {
+        return this.$refs.effect.validate();
+      }
+      return this.$refs.expiry.validate();
     },
 
     formSubmitted() {
@@ -585,5 +759,32 @@ export default {
       })
     },
   },
+  watch: {
+    discount(val) {
+      if (val == 0) {
+        this.Mmoney = '1.000,00'
+        this.data.discount.PercentAMaximum.maximumMoney = 1000
+        this.data.discount.PercentAMaximum.percent = 5
+        this.reduction = 0
+        this.data.discount.reduction.money = 0
+      } else {
+        this.reduction = '1.000,00'
+        this.data.discount.PercentAMaximum.percent = 0
+        this.data.discount.PercentAMaximum.maximumMoney = 0
+        this.Mmoney = 0
+      }
+    },
+    chooseE(val) {
+      if (val == 0) {
+        this.data.timeLine.expiry.number = null
+        this.data.timeLine.expiry.type = null
+      } else {
+        this.data.timeLine.expiry.number = 1
+        this.data.timeLine.expiry.type = 1
+        this.data.timeLine.effective.release = null
+        this.data.timeLine.effective.expiration = null
+      }
+    }
+  }
 }
 </script>

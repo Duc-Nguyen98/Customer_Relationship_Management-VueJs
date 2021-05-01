@@ -72,7 +72,7 @@
                                 variant="outline-secondary"
                                 class="mr-2 text-uppercase"
                                 type="button"
-                                :to="{name: 'apps-users-list'}"
+                                @click="$bvModal.hide('modal-lg')"
                         >
                             Cancel
                         </b-button>
@@ -109,6 +109,11 @@
         },
         directives: {
             Ripple,
+        },
+        props: {
+            _id: {
+                default: null
+            }
         },
         mixins: [heightTransition],
         data() {
@@ -149,27 +154,31 @@
         },
         methods: {
             addVoucher(index) {
-                 const val = document.getElementById('voucher' + index).value
-                    this.items[index] = {
-                        idVoucher : 10000,
-                        voucherCode : val,
-                        idGroupVoucher : 10002,
-                        idCustomersUse : null,
-                        idLocationUse : null,
-                        status : 0,
-                        nameCustomerUse : null,
-                        nameLocationUse : null,
-                        usedDate : null,
-                        softDelete : 0,
-                        created : {
-                            createBy : "admin",
-                            time : Date.now()
-                        },
-                        modified : {
-                            modifyBy : "admin",
-                            time : Date.now()
-                        }
-                    }
+               const val = document.getElementById('voucher' + index).value;
+               if (this._id == null) {
+                   this.items[index] = {
+                       idVoucher : 10000,
+                       voucherCode : val,
+                       idGroupVoucher : 10002,
+                       idCustomersUse : null,
+                       idLocationUse : null,
+                       status : 0,
+                       nameCustomerUse : null,
+                       nameLocationUse : null,
+                       usedDate : null,
+                       softDelete : 0,
+                       created : {
+                           createBy : "admin",
+                           time : Date.now()
+                       },
+                       modified : {
+                           modifyBy : "admin",
+                           time : Date.now()
+                       }
+                   }
+               } else {
+                   this.items[index] = val
+               }
             },
             emitData() {
                 this.$emit('update', this.items)

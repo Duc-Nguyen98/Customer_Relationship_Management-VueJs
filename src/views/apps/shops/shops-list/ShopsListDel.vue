@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Filters -->
-    <users-list-filters
+    <shops-list-filters
       :group.sync="group"
       :gender.sync="gender"
       :group-options="groupOptions"
@@ -228,9 +228,9 @@ import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import UsersListFilters from "./UsersListFilters.vue";
-import useShopsListDel from "./useUsersListDel";
-import userStoreModule from "../userStoreModule";
+import ShopsListFilters from "./ShopsListFilters.vue";
+import useShopsListDel from "./useShopsListDel";
+import shopStoreModule from "../shopStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 
@@ -240,7 +240,7 @@ import { useToast } from 'vue-toastification/composition'
 
 export default {
   components: {
-    UsersListFilters,
+    ShopsListFilters,
     BCard,
     BRow,
     BCol,
@@ -332,7 +332,7 @@ export default {
       isBusy,
       group,
       gender,
-    } = useUsersListDel();
+    } = useShopsListDel();
 
     return {
       api,

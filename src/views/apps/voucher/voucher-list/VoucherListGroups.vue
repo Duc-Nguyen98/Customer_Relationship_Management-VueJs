@@ -44,46 +44,12 @@
               <b-button
                       class="mr-1"
                       variant="primary"
-                      v-b-modal.modal-lg
+                      :to="{name: 'apps-group-voucher-add'}"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
-                /> Voucher</span>
+                /> Group voucher</span>
               </b-button>
-
-              <b-modal id="modal-lg" size="lg" title="Add Vouchers" hide-footer>
-                <VoucherAddMultil />
-              </b-modal>
-
-              <!--              End add voucher -->
-
-              <b-button
-                      class="mr-1"
-                      variant="primary"
-                      v-b-modal.modal-lg2
-              >
-                <span class="text-nowrap"
-                ><feather-icon icon="PlusCircleIcon"
-                /> Voucher Automatic</span>
-              </b-button>
-
-              <b-modal id="modal-lg2" size="lg" title="Add Vouchers Automatic" hide-footer>
-                <VoucherAddAuto />
-              </b-modal>
-
-              <b-button
-                      class="mr-1"
-                      variant="primary"
-                      v-b-modal.modal-lg3
-              >
-                <span class="text-nowrap"
-                ><feather-icon icon="UploadIcon"
-                /> Import Excel</span>
-              </b-button>
-
-              <b-modal id="modal-lg3" size="lg" title="Import voucher from file Excel" hide-footer>
-                <VoucherAddExcel />
-              </b-modal>
             </div>
           </b-col>
         </b-row>
@@ -100,6 +66,7 @@
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
+        :busy="isBusy"
       >
         <!-- Column: STT -->
         <template #cell(stt)="data">
@@ -122,7 +89,7 @@
 
           <!-- Column: Classified -->
           <template #cell(classified)="data">
-              <b-badge pill :variant="resolveUserClassifiedVariant(data.value)" class="badge-glow">{{ checkClassified(data.value) }}</b-badge>
+              <b-badge :variant="resolveUserClassifiedVariant(data.value)">{{ checkClassified(data.value) }}</b-badge>
           </template>
 
           <!-- Column: Created at -->
@@ -130,7 +97,7 @@
           {{ convertDate(data.item.created.time) }}
         </template>
 
-        <!-- Column: Created at -->
+        <!-- Column: Created by -->
         <template #cell(created_by)="data">
           <div class="text-nowrap">
             <feather-icon
@@ -145,7 +112,7 @@
 
         <!-- Column: Status -->
         <template #cell(status)="data">
-          <b-badge pill :variant="resolveUserStatusVariant(data.value)" class="badge-glow">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -280,7 +247,7 @@ export default {
     Ripple,
   },
   setup() {
-    const SERVICES_APP_STORE_MODULE_NAME = "app-voucher";
+    const SERVICES_APP_STORE_MODULE_NAME = "app_voucher";
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
@@ -334,6 +301,7 @@ export default {
       // Extra Filters
         classified,
       status,
+      isBusy,
     } = useVoucherListGroups();
 
     return {
@@ -361,14 +329,15 @@ export default {
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
-        resolveUserClassifiedVariant,
+      resolveUserClassifiedVariant,
 
-        classifiedOptions,
+      classifiedOptions,
       statusOptions,
 
       // Extra Filters
-        classified,
+      classified,
       status,
+      isBusy,
     };
   },
 };

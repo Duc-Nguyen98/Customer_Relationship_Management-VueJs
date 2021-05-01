@@ -176,7 +176,7 @@ export default {
 
     // Use toast
     const toast = useToast();
-    const USER_APP_STORE_MODULE_NAME = "app-customers";
+    const USER_APP_STORE_MODULE_NAME = "app_voucher";
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))

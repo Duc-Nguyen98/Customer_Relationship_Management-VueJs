@@ -244,7 +244,7 @@ import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
 import UsersListFilters from "./UsersListFilters.vue";
-import useUsersList from "./useUsersList";
+import useShopsList from "./useUsersList";
 import userStoreModule from "../userStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";

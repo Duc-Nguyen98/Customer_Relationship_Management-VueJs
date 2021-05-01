@@ -66,6 +66,7 @@
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
+        :busy="isBusy"
       >
         <!-- Column: STT -->
         <template #cell(stt)="data">
@@ -235,7 +236,7 @@ export default {
     Ripple,
   },
   setup() {
-    const SERVICES_APP_STORE_MODULE_NAME = "app-voucher";
+    const SERVICES_APP_STORE_MODULE_NAME = "app_voucher";
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
@@ -288,6 +289,7 @@ export default {
       // Extra Filters
       classified,
       status,
+      isBusy,
     } = useVoucherListGroupsDel();
 
     return {
@@ -322,6 +324,7 @@ export default {
       // Extra Filters
       classified,
       status,
+      isBusy,
     };
   },
 };
