@@ -1,6 +1,6 @@
 <template>
   <div>
-     Filters
+<!--     Filters-->
     <voucher-list-filters
       :classified.sync="classified"
       :status.sync="status"
@@ -281,9 +281,8 @@ export default {
       restoreVoucher,
       checkStatus,
       checkClassified,
+
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
       resolveUserClassifiedVariant,
       // Extra Filters
@@ -314,8 +313,6 @@ export default {
       avatarText,
 
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
       resolveUserClassifiedVariant,
       classifiedOptions,

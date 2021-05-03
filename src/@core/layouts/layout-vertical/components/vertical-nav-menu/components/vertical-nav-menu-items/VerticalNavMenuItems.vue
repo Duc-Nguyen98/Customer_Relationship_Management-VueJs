@@ -28,6 +28,9 @@ export default {
       required: true,
     },
   },
+  created() {
+    console.log(this.items)
+  },
   setup() {
     provide('openGroups', ref([]))
 

@@ -1,10 +1,8 @@
 <template>
   <div>
-<!--     Filters-->
-    <voucher-list-filters
-      :classified.sync="classified"
+    <!-- Filters -->
+    <vouchers-filters
       :status.sync="status"
-      :classified-options="classifiedOptions"
       :status-options="statusOptions"
     />
 
@@ -41,73 +39,70 @@
 
               <!--              Start add voucher -->
 
-              <b-button
-                      class="mr-1"
-                      variant="primary"
-                      :to="{name: 'apps-group-voucher-add'}"
-              >
-                <span class="text-nowrap"
-                ><feather-icon icon="PlusCircleIcon"
-                /> Group voucher</span>
-              </b-button>
             </div>
           </b-col>
         </b-row>
       </div>
 
       <b-table
-        ref="refVoucherListTable"
+        ref="refVouchersListTable"
         class="position-relative"
         :items="Vouchers"
         responsive
         :fields="tableColumns"
         primary-key="id"
-        :sort-by.sync="sortBy"
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
         :busy="isBusy"
       >
+
+        <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
+        <template #head(selected)="scope">
+          <b-form-checkbox
+                  class="float-left"
+                  id="checkbox-1"
+                  name="checkbox-1"
+                  @input="chooseAll()"
+          >
+          </b-form-checkbox>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftVouchersInGroup"><feather-icon icon="TrashIcon" /></span>
+        </template>
+
+        <!-- Column: Delete -->
+        <template #cell(selected)="data">
+          <b-form-checkbox
+                  :id="data.item._id"
+                  :checked="all"
+                  @input="chooseOne(data.item._id)"
+          ></b-form-checkbox>
+        </template>
+
         <!-- Column: STT -->
         <template #cell(stt)="data">
           {{ data.index + 1 }}
         </template>
 
-        <!-- Column: Title -->
-        <template #cell(title)="data">
-          <b-link
-                  :to="{
-                name: 'apps-group-voucher-edit',
-                params: { id: data.item._id },
-              }"
-                  class="font-weight-bold d-block text-nowrap"
-          >
-            {{ data.value }}
-          </b-link>
-          <small class="text-muted">@CS{{ data.item.idGroupVoucher }}</small>
-        </template>
-
-          <!-- Column: Created at -->
-        <template #cell(created_at)="data">
-          {{ convertDate(data.item.created.time) }}
-        </template>
-
-        <!-- Column: Created by -->
-        <template #cell(created_by)="data">
-          <div class="text-nowrap">
-            <feather-icon
-                    :icon="resolveUserRoleIcon(data.item.created.createBy)"
-                    size="18"
-                    class="mr-50"
-                    :class="`text-${resolveUserRoleVariant(data.item.created.createBy)}`"
-            />
-            <span class="align-text-top text-capitalize">{{ data.item.created.createBy }}</span>
-          </div>
+        <!-- Column: voucherCode -->
+        <template #cell(voucherCode)="data">
+          <span class="cursor-pointer">{{ data.value }} <br />
+            <small class="text-muted">@GVC{{ data.item.idVoucher }}</small>
+          </span>
         </template>
 
         <!-- Column: Status -->
         <template #cell(status)="data">
-          <b-badge :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge pill :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+        </template>
+
+        <!-- Column: Used Day -->
+        <template #cell(usedDate)="data">
+          {{ convertDate(data.value) }}
+        </template>
+
+        <!-- Column: Created at -->
+        <template #cell(created)="data">
+          {{ convertDate(data.value.time) }}
         </template>
 
         <!-- Column: Actions -->
@@ -124,18 +119,19 @@
                 class="align-middle text-body"
               />
             </template>
+
             <b-dropdown-item
               :to="{
-                name: 'apps-group-voucher-edit',
+                name: 'apps-voucher-edit',
                 params: { id: data.item._id },
               }"
             >
-              <feather-icon icon="EditIcon" />
+              <feather-icon icon="PlusCircleIcon" />
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteVoucherSoft(data.item._id)"
+              @click="deleteService(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -163,7 +159,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalVoucher"
+              :total-rows="totalVouchers"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -202,27 +198,22 @@ import {
   BDropdown,
   BDropdownItem,
   BPagination,
-} from "bootstrap-vue";
-import vSelect from "vue-select";
-import store from "@/store";
-import { ref, onUnmounted } from "@vue/composition-api";
-import { avatarText } from "@core/utils/filter";
-import useVoucherListGroups from "./useVoucherListGroups";
-import VoucherListFilters from "./VoucherListFilters";
-import VoucherAddMultil from "../voucher-add/VoucherAddMultil";
-import VoucherAddAuto from "../voucher-add/VoucherAddAuto";
-import VoucherAddExcel from "../voucher-add/VoucherAddExcel";
-import voucherStoreModule from "../voucherStoreModule";
-import Ripple from "vue-ripple-directive";
-import moment from "moment";
-import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+  BFormCheckbox,
+} from 'bootstrap-vue'
+import vSelect from 'vue-select'
+import store from '@/store'
+import { ref, onUnmounted } from '@vue/composition-api'
+import { avatarText } from '@core/utils/filter'
+import useVoucherListHistory from './useVoucherListHistory'
+import VouchersFilters from './VouchersFilters'
+import voucherStoreModule from '../voucherStoreModule'
+import Ripple from 'vue-ripple-directive'
+import moment from 'moment'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
-    VoucherAddMultil,
-    VoucherAddAuto,
-    VoucherAddExcel,
-    VoucherListFilters,
+    VouchersFilters,
     BCard,
     BRow,
     BCol,
@@ -236,102 +227,112 @@ export default {
     BDropdown,
     BDropdownItem,
     BPagination,
+    BFormCheckbox,
     vSelect,
   },
   directives: {
     Ripple,
   },
-  setup() {
-    const SERVICES_APP_STORE_MODULE_NAME = "app_voucher";
+  props: {
+    _id: {
+      default: null
+    }
+  },
+  setup({_id}) {
+
+    const SERVICES_APP_STORE_MODULE_NAME = 'app_voucher'
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, voucherStoreModule);
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, voucherStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
-    });
-
-    const classifiedOptions = [
-      { label: "Choose 1 classified", value: null },
-      { label: "Trade Voucher", value: 0 },
-      { label: "Gift Voucher", value: 1 },
-    ];
-
-    const statusOptions = [
-      { label: "Choose 1 status", value: null },
-      { label: "Inactive", value: 0 },
-      { label: "Active", value: 1 },
-    ];
+        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME)
+    })
 
     const convertDate = (date) => {
-      return moment(date).format("DD-MM-YYYY");
-    };
+      return moment(date).format("DD-MM-YYYY")
+    }
 
     const {
       Vouchers,
       tableColumns,
       perPage,
       currentPage,
-      totalVoucher,
+      totalVouchers,
       dataMeta,
       perPageOptions,
       searchQuery,
-      sortBy,
       isSortDirDesc,
-      refServicesListTable,
+      refVouchersListTable,
       refetchData,
-      deleteVoucherSoft,
+      deleteService,
       checkStatus,
-        checkClassified,
 
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
-       resolveUserClassifiedVariant,
+      checkClassified,
+      resolveUserClassifiedVariant,
 
       // Extra Filters
-        classified,
+      type,
       status,
       isBusy,
-    } = useVoucherListGroups();
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
+      deleteSoftVouchersInGroup,
+    } = useVoucherListHistory();
+
+    if (_id != null) {
+      refetchData(_id)
+    }
+
+    const statusOptions = [
+      { label: "Choose a status", value: null },
+      { label: "Applying", value: 3 },
+      { label: "Apply Success", value: 4 },
+      { label: "Apply Error", value: 5 },
+    ]
 
     return {
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
+      deleteSoftVouchersInGroup,
       Vouchers,
       tableColumns,
       perPage,
       currentPage,
-      totalVoucher,
+      totalVouchers,
       dataMeta,
       perPageOptions,
       searchQuery,
-      sortBy,
       isSortDirDesc,
-      refServicesListTable,
+      refVouchersListTable,
       convertDate,
       refetchData,
-      deleteVoucherSoft,
+      deleteService,
       checkStatus,
-        checkClassified,
+      checkClassified,
+      resolveUserClassifiedVariant,
 
       // Filter
       avatarText,
 
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
-      resolveUserClassifiedVariant,
-
-      classifiedOptions,
-      statusOptions,
 
       // Extra Filters
-      classified,
+      type,
       status,
+      statusOptions,
       isBusy,
     };
   },

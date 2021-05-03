@@ -13,6 +13,7 @@ export default function useVoucherList() {
 
   // Table Handlers
   const tableColumns = [
+    { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: true },
     { key: 'voucherCode', label: 'Voucher code', sortable: true },
     { key: 'nameCustomerUse', label: 'Customers use', sortable: true },
@@ -29,7 +30,7 @@ export default function useVoucherList() {
   const searchQuery = ref('')
   const isSortDirDesc = ref(true)
   const type = ref(null)
-  const status = ref(1)
+  const status = ref(null)
   const Vouchers = ref([])
 
   const dataMeta = computed(() => {
@@ -70,7 +71,7 @@ export default function useVoucherList() {
         const { groupVoucherItems, countGroupVoucherItems } = response.data
         totalVouchers.value = countGroupVoucherItems
         Vouchers.value = groupVoucherItems
-        console.log(groupVoucherItems)
+        isBusy.value = false
       })
       .catch(() => {
         toast({
@@ -124,38 +125,18 @@ export default function useVoucherList() {
   // *--------- UI ---------------------------------------*
   // *===============================================---*
 
-  const resolveUserRoleVariant = role => {
-    if (role === 'subscriber') return 'primary'
-    if (role === 'author') return 'warning'
-    if (role === 'maintainer') return 'success'
-    if (role === 'editor') return 'info'
-    if (role === 'admin') return 'danger'
-    return 'primary'
-  }
-
-  const resolveUserRoleIcon = role => {
-    if (role === 'subscriber') return 'UserIcon'
-    if (role === 'author') return 'SettingsIcon'
-    if (role === 'maintainer') return 'DatabaseIcon'
-    if (role === 'editor') return 'Edit2Icon'
-    if (role === 'admin') return 'ServerIcon'
-    return 'UserIcon'
-  }
-
   const resolveUserStatusVariant = stt => {
-    if (stt === 0) return 'light-warning'
-    if (stt === 1) return 'light-success'
-    if (stt === 2) return 'light-danger'
-    if (stt === 3) return 'light-info'
+    if (stt === 3) return 'light-warning'
+    if (stt === 4) return 'light-success'
+    if (stt === 5) return 'light-danger'
     return 'light-warning'
   }
 
   const checkStatus = stt => {
-    if (stt === 0) return 'Inactive'
-    if (stt === 1) return 'Active'
-    if (stt === 2) return 'Active success'
-    if (stt === 3) return 'Active error'
-    return 'Inactive'
+    if (stt === 3) return 'Applying'
+    if (stt === 4) return 'Apply Success'
+    if (stt === 5) return 'Apply Error'
+    return 'Applying'
   }
 
   const resolveUserClassifiedVariant = stt => {
@@ -168,6 +149,50 @@ export default function useVoucherList() {
     if (stt === 0) return 'Trade Voucher'
     if (stt === 1) return 'Gift Voucher'
     return 'Trade Voucher'
+  }
+
+  const selected = ref([])
+  const one = ref(false)
+  const all = ref(false)
+
+  const deleteSoftVouchersInGroup = (_id) => {
+    selected.value.push(_id)
+    store
+        .dispatch('app_voucher/deleteSoftVouchersInGroup', {VoucherIdArray: selected.value})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Delete vouchers successfully.")
+            fetchHisListVouchers(group.value)
+          } else {
+            alert("danger", "Delete vouchers failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching services list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
+  const chooseOne = (item) => {
+    one.value = !one.value;
+    if (selected.value.indexOf(item) != -1) {
+      selected.value = selected.value.filter(val => val != item)
+    } else {
+      selected.value.push(item)
+    }
+  }
+
+  const chooseAll = () => {
+    all.value = !all.value
+    Vouchers.value.map(obj => {
+      chooseOne(obj._id)
+    })
   }
 
   return {
@@ -186,9 +211,7 @@ export default function useVoucherList() {
     searchQuery,
     isSortDirDesc,
     refVouchersListTable,
-
-    resolveUserRoleVariant,
-    resolveUserRoleIcon,
+    deleteSoftVouchersInGroup,
     resolveUserStatusVariant,
     refetchData,
 
@@ -197,5 +220,10 @@ export default function useVoucherList() {
     status,
     alert,
     isBusy,
+    one,
+    all,
+    selected,
+    chooseOne,
+    chooseAll,
   }
 }

@@ -1,12 +1,10 @@
 <template>
   <div>
     <!-- Filters -->
-<!--    <voucher-list-filters-->
-<!--      :type.sync="type"-->
-<!--      :status.sync="status"-->
-<!--      :type-options="typeOptions"-->
-<!--      :status-options="statusOptions"-->
-<!--    />-->
+    <vouchers-filters
+      :status.sync="status"
+      :status-options="statusOptions"
+    />
 
     <!-- Table Container Card -->
     <b-card no-body class="mb-0">
@@ -58,6 +56,28 @@
         :sort-desc.sync="isSortDirDesc"
         :busy="isBusy"
       >
+
+        <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
+        <template #head(selected)="scope">
+          <b-form-checkbox
+                  class="float-left"
+                  id="checkbox-1"
+                  name="checkbox-1"
+                  @input="chooseAll()"
+          >
+          </b-form-checkbox>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftVouchersInGroup"><feather-icon icon="TrashIcon" /></span>
+        </template>
+
+        <!-- Column: Delete -->
+        <template #cell(selected)="data">
+          <b-form-checkbox
+                  :id="data.item._id"
+                  :checked="all"
+                  @input="chooseOne(data.item._id)"
+          ></b-form-checkbox>
+        </template>
+
         <!-- Column: STT -->
         <template #cell(stt)="data">
           {{ data.index + 1 }}
@@ -178,22 +198,25 @@ import {
   BDropdown,
   BDropdownItem,
   BPagination,
-} from "bootstrap-vue";
-import vSelect from "vue-select";
-import store from "@/store";
-import { ref, onUnmounted } from "@vue/composition-api";
-import { avatarText } from "@core/utils/filter";
-import useVoucherListHistory from "./useVoucherListHistory";
-import VoucherAddMultil from "../voucher-add/VoucherAddMultil";
-import VoucherAddAuto from "../voucher-add/VoucherAddAuto";
-import VoucherAddExcel from "../voucher-add/VoucherAddExcel";
-import voucherStoreModule from "../voucherStoreModule";
-import Ripple from "vue-ripple-directive";
-import moment from "moment";
-import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+  BFormCheckbox,
+} from 'bootstrap-vue'
+import vSelect from 'vue-select'
+import store from '@/store'
+import { ref, onUnmounted } from '@vue/composition-api'
+import { avatarText } from '@core/utils/filter'
+import useVoucherListHistory from './useVoucherListHistory'
+import VouchersFilters from './VouchersFilters'
+import VoucherAddMultil from '../voucher-add/VoucherAddMultil'
+import VoucherAddAuto from '../voucher-add/VoucherAddAuto'
+import VoucherAddExcel from '../voucher-add/VoucherAddExcel'
+import voucherStoreModule from '../voucherStoreModule'
+import Ripple from 'vue-ripple-directive'
+import moment from 'moment'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
+    VouchersFilters,
     VoucherAddMultil,
     VoucherAddAuto,
     VoucherAddExcel,
@@ -210,6 +233,7 @@ export default {
     BDropdown,
     BDropdownItem,
     BPagination,
+    BFormCheckbox,
     vSelect,
   },
   directives: {
@@ -222,21 +246,21 @@ export default {
   },
   setup({_id}) {
 
-    const SERVICES_APP_STORE_MODULE_NAME = "app_voucher";
+    const SERVICES_APP_STORE_MODULE_NAME = 'app_voucher'
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, voucherStoreModule);
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, voucherStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
-    });
+        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME)
+    })
 
     const convertDate = (date) => {
-      return moment(date).format("DD-MM-YYYY");
-    };
+      return moment(date).format("DD-MM-YYYY")
+    }
 
     const {
       Vouchers,
@@ -254,8 +278,6 @@ export default {
       checkStatus,
 
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
       checkClassified,
       resolveUserClassifiedVariant,
@@ -264,13 +286,32 @@ export default {
       type,
       status,
       isBusy,
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
+      deleteSoftVouchersInGroup,
     } = useVoucherListHistory();
 
     if (_id != null) {
       refetchData(_id)
     }
 
+    const statusOptions = [
+      { label: "Choose a status", value: null },
+      { label: "Applying", value: 3 },
+      { label: "Apply Success", value: 4 },
+      { label: "Apply Error", value: 5 },
+    ]
+
     return {
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
+      deleteSoftVouchersInGroup,
       Vouchers,
       tableColumns,
       perPage,
@@ -292,13 +333,12 @@ export default {
       avatarText,
 
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
 
       // Extra Filters
       type,
       status,
+      statusOptions,
       isBusy,
     };
   },

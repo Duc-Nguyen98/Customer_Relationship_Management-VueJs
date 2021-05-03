@@ -1,12 +1,10 @@
 <template>
   <div>
-    <!-- Filters -->
-<!--    <voucher-list-filters-->
-<!--      :type.sync="type"-->
-<!--      :status.sync="status"-->
-<!--      :type-options="typeOptions"-->
-<!--      :status-options="statusOptions"-->
-<!--    />-->
+<!--     Filters-->
+    <vouchers-filters v-if="_id != null"
+      :status.sync="status"
+      :status-options="statusOptions"
+    />
 
     <!-- Table Container Card -->
     <b-card no-body class="mb-0">
@@ -71,19 +69,6 @@
                 <VoucherAddAuto :_id="idGroup" @update="dataVoucher" />
               </b-modal>
 
-              <b-button
-                      class="mr-1"
-                      variant="primary"
-                      v-b-modal.modal-lg3
-              >
-                <span class="text-nowrap"
-                ><feather-icon icon="UploadIcon"
-                /> Import Excel</span>
-              </b-button>
-
-              <b-modal id="modal-lg3" size="lg" title="Import voucher from file Excel" hide-footer>
-                <VoucherAddExcel />
-              </b-modal>
             </div>
           </b-col>
         </b-row>
@@ -115,7 +100,7 @@
         </template>
 
         <!-- Column: Delete -->
-        <template #cell(selected)="data">
+        <template #cell(selected)="data" v-if="idGroup">
           <b-form-checkbox
                   :id="data.item._id"
                   :checked="all"
@@ -141,7 +126,7 @@
           <b-badge pill :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
-        <!-- Column: Created by -->
+<!--         Column: Created by -->
         <template #cell(created_by)="data">
           <div class="text-nowrap">
             <feather-icon
@@ -259,6 +244,7 @@ import store from "@/store";
 import { ref, watch, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
 import useVoucherList from "./useVoucherList";
+import VouchersFilters from "./VouchersFilters";
 import VoucherAddMultil from "../voucher-add/VoucherAddMultil";
 import VoucherAddAuto from "../voucher-add/VoucherAddAuto";
 import VoucherAddExcel from "../voucher-add/VoucherAddExcel";
@@ -269,6 +255,7 @@ import ToastificationContent from "@core/components/toastification/Toastificatio
 
 export default {
   components: {
+    VouchersFilters,
     VoucherAddMultil,
     VoucherAddAuto,
     VoucherAddExcel,
@@ -317,6 +304,13 @@ export default {
       return moment(date).format("DD-MM-YYYY");
     }
 
+    const statusOptions = [
+      { label: "Choose a status", value: null },
+      { label: "Unreleased", value: 0 },
+      { label: "Release", value: 1 },
+      { label: "Expired", value: 2 },
+    ]
+
     const {
       Vouchers,
       tableColumns,
@@ -353,10 +347,11 @@ export default {
     if (idGroup != null) {
       refetchData(idGroup)
     }
-
+    const dataVouchers = ref({})
     const dataVoucher = (vouchers) => {
       if (_id == null) {
-        Vouchers.value = [...Vouchers.value, vouchers]
+        Vouchers.value = [...Vouchers.value, ...vouchers.items]
+        store.commit('app_voucher/saveVouchers', vouchers)
       } else {
         addVouchersInGroup(_id, vouchers)
       }
@@ -369,6 +364,7 @@ export default {
       chooseOne,
       chooseAll,
       Vouchers,
+      dataVouchers,
       dataVoucher,
       addVouchersInGroup,
       tableColumns,
@@ -398,6 +394,7 @@ export default {
       // Extra Filters
       type,
       status,
+      statusOptions,
       isBusy,
     };
   }
