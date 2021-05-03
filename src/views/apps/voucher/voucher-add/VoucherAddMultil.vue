@@ -1,111 +1,148 @@
 <template>
     <div>
         <div>
-            <b-form
-                    ref="form"
-                    :style="{height: trHeight}"
-                    class="repeater-form"
-                    @submit.prevent="repeateAgain"
-            >
-
-                <!-- Row Loop -->
-                <b-row
-                        v-for="(item, index) in items"
-                        :id="item.id"
-                        :key="index"
-                        ref="row"
+            <validation-observer ref="validate">
+                <b-form
+                        @submit.prevent="repeateAgain"
                 >
+                    <b-tabs>
+                        <b-tab active>
+                            <template #title>
+                                <feather-icon icon="ClipboardIcon"/>
+                                <span>Infor vouchers</span>
+                            </template>
+                                <DiscountAndTimeVoucher @update="proVoucher" />
+                        </b-tab>
+                    <!-- Row Loop -->
 
-                    <!-- Item Name -->
-                    <b-col lg="9" md="9">
-                        <b-form-group
-                                :label="'Voucher ' + (index + 1)"
-                                :label-for="'voucher' + index"
-                        >
-                            <b-form-input
-                                    :id="'voucher' + index"
-                                    @change="addVoucher(index)"
-                                    type="text"
-                                    placeholder="Enter voucher"
-                            />
-                        </b-form-group>
-                    </b-col>
+                        <b-tab>
+                            <template #title>
+                                <feather-icon icon="PlusCircleIcon"/>
+                                <span>Add vouchers</span>
+                            </template>
+                           <div class="repeater-form" ref="form" :style="{height: trHeight}">
+                               <b-row
+                                       v-for="(item, index) in items"
+                                       :id="item.id"
+                                       :key="index"
+                                       ref="row"
+                               >
 
-                    <!-- Remove Button -->
-                    <b-col
-                            lg="3"
-                            md="3"
-                            class="mb-50 center"
-                    >
-                        <b-button
-                                v-ripple.400="'rgba(234, 84, 85, 0.15)'"
-                                variant="outline-danger"
-                                class="mt-0 mt-md-2 "
-                                @click="removeItem(index)"
-                        >
-                            <feather-icon
-                                    icon="XIcon"
-                                    class="mr-25"
-                            />
-                            <span>Delete</span>
-                        </b-button>
-                    </b-col>
-                </b-row>
-                <b-row>
-                    <b-col>
-                        <b-button
-                                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                                variant="primary"
-                                @click="repeateAgain"
-                        >
-                            <feather-icon
-                                    icon="PlusIcon"
-                                    class="mr-25"
-                            />
-                            <span>Add New</span>
-                        </b-button>
-                    </b-col>
-                </b-row>
-                <b-row class="d-flex float-right mt-2">
-                    <b-col>
-                        <b-button
-                                variant="outline-secondary"
-                                class="mr-2 text-uppercase"
-                                type="button"
-                                @click="$bvModal.hide('modal-lg')"
-                        >
-                            Cancel
-                        </b-button>
-                        <b-button
-                                class="text-uppercase"
-                                variant="primary"
-                                type="button"
-                                @click="emitData"
-                        >
-                            Save
-                        </b-button>
-                    </b-col>
-                </b-row>
-            </b-form>
+                                   <!-- Item Name -->
+                                   <b-col lg="9" md="9">
+                                       <b-form-group
+                                               :label="'Voucher ' + (index + 1)"
+                                               :label-for="'voucher' + index"
+                                       >
+                                           <validation-provider
+                                                   #default="{ errors }"
+                                                   :name="`Voucher ${index + 1}`"
+                                                   rules="required"
+                                           >
+                                               <b-form-input
+                                                       :id="'voucher' + index"
+                                                       @change="addVoucher(index)"
+                                                       type="text"
+                                                       placeholder="Enter voucher"
+                                                       :state="errors.length > 0 ? false : null"
+                                               />
+                                               <small class="text-danger">{{ errors[0] }}</small>
+                                           </validation-provider>
+                                       </b-form-group>
+                                   </b-col>
+
+                                   <!-- Remove Button -->
+                                   <b-col
+                                           lg="3"
+                                           md="3"
+                                           class="mb-50 center"
+                                   >
+                                       <b-button
+                                               v-ripple.400="'rgba(234, 84, 85, 0.15)'"
+                                               variant="outline-danger"
+                                               class="mt-0 mt-md-2 "
+                                               @click="removeItem(index)"
+                                       >
+                                           <feather-icon
+                                                   icon="XIcon"
+                                                   class="mr-25"
+                                           />
+                                           <span>Delete</span>
+                                       </b-button>
+                                   </b-col>
+                               </b-row>
+                               <b-row>
+                                   <b-col>
+                                       <b-button
+                                               v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                                               variant="primary"
+                                               @click="repeateAgain"
+                                       >
+                                           <feather-icon
+                                                   icon="PlusIcon"
+                                                   class="mr-25"
+                                           />
+                                           <span>Add New</span>
+                                       </b-button>
+                                   </b-col>
+
+                               </b-row>
+                               <b-row>
+                                   <b-col md="12">
+                                       <b-row class="d-flex float-right mt-2">
+                                           <b-col md="12">
+                                               <b-button
+                                                       variant="outline-secondary"
+                                                       class="mr-2 text-uppercase"
+                                                       type="button"
+                                                       @click="$bvModal.hide('modal-lg')"
+                                               >
+                                                   Cancel
+                                               </b-button>
+                                               <b-button
+                                                       class="text-uppercase"
+                                                       variant="primary"
+                                                       type="button"
+                                                       @click="emitData"
+                                               >
+                                                   Add vouchers
+                                               </b-button>
+                                           </b-col>
+                                       </b-row>
+                                   </b-col>
+                               </b-row>
+                           </div>
+                        </b-tab>
+                    </b-tabs>
+                </b-form>
+            </validation-observer>
         </div>
     </div>
 </template>
 
 <script>
     import {
-        BForm, BFormGroup, BFormInput, BRow, BCol, BButton,
+        BForm, BFormGroup, BFormInput, BRow, BCol, BButton, BTabs, BTab,
     } from 'bootstrap-vue'
     import { heightTransition } from '@core/mixins/ui/transition'
+    import DiscountAndTimeVoucher from './FieldVoucher/DiscountAndTimeVoucher'
     import Ripple from 'vue-ripple-directive'
+    import {ValidationProvider, ValidationObserver} from 'vee-validate'
+    import ToastificationContent from "@core/components/toastification/ToastificationContent";
 
     export default {
         components: {
+            BTabs,
+            BTab,
             BForm,
             BRow,
             BCol,
             BButton,
             BFormGroup,
             BFormInput,
+            DiscountAndTimeVoucher,
+            ValidationProvider,
+            ValidationObserver,
         },
         directives: {
             Ripple,
@@ -120,9 +157,9 @@
             return {
                 items: [
                     {
-                        idVoucher : 10000,
+                        idVoucher : null,
                         voucherCode : "",
-                        idGroupVoucher : 10002,
+                        idGroupVoucher : null,
                         idCustomersUse : null,
                         idLocationUse : null,
                         status : 0,
@@ -141,6 +178,10 @@
                     }
                 ],
                 nextTodoId: 2,
+                data: {
+                    vouchers: null,
+                    items: null,
+                }
             }
         },
         mounted() {
@@ -154,35 +195,58 @@
         },
         methods: {
             addVoucher(index) {
-               const val = document.getElementById('voucher' + index).value;
-               if (this._id == null) {
-                   this.items[index] = {
-                       idVoucher : 10000,
-                       voucherCode : val,
-                       idGroupVoucher : 10002,
-                       idCustomersUse : null,
-                       idLocationUse : null,
-                       status : 0,
-                       nameCustomerUse : null,
-                       nameLocationUse : null,
-                       usedDate : null,
-                       softDelete : 0,
-                       created : {
-                           createBy : "admin",
-                           time : Date.now()
-                       },
-                       modified : {
-                           modifyBy : "admin",
-                           time : Date.now()
-                       }
-                   }
-               } else {
-                   this.items[index] = val
-               }
+                this.locale = this.locale === "en" ? "vi" : "en"
+                this.$refs.validate.validate().then((success) => {
+                    if (success) {
+                        const val = document.getElementById('voucher' + index).value
+                        if (this._id == null) {
+                            this.items[index] = {
+                                idVoucher : null,
+                                voucherCode : val,
+                                idGroupVoucher : null,
+                                idCustomersUse : null,
+                                idLocationUse : null,
+                                status : 0,
+                                nameCustomerUse : null,
+                                nameLocationUse : null,
+                                usedDate : null,
+                                softDelete : 0,
+                                created : {
+                                    createBy : "admin",
+                                    time : Date.now()
+                                },
+                                modified : {
+                                    modifyBy : "admin",
+                                    time : Date.now()
+                                }
+                            }
+                        } else {
+                            this.items[index] = val
+                        }
+                    }
+                })
             },
             emitData() {
-                this.$emit('update', this.items)
-                this.$bvModal.hide("modal-lg")
+                this.locale = this.locale === "en" ? "vi" : "en"
+                this.$refs.validate.validate().then((success) => {
+                    if (success) {
+                        this.data.items = this.items
+                        this.$emit('update', this.data)
+                        this.$bvModal.hide("modal-lg")
+                    } else {
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Please enter all fields or add a voucher',
+                                icon: 'AlertTriangleIcon',
+                                variant: 'danger',
+                            },
+                        })
+                    }
+                 })
+            },
+            proVoucher(data) {
+                this.data.vouchers = data
             },
             repeateAgain() {
                 this.items.push({
@@ -198,9 +262,8 @@
                 this.trTrimHeight(this.$refs.row[0].offsetHeight)
             },
             initTrHeight() {
-                this.trSetHeight()
                 this.$nextTick(() => {
-                    this.trSetHeight(this.$refs.form.scrollHeight == 0 ? '209' : this.$refs.form.scrollHeight )
+                    this.trSetHeight(this.$refs.form.scrollHeight == 0 ? '225' : this.$refs.form.scrollHeight )
                 })
             },
         },

@@ -248,6 +248,7 @@ import useUsersList  from './useUsersList'
 import userStoreModule from '../userStoreModule'
 import Ripple from 'vue-ripple-directive'
 import moment from 'moment'
+import i18n from "@/libs/i18n";
 
 export default {
   components: {

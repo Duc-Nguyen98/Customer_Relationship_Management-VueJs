@@ -15,333 +15,164 @@
                         <span>Information group</span>
                     </template>
                     <b-row>
-                        <b-col md="6">
-                            <b-form-group
-                                    label="Title Group"
-                                    label-for="v-title"
-                            >
-                                <b-form-input
-                                        disabled
-                                        v-model="GroupDataInfo.title"
-                                        id="v-title"
-                                        placeholder="Enter title group"
-                                />
-                            </b-form-group>
-                        </b-col>
-                        <b-col md="3">
-                            <b-form-group
-                                    label="Form Applies"
-                                    label-for="v-email"
-                            >
-                                <v-select
-                                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                        :options="classifiedOptions"
-                                        :value="GroupDataInfo.classified"
-                                        class="w-100"
-                                        :reduce="(val) => val.value"
-                                        @input="(val) => GroupDataInfo.classified = val"
-                                />
-                            </b-form-group>
-                        </b-col>
-                        <b-col md="3">
-                            <b-form-group
-                                    label="Status Group"
-                                    label-for="v-password"
-                            >
-                                <v-select
-                                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                        :value="GroupDataInfo.status"
-                                        class="w-100"
-                                        :reduce="(val) => val.value"
-                                        @input="(val) => GroupDataInfo.status = val"
-                                        :options="optionsActive"
-                                />
-                            </b-form-group>
-                        </b-col>
                         <b-col md="12">
-                            <p>Discount</p>
-                        </b-col>
-                        <b-col md="6">
-                            <b-form-group
-                                    label-for="v-discount"
-                            >
-                                <b-col md="12">
-                                    <b-form-group>
-                                        <b-form-radio v-model="discount" :autofocus="true" :value="0">Percent And
-                                            Maximum
-                                        </b-form-radio>
-                                    </b-form-group>
-                                </b-col>
-                                <b-col md="12">
-                                    <b-form-group>
-                                        <label for="Percent">Percent</label>
-                                        <validation-provider
-                                                #default="{ errors }"
-                                                name="Percent"
-                                                rules="between:5,95"
+                            <validation-observer ref="information">
+                                <b-row>
+                                    <b-col md="6">
+                                        <b-form-group
+                                                label="Title Group"
+                                                label-for="v-title"
                                         >
-                                            <b-input-group>
-                                                <b-form-input
-                                                        v-model="GroupDataInfo.discount.PercentAMaximum.percent"
-                                                        :state="errors.length > 0 ? false : null"
-                                                        id="Percent"
-                                                        type="number"
-                                                        placeholder="Your Percent"
-                                                        :disabled="discount == 1"
-                                                />
-                                                <b-input-group-append is-text>
-                                                    <feather-icon
-                                                            icon="PercentIcon"
-                                                            class="cursor-pointer"
-                                                    />
-                                                </b-input-group-append>
-                                            </b-input-group>
-                                            <small class="text-danger">{{ errors[0] }}</small>
-                                        </validation-provider>
-                                    </b-form-group>
-
-                                    <b-form-group>
-                                        <label for="Mmoney">Maximum money</label>
-                                        <b-input-group>
                                             <b-form-input
-                                                    :disabled="discount == 1"
-                                                    v-model="Mmoney"
-                                                    @blur="blurMoney"
-                                                    @focus="Mmoney = GroupDataInfo.discount.PercentAMaximum.maximumMoney"
-                                                    id="Mmoney"
-                                                    placeholder="Your maximum money"
+                                                    disabled
+                                                    v-model="GroupDataInfo.title"
+                                                    id="v-title"
+                                                    placeholder="Enter title group"
                                             />
-                                            <b-input-group-append is-text>
-                                                <feather-icon
-                                                        icon="DollarSignIcon"
-                                                        class="cursor-pointer"
-                                                />
-                                            </b-input-group-append>
-                                        </b-input-group>
-                                    </b-form-group>
-                                </b-col>
-                            </b-form-group>
-                        </b-col>
-                        <b-col md="6">
-                            <b-form-group
-                                    label-for="v-reduction-money"
-                            >
-                                <b-col md="12">
-                                    <b-form-group
-                                            label-for="v-reduction-money"
-                                    >
-                                        <b-form-radio v-model="discount" id="v-reduction-money" :value="1">Reduction
-                                            Money
-                                        </b-form-radio>
-                                    </b-form-group>
-                                </b-col>
-                                <b-col md="12">
-                                    <b-form-group>
-                                        <label for="Reduction">Reduction</label>
-                                        <b-input-group>
-                                            <b-form-input
-                                                    v-model="reduction"
-                                                    @focus="reduction = GroupDataInfo.discount.reduction.money"
-                                                    @blur="blurReduction"
-                                                    :disabled="discount == 0"
-                                                    id="Reduction"
-                                                    placeholder="Your Reduction"
+                                        </b-form-group>
+                                    </b-col>
+                                    <b-col md="6">
+                                        <b-form-group
+                                                label="Status Group"
+                                                label-for="v-password"
+                                        >
+                                            <v-select
+                                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                                    :value="GroupDataInfo.status"
+                                                    class="w-100"
+                                                    :reduce="(val) => val.value"
+                                                    @input="(val) => GroupDataInfo.status = val"
+                                                    :options="optionsActive"
                                             />
-                                            <b-input-group-append is-text>
-                                                <feather-icon
-                                                        icon="DollarSignIcon"
-                                                        class="cursor-pointer"
+                                        </b-form-group>
+                                    </b-col>
+                                    <b-col md="12">
+                                        <b-row>
+                                            <b-col
+                                                    cols="12"
+                                                    class="mb-2"
+                                            >
+                                                <h5 class="mb-0">
+                                                    Range Of Activities
+                                                </h5>
+                                                <small class="text-muted">Enter Your Range Of Activities.</small>
+                                            </b-col>
+                                            <b-col md="6">
+                                                <b-form-group
+                                                        label="Shops"
+                                                        label-for="v-systems-apply"
+                                                >
+                                                    <b-form-radio-group
+                                                            id="v-systems-apply"
+                                                            v-model="system"
+                                                            :options="sysOptions"
+                                                            class="mb-3"
+                                                            value-field="item"
+                                                            text-field="name"
+                                                            disabled-field="notEnabled"
+                                                    ></b-form-radio-group>
+                                                </b-form-group>
+                                            </b-col>
+                                            <b-col md="6">
+                                                <b-form-group
+                                                        label="Select Shops"
+                                                        label-for="v-landmark"
+                                                >
+                                                    <span v-show="system == 0">Choose all shops</span>
+                                                    <v-select
+                                                            v-show="system != 0"
+                                                            :disabled="system == 0"
+                                                            v-model="selectedSys"
+                                                            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                                            multiple
+                                                            :options="$store.state.app_voucher.allSystem"
+                                                            label="title"
+                                                    >
+                                                        <template v-slot:option="option">
+                                                            {{ option.title }}
+                                                        </template>
+                                                    </v-select>
+                                                </b-form-group>
+                                            </b-col>
+                                            <b-col md="6">
+                                                <b-form-group
+                                                        label="Customer Apply To"
+                                                        label-for="v-customer-apply"
+                                                >
+                                                    <b-form-radio-group
+                                                            id="v-customer-apply"
+                                                            v-model="GroupDataInfo.scopeApply.customer.all"
+                                                            :options="cusOptions"
+                                                            class="mb-3"
+                                                            value-field="item"
+                                                            text-field="name"
+                                                            disabled-field="notEnabled">
+                                                    </b-form-radio-group>
+                                                </b-form-group>
+                                            </b-col>
+                                            <b-col md="6">
+                                                <b-form-group
+                                                        label="Select Groups Customer"
+                                                        label-for="v-city"
+                                                >
+                                                    <span v-show="GroupDataInfo.scopeApply.customer.all == 0">Choose all groups customer</span>
+                                                    <v-select
+                                                            v-show="GroupDataInfo.scopeApply.customer.all != 0"
+                                                            v-model="selectedCus"
+                                                            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                                            multiple
+                                                            :options="$store.state.app_voucher.allCustomers"
+                                                            label="title"
+                                                    >
+                                                        <template v-slot:option="option">
+                                                            {{ option.title }}
+                                                        </template>
+                                                    </v-select>
+                                                </b-form-group>
+                                            </b-col>
+                                        </b-row>
+                                    </b-col>
+                                    <b-col md="12">
+                                        <p>Note</p>
+                                    </b-col>
+                                    <b-col md="12">
+                                        <b-form-group
+                                                label-for="v-note"
+                                        >
+                                            <validation-provider
+                                                    #default="{ errors }"
+                                                    name="Percent"
+                                                    rules="max:1000"
+                                            >
+                                                <b-form-textarea
+                                                        id="textarea-default"
+                                                        placeholder="Enter note"
+                                                        rows="6.5"
+                                                        v-model="GroupDataInfo.note"
                                                 />
-                                            </b-input-group-append>
-                                        </b-input-group>
-                                    </b-form-group>
-                                </b-col>
-                            </b-form-group>
+                                                <small class="text-danger">{{ errors[0] }}</small>
+                                            </validation-provider>
+                                        </b-form-group>
+                                    </b-col>
+                                </b-row>
+                            </validation-observer>
                         </b-col>
                         <b-col md="12">
-                            <p>Note</p>
-                        </b-col>
-                        <b-col md="12">
-                            <b-form-group
-                                    label-for="v-note"
-                            >
-                                <validation-provider
-                                        #default="{ errors }"
-                                        name="Percent"
-                                        rules="max:1000"
+                            <!-- Form Actions -->
+                            <div class="d-flex float-right mt-2">
+                                <b-button
+                                        type="button"
+                                        variant="outline-secondary"
+                                        class="mr-2 text-uppercase"
+                                        @click="$router.push({name: 'apps-group-voucher-list'})"
                                 >
-                                    <b-form-textarea
-                                            id="textarea-default"
-                                            placeholder="Textarea"
-                                            rows="6.5"
-                                            v-model="GroupDataInfo.note"
-                                    />
-                                    <small class="text-danger">{{ errors[0] }}</small>
-                                </validation-provider>
-                            </b-form-group>
-                        </b-col>
-                    </b-row>
-                </b-tab>
-                <b-tab>
-                    <template #title>
-                        <feather-icon icon="ClockIcon"/>
-                        <span>Retention Period</span>
-                    </template>
+                                    Cancel
+                                </b-button>
 
-                    <b-row>
-                        <b-col md="4">
-                            <b-form-group
-                                    label="Effect From"
-                                    label-for="v-effect-from"
-                            >
-                                <b-form-radio @input="chooseEffect" v-model="chooseE" name="some-radios"
-                                              :value="0"></b-form-radio>
-                            </b-form-group>
-                        </b-col>
-                        <b-col md="4">
-                            <b-form-group
-                                    label="From date"
-                                    label-for="v-last-name"
-                            >
-                                <b-form-datepicker v-model="GroupDataInfo.timeLine.effective.expiration"
-                                                   placeholder="From Date" :disabled="chooseE!=0"
-                                                   :date-disabled-fn="dateEffDisabled" locale="en"></b-form-datepicker>
-                            </b-form-group>
-                        </b-col>
-                        <b-col md="4">
-                            <b-form-group
-                                    label="To date"
-                                    label-for="v-last-name"
-                            >
-
-                                <b-form-datepicker v-model="GroupDataInfo.timeLine.effective.release"
-                                                   placeholder="To Date" :disabled="chooseE!=0"
-                                                   :date-disabled-fn="dateExpDisabled" locale="en"></b-form-datepicker>
-                            </b-form-group>
-                        </b-col>
-
-                        <b-col md="4">
-                            <b-form-group
-                                    label="Expiry Date"
-                                    label-for="v-expiry-from"
-                            >
-                                <b-form-radio @input="chooseExpiry" v-model="chooseE" name="some-radios"
-                                              :value="1"></b-form-radio>
-                            </b-form-group>
-                        </b-col>
-                        <b-col md="4">
-                            <b-form-group
-                                    label="Date Number"
-                                    label-for="v-last-name"
-                            >
-                                <b-form-input type="number" min="1" v-model="GroupDataInfo.timeLine.expiry.number"
-                                              :disabled="chooseE!=1"
-                                              :placeholder="chooseE!=1 ? 'Enter your date number' : 'Disabled date number'"></b-form-input>
-                            </b-form-group>
-                        </b-col>
-                        <b-col md="4">
-                            <b-form-group
-                                    label="Release date type"
-                                    label-for="v-last-name"
-                            >
-                                <b-form-select
-                                        :disabled="chooseE!=1"
-                                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                        v-model="GroupDataInfo.timeLine.expiry.type"
-                                        :options="typeDateOptions"
-                                        class="w-100"
-                                >
-                                    <template #first>
-                                        <b-form-select-option :value="null" disabled>{{ chooseE!=1 ? 'Choose release date type' : 'Disabled release date type' }}
-                                        </b-form-select-option>
-                                    </template>
-                                </b-form-select>
-                            </b-form-group>
-                        </b-col>
-
-                    </b-row>
-                </b-tab>
-                <b-tab>
-                    <template #title>
-                        <feather-icon icon="TargetIcon"/>
-                        <span @click="chooseRange">Range Of Activities</span>
-                    </template>
-                    <b-row>
-                        <b-col
-                                cols="12"
-                                class="mb-2"
-                        >
-                            <h5 class="mb-0">
-                                Range Of Activities
-                            </h5>
-                            <small class="text-muted">Enter Your Range Of Activities.</small>
-                        </b-col>
-                        <b-col md="6">
-                            <b-form-group
-                                    label="Shops"
-                                    label-for="v-systems-apply"
-                            >
-                                <b-form-radio-group
-                                        id="v-systems-apply"
-                                        v-model="system"
-                                        :options="sysOptions"
-                                        class="mb-3"
-                                        value-field="item"
-                                        text-field="name"
-                                        disabled-field="notEnabled"
-                                ></b-form-radio-group>
-                            </b-form-group>
-                        </b-col>
-                        <b-col md="6">
-                            <b-form-group
-                                    label="Select Shops"
-                                    label-for="v-landmark"
-                            >
-                                <span v-show="system == 0">Choose all shops</span>
-                                <v-select
-                                        v-show="system != 0"
-                                        :disabled="system == 0"
-                                        v-model="selectedSys"
-                                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                        multiple
-                                        :options="$store.state.app_voucher.allSystem"
-                                        label="title"
-                                >
-                                </v-select>
-                            </b-form-group>
-                        </b-col>
-                        <b-col md="6">
-                            <b-form-group
-                                    label="Customer Apply To"
-                                    label-for="v-customer-apply"
-                            >
-                                <b-form-radio-group
-                                        id="v-customer-apply"
-                                        v-model="GroupDataInfo.scopeApply.customer.all"
-                                        :options="cusOptions"
-                                        class="mb-3"
-                                        value-field="item"
-                                        text-field="name"
-                                        disabled-field="notEnabled">
-                                </b-form-radio-group>
-                            </b-form-group>
-                        </b-col>
-                        <b-col md="6">
-                            <b-form-group
-                                    label="Select Groups Customer"
-                                    label-for="v-city"
-                            >
-                                <span v-show="GroupDataInfo.scopeApply.customer.all == 0">Choose all groups customer</span>
-                                <v-select
-                                        v-show="GroupDataInfo.scopeApply.customer.all != 0"
-                                        v-model="selectedCus"
-                                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                        multiple
-                                        :options="$store.state.app_voucher.allCustomers"
-                                        label="title"
-                                >
-                                </v-select>
-                            </b-form-group>
+                                <b-button variant="primary" @click="validationForm({GroupDataInfo: GroupDataInfo, _id: GroupDataInfo._id})" class="text-uppercase">
+                                    Save Changes
+                                </b-button>
+                            </div>
                         </b-col>
                     </b-row>
                 </b-tab>
@@ -362,23 +193,15 @@
 
                     <VoucherListHistory :_id="GroupDataInfo.idGroupVoucher"/>
                 </b-tab>
+                <b-tab v-if="GroupDataInfo">
+                    <template #title>
+                        <feather-icon icon="TrashIcon"/>
+                        <span>Vouchers Trash</span>
+                    </template>
+
+                    <VoucherListDel :_id="GroupDataInfo.idGroupVoucher"/>
+                </b-tab>
             </b-tabs>
-
-            <!-- Form Actions -->
-            <div class="d-flex float-right mt-2">
-                <b-button
-                        type="button"
-                        variant="outline-secondary"
-                        class="mr-2 text-uppercase"
-                        @click="$router.push({name: 'apps-shops-list'})"
-                >
-                    Cancel
-                </b-button>
-
-                <b-button variant="primary" @click="validationForm({GroupDataInfo: GroupDataInfo, _id: GroupDataInfo._id})" class="text-uppercase">
-                    Save Changes
-                </b-button>
-            </div>
         </div>
     </div>
 </template>
@@ -407,6 +230,7 @@
     import Ripple from "vue-ripple-directive";
     import VoucherList from "../voucher-list/VoucherList";
     import VoucherListHistory from "../voucher-list/VoucherListHistory";
+    import VoucherListDel from "../voucher-list/VoucherListDel";
     import {ValidationObserver, ValidationProvider} from "vee-validate";
     import store from "@/store";
     import {
@@ -433,6 +257,7 @@
         components: {
             VoucherList,
             VoucherListHistory,
+            VoucherListDel,
             ValidationProvider, ValidationObserver,
             BTabs,
             BTab,
@@ -470,7 +295,7 @@
             const toast = useToast();
 
             const GroupDataInfo = ref(groupinfo);
-
+            console.log(GroupDataInfo.value)
             const classifiedOptions = [
                 {label: "Choose a classified", value: null},
                 {label: "Trade Voucher", value: 0},
@@ -620,36 +445,32 @@
             }
 
             //Format money
-            const Mmoney = ref(GroupDataInfo.value.discount.PercentAMaximum.maximumMoney)
-            const blurMoney = () => {
-                GroupDataInfo.value.discount.PercentAMaximum.maximumMoney = Mmoney.value
-                let val = (Mmoney.value/1).toFixed(2).replace('.', ',')
-                Mmoney.value = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-            }
-            blurMoney()
+            // const Mmoney = ref(GroupDataInfo.value.discount.PercentAMaximum.maximumMoney)
+            // const blurMoney = () => {
+            //     GroupDataInfo.value.discount.PercentAMaximum.maximumMoney = Mmoney.value
+            //     let val = (Mmoney.value/1).toFixed(2).replace('.', ',')
+            //     Mmoney.value = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+            // }
+            // blurMoney()
 
             //Format money
-            const reduction = ref(GroupDataInfo.value.discount.reduction.money)
-            const blurReduction = () => {
-                GroupDataInfo.value.discount.reduction.money = reduction.value
-                let val = (reduction.value/1).toFixed(2).replace('.', ',')
-                reduction.value = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-            }
-            blurReduction()
+            // const reduction = ref(GroupDataInfo.value.discount.reduction.money)
+            // const blurReduction = () => {
+            //     GroupDataInfo.value.discount.reduction.money = reduction.value
+            //     let val = (reduction.value/1).toFixed(2).replace('.', ',')
+            //     reduction.value = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+            // }
+            // blurReduction()
 
-            if (groupinfo.discount.reduction.money == null) {
-                discount.value = 0
-            }
-
-            if (groupinfo.timeLine.expiry.number == 0 && groupinfo.timeLine.expiry.type == 0) {
-                chooseE.value = 0
-            }
+            // if (groupinfo.discount.reduction.money == null) {
+            //     discount.value = 0
+            // }
+            //
+            // if (groupinfo.timeLine.expiry.number == null && groupinfo.timeLine.expiry.type == null) {
+            //     chooseE.value = 0
+            // }
 
             return {
-                Mmoney,
-                reduction,
-                blurMoney,
-                blurReduction,
                 chooseEffect,
                 chooseExpiry,
                 dateEffDisabled,
@@ -670,7 +491,44 @@
                 viewVouchers,
             };
         },
-        methods: {},
+        methods: {
+            alert(variant, message) {
+                this.$toast({
+                    component: ToastificationContent,
+                    props: {
+                        title: "Notification",
+                        icon: "BellIcon",
+                        text: "👋 " + message,
+                        variant,
+                    },
+                });
+            },
+            validationForm(GroupDataInfo) {
+                this.locale = this.locale === "en" ? "vi" : "en"
+                this.$refs.information.validate().then((success) => {
+                    if(success) {
+                        store.dispatch('app_voucher/updateVoucherGroup', GroupDataInfo)
+                            .then(response => {
+                                if (response.data.success) {
+                                    this.alert("success", "Update group voucher successfully.")
+                                } else {
+                                    this.alert("danger", "Update group voucher failed.")
+                                }
+                            })
+                            .catch((err) => {
+                                this.$toast({
+                                    component: ToastificationContent,
+                                    props: {
+                                        title: 'Error fetching services list',
+                                        icon: 'AlertTriangleIcon',
+                                        variant: 'danger',
+                                    },
+                                })
+                            })
+                    }
+                })
+            }
+        },
     };
 </script>
 

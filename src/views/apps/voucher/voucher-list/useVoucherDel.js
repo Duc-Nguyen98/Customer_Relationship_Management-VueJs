@@ -6,7 +6,7 @@ import { title } from '@core/utils/filter'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-export default function useVoucherList() {
+export default function useVoucherDel() {
   // Use toast
   const toast = useToast()
 
@@ -53,14 +53,14 @@ export default function useVoucherList() {
 
   const time = ref(null);
   const isBusy = ref(null);
-  const fetchListVouchers = (idGroup) => {
+  const fetchListVouchersTrash = (idGroup) => {
     isBusy.value = true
     if (time.value) {
       clearTimeout(time.value)
     }
     time.value = setTimeout(() => {
       store
-          .dispatch('app_voucher/fetchListVouchers', {
+          .dispatch('app_voucher/fetchListVouchersTrash', {
             _id: idGroup, queryParams: {
               q: searchQuery.value,
               perPage: perPage.value,
@@ -99,29 +99,6 @@ export default function useVoucherList() {
     });
   }
 
-  const addVouchersInGroup = (_id, vouchers) => {
-    store
-        .dispatch('app_voucher/addVouchersInGroup', {_id: _id, voucherCode: vouchers})
-        .then(response => {
-          if (response.data.success) {
-            alert("success", "Add vouchers successfully.")
-            fetchListVouchers(group.value)
-          } else {
-            alert("danger", "Add vouchers failed.")
-          }
-        })
-        .catch(() => {
-          toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Error fetching services list',
-              icon: 'AlertTriangleIcon',
-              variant: 'danger',
-            },
-          })
-        })
-  }
-
   const selected = ref([])
   const one = ref(false)
   const all = ref(false)
@@ -133,7 +110,7 @@ export default function useVoucherList() {
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete vouchers successfully.")
-            fetchListVouchers(group.value)
+            fetchListVouchersTrash(group.value)
           } else {
             alert("danger", "Delete vouchers failed.")
           }
@@ -170,24 +147,6 @@ export default function useVoucherList() {
   // *--------- UI ---------------------------------------*
   // *===============================================---*
 
-  const resolveUserRoleVariant = role => {
-    if (role === 'subscriber') return 'primary'
-    if (role === 'author') return 'warning'
-    if (role === 'maintainer') return 'success'
-    if (role === 'editor') return 'info'
-    if (role === 'admin') return 'danger'
-    return 'primary'
-  }
-
-  const resolveUserRoleIcon = role => {
-    if (role === 'subscriber') return 'UserIcon'
-    if (role === 'author') return 'SettingsIcon'
-    if (role === 'maintainer') return 'DatabaseIcon'
-    if (role === 'editor') return 'Edit2Icon'
-    if (role === 'admin') return 'ServerIcon'
-    return 'UserIcon'
-  }
-
   const resolveUserStatusVariant = stt => {
     if (stt === 0) return 'light-warning'
     if (stt === 1) return 'light-success'
@@ -222,9 +181,8 @@ export default function useVoucherList() {
     chooseAll,
     checkClassified,
     resolveUserClassifiedVariant,
-    fetchListVouchers,
+    fetchListVouchersTrash,
     deleteVouchersInGroup,
-    addVouchersInGroup,
     checkStatus,
     Vouchers,
     tableColumns,
@@ -237,8 +195,6 @@ export default function useVoucherList() {
     isSortDirDesc,
     refVouchersListTable,
 
-    resolveUserRoleVariant,
-    resolveUserRoleIcon,
     resolveUserStatusVariant,
     refetchData,
     // Extra Filters

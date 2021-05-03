@@ -16,7 +16,7 @@ export default function useVoucherListGroups() {
   const tableColumns = [
     { key: 'stt', label: 'STT', sortable: true },
     { key: 'title', label: 'Name Group', formatter: title, sortable: true },
-    { key: 'classified', label: 'Class Ified', sortable: true },
+    { key: 'note', label: 'Note', sortable: true },
     { key: 'status', label: 'Status Voucher', sortable: true },
     { key: 'created_at', label: 'Created At', sortable: true },
     { key: 'created_by', label: 'Created By', sortable: true },
