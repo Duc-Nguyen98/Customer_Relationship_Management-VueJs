@@ -5,7 +5,7 @@
     </b-card-header>
     <b-card-body>
       <b-row>
-        <b-col cols="12" md="6" class="mb-md-0 mb-2">
+        <b-col v-if="type != 'group'" cols="12" md="6" class="mb-md-0 mb-2">
           <label>Classified</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
@@ -46,6 +46,9 @@ export default {
     vSelect,
   },
   props: {
+    type: {
+      type: String,
+    },
     classified: {
       type: [Number, null],
       default: null,

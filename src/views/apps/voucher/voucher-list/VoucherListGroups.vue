@@ -2,6 +2,7 @@
   <div>
 <!--     Filters-->
     <voucher-list-filters
+            type="group"
       :classified.sync="classified"
       :status.sync="status"
       :classified-options="classifiedOptions"

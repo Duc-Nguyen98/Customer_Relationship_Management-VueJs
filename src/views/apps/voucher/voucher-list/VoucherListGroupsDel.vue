@@ -2,6 +2,7 @@
   <div>
 <!--     Filters-->
     <voucher-list-filters
+            type="group"
       :classified.sync="classified"
       :status.sync="status"
       :classified-options="classifiedOptions"
@@ -283,6 +284,8 @@ export default {
       checkClassified,
 
       // UI
+      resolveUserRoleVariant,
+      resolveUserRoleIcon,
       resolveUserStatusVariant,
       resolveUserClassifiedVariant,
       // Extra Filters
@@ -313,6 +316,8 @@ export default {
       avatarText,
 
       // UI
+      resolveUserRoleVariant,
+      resolveUserRoleIcon,
       resolveUserStatusVariant,
       resolveUserClassifiedVariant,
       classifiedOptions,

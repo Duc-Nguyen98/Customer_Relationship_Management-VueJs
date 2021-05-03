@@ -176,12 +176,12 @@
                         </b-col>
                     </b-row>
                 </b-tab>
-                <b-tab v-if="GroupDataInfo.status != 0">
+                <b-tab :disabled="GroupDataInfo.status == 0">
                     <template #title>
-            <span>
-              <feather-icon icon="BookmarkIcon"/>
-              <span @click="viewVouchers()">Voucher list</span>
-            </span>
+                    <span>
+                      <feather-icon icon="BookmarkIcon"/>
+                      <span @click="viewVouchers()">Voucher list</span>
+                    </span>
                     </template>
                     <VoucherList :_id="GroupDataInfo._id" :idGroup="GroupDataInfo.idGroupVoucher"/>
                 </b-tab>
