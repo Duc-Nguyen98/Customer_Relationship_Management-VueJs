@@ -12,7 +12,8 @@
     >
 
       <!-- Information Group tab -->
-      <tab-content title="Information Group" :before-change="validateStep1">
+<!--        :before-change="validateStep1"-->
+      <tab-content title="Information Group" >
         <validation-observer ref="information">
         <b-row>
           <b-col
@@ -430,6 +431,7 @@ export default {
                         title: obj.title,
                       })
                     })
+                    console.log(response.data.listGroupCustomer)
                     store.commit('app_voucher/updateCustomers', allCustomers)
                   } else {
                     this.alert("danger", "Get list customers failed.")
@@ -510,13 +512,13 @@ export default {
   watch: {
     discount(val) {
       if (val == 0) {
-        this.Mmoney = '1.000,00'
+        this.Mmoney = '1.000'
         this.data.discount.PercentAMaximum.maximumMoney = 1000
         this.data.discount.PercentAMaximum.percent = 5
         this.reduction = 0
         this.data.discount.reduction.money = 0
       } else {
-        this.reduction = '1.000,00'
+        this.reduction = '1.000'
         this.data.discount.PercentAMaximum.percent = 0
         this.data.discount.PercentAMaximum.maximumMoney = 0
         this.Mmoney = 0

@@ -299,7 +299,7 @@
         data() {
             return {
                 discount: 0,
-                Mmoney: '1.000,00',
+                Mmoney: '1.000',
                 reduction: 0,
                 chooseE: 0,
                 data: {
@@ -379,25 +379,25 @@
             },
             blurMoney() {
                 this.data.discount.PercentAMaximum.maximumMoney = Number(this.Mmoney)
-                let val = (this.Mmoney / 1).toFixed(2).replace('.', ',')
+                let val = (this.Mmoney / 1).toFixed(0).replace('.', ',')
                 this.Mmoney = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
             },
             blurReduction() {
                 this.data.discount.reduction.money = Number(this.reduction)
-                let val = (this.reduction / 1).toFixed(2).replace('.', ',')
+                let val = (this.reduction / 1).toFixed(0).replace('.', ',')
                 this.reduction = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
             },
         },
         watch: {
             discount(val) {
                 if (val == 0) {
-                    this.Mmoney = '1.000,00'
+                    this.Mmoney = '1.000'
                     this.data.discount.PercentAMaximum.maximumMoney = 1000
                     this.data.discount.PercentAMaximum.percent = 5
                     this.reduction = 0
                     this.data.discount.reduction.money = null
                 } else {
-                    this.reduction = '1.000,00'
+                    this.reduction = '1.000'
                     this.data.discount.PercentAMaximum.percent = null
                     this.data.discount.PercentAMaximum.maximumMoney = null
                     this.Mmoney = 0
