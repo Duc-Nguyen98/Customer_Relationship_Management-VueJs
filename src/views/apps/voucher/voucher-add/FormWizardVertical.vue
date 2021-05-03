@@ -449,7 +449,6 @@ export default {
     },
 
     validateStep1() {
-      console.log('cc')
       this.locale = this.locale === "en" ? "vi" : "en"
       return this.$refs.information.validate()
     },
