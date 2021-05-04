@@ -93,7 +93,7 @@
         <template #head(selected)="scope">
           <b-form-checkbox
                   class="float-left"
-                  id="checkbox-1"
+                  id="cupdateheckbox-1"
                   name="checkbox-1"
                   @input="chooseAll()"
           >
@@ -376,7 +376,13 @@ export default {
         Vouchers.value = [...Vouchers.value, ...vouchers.items]
         store.commit('app_voucher/saveVouchers', vouchers)
       } else {
-        addVouchersInGroup(_id, vouchers)
+
+        const data = {
+          voucherCode: vouchers.items,
+          ...vouchers.vouchers,
+        }
+        console.log(data)
+        addVouchersInGroup(_id, data)
       }
     }
 

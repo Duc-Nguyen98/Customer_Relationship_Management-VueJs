@@ -224,6 +224,7 @@
                         }
                     } else {
                         this.vouchers[index] = val
+                        console.log(this.vouchers)
                     }
                 } else {
                     this.vouchers = this.vouchers.filter((item, key) => key != index)
@@ -238,8 +239,8 @@
                 }
             },
             emitData() {
-                if ( this.vouchers.length > 0 && this.data.vouchers != null) {
-                    this.data.items = this.items
+                if ( this.vouchers.length > 0 || this.items.length > 0 && this.data.vouchers != null) {
+                    this.data.items = this._id == null ? this.items : this.vouchers
                     this.$emit('update', this.data)
                     this.$bvModal.hide("modal-lg")
                 } else {
