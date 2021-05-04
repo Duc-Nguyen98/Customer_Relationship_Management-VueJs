@@ -128,12 +128,29 @@ export default function useVoucherList() {
   const one = ref(false)
   const all = ref(false)
 
-  const changeStatus = (status) => {
+  const chooseOne = (item) => {
+    one.value = !one.value;
+    if (selected.value.indexOf(item) != -1) {
+      selected.value = selected.value.filter(val => val != item)
+    } else {
+      selected.value.push(item)
+    }
+  }
+
+  const chooseAll = () => {
+    all.value = !all.value
+    Vouchers.value.map(obj => {
+      chooseOne(obj._id)
+    })
+  }
+
+  const changeStatusVouchersInGroup = (status) => {
     store
         .dispatch('app_voucher/changeStatusVouchersInGroup', {status: status, VoucherIdArray: {VoucherIdArray: selected.value}})
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete vouchers successfully.")
+            selected.value = []
             fetchListVouchers(group.value)
           } else {
             alert("danger", "Delete vouchers failed.")
@@ -198,21 +215,7 @@ export default function useVoucherList() {
         })
   }
 
-  const chooseOne = (item) => {
-    one.value = !one.value;
-    if (selected.value.indexOf(item) != -1) {
-      selected.value = selected.value.filter(val => val != item)
-    } else {
-      selected.value.push(item)
-    }
-  }
 
-  const chooseAll = () => {
-    all.value = !all.value
-    Vouchers.value.map(obj => {
-      chooseOne(obj._id)
-    })
-  }
 
   // *===============================================---*
   // *--------- UI ---------------------------------------*
@@ -275,7 +278,7 @@ export default function useVoucherList() {
     deleteOneVouchersInGroup,
     addVouchersInGroup,
     checkStatus,
-    changeStatus,
+    changeStatusVouchersInGroup,
     Vouchers,
     tableColumns,
     perPage,

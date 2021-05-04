@@ -66,6 +66,28 @@
         :sort-desc.sync="isSortDirDesc"
         :busy="isBusy"
       >
+
+        <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
+        <template #head(selected)="scope">
+          <b-form-checkbox
+                  class="float-left"
+                  id="cupdateheckbox-1"
+                  name="checkbox-1"
+                  @input="chooseAll()"
+          >
+          </b-form-checkbox>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteManyGroups"><feather-icon icon="TrashIcon" /></span>
+        </template>
+
+        <!-- Column: Delete -->
+        <template #cell(selected)="data">
+          <b-form-checkbox
+                  :id="data.item._id"
+                  :checked="all"
+                  @change="chooseOne(data.item._id)"
+          ></b-form-checkbox>
+        </template>
+
         <!-- Column: STT -->
         <template #cell(stt)="data">
           {{ data.index + 1 }}
@@ -180,21 +202,21 @@
 </template>
 
 <script>
-import {
-  BCard,
-  BRow,
-  BCol,
-  BFormInput,
-  BButton,
-  BTable,
-  BMedia,
-  BAvatar,
-  BLink,
-  BBadge,
-  BDropdown,
-  BDropdownItem,
-  BPagination,
-} from "bootstrap-vue";
+  import {
+    BCard,
+    BRow,
+    BCol,
+    BFormInput,
+    BButton,
+    BTable,
+    BMedia,
+    BAvatar,
+    BLink,
+    BBadge,
+    BDropdown,
+    BDropdownItem,
+    BPagination, BFormCheckbox,
+  } from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
@@ -226,6 +248,7 @@ export default {
     BDropdown,
     BDropdownItem,
     BPagination,
+    BFormCheckbox,
     vSelect,
   },
   directives: {
@@ -268,6 +291,7 @@ export default {
       refServicesListTable,
       refetchData,
       deleteVoucher,
+      deleteManyGroups,
       restoreVoucher,
       checkStatus,
       checkClassified,
@@ -281,9 +305,19 @@ export default {
       classified,
       status,
       isBusy,
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
     } = useVoucherListGroupsDel();
 
     return {
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
       Vouchers,
       tableColumns,
       perPage,
@@ -298,6 +332,7 @@ export default {
       convertDate,
       refetchData,
       deleteVoucher,
+      deleteManyGroups,
       restoreVoucher,
       checkStatus,
       checkClassified,

@@ -64,7 +64,7 @@
                                                 >
                                                     <b-form-radio-group
                                                             id="v-systems-apply"
-                                                            v-model="system"
+                                                            v-model="GroupDataInfo.scopeApply.shop.all"
                                                             :options="sysOptions"
                                                             class="mb-3"
                                                             value-field="item"

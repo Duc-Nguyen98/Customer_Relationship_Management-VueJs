@@ -77,7 +77,7 @@
           <b-form-checkbox
                   :id="data.item._id"
                   :checked="all"
-                  @input="chooseOne(data.item._id)"
+                  @change="chooseOne(data.item._id)"
           ></b-form-checkbox>
         </template>
 

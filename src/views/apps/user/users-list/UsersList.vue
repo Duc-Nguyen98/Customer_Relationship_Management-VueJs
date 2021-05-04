@@ -150,15 +150,6 @@
                       class="align-middle text-body"
               />
             </template>
-            <b-dropdown-item
-                    :to="{
-                name: 'apps-users-view',
-                params: { id: data.item._id },
-              }"
-            >
-              <feather-icon icon="FileTextIcon" />
-              <span class="align-middle ml-50">Details</span>
-            </b-dropdown-item>
 
             <b-dropdown-item
                     :to="{
