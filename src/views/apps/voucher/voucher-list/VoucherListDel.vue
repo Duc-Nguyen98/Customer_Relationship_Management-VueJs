@@ -69,6 +69,7 @@
           >
           </b-form-checkbox>
           <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteVouchersInGroup"><feather-icon icon="TrashIcon" /></span>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="restoreSoftVouchersInGroup"><feather-icon icon="RotateCwIcon" /></span>
         </template>
 
         <!-- Column: Delete -->
@@ -128,17 +129,14 @@
             </template>
 
             <b-dropdown-item
-              :to="{
-                name: 'apps-voucher-edit',
-                params: { id: data.item._id },
-              }"
+                    @click="restoreOneSoftVouchersInGroup(data.item._id)"
             >
               <feather-icon icon="PlusCircleIcon" />
-              <span class="align-middle ml-50">Edit</span>
+              <span class="align-middle ml-50">Restore</span>
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteService(data.item._id)"
+              @click="deleteOneVouchersInGroup(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -275,13 +273,15 @@ export default {
       isSortDirDesc,
       refVouchersListTable,
       refetchData,
-      deleteService,
+      deleteOneVouchersInGroup,
+      restoreOneSoftVouchersInGroup,
       checkStatus,
 
       // UI
       resolveUserStatusVariant,
       checkClassified,
       resolveUserClassifiedVariant,
+      restoreSoftVouchersInGroup,
 
       // Extra Filters
       classified,
@@ -330,13 +330,14 @@ export default {
       refVouchersListTable,
       convertDate,
       refetchData,
-      deleteService,
       checkStatus,
       checkClassified,
       resolveUserClassifiedVariant,
       classifiedOptions,
       deleteVouchersInGroup,
-
+      deleteOneVouchersInGroup,
+      restoreOneSoftVouchersInGroup,
+      restoreSoftVouchersInGroup,
       // Filter
       avatarText,
 

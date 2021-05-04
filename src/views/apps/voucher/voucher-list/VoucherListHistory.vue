@@ -138,7 +138,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteService(data.item._id)"
+              @click="deleteOneSoftVouchersInGroup(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -281,7 +281,7 @@ export default {
       isSortDirDesc,
       refVouchersListTable,
       refetchData,
-      deleteService,
+      deleteOneSoftVouchersInGroup,
       checkStatus,
 
       // UI
@@ -337,7 +337,7 @@ export default {
       refVouchersListTable,
       convertDate,
       refetchData,
-      deleteService,
+      deleteOneSoftVouchersInGroup,
       checkStatus,
       checkClassified,
       resolveUserClassifiedVariant,
