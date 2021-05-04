@@ -80,7 +80,7 @@ export default function useVoucherList() {
             toast({
               component: ToastificationContent,
               props: {
-                title: 'Error fetching services list',
+                title: 'Error fetching voucher list',
                 icon: 'AlertTriangleIcon',
                 variant: 'danger',
               },
@@ -116,7 +116,7 @@ export default function useVoucherList() {
           toast({
             component: ToastificationContent,
             props: {
-              title: 'Error fetching services list',
+              title: 'Error fetching voucher list',
               icon: 'AlertTriangleIcon',
               variant: 'danger',
             },
@@ -143,7 +143,7 @@ export default function useVoucherList() {
           toast({
             component: ToastificationContent,
             props: {
-              title: 'Error fetching services list',
+              title: 'Error fetching voucher list',
               icon: 'AlertTriangleIcon',
               variant: 'danger',
             },
@@ -151,10 +151,7 @@ export default function useVoucherList() {
         })
   }
 
-  const deleteVouchersInGroup = (_id) => {
-    if (_id != null) {
-      selected.value.push(_id)
-    }
+  const deleteVouchersInGroup = () => {
     store
         .dispatch('app_voucher/deleteVouchersInGroup', {VoucherIdArray: selected.value})
         .then(response => {
@@ -170,7 +167,30 @@ export default function useVoucherList() {
           toast({
             component: ToastificationContent,
             props: {
-              title: 'Error fetching services list',
+              title: 'Error fetching vouchers list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
+  const deleteOneVouchersInGroup = id => {
+    store
+        .dispatch('app_voucher/deleteOneVouchersInGroup', {_id: id})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Delete voucher successfully.")
+            fetchListVouchers(group.value)
+          } else {
+            alert("danger", "Delete voucher failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching voucher list',
               icon: 'AlertTriangleIcon',
               variant: 'danger',
             },
@@ -252,6 +272,7 @@ export default function useVoucherList() {
     resolveUserClassifiedVariant,
     fetchListVouchers,
     deleteVouchersInGroup,
+    deleteOneVouchersInGroup,
     addVouchersInGroup,
     checkStatus,
     changeStatus,

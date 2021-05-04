@@ -186,7 +186,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteVouchersInGroup(data.item._id)"
+              @click="deleteOneVouchersInGroup(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -346,6 +346,7 @@ export default {
       refVouchersListTable,
       refetchData,
       deleteVouchersInGroup,
+      deleteOneVouchersInGroup,
       addVouchersInGroup,
       checkStatus,
       changeStatus,
@@ -406,6 +407,7 @@ export default {
       convertDate,
       refetchData,
       deleteVouchersInGroup,
+      deleteOneVouchersInGroup,
       checkStatus,
       changeStatus,
       checkClassified,

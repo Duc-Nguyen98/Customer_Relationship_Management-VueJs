@@ -169,10 +169,26 @@ export default {
     },
 
     //Vouchers
+    deleteOneVouchersInGroup(ctx, { _id }) {
+      return new Promise((resolve, reject) => {
+        axios
+            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/trash/voucher-items/delete/${_id}`)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
     deleteVouchersInGroup(ctx, VoucherIdArray) {
       return new Promise((resolve, reject) => {
         axios
             .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete/many/voucher`, VoucherIdArray)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    deleteOneSoftVouchersInGroup(ctx, { _id }) {
+      return new Promise((resolve, reject) => {
+        axios
+            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/voucher-items/delete-soft/${_id}`)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -185,5 +201,24 @@ export default {
             .catch(error => reject(error))
       })
     },
+
+    //Restore
+    restoreOneSoftVouchersInGroup(ctx, { _id }) {
+      return new Promise((resolve, reject) => {
+        axios
+            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/trash/voucher-items/restore/${_id}`)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    restoreSoftVouchersInGroup(ctx, VoucherIdArray) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/restore/many/voucher`, VoucherIdArray)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+
   },
 }
