@@ -131,6 +131,14 @@ export default {
             .catch(error => reject(error))
       })
     },
+    changeStatusVouchersInGroup(ctx, {status, VoucherIdArray}) {
+      return new Promise((resolve, reject) => {
+        axios
+            .put(process.env.VUE_APP_ROOT_API + `voucher/group/change/status/many/voucher/${status}`, VoucherIdArray)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
 
     //Trash
 

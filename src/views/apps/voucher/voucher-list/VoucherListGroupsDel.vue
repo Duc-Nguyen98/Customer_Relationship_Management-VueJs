@@ -2,10 +2,7 @@
   <div>
 <!--     Filters-->
     <voucher-list-filters
-            type="group"
-      :classified.sync="classified"
       :status.sync="status"
-      :classified-options="classifiedOptions"
       :status-options="statusOptions"
     />
 
@@ -206,7 +203,6 @@ import useVoucherListGroupsDel from "./useVoucherListGroupsDel";
 import VoucherListFilters from "./VoucherListFilters";
 import VoucherAddMultil from "../voucher-add/VoucherAddMultil";
 import VoucherAddAuto from "../voucher-add/VoucherAddAuto";
-import VoucherAddExcel from "../voucher-add/VoucherAddExcel";
 import voucherStoreModule from "../voucherStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
@@ -216,7 +212,6 @@ export default {
   components: {
     VoucherAddMultil,
     VoucherAddAuto,
-    VoucherAddExcel,
     VoucherListFilters,
     BCard,
     BRow,
@@ -248,12 +243,6 @@ export default {
       if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
         store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
     });
-
-    const classifiedOptions = [
-      { label: "Choose 1 classified", value: null },
-      { label: "Trade Voucher", value: 0 },
-      { label: "Gift Voucher", value: 1 },
-    ];
 
     const statusOptions = [
       { label: "Choose 1 status", value: null },
@@ -320,7 +309,6 @@ export default {
       resolveUserRoleIcon,
       resolveUserStatusVariant,
       resolveUserClassifiedVariant,
-      classifiedOptions,
       statusOptions,
 
       // Extra Filters

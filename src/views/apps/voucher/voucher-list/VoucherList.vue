@@ -2,6 +2,8 @@
   <div>
 <!--     Filters-->
     <vouchers-filters v-if="_id != null"
+                      :classified.sync="classified"
+                      :classified-options="classifiedOptions"
       :status.sync="status"
       :status-options="statusOptions"
     />
@@ -96,7 +98,16 @@
                   @input="chooseAll()"
           >
           </b-form-checkbox>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteVouchersInGroup"><feather-icon icon="TrashIcon" /></span>
+
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteVouchersInGroup(null)"><feather-icon icon="TrashIcon" /></span>
+          <v-select
+                  v-if="selected.length > 0 || all"
+                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                  :options="statusOptions"
+                  :clearable="false"
+                  @input="changeStatus($event)"
+                  class="per-page-selector d-inline-block mx-50"
+          />
         </template>
 
         <!-- Column: Delete -->
@@ -106,7 +117,6 @@
                   :checked="all"
                   @input="chooseOne(data.item._id)"
           ></b-form-checkbox>
-
         </template>
 
         <!-- Column: STT -->
@@ -114,11 +124,17 @@
           {{ data.index + 1 }}
         </template>
 
+
         <!-- Column: voucherCode -->
         <template #cell(voucherCode)="data">
           <span class="cursor-pointer">{{ data.value }} <br />
             <small class="text-muted">@GVC{{ data.item.idVoucher }}</small>
           </span>
+        </template>
+
+        <!-- Column: Classified -->
+        <template #cell(classified)="data">
+          <b-badge pill :variant="resolveUserClassifiedVariant(data.value)">{{ checkClassified(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Status -->
@@ -304,6 +320,12 @@ export default {
       return moment(date).format("DD-MM-YYYY");
     }
 
+    const classifiedOptions = [
+      { label: "Choose 1 classified", value: null },
+      { label: "Trade Voucher", value: 0 },
+      { label: "Gift Voucher", value: 1 },
+    ];
+
     const statusOptions = [
       { label: "Choose a status", value: null },
       { label: "Unreleased", value: 0 },
@@ -326,6 +348,7 @@ export default {
       deleteVouchersInGroup,
       addVouchersInGroup,
       checkStatus,
+      changeStatus,
 
       // UI
       resolveUserRoleVariant,
@@ -334,7 +357,7 @@ export default {
       checkClassified,
       resolveUserClassifiedVariant,
       // Extra Filters
-      type,
+      classified,
       status,
       one,
       all,
@@ -380,8 +403,10 @@ export default {
       refetchData,
       deleteVouchersInGroup,
       checkStatus,
+      changeStatus,
       checkClassified,
       resolveUserClassifiedVariant,
+      classifiedOptions,
 
       // Filter
       avatarText,
@@ -392,7 +417,7 @@ export default {
       resolveUserStatusVariant,
 
       // Extra Filters
-      type,
+      classified,
       status,
       statusOptions,
       isBusy,

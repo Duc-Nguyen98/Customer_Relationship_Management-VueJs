@@ -5,17 +5,6 @@
     </b-card-header>
     <b-card-body>
       <b-row>
-        <b-col v-if="type != 'group'" cols="12" md="6" class="mb-md-0 mb-2">
-          <label>Classified</label>
-          <v-select
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="classified"
-            :options="classifiedOptions"
-            class="w-100"
-            :reduce="(val) => val.value"
-            @input="(val) => $emit('update:classified', val)"
-          />
-        </b-col>
         <b-col cols="12" md="6" class="mb-md-0 mb-2">
           <label>Status Voucher</label>
           <v-select
@@ -46,20 +35,9 @@ export default {
     vSelect,
   },
   props: {
-    type: {
-      type: String,
-    },
-    classified: {
-      type: [Number, null],
-      default: null,
-    },
     status: {
       type: [Number, null],
       default: null,
-    },
-    classifiedOptions: {
-      type: Array,
-      required: true,
     },
     statusOptions: {
       type: Array,

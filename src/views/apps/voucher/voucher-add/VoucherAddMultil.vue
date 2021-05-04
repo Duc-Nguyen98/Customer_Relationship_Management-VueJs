@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <validation-observer ref="validate">
+
                 <b-form
                         @submit.prevent="repeateAgain"
                 >
@@ -11,16 +11,19 @@
                                 <feather-icon icon="ClipboardIcon"/>
                                 <span>Infor vouchers</span>
                             </template>
+                            <validation-observer ref="validate">
                                 <DiscountAndTimeVoucher @update="proVoucher" />
+                            </validation-observer>
                         </b-tab>
                     <!-- Row Loop -->
 
                         <b-tab>
+
                             <template #title>
                                 <feather-icon icon="PlusCircleIcon"/>
                                 <span>Add vouchers</span>
                             </template>
-                           <div class="repeater-form" ref="form" :style="{height: trHeight}">
+                                <div class="repeater-form" ref="form" :style="{height: trHeight}">
                                <b-row
                                        v-for="(item, index) in items"
                                        :id="item.id"
@@ -115,7 +118,7 @@
                         </b-tab>
                     </b-tabs>
                 </b-form>
-            </validation-observer>
+
         </div>
     </div>
 </template>
@@ -158,7 +161,7 @@
                 items: [
                     {
                         idVoucher : null,
-                        voucherCode : "",
+                        voucherCode : null,
                         idGroupVoucher : null,
                         idCustomersUse : null,
                         idLocationUse : null,
@@ -177,11 +180,12 @@
                         }
                     }
                 ],
+                vouchers: [],
                 nextTodoId: 2,
                 data: {
                     vouchers: null,
-                    items: null,
-                }
+                    items: [],
+                },
             }
         },
         mounted() {
@@ -195,55 +199,59 @@
         },
         methods: {
             addVoucher(index) {
-                this.locale = this.locale === "en" ? "vi" : "en"
-                this.$refs.validate.validate().then((success) => {
-                    if (success) {
-                        const val = document.getElementById('voucher' + index).value
-                        if (this._id == null) {
-                            this.items[index] = {
-                                idVoucher : null,
-                                voucherCode : val,
-                                idGroupVoucher : null,
-                                idCustomersUse : null,
-                                idLocationUse : null,
-                                status : 0,
-                                nameCustomerUse : null,
-                                nameLocationUse : null,
-                                usedDate : null,
-                                softDelete : 0,
-                                created : {
-                                    createBy : "admin",
-                                    time : Date.now()
-                                },
-                                modified : {
-                                    modifyBy : "admin",
-                                    time : Date.now()
-                                }
+                const val = document.getElementById('voucher' + index).value
+                if (val) {
+                    if (this._id == null) {
+                        this.vouchers[index] = {
+                            idVoucher : null,
+                            voucherCode : val,
+                            idGroupVoucher : null,
+                            idCustomersUse : null,
+                            idLocationUse : null,
+                            status : 0,
+                            nameCustomerUse : null,
+                            nameLocationUse : null,
+                            usedDate : null,
+                            softDelete : 0,
+                            created : {
+                                createBy : "admin",
+                                time : Date.now()
+                            },
+                            modified : {
+                                modifyBy : "admin",
+                                time : Date.now()
                             }
-                        } else {
-                            this.items[index] = val
                         }
+                    } else {
+                        this.vouchers[index] = val
                     }
-                })
+                } else {
+                    this.vouchers = this.vouchers.filter((item, key) => key != index)
+                    this.$toast({
+                        component: ToastificationContent,
+                        props: {
+                            title: 'Please enter all fields or add a voucher',
+                            icon: 'AlertTriangleIcon',
+                            variant: 'danger',
+                        },
+                    })
+                }
             },
             emitData() {
-                this.locale = this.locale === "en" ? "vi" : "en"
-                this.$refs.validate.validate().then((success) => {
-                    if (success) {
-                        this.data.items = this.items
-                        this.$emit('update', this.data)
-                        this.$bvModal.hide("modal-lg")
-                    } else {
-                        this.$toast({
-                            component: ToastificationContent,
-                            props: {
-                                title: 'Please enter all fields or add a voucher',
-                                icon: 'AlertTriangleIcon',
-                                variant: 'danger',
-                            },
-                        })
-                    }
-                 })
+                if ( this.vouchers.length > 0 && this.data.vouchers != null) {
+                    this.data.items = this.items
+                    this.$emit('update', this.data)
+                    this.$bvModal.hide("modal-lg")
+                } else {
+                    this.$toast({
+                        component: ToastificationContent,
+                        props: {
+                            title: 'Please enter all fields or add a voucher',
+                            icon: 'AlertTriangleIcon',
+                            variant: 'danger',
+                        },
+                    })
+                }
             },
             proVoucher(data) {
                 this.data.vouchers = data

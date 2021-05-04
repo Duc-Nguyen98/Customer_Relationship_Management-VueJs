@@ -17,6 +17,7 @@ export default function useVoucherDel() {
     { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: true },
     { key: 'voucherCode', label: 'Voucher code', formatter: title, sortable: false },
+    { key: 'classified', label: 'Classified', sortable: true },
     { key: 'status', label: 'Status', sortable: false },
     { key: 'created', label: 'Created At', sortable: false },
     { key: 'created_by', label: 'Created By', sortable: false },
@@ -28,7 +29,7 @@ export default function useVoucherDel() {
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref('')
   const isSortDirDesc = ref(true)
-  const type = ref(null)
+  const classified = ref(null)
   const status = ref(null)
   const Vouchers = ref([])
 
@@ -44,10 +45,10 @@ export default function useVoucherDel() {
 
   const refetchData = (idGroup) => {
     group.value = idGroup
-    fetchListVouchers(idGroup)
+    fetchListVouchersTrash(idGroup)
   }
 
-  watch([currentPage, perPage, searchQuery, type, status], () => {
+  watch([currentPage, perPage, searchQuery, classified, status], () => {
     refetchData(group.value)
   })
 
@@ -66,6 +67,7 @@ export default function useVoucherDel() {
               perPage: perPage.value,
               page: currentPage.value,
               status: status.value,
+              classified: classified.value,
             }
           })
           .then(response => {
@@ -162,9 +164,9 @@ export default function useVoucherDel() {
   }
 
   const resolveUserClassifiedVariant = stt => {
-    if (stt === 0) return 'info'
-    if (stt === 1) return 'success'
-    return 'info'
+    if (stt === 0) return 'light-info'
+    if (stt === 1) return 'light-success'
+    return 'light-info'
   }
 
   const checkClassified = stt => {
@@ -198,7 +200,7 @@ export default function useVoucherDel() {
     resolveUserStatusVariant,
     refetchData,
     // Extra Filters
-    type,
+    classified,
     status,
     alert,
     isBusy,
