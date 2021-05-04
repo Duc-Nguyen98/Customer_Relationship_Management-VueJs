@@ -202,7 +202,7 @@
                 const val = document.getElementById('voucher' + index).value
                 if (val) {
                     if (this._id == null) {
-                        this.vouchers[index] = {
+                        this.items[index] = {
                             idVoucher : null,
                             voucherCode : val,
                             idGroupVoucher : null,

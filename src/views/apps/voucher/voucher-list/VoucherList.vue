@@ -376,12 +376,10 @@ export default {
         Vouchers.value = [...Vouchers.value, ...vouchers.items]
         store.commit('app_voucher/saveVouchers', vouchers)
       } else {
-
         const data = {
           voucherCode: vouchers.items,
           ...vouchers.vouchers,
         }
-        console.log(data)
         addVouchersInGroup(_id, data)
       }
     }

@@ -181,7 +181,7 @@
                                                 variant="outline-secondary"
                                                 class="mr-2 text-uppercase"
                                                 type="button"
-                                                :to="{name: 'apps-voucher-list'}"
+                                                @click="$bvModal.hide('modal-lg2')"
                                         >
                                             Cancel
                                         </b-button>

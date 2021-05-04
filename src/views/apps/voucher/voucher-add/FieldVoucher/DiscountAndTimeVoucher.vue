@@ -213,7 +213,7 @@
                                 variant="outline-secondary"
                                 class="mr-2 text-uppercase"
                                 type="button"
-                                @click="$bvModal.hide('modal-lg')"
+                                @click="hideModal"
                         >
                             Cancel
                         </b-button>
@@ -335,6 +335,10 @@
 
         },
         methods: {
+            hideModal() {
+                this.$bvModal.hide('modal-lg');
+                this.$bvModal.hide('modal-lg2');
+            },
             emitData() {
                 this.locale = this.locale === "en" ? "vi" : "en"
                 this.$refs.validate.validate().then((success) => {

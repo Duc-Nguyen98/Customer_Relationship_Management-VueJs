@@ -160,6 +160,7 @@ export default function useVoucherList() {
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete vouchers successfully.")
+            selected.value = []
             fetchListVouchers(group.value)
           } else {
             alert("danger", "Delete vouchers failed.")

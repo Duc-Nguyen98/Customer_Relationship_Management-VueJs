@@ -115,7 +115,7 @@ export default {
     addVouchersInGroup(ctx, {_id, voucherCode}) {
       return new Promise((resolve, reject) => {
         axios
-            .post(process.env.VUE_APP_ROOT_API + `voucher/group/update/many/voucher/add/${_id}`, {voucherCode})
+            .post(process.env.VUE_APP_ROOT_API + `voucher/group/update/many/voucher/add/${_id}`, voucherCode)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -170,7 +170,6 @@ export default {
 
     //Vouchers
     deleteVouchersInGroup(ctx, VoucherIdArray) {
-      console.log(VoucherIdArray)
       return new Promise((resolve, reject) => {
         axios
             .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete/many/voucher`, VoucherIdArray)
@@ -179,7 +178,6 @@ export default {
       })
     },
     deleteSoftVouchersInGroup(ctx, VoucherIdArray) {
-      console.log(VoucherIdArray)
       return new Promise((resolve, reject) => {
         axios
             .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete-soft/many/voucher`, VoucherIdArray)

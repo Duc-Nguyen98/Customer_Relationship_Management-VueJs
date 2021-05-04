@@ -12,7 +12,8 @@
     >
 
       <!-- Information Group tab -->
-      <tab-content title="Information Group" :before-change="validateStep1">
+<!--        :before-change="validateStep1"-->
+      <tab-content title="Information Group">
         <validation-observer ref="information">
         <b-row>
           <b-col
