@@ -14,6 +14,7 @@ export default function useVoucherListGroups() {
 
   // Table Handlers
   const tableColumns = [
+    { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: true },
     { key: 'title', label: 'Name Group', formatter: title, sortable: true },
     { key: 'note', label: 'Note', sortable: true },
@@ -167,9 +168,59 @@ export default function useVoucherListGroups() {
     return 'Trade Voucher'
   }
 
+  const selected = ref([])
+  const one = ref(false)
+  const all = ref(false)
+
+  const chooseOne = (item) => {
+    one.value = !one.value;
+    if (selected.value.indexOf(item) != -1) {
+      selected.value = selected.value.filter(val => val != item)
+    } else {
+      selected.value.push(item)
+    }
+  }
+
+  const chooseAll = () => {
+    all.value = !all.value
+    Vouchers.value.map(obj => {
+      chooseOne(obj._id)
+    })
+  }
+
+  const deleteSoftManyGroups = () => {
+    store
+        .dispatch('app_voucher/deleteSoftManyGroups', {GroupIdArray: selected.value})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Delete group vouchers successfully.")
+            selected.value = []
+            fetchVouchers()
+          } else {
+            alert("danger", "Delete group vouchers failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching group vouchers list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
   return {
+    one,
+    all,
+    selected,
+    chooseOne,
+    chooseAll,
     fetchVouchers,
     deleteVoucherSoft,
+    deleteSoftManyGroups,
     checkStatus,
     checkClassified,
     Vouchers,

@@ -65,7 +65,7 @@
                   class="float-left"
                   id="checkbox-1"
                   name="checkbox-1"
-                  @input="chooseAll()"
+                  @change="chooseAll()"
           >
           </b-form-checkbox>
           <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteVouchersInGroup"><feather-icon icon="TrashIcon" /></span>
@@ -77,7 +77,7 @@
           <b-form-checkbox
                   :id="data.item._id"
                   :checked="all"
-                  @input="chooseOne(data.item._id)"
+                  @change="chooseOne(data.item._id)"
           ></b-form-checkbox>
         </template>
 
