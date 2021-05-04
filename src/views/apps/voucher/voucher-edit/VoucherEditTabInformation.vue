@@ -82,7 +82,7 @@
                                                     <v-select
                                                             v-show="system != 0"
                                                             :disabled="system == 0"
-                                                            v-model="selectedSys"
+                                                            v-model="GroupDataInfo.scopeApply.shop.listShop"
                                                             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                                             multiple
                                                             :options="$store.state.app_voucher.allSystem"
@@ -118,7 +118,7 @@
                                                     <span v-show="GroupDataInfo.scopeApply.customer.all == 0">Choose all groups customer</span>
                                                     <v-select
                                                             v-show="GroupDataInfo.scopeApply.customer.all != 0"
-                                                            v-model="selectedCus"
+                                                            v-model="GroupDataInfo.scopeApply.customer.listGroupCustomer"
                                                             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                                             multiple
                                                             :options="$store.state.app_voucher.allCustomers"

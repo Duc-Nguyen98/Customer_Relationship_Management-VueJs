@@ -17,6 +17,7 @@ export default function useVoucherList() {
     { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: true },
     { key: 'voucherCode', label: 'Voucher code', formatter: title, sortable: false },
+    { key: 'classified', label: 'Classified', sortable: true },
     { key: 'status', label: 'Status', sortable: false },
     { key: 'created', label: 'Created At', sortable: false },
     { key: 'created_by', label: 'Created By', sortable: false },
@@ -28,7 +29,7 @@ export default function useVoucherList() {
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref('')
   const isSortDirDesc = ref(true)
-  const type = ref(null)
+  const classified = ref(null)
   const status = ref(null)
   const Vouchers = ref([])
 
@@ -47,12 +48,12 @@ export default function useVoucherList() {
     fetchListVouchers(idGroup)
   }
 
-  watch([currentPage, perPage, searchQuery, type, status], () => {
+  watch([currentPage, perPage, searchQuery, classified, status], () => {
     refetchData(group.value)
   })
 
-  const time = ref(null);
-  const isBusy = ref(null);
+  const time = ref(null)
+  const isBusy = ref(null)
   const fetchListVouchers = (idGroup) => {
     isBusy.value = true
     if (time.value) {
@@ -66,6 +67,7 @@ export default function useVoucherList() {
               perPage: perPage.value,
               page: currentPage.value,
               status: status.value,
+              classified: classified.value,
             }
           })
           .then(response => {
@@ -126,8 +128,33 @@ export default function useVoucherList() {
   const one = ref(false)
   const all = ref(false)
 
+  const changeStatus = (status) => {
+    store
+        .dispatch('app_voucher/changeStatusVouchersInGroup', {status: status, VoucherIdArray: {VoucherIdArray: selected.value}})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Delete vouchers successfully.")
+            fetchListVouchers(group.value)
+          } else {
+            alert("danger", "Delete vouchers failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching services list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
   const deleteVouchersInGroup = (_id) => {
-    selected.value.push(_id)
+    if (_id != null) {
+      selected.value.push(_id)
+    }
     store
         .dispatch('app_voucher/deleteVouchersInGroup', {VoucherIdArray: selected.value})
         .then(response => {
@@ -203,9 +230,9 @@ export default function useVoucherList() {
   }
 
   const resolveUserClassifiedVariant = stt => {
-    if (stt === 0) return 'info'
-    if (stt === 1) return 'success'
-    return 'info'
+    if (stt === 0) return 'light-info'
+    if (stt === 1) return 'light-success'
+    return 'light-info'
   }
 
   const checkClassified = stt => {
@@ -226,6 +253,7 @@ export default function useVoucherList() {
     deleteVouchersInGroup,
     addVouchersInGroup,
     checkStatus,
+    changeStatus,
     Vouchers,
     tableColumns,
     perPage,
@@ -242,7 +270,7 @@ export default function useVoucherList() {
     resolveUserStatusVariant,
     refetchData,
     // Extra Filters
-    type,
+    classified,
     status,
     alert,
     isBusy,

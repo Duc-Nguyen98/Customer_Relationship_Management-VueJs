@@ -2,10 +2,7 @@
   <div>
 <!--     Filters-->
     <voucher-list-filters
-            type="group"
-      :classified.sync="classified"
       :status.sync="status"
-      :classified-options="classifiedOptions"
       :status-options="statusOptions"
     />
 
@@ -255,12 +252,6 @@ export default {
         store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
     });
 
-    const classifiedOptions = [
-      { label: "Choose 1 classified", value: null },
-      { label: "Trade Voucher", value: 0 },
-      { label: "Gift Voucher", value: 1 },
-    ];
-
     const statusOptions = [
       { label: "Choose 1 status", value: null },
       { label: "Inactive", value: 0 },
@@ -327,7 +318,6 @@ export default {
       resolveUserStatusVariant,
       resolveUserClassifiedVariant,
 
-      classifiedOptions,
       statusOptions,
 
       // Extra Filters

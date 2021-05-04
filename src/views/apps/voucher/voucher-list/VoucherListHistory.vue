@@ -2,6 +2,8 @@
   <div>
     <!-- Filters -->
     <vouchers-filters
+            :classified.sync="classified"
+            :classified-options="classifiedOptions"
       :status.sync="status"
       :status-options="statusOptions"
     />
@@ -88,6 +90,11 @@
           <span class="cursor-pointer">{{ data.value }} <br />
             <small class="text-muted">@GVC{{ data.item.idVoucher }}</small>
           </span>
+        </template>
+
+        <!-- Column: Classified -->
+        <template #cell(classified)="data">
+          <b-badge pill :variant="resolveUserClassifiedVariant(data.value)">{{ checkClassified(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Status -->
@@ -283,7 +290,7 @@ export default {
       resolveUserClassifiedVariant,
 
       // Extra Filters
-      type,
+      classified,
       status,
       isBusy,
       one,
@@ -297,6 +304,12 @@ export default {
     if (_id != null) {
       refetchData(_id)
     }
+
+    const classifiedOptions = [
+      { label: "Choose 1 classified", value: null },
+      { label: "Trade Voucher", value: 0 },
+      { label: "Gift Voucher", value: 1 },
+    ];
 
     const statusOptions = [
       { label: "Choose a status", value: null },
@@ -328,6 +341,7 @@ export default {
       checkStatus,
       checkClassified,
       resolveUserClassifiedVariant,
+      classifiedOptions,
 
       // Filter
       avatarText,
@@ -336,7 +350,7 @@ export default {
       resolveUserStatusVariant,
 
       // Extra Filters
-      type,
+      classified,
       status,
       statusOptions,
       isBusy,

@@ -2,6 +2,8 @@
   <div>
     <!-- Filters -->
     <vouchers-filters
+            :classified.sync="classified"
+            :classified-options="classifiedOptions"
       :status.sync="status"
       :status-options="statusOptions"
     />
@@ -66,7 +68,7 @@
                   @input="chooseAll()"
           >
           </b-form-checkbox>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftVouchersInGroup"><feather-icon icon="TrashIcon" /></span>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteVouchersInGroup"><feather-icon icon="TrashIcon" /></span>
         </template>
 
         <!-- Column: Delete -->
@@ -88,6 +90,11 @@
           <span class="cursor-pointer">{{ data.value }} <br />
             <small class="text-muted">@GVC{{ data.item.idVoucher }}</small>
           </span>
+        </template>
+
+        <!-- Column: Classified -->
+        <template #cell(classified)="data">
+          <b-badge pill :variant="resolveUserClassifiedVariant(data.value)">{{ checkClassified(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Status -->
@@ -204,7 +211,7 @@ import vSelect from 'vue-select'
 import store from '@/store'
 import { ref, onUnmounted } from '@vue/composition-api'
 import { avatarText } from '@core/utils/filter'
-import useVoucherListHistory from './useVoucherListHistory'
+import useVoucherDel from './useVoucherDel'
 import VouchersFilters from './VouchersFilters'
 import voucherStoreModule from '../voucherStoreModule'
 import Ripple from 'vue-ripple-directive'
@@ -277,7 +284,7 @@ export default {
       resolveUserClassifiedVariant,
 
       // Extra Filters
-      type,
+      classified,
       status,
       isBusy,
       one,
@@ -285,12 +292,18 @@ export default {
       selected,
       chooseOne,
       chooseAll,
-      deleteSoftVouchersInGroup,
-    } = useVoucherListHistory();
+      deleteVouchersInGroup,
+    } = useVoucherDel();
 
     if (_id != null) {
       refetchData(_id)
     }
+
+    const classifiedOptions = [
+      { label: "Choose 1 classified", value: null },
+      { label: "Trade Voucher", value: 0 },
+      { label: "Gift Voucher", value: 1 },
+    ];
 
     const statusOptions = [
       { label: "Choose a status", value: null },
@@ -305,7 +318,6 @@ export default {
       selected,
       chooseOne,
       chooseAll,
-      deleteSoftVouchersInGroup,
       Vouchers,
       tableColumns,
       perPage,
@@ -322,6 +334,8 @@ export default {
       checkStatus,
       checkClassified,
       resolveUserClassifiedVariant,
+      classifiedOptions,
+      deleteVouchersInGroup,
 
       // Filter
       avatarText,
@@ -330,7 +344,7 @@ export default {
       resolveUserStatusVariant,
 
       // Extra Filters
-      type,
+      classified,
       status,
       statusOptions,
       isBusy,
