@@ -115,7 +115,7 @@ export default {
     addVouchersInGroup(ctx, {_id, voucherCode}) {
       return new Promise((resolve, reject) => {
         axios
-            .post(process.env.VUE_APP_ROOT_API + `voucher/group/update/many/voucher/add/${_id}`, {voucherCode: voucherCode})
+            .post(process.env.VUE_APP_ROOT_API + `voucher/group/update/many/voucher/add/${_id}`, {voucherCode})
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
