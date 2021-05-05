@@ -215,6 +215,10 @@ export default function useVoucherList() {
         })
   }
 
+  const deleteVouchersInAddGroup = (key) => {
+      Vouchers.value = Vouchers.value.filter((obj, index) => index != key)
+  }
+
 
 
   // *===============================================---*
@@ -279,6 +283,7 @@ export default function useVoucherList() {
     addVouchersInGroup,
     checkStatus,
     changeStatusVouchersInGroup,
+    deleteVouchersInAddGroup,
     Vouchers,
     tableColumns,
     perPage,
