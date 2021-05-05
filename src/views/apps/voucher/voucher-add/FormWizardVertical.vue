@@ -10,9 +10,9 @@
       class="wizard-vertical mb-3"
       @on-complete="formSubmitted"
     >
-
+<!--        :before-change="validateStep1"-->
       <!-- Information Group tab -->
-      <tab-content title="Information Group" :before-change="validateStep1">
+      <tab-content title="Information Group">
         <validation-observer ref="information">
         <b-row>
           <b-col
@@ -482,30 +482,25 @@ export default {
 
     formSubmitted() {
       const data = store.state.app_voucher.allVouchers
-      const voucherCode = [];
-      data.items.map(obj => {
-        voucherCode.push(obj.voucherCode)
-      })
-      data.vouchers.voucherCode = voucherCode
-      console.log(data.vouchers)
-      store.dispatch('app_voucher/addListVouchersGroup', data.vouchers)
-              .then(response => {
-                if (response.data.success) {
-                  this.alert("success", "Add vouchers successfully.")
-                } else {
-                  this.alert("danger", "Add vouchers failed.")
-                }
-              })
-              .catch((err) => {
-                this.$toast({
-                  component: ToastificationContent,
-                  props: {
-                    title: 'Error add vouchers list',
-                    icon: 'AlertTriangleIcon',
-                    variant: 'danger',
-                  },
-                })
-              })
+      console.log(data)
+      // store.dispatch('app_voucher/addListVouchersGroup', data)
+      //         .then(response => {
+      //           if (response.data.success) {
+      //             this.alert("success", "Add vouchers successfully.")
+      //           } else {
+      //             this.alert("danger", "Add vouchers failed.")
+      //           }
+      //         })
+      //         .catch((err) => {
+      //           this.$toast({
+      //             component: ToastificationContent,
+      //             props: {
+      //               title: 'Error add vouchers list',
+      //               icon: 'AlertTriangleIcon',
+      //               variant: 'danger',
+      //             },
+      //           })
+      //         })
     },
   },
   watch: {
