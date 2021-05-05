@@ -482,13 +482,7 @@ export default {
 
     formSubmitted() {
       const data = store.state.app_voucher.allVouchers
-      const voucherCode = [];
-      data.items.map(obj => {
-        voucherCode.push(obj.voucherCode)
-      })
-      data.vouchers.voucherCode = voucherCode
-      console.log(data.vouchers)
-      store.dispatch('app_voucher/addListVouchersGroup', data.vouchers)
+      store.dispatch('app_voucher/addListVouchersGroup', data)
               .then(response => {
                 if (response.data.success) {
                   this.alert("success", "Add vouchers successfully.")

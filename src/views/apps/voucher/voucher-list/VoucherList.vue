@@ -384,7 +384,7 @@
       const dataVoucher = (vouchers) => {
         if (_id == null) {
           Vouchers.value = [...Vouchers.value, ...vouchers.items]
-          store.commit('app_voucher/saveVouchers', vouchers)
+          store.commit('app_voucher/saveVouchers', Vouchers.value)
         } else {
           const data = {
             voucherCode: vouchers.items,

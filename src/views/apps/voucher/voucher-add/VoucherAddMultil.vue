@@ -160,16 +160,23 @@
             return {
                 items: [
                     {
-                        idVoucher : null,
+                        idVoucher: null,
                         voucherCode : null,
-                        idGroupVoucher : null,
-                        idCustomersUse : null,
-                        idLocationUse : null,
                         status : 0,
-                        nameCustomerUse : null,
-                        nameLocationUse : null,
-                        usedDate : null,
-                        softDelete : 0,
+                        discount:{
+                            PercentAMaximum : {
+                                percent : 0,
+                                maximumMoney : 0,
+                            },
+                            reduction : {
+                                money : null,
+                            },
+                        },
+                        timeLine:{
+                            release : "2021-04-30",
+                            expiration : "2021-05-05"
+                        },
+                        classified: 0,
                         created : {
                             createBy : "admin",
                             time : Date.now()
@@ -205,14 +212,9 @@
                         this.items[index] = {
                             idVoucher : null,
                             voucherCode : val,
-                            idGroupVoucher : null,
-                            idCustomersUse : null,
-                            idLocationUse : null,
+                            discount: this.data.vouchers.discount,
+                            timeLine:this.data.vouchers.timeLine,
                             status : 0,
-                            nameCustomerUse : null,
-                            nameLocationUse : null,
-                            usedDate : null,
-                            softDelete : 0,
                             classified: this.data.vouchers.classified,
                             created : {
                                 createBy : "admin",

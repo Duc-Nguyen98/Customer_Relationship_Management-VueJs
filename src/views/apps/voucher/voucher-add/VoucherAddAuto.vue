@@ -329,14 +329,9 @@
                                     {
                                         idVoucher: null,
                                         voucherCode: this.data.begin + this.makeid(length) + this.data.end,
-                                        idGroupVoucher: null,
-                                        idCustomersUse: null,
-                                        idLocationUse: null,
-                                        status: 0,
-                                        nameCustomerUse: null,
-                                        nameLocationUse: null,
-                                        usedDate: null,
-                                        softDelete: 0,
+                                        discount: this.dataVouchers.vouchers.discount,
+                                        timeLine:this.dataVouchers.vouchers.timeLine,
+                                        status : 0,
                                         classified: this.dataVouchers.vouchers.classified,
                                         created: {
                                             createBy: "admin",
