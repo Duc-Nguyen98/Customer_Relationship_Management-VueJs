@@ -105,7 +105,7 @@
                       rules="required|email"
               >
                 <b-form-input
-                        v-model="shopData.mail"
+                        v-model="shopData.email"
                         :state="errors.length > 0 ? false : null"
                         placeholder="Email"
                 />
@@ -306,7 +306,6 @@
                     variant="outline-secondary"
                     class="mr-2 text-uppercase"
                     type="button"
-                    :to="{name: 'apps-shops-list'}"
             >
               Cancel
             </b-button>
@@ -314,7 +313,7 @@
                     class="text-uppercase"
                     variant="primary"
                     type="button"
-                    @click="validationForm({ shopData: shopData, _id: shopData._id })"
+                    @click="validationForm"
             >
               Save Changes
             </b-button>
@@ -413,6 +412,36 @@ export default {
 
     const api = process.env.VUE_APP_ROOT_API
 
+    const objSelectDistrict = {
+      selected: "a",
+      options: [
+        { value: null, text: "Please select some item", disabled: true },
+        { value: "a", text: "This is First option" },
+        { value: "b", text: "Default Selected Option" },
+        { value: "c", text: "This is another option" },
+      ],
+    };
+
+    const objSelectProvince = {
+      selected: "b",
+      options: [
+        { value: null, text: "Please select some item", disabled: true },
+        { value: "a", text: "This is First option" },
+        { value: "b", text: "Default Selected Option" },
+        { value: "c", text: "This is another option" },
+      ],
+    };
+
+    const objSelectWard = {
+      selected: "c",
+      options: [
+        { value: null, text: "Please select some item", disabled: true },
+        { value: "a", text: "This is First option" },
+        { value: "b", text: "Default Selected Option" },
+        { value: "c", text: "This is another option" },
+      ],
+    };
+
     const optionsActive = [
       { label: "Inactive", value: 0 },
       { label: "Active", value: 1 },
@@ -431,7 +460,7 @@ export default {
       // eslint-disable-next-line no-param-reassign
       // shopData.avatar = base64
 
-      store.dispatch('app-shops/uploadShop', {
+      store.dispatch('app-shops/uploadCustomer', {
         file: refInputEl.value.files[0],
         _id: router.currentRoute.params.id
       })
@@ -453,7 +482,7 @@ export default {
                 toast({
                   component: ToastificationContent,
                   props: {
-                    title: 'Error fetching shop list',
+                    title: 'Error fetching users list',
                     icon: 'AlertTriangleIcon',
                     variant: 'danger',
                   },
@@ -469,6 +498,9 @@ export default {
       api,
       toast,
       shopData,
+      objSelectDistrict,
+      objSelectProvince,
+      objSelectWard,
 
       avatarText,
       deleteShop,
@@ -482,6 +514,7 @@ export default {
     };
   },
   methods: {
+
     alert(variant, message) {
       this.toast({
         component: ToastificationContent,

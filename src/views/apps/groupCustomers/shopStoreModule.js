@@ -38,10 +38,10 @@ export default {
           .catch(error => reject(error))
       })
     },
-    updateShop(ctx, { shopData, _id }) {
+    updateUser(ctx, { userData, _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .put(process.env.VUE_APP_ROOT_API + `shop/update/${_id}`, shopData)
+            .put(process.env.VUE_APP_ROOT_API + `customer/update/${_id}`, userData)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -94,12 +94,12 @@ export default {
             .catch(error => reject(error))
       })
     },
-    uploadShop(ctx, { file, _id }) {
+    uploadCustomer(ctx, { file, _id }) {
       let data = new FormData()
       data.append('file', file)
       return new Promise((resolve, reject) => {
         axios
-            .post(process.env.VUE_APP_ROOT_API + `shop/upload/${_id}`, data)
+            .post(process.env.VUE_APP_ROOT_API + `customer/upload/${_id}`, data)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })

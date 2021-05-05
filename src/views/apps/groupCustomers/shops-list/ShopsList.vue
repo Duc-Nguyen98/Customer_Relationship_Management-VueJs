@@ -1,9 +1,11 @@
 <template>
   <div>
-<!--     Filters-->
-    <voucher-list-filters
+    <!-- Filters -->
+    <shops-list-filters
       :status.sync="status"
+      :region.sync="region"
       :status-options="statusOptions"
+      :region-options="regionOptions"
     />
 
     <!-- Table Container Card -->
@@ -14,7 +16,7 @@
           <!-- Per Page -->
           <b-col
             cols="12"
-            md="3"
+            md="6"
             class="d-flex align-items-center justify-content-start mb-1 mb-md-0"
           >
             <label>Show</label>
@@ -29,24 +31,29 @@
           </b-col>
 
           <!-- Search -->
-          <b-col cols="12" md="9">
+          <b-col cols="12" md="6">
             <div class="d-flex align-items-center justify-content-end">
               <b-form-input
                       v-model="searchQuery"
                       class="d-inline-block mr-1"
                       placeholder="Search..."
               />
-
-              <!--              Start add voucher -->
-
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{name: 'apps-group-voucher-add'}"
+                      :to="{ name: 'apps-shops-add' }"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
-                /> Group voucher</span>
+                /></span>
+              </b-button>
+              <b-button
+                      variant="primary"
+                      :to="{ name: 'apps-shops-list-del' }"
+              >
+                <span class="text-nowrap"
+                ><feather-icon icon="Trash2Icon"
+                /></span>
               </b-button>
             </div>
           </b-col>
@@ -54,9 +61,9 @@
       </div>
 
       <b-table
-        ref="refVoucherListTable"
-        class="position-relative"
-        :items="Vouchers"
+        ref="refShopListTable"
+        class="position-relative scrollbar"
+        :items="Shops"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -66,18 +73,16 @@
         :sort-desc.sync="isSortDirDesc"
         :busy="isBusy"
       >
-
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
         <template #head(selected)="scope">
           <b-form-checkbox
                   class="float-left"
                   id="cupdateheckbox-1"
                   name="checkbox-1"
-                  :checked="all"
-                  @change="chooseAll()"
+                  @input="chooseAll()"
           >
           </b-form-checkbox>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftManyGroups"><feather-icon icon="TrashIcon" /></span>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftManyShop"><feather-icon icon="TrashIcon" /></span>
         </template>
 
         <!-- Column: Delete -->
@@ -94,41 +99,42 @@
           {{ data.index + 1 }}
         </template>
 
-        <!-- Column: Title -->
-        <template #cell(title)="data">
-          <b-link
-                  :to="{
-                name: 'apps-group-voucher-edit',
+        <!-- Column: User -->
+        <template #cell(name)="data">
+          <b-media vertical-align="center">
+            <template #aside>
+              <b-avatar
+                size="32"
+                :src="api + data.item.avatar"
+                :text="avatarText(data.item.name)"
+                variant="light-primary"
+                :to="{
+                  name: 'apps-shops-edit',
+                  params: { id: data.item._id },
+                }"
+              />
+            </template>
+            <b-link
+              :to="{
+                name: 'apps-shops-edit',
                 params: { id: data.item._id },
               }"
-                  class="font-weight-bold d-block text-nowrap"
-          >
-            {{ data.value }}
-          </b-link>
-          <small class="text-muted">@CS{{ data.item.idGroupVoucher }}</small>
-        </template>
-
-          <!-- Column: Created at -->
-        <template #cell(created_at)="data">
-          {{ convertDate(data.item.created.time) }}
-        </template>
-
-        <!-- Column: Created by -->
-        <template #cell(created_by)="data">
-          <div class="text-nowrap">
-            <feather-icon
-                    :icon="resolveUserRoleIcon(data.item.created.createBy)"
-                    size="18"
-                    class="mr-50"
-                    :class="`text-${resolveUserRoleVariant(data.item.created.createBy)}`"
-            />
-            <span class="align-text-top text-capitalize">{{ data.item.created.createBy }}</span>
-          </div>
+              class="font-weight-bold d-block text-nowrap"
+            >
+              {{ data.item.name }}
+            </b-link>
+            <small class="text-muted">@SA{{ data.item.idShop }}</small>
+          </b-media>
         </template>
 
         <!-- Column: Status -->
         <template #cell(status)="data">
           <b-badge :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+        </template>
+
+        <!-- Column: Region -->
+        <template #cell(region)="data">
+          <b-badge :variant="pillRegion(data.value)">{{ checkRegion(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -145,18 +151,19 @@
                 class="align-middle text-body"
               />
             </template>
+
             <b-dropdown-item
               :to="{
-                name: 'apps-group-voucher-edit',
+                name: 'apps-shops-edit',
                 params: { id: data.item._id },
               }"
             >
-              <feather-icon icon="EditIcon" />
+              <feather-icon icon="PlusCircleIcon" />
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteVoucherSoft(data.item._id)"
+              @click="deleteShop(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -184,7 +191,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalVoucher"
+              :total-rows="totalShops"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -209,41 +216,41 @@
 </template>
 
 <script>
-  import {
-    BCard,
-    BRow,
-    BCol,
-    BFormInput,
-    BButton,
-    BTable,
-    BMedia,
-    BAvatar,
-    BLink,
-    BBadge,
-    BDropdown,
-    BDropdownItem,
-    BPagination, BFormCheckbox,
-  } from "bootstrap-vue";
+import {
+  BCard,
+  BRow,
+  BCol,
+  BFormInput,
+  BButton,
+  BTable,
+  BMedia,
+  BAvatar,
+  BLink,
+  BBadge,
+  BDropdown,
+  BDropdownItem,
+  BPagination,
+  BFormCheckbox,
+} from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import useVoucherListGroups from "./useVoucherListGroups";
-import VoucherListFilters from "./VoucherListFilters";
-import VoucherAddMultil from "../voucher-add/VoucherAddMultil";
-import VoucherAddAuto from "../voucher-add/VoucherAddAuto";
-import VoucherAddExcel from "../voucher-add/VoucherAddExcel";
-import voucherStoreModule from "../voucherStoreModule";
+import ShopsListFilters from "./ShopsListFilters.vue";
+import useShopsList from "./useShopsList";
+import shopStoreModule from "../shopStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
+
+// Notification
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+import { useToast } from 'vue-toastification/composition'
+
 
 export default {
   components: {
-    VoucherAddMultil,
-    VoucherAddAuto,
-    VoucherAddExcel,
-    VoucherListFilters,
+    ToastificationContent,
+    ShopsListFilters,
     BCard,
     BRow,
     BCol,
@@ -264,20 +271,41 @@ export default {
     Ripple,
   },
   setup() {
-    const SERVICES_APP_STORE_MODULE_NAME = "app_voucher";
+
+    const toast = useToast()
+
+    const api = process.env.VUE_APP_ROOT_API
+    const USER_APP_STORE_MODULE_NAME = 'app-shops'
 
     // Register module
-    if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, voucherStoreModule);
+    if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
+      store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
-    });
+      if (store.hasModule(USER_APP_STORE_MODULE_NAME))
+        store.unregisterModule(USER_APP_STORE_MODULE_NAME);
+    })
+
+    const regionOptions = [
+      { label: 'Choose a region', value: null },
+      { label: 'TP.Ha Noi', value: 0 },
+      { label: 'TP.Ho Chi Minh', value: 1 },
+    ]
+
+    const pillRegion = (region) => {
+      switch (region) {
+        case 0:
+          return 'primary'
+          break;
+        case 1:
+          return 'success'
+          break;
+      }
+    }
 
     const statusOptions = [
-      { label: "Choose 1 status", value: null },
+      { label: "Choose a status", value: null },
       { label: "Inactive", value: 0 },
       { label: "Active", value: 1 },
     ];
@@ -287,79 +315,77 @@ export default {
     };
 
     const {
-      Vouchers,
-      tableColumns,
-      perPage,
-      currentPage,
-      totalVoucher,
-      dataMeta,
-      perPageOptions,
-      searchQuery,
-      sortBy,
-      isSortDirDesc,
-      refVoucherListTable,
-      refetchData,
-      deleteVoucherSoft,
-      deleteSoftManyGroups,
-      checkStatus,
-        checkClassified,
-
-      // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
-      resolveUserStatusVariant,
-       resolveUserClassifiedVariant,
-
-      // Extra Filters
-        classified,
-      status,
-      isBusy,
       one,
       all,
       selected,
       chooseOne,
       chooseAll,
-    } = useVoucherListGroups();
-
-    return {
-      Vouchers,
+      deleteSoftManyShop,
+      Shops,
       tableColumns,
       perPage,
       currentPage,
-      totalVoucher,
+      totalShops,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refVoucherListTable,
+      refShopListTable,
+      refetchData,
+      deleteShop,
+      checkRegion,
+      checkStatus,
+
+      // UI
+      resolveUserStatusVariant,
+
+      // Extra Filters
+      isBusy,
+      status,
+      region,
+    } = useShopsList();
+
+    return {
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
+      deleteSoftManyShop,
+      api,
+      toast,
+      Shops,
+      tableColumns,
+      perPage,
+      currentPage,
+      totalShops,
+      dataMeta,
+      perPageOptions,
+      searchQuery,
+      sortBy,
+      isSortDirDesc,
+      refShopListTable,
+      checkRegion,
+      checkStatus,
       convertDate,
       refetchData,
-      deleteVoucherSoft,
-      deleteSoftManyGroups,
-      checkStatus,
-        checkClassified,
+      deleteShop,
+      pillRegion,
 
       // Filter
       avatarText,
 
       // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
       resolveUserStatusVariant,
-      resolveUserClassifiedVariant,
 
+      regionOptions,
       statusOptions,
 
       // Extra Filters
-      classified,
-      status,
       isBusy,
-      one,
-      all,
-      selected,
-      chooseOne,
-      chooseAll,
+      status,
+      region,
     };
   },
 };

@@ -65,7 +65,8 @@
                   class="float-left"
                   id="checkbox-1"
                   name="checkbox-1"
-                  @input="chooseAll()"
+                  :checked="all"
+                  @change="chooseAll()"
           >
           </b-form-checkbox>
           <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteVouchersInGroup"><feather-icon icon="TrashIcon" /></span>

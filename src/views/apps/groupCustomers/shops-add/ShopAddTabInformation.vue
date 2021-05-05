@@ -57,7 +57,7 @@
                                     rules="required|email"
                             >
                                 <b-form-input
-                                        v-model="shopData.mail"
+                                        v-model="shopData.email"
                                         :state="errors.length > 0 ? false : null"
                                         placeholder="Email"
                                 />
@@ -258,7 +258,6 @@
                                 variant="outline-secondary"
                                 class="mr-2 text-uppercase"
                                 type="button"
-                                :to="{name: 'apps-shops-list'}"
                         >
                             Cancel
                         </b-button>
