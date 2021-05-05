@@ -14,6 +14,7 @@ export default function useShopsList() {
 
   // Table Handlers
   const tableColumns = [
+    { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: false },
     { key: 'name', label: 'NAME', formatter: title, sortable: true },
     { key: 'telephoneShop', label: 'TELEPHONE SHOP', sortable: true },
@@ -150,7 +151,57 @@ export default function useShopsList() {
     return 'Inactive'
   }
 
+  const selected = ref([])
+  const one = ref(false)
+  const all = ref(false)
+
+  const chooseOne = (item) => {
+    one.value = !one.value;
+    if (selected.value.indexOf(item) != -1) {
+      selected.value = selected.value.filter(val => val != item)
+    } else {
+      selected.value.push(item)
+    }
+  }
+
+  const chooseAll = () => {
+    all.value = !all.value
+    Shops.value.map(obj => {
+      chooseOne(obj._id)
+    })
+  }
+
+  const deleteSoftManyShop = () => {
+    store
+        .dispatch('app-shops/deleteSoftManyShop', {shopIdArray: selected.value})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Delete shops successfully.")
+            selected.value = []
+            all.value = !all.value
+            fetchShops()
+          } else {
+            alert("danger", "Delete shops failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching shops list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
   return {
+    one,
+    all,
+    selected,
+    chooseOne,
+    chooseAll,
     fetchShops,
     deleteShop,
     checkRegion,
@@ -166,7 +217,7 @@ export default function useShopsList() {
     sortBy,
     isSortDirDesc,
     refShopListTable,
-
+    deleteSoftManyShop,
     resolveUserStatusVariant,
     refetchData,
 

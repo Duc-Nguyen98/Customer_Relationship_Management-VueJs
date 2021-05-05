@@ -70,6 +70,30 @@ export default {
             .catch(error => reject(error))
       })
     },
+    deleteManyShop(ctx, shopIdArray) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + `shop/delete/many/shop`, shopIdArray)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    deleteSoftManyShop(ctx, shopIdArray) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + `shop/delete-soft/many/shop`, shopIdArray)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    restoreManyShop(ctx, shopIdArray) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + `shop/restore/many/shop`, shopIdArray)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
     uploadCustomer(ctx, { file, _id }) {
       let data = new FormData()
       data.append('file', file)

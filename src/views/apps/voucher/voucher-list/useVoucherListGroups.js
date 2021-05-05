@@ -194,8 +194,9 @@ export default function useVoucherListGroups() {
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete group vouchers successfully.")
-            selected.value = []
             fetchVouchers()
+            selected.value = []
+            all.value = !all.value
           } else {
             alert("danger", "Delete group vouchers failed.")
           }
