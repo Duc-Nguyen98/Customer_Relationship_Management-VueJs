@@ -315,7 +315,6 @@
                 }
                 return result.join('')
             },
-
             validationForm() {
                 this.locale = this.locale === "en" ? "vi" : "en";
 
@@ -338,6 +337,7 @@
                                         nameLocationUse: null,
                                         usedDate: null,
                                         softDelete: 0,
+                                        classified: this.dataVouchers.vouchers.classified,
                                         created: {
                                             createBy: "admin",
                                             time: Date.now()
