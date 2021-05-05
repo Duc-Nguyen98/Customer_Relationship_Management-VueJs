@@ -5,22 +5,41 @@
                 <!-- Header: Personal Info -->
                 <div class="d-flex mb-2">
                     <feather-icon icon="UserIcon" size="19"/>
-                    <h4 class="mb-0 ml-50">Personal Information</h4>
+                    <h4 class="mb-0 ml-50">Shop Information</h4>
                 </div>
                 <b-row>
                     <!--  Full Name-->
                     <b-col cols="12" md="6" lg="4">
                         <b-form-group>
-                            <label>Full Name</label>
+                            <label>Shop Name</label>
                             <validation-provider
                                     #default="{ errors }"
                                     rules="required"
-                                    name="Full Name"
+                                    name="Shop Name"
                             >
                                 <b-form-input
-                                        v-model="userData.name"
+                                        v-model="shopData.name"
                                         :state="errors.length > 0 ? false : null"
-                                        placeholder="Enter Full Name"
+                                        placeholder="Enter Shop Name"
+                                />
+                                <small class="text-danger">{{ errors[0] }}</small>
+                            </validation-provider>
+                        </b-form-group>
+                    </b-col>
+
+                    <!--  Full Name-->
+                    <b-col cols="12" md="6" lg="4">
+                        <b-form-group>
+                            <label>Owner Shop</label>
+                            <validation-provider
+                                    #default="{ errors }"
+                                    rules="required"
+                                    name="Owner Shop"
+                            >
+                                <b-form-input
+                                        v-model="shopData.ownerShop"
+                                        :state="errors.length > 0 ? false : null"
+                                        placeholder="Enter Owner Shop"
                                 />
                                 <small class="text-danger">{{ errors[0] }}</small>
                             </validation-provider>
@@ -38,7 +57,7 @@
                                     rules="required|email"
                             >
                                 <b-form-input
-                                        v-model="userData.email"
+                                        v-model="shopData.email"
                                         :state="errors.length > 0 ? false : null"
                                         placeholder="Email"
                                 />
@@ -47,7 +66,109 @@
                         </b-form-group>
                     </b-col>
 
-                    <!-- Adress -->
+                    <!-- Telephone -->
+                    <b-col cols="12" md="6" lg="4">
+                        <b-form-group>
+                            <label>Telephone</label>
+                            <validation-provider
+                                    #default="{ errors }"
+                                    name="Telephone"
+                                    rules="required|integer"
+                            >
+                                <b-form-input
+                                        v-model="shopData.telephone"
+                                        :state="errors.length > 0 ? false : null"
+                                        placeholder="Telephone"
+                                />
+                                <small class="text-danger">{{ errors[0] }}</small>
+                            </validation-provider>
+                        </b-form-group>
+                    </b-col>
+
+
+                    <!-- Telephone Shop -->
+                    <b-col cols="12" md="6" lg="4">
+                        <b-form-group>
+                            <label>Telephone Shop</label>
+                            <validation-provider
+                                    #default="{ errors }"
+                                    name="Telephone Shop"
+                                    rules="required|integer"
+                            >
+                                <b-form-input
+                                        v-model="shopData.telephoneShop"
+                                        :state="errors.length > 0 ? false : null"
+                                        placeholder="Telephone Shop"
+                                />
+                                <small class="text-danger">{{ errors[0] }}</small>
+                            </validation-provider>
+                        </b-form-group>
+                    </b-col>
+
+                    <!-- Fax Shop -->
+                    <b-col cols="12" md="6" lg="4">
+                        <b-form-group>
+                            <label>Fax</label>
+                            <validation-provider
+                                    #default="{ errors }"
+                                    name="Fax"
+                                    rules="required|integer"
+                            >
+                                <b-form-input
+                                        v-model="shopData.fax"
+                                        :state="errors.length > 0 ? false : null"
+                                        placeholder="Fax"
+                                />
+                                <small class="text-danger">{{ errors[0] }}</small>
+                            </validation-provider>
+                        </b-form-group>
+                    </b-col>
+
+                    <!-- Status -->
+                    <b-col cols="12" md="6" lg="4">
+                        <b-form-group>
+                            <label for="status">Status</label>
+                            <validation-provider
+                                    #default="{ errors }"
+                                    name="Status"
+                                    rules="required"
+                            >
+                                <v-select
+                                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                        :state="errors.length > 0 ? false : null"
+                                        :value="shopData.status"
+                                        :options="optionsActive"
+                                        :reduce="(val) => val.value"
+                                        @input="(val) => data.status = val"
+                                        class="w-100"
+                                />
+                                <small class="text-danger">{{ errors[0] }}</small>
+                            </validation-provider>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col cols="12" md="6" lg="4">
+                        <b-form-group label="Region" label-for="Region">
+                            <validation-provider
+                                    #default="{ errors }"
+                                    name="Region"
+                                    rules="required"
+                            >
+                                <v-select
+                                        :state="errors.length > 0 ? false : null"
+                                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                        :value="shopData.region"
+                                        :options="regionOptions"
+                                        class="w-100"
+                                        :reduce="(val) => val.value"
+                                        @input="(val) => shopData.region = val"
+                                />
+                                <small class="text-danger">{{ errors[0] }}</small>
+                            </validation-provider>
+                        </b-form-group>
+                    </b-col>
+
+                    <!-- Address -->
                     <b-col cols="12" md="6" lg="4">
                         <b-form-group>
                             <label>Address</label>
@@ -57,143 +178,53 @@
                                     rules="required"
                             >
                                 <b-form-input
-                                        v-model="userData.address"
+                                        v-model="shopData.address"
                                         :state="errors.length > 0 ? false : null"
-                                        placeholder="Adress"
+                                        placeholder="Address"
                                 />
                                 <small class="text-danger">{{ errors[0] }}</small>
                             </validation-provider>
                         </b-form-group>
                     </b-col>
 
-                    <!-- Birth Day -->
-                    <b-col cols="12" md="6" lg="4">
+                    <!-- Fanpage -->
+                    <b-col cols="12" md="6" lg="6">
                         <b-form-group>
-                            <label for="datepicker-placeholder">Birth Day</label>
+                            <label>Fanpage</label>
                             <validation-provider
                                     #default="{ errors }"
-                                    rules="required"
-                                    name="Birth Day"
-                            >
-                            <b-form-datepicker
-                                    id="datepicker-placeholder"
-                                    placeholder="Choose a date"
-                                    local="vi"
-                                    v-model="userData.birthDay"
-                                    :state="errors.length > 0 ? false : null"
-                            />
-                                <small class="text-danger">{{ errors[0] }}</small>
-                            </validation-provider>
-                        </b-form-group>
-                    </b-col>
-
-                    <!-- Telephone Number -->
-                    <b-col cols="12" md="6" lg="4">
-                        <b-form-group>
-                            <label for="telephone">Telephone Number</label>
-                            <validation-provider
-                                    id="telephone"
-                                    #default="{ errors }"
-                                    rules="required|regex:^([0-9]+)$|digits:10"
-                                    name="Telephone Number"
+                                    name="Fanpage"
+                                    rules=""
                             >
                                 <b-form-input
-                                        v-model="userData.telephone"
+                                        v-model="shopData.fanpage"
                                         :state="errors.length > 0 ? false : null"
-                                        placeholder="Enter Telephone Number"
+                                        placeholder="Fanpage"
                                 />
                                 <small class="text-danger">{{ errors[0] }}</small>
                             </validation-provider>
                         </b-form-group>
                     </b-col>
 
-                    <!--  Gender -->
-                    <b-col cols="12" md="6" lg="4">
-                        <b-form-group label="Gender" label-for="Gender">
-                            <validation-provider
-                                    #default="{ errors }"
-                                    rules="required"
-                                    name="Gender"
-                            >
-                            <b-form-radio-group
-                                    :state="errors.length > 0 ? false : null"
-                                    v-model="userData.gender"
-                                    :options="genderOptions"
-                                    class="demo-inline-spacing"
-                                    name="radio-validation"
-                                    value="0"
-                            >
-                            </b-form-radio-group>
-                                <small class="text-danger">{{ errors[0] }}</small>
-                            </validation-provider>
-                        </b-form-group>
-                    </b-col>
-
+                    <!-- Website -->
                     <b-col cols="12" md="6" lg="6">
-                        <b-form-group label="Group" label-for="Group">
+                        <b-form-group>
+                            <label>Website</label>
                             <validation-provider
                                     #default="{ errors }"
-                                    name="Group"
-                                    rules="required"
+                                    name="Fanpage"
+                                    rules=""
                             >
-                                <v-select
+                                <b-form-input
+                                        v-model="shopData.website"
                                         :state="errors.length > 0 ? false : null"
-                                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                        :value="userData.groups"
-                                        :options="groupOptions"
-                                        class="w-100"
-                                        :reduce="(val) => val.value"
-                                        @input="(val) => userData.groups = val"
+                                        placeholder="Website"
                                 />
                                 <small class="text-danger">{{ errors[0] }}</small>
                             </validation-provider>
                         </b-form-group>
                     </b-col>
                 </b-row>
-                <!-- Header: Personal Select -->
-<!--                <div class="d-flex my-2">-->
-<!--                    <feather-icon icon="MapPinIcon" size="19"/>-->
-<!--                    <h4 class="mb-0 ml-50">Address</h4>-->
-<!--                </div>-->
-<!--                <b-row>-->
-<!--                    &lt;!&ndash;  Province Name&ndash;&gt;-->
-<!--                    <b-col cols="12" md="6" lg="4">-->
-<!--                        <b-form-group>-->
-<!--                            <label>Province Name</label>-->
-<!--                            <validation-provider-->
-<!--                                    #default="{ errors }"-->
-<!--                                    rules="required"-->
-<!--                                    name="Province Name"-->
-<!--                            >-->
-<!--                                <b-form-select-->
-<!--                                        v-model="objSelectProvince.selected"-->
-<!--                                        :options="objSelectProvince.options"-->
-<!--                                />-->
-<!--                                <small class="text-danger">{{ errors[0] }}</small>-->
-<!--                            </validation-provider>-->
-<!--                        </b-form-group>-->
-<!--                    </b-col>-->
-<!--                    &lt;!&ndash;  District Name&ndash;&gt;-->
-<!--                    <b-col cols="12" md="6" lg="4">-->
-<!--                        <b-form-group>-->
-<!--                            <label>District Name</label>-->
-<!--                            <b-form-select-->
-<!--                                    v-model="objSelectDistrict.selected"-->
-<!--                                    :options="objSelectDistrict.options"-->
-<!--                            />-->
-<!--                        </b-form-group>-->
-<!--                    </b-col>-->
-<!--                    &lt;!&ndash;  Ward Name&ndash;&gt;-->
-<!--                    <b-col cols="12" md="6" lg="4">-->
-<!--                        <b-form-group>-->
-<!--                            <label>Ward Name</label>-->
-<!--                            <b-form-select-->
-<!--                                    v-model="objSelectWard.selected"-->
-<!--                                    :options="objSelectWard.options"-->
-<!--                            />-->
-<!--                        </b-form-group>-->
-<!--                    </b-col>-->
-<!--                </b-row>-->
                 <!-- Header: Personal Note -->
                 <div class="d-flex my-2">
                     <feather-icon icon="ClipboardIcon" size="19"/>
@@ -206,13 +237,13 @@
                             <validation-provider
                                     #default="{ errors }"
                                     name="Note"
-                                    rules="required"
+                                    rules=""
                             >
                                 <b-form-textarea
                                         id="textarea-rows"
                                         placeholder="Note Here..."
                                         rows="8"
-                                        v-model="userData.note"
+                                        v-model="shopData.note"
                                         :state="errors.length > 0 ? false : null"
                                 />
                                 <small class="text-danger">{{ errors[0] }}</small>
@@ -304,15 +335,19 @@
         setup() {
             const toast = useToast();
             var today = moment();
-            const userData = ref({
-                name: "",
-                address: "",
-                email: "",
-                gender: 0,
-                birthDay: moment(today._d).format("YYYY-MM-DD"),
-                telephone: "",
-                note: "",
-                groups: null,
+            const shopData = ref({
+                name: null,
+                status: 0,
+                ownerShop: null,
+                address: null,
+                note: null,
+                telephone: null,
+                telephoneShop: null,
+                fax: null,
+                mail: null,
+                region: 0,
+                fanpage: null,
+                website: null,
             });
 
             const objSelectDistrict = {
@@ -345,15 +380,14 @@
                 ],
             };
 
-            const groupOptions = [
-                { label: "Normal customers", value: 0 },
-                { label: "Loyal customers", value: 1 },
-                { label: "Potential customers", value: 2 },
+            const optionsActive = [
+                { label: "Inactive", value: 0 },
+                { label: "Active", value: 1 },
             ];
 
-            const genderOptions = [
-                {text: "Male", value: 0},
-                {text: "Female", value: 1},
+            const regionOptions = [
+                { label: "TP. Ha Noi", value: 0 },
+                { label: "TP. Ho Chi Minh", value: 1 },
             ];
 
             const validation = {
@@ -373,13 +407,13 @@
             };
 
             return {
+                optionsActive,
                 toast,
-                userData,
+                shopData,
                 objSelectDistrict,
                 objSelectProvince,
                 objSelectWard,
-                groupOptions,
-                genderOptions,
+                regionOptions,
                 validation,
             };
         },
@@ -401,26 +435,26 @@
                 this.$refs.simpleRules.validate().then((success) => {
                     if (success) {
                         // eslint-disable-next-line
-                        this.addUser();
+                        this.addShop();
                     }
                 });
             },
 
-            addUser() {
-                store.dispatch('app-customers/addUser', this.userData)
+            addShop() {
+                store.dispatch('app-shops/addShop', this.shopData)
                     .then(response => {
                         if (response.data.success) {
-                            this.alert("success", "Add user successfully.")
-                            this.$router.push({name: 'apps-customers-list'});
+                            this.alert("success", "Add shop successfully.")
+                            this.$router.push({name: 'apps-shops-list'});
                         } else {
-                            this.alert("danger", "Add user failed.")
+                            this.alert("danger", "Add shop failed.")
                         }
                     })
                     .catch(() => {
                         this.toast({
                             component: ToastificationContent,
                             props: {
-                                title: 'Error fetching users list',
+                                title: 'Error fetching shops list',
                                 icon: 'AlertTriangleIcon',
                                 variant: 'danger',
                             },

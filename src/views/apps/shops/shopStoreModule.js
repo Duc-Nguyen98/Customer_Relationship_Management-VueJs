@@ -30,10 +30,10 @@ export default {
           .catch(error => reject(error))
       })
     },
-    addUser(ctx, userData) {
+    addShop(ctx, shopData) {
       return new Promise((resolve, reject) => {
         axios
-          .post(process.env.VUE_APP_ROOT_API + 'customer/create', userData)
+          .post(process.env.VUE_APP_ROOT_API + 'shop/create', shopData)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

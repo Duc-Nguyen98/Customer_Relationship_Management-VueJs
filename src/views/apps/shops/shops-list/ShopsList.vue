@@ -133,7 +133,7 @@
 
             <b-dropdown-item
               :to="{
-                name: 'apps-customers-edit',
+                name: 'apps-shops-edit',
                 params: { id: data.item._id },
               }"
             >

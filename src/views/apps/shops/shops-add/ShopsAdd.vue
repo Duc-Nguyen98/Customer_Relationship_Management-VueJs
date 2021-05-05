@@ -2,13 +2,13 @@
   <component :is="userData === undefined ? 'div' : 'b-card'">
     <!-- Alert: No item found -->
     <b-alert variant="danger" :show="userData === undefined">
-      <h4 class="alert-heading">Error fetching user data</h4>
+      <h4 class="alert-heading">Error fetching shop data</h4>
       <div class="alert-body">
-        No user found with this user id. Check
-        <b-link class="alert-link" :to="{ name: 'apps-users-list' }">
-          User List
+        No shop found with this shop id. Check
+        <b-link class="alert-link" :to="{ name: 'apps-shops-list' }">
+          Shop List
         </b-link>
-        for other users.
+        for other shops.
       </div>
     </b-alert>
 
@@ -17,7 +17,7 @@
       <b-tab active>
         <template #title>
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
-          <span class="d-none d-sm-inline">New Account</span>
+          <span class="d-none d-sm-inline">New Shop</span>
         </template>
         <shop-add-tab-information class="mt-2 pt-75" />
       </b-tab>

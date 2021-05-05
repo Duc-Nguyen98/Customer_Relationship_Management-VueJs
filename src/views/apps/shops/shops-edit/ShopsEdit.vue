@@ -1,25 +1,25 @@
 <template>
-  <component :is="userData === undefined ? 'div' : 'b-card'">
+  <component :is="shopData === undefined ? 'div' : 'b-card'">
     <!-- Alert: No item found -->
-    <b-alert variant="danger" :show="userData === undefined">
+    <b-alert variant="danger" :show="shopData === undefined">
       <h4 class="alert-heading">Error fetching user data</h4>
       <div class="alert-body">
         No user found with this user id. Check
-        <b-link class="alert-link" :to="{ name: 'apps-users-list' }">
+        <b-link class="alert-link" :to="{ name: 'apps-shops-list' }">
           User List
         </b-link>
         for other users.
       </div>
     </b-alert>
 
-    <b-tabs v-if="userData" pills>
+    <b-tabs v-if="shopData" pills>
       <!-- Tab: Info Account -->
       <b-tab active>
         <template #title>
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
-          <span class="d-none d-sm-inline">Info Account</span>
+          <span class="d-none d-sm-inline">Infomation Shop</span>
         </template>
-        <shop-edit-tab-information :user-info="userData" class="mt-2 pt-75" />
+        <shop-edit-tab-information :shop-info="shopData" class="mt-2 pt-75" />
       </b-tab>
     </b-tabs>
   </component>
@@ -44,9 +44,9 @@ export default {
     ShopEditTabInformation,
   },
   setup() {
-    const userData = ref(null);
+    const shopData = ref(null);
 
-    const USER_APP_STORE_MODULE_NAME = "app-customers";
+    const USER_APP_STORE_MODULE_NAME = "app-shops";
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
@@ -59,18 +59,19 @@ export default {
     });
 
     store
-      .dispatch("app-customers/fetchUser", { _id: router.currentRoute.params.id })
+      .dispatch("app-shops/fetchShop", { _id: router.currentRoute.params.id })
       .then((response) => {
-        userData.value = response.data.data;
+        shopData.value = response.data.data;
+        console.log(shopData.value)
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          userData.value = undefined;
+          shopData.value = null;
         }
       });
 
     return {
-      userData,
+      shopData,
     };
   },
 };
