@@ -102,20 +102,20 @@ export default function useShopsListDel() {
 
   const deleteShop = id => {
     store
-      .dispatch('app-customers/deleteShopR', { _id: id })
+      .dispatch('app-shops/deleteShopR', { _id: id })
       .then(response => {
         if (response.data.success) {
-          alert("success", "Delete customer successfully.")
-          fetchUsers()
+          alert("success", "Delete shop successfully.")
+          fetchShopsDel()
         } else {
-          alert("danger", "Delete customer failed.")
+          alert("danger", "Delete shop failed.")
         }
       })
       .catch(() => {
         toast({
           component: ToastificationContent,
           props: {
-            title: 'Error fetching users list',
+            title: 'Error fetching shop list',
             icon: 'AlertTriangleIcon',
             variant: 'danger',
           },
@@ -125,20 +125,20 @@ export default function useShopsListDel() {
 
   const restoreShop = id => {
     store
-        .dispatch('app-customers/restoreShop', { _id: id })
+        .dispatch('app-shops/restoreShop', { _id: id })
         .then(response => {
           if (response.data.success) {
-            alert("success", "Restore customer successfully.")
-            fetchUsers()
+            alert("success", "Restore shop successfully.")
+            fetchShopsDel()
           } else {
-            alert("danger", "Restore customer failed.")
+            alert("danger", "Restore shop failed.")
           }
         })
         .catch(() => {
           toast({
             component: ToastificationContent,
             props: {
-              title: 'Error fetching users list',
+              title: 'Error fetching shop list',
               icon: 'AlertTriangleIcon',
               variant: 'danger',
             },

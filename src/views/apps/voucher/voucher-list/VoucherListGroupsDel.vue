@@ -77,6 +77,7 @@
           >
           </b-form-checkbox>
           <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteManyGroups"><feather-icon icon="TrashIcon" /></span>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="restoreManyGroups"><feather-icon icon="RotateCwIcon" /></span>
         </template>
 
         <!-- Column: Delete -->
@@ -293,6 +294,7 @@ export default {
       deleteVoucher,
       deleteManyGroups,
       restoreVoucher,
+      restoreManyGroups,
       checkStatus,
       checkClassified,
 
@@ -334,6 +336,7 @@ export default {
       deleteVoucher,
       deleteManyGroups,
       restoreVoucher,
+      restoreManyGroups,
       checkStatus,
       checkClassified,
       // Filter

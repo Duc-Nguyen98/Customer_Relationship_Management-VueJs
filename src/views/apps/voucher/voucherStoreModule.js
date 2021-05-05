@@ -235,6 +235,13 @@ export default {
             .catch(error => reject(error))
       })
     },
-
+    restoreManyGroups(ctx, GroupIdArray) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/restore/many/group`, GroupIdArray)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
   },
 }

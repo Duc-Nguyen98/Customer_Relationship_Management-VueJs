@@ -218,9 +218,33 @@ export default function useVoucherListGroupsDel() {
           if (response.data.success) {
             alert("success", "Delete group vouchers successfully.")
             selected.value = []
-            fetchVouchers()
+            fetchVouchersDel()
           } else {
             alert("danger", "Delete group vouchers failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching group vouchers list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
+  const restoreManyGroups = () => {
+    store
+        .dispatch('app_voucher/restoreManyGroups', {GroupIdArray: selected.value})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Restore group vouchers successfully.")
+            selected.value = []
+            fetchVouchersDel()
+          } else {
+            alert("danger", "Restore group vouchers failed.")
           }
         })
         .catch(() => {
@@ -245,6 +269,7 @@ export default function useVoucherListGroupsDel() {
     deleteVoucher,
     deleteManyGroups,
     restoreVoucher,
+    restoreManyGroups,
     checkStatus,
     checkClassified,
     Vouchers,
