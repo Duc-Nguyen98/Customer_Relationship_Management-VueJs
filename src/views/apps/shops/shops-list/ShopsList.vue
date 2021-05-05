@@ -79,7 +79,8 @@
                   class="float-left"
                   id="cupdateheckbox-1"
                   name="checkbox-1"
-                  @input="chooseAll()"
+                  :checked="all"
+                  @change="chooseAll()"
           >
           </b-form-checkbox>
           <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftManyShop"><feather-icon icon="TrashIcon" /></span>

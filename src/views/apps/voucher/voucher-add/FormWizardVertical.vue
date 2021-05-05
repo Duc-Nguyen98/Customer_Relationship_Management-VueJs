@@ -481,12 +481,12 @@ export default {
     },
 
     formSubmitted() {
-      console.log('cc')
       const data = store.state.app_voucher.allVouchers
       store.dispatch('app_voucher/addListVouchersGroup', data)
               .then(response => {
                 if (response.data.success) {
                   this.alert("success", "Add vouchers successfully.")
+                  this.$router.push({name: 'apps-group-voucher-list'})
                 } else {
                   this.alert("danger", "Add vouchers failed.")
                 }

@@ -95,7 +95,8 @@
                   class="float-left"
                   id="cupdateheckbox-1"
                   name="checkbox-1"
-                  @input="chooseAll()"
+                  :checked="all"
+                  @change="chooseAll()"
           >
           </b-form-checkbox>
 
@@ -194,6 +195,7 @@
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>
             <b-dropdown-item
+                    v-if="idGroup == null"
                     @click="deleteVouchersInAddGroup(data.index)"
             >
               <feather-icon icon="TrashIcon" />
