@@ -5,15 +5,15 @@
       <template #aside>
         <b-avatar
                 ref="previewEl"
-                :src="api + userData.avatar"
-                :text="avatarText(userData.fullName)"
+                :src="api + shopData.avatar"
+                :text="avatarText(shopData.name)"
                 :variant="`light-primary`"
                 size="90px"
                 rounded
         />
       </template>
       <h4 class="mb-1">
-        {{ userData.name }}
+        {{ shopData.name }}
       </h4>
       <div class="d-flex flex-wrap">
         <b-button
@@ -33,8 +33,8 @@
           />
         </b-button>
         <b-button
-                v-if="userData.softDelete == 0"
-                @click="delUser(userData._id)"
+                v-if="shopData.softDelete == 0"
+                @click="delShop(shopData._id)"
                 variant="outline-secondary"
                 class="ml-1"
         >
@@ -50,238 +50,276 @@
     <!-- Form: Personal Info Form -->
     <validation-observer ref="simpleRules">
       <b-form class="mt-1">
-      <b-row>
-        <!-- Field: Name  -->
-        <b-col cols="12" md="6" lg="4">
-          <b-form-group>
-            <label>Full Name</label>
-            <validation-provider
-                    #default="{ errors }"
-                    rules="required"
-                    name="Full Name"
-            >
-              <b-form-input
-                      v-model="userData.name"
-                      :state="errors.length > 0 ? false : null"
-                      placeholder="Enter Full Name"
-              />
-              <small class="text-danger">{{ errors[0] }}</small>
-            </validation-provider>
-          </b-form-group>
-        </b-col>
-
-        <!-- Field: Email -->
-        <b-col cols="12" md="6" lg="4">
-          <b-form-group>
-            <label>Email</label>
-            <validation-provider
-                    #default="{ errors }"
-                    name="Email"
-                    rules="required|email"
-            >
-              <b-form-input
-                      v-model="userData.email"
-                      :state="errors.length > 0 ? false : null"
-                      placeholder="Email"
-              />
-              <small class="text-danger">{{ errors[0] }}</small>
-            </validation-provider>
-          </b-form-group>
-        </b-col>
-
-        <!-- Field: Adress  -->
-        <b-col cols="12" md="6" lg="4">
-          <b-form-group>
-            <label>Address</label>
-            <validation-provider
-                    #default="{ errors }"
-                    name="Address"
-                    rules="required"
-            >
-              <b-form-input
-                      v-model="userData.address"
-                      :state="errors.length > 0 ? false : null"
-                      placeholder="Adress"
-              />
-              <small class="text-danger">{{ errors[0] }}</small>
-            </validation-provider>
-          </b-form-group>
-        </b-col>
-
-        <!-- Field: Birth Date -->
-        <b-col cols="12" md="6" lg="4">
-          <b-form-group>
-            <label for="datepicker-placeholder">Birth Day</label>
-            <validation-provider
-                    #default="{ errors }"
-                    rules="required"
-                    name="Birth Day"
-            >
-              <b-form-datepicker
-                      id="datepicker-placeholder"
-                      placeholder="Choose a date"
-                      local="vi"
-                      v-model="userData.birthDay"
-                      :state="errors.length > 0 ? false : null"
-              />
-              <small class="text-danger">{{ errors[0] }}</small>
-            </validation-provider>
-          </b-form-group>
-        </b-col>
-
-        <!-- Field: Telephone Number -->
-        <b-col cols="12" md="6" lg="4">
-          <b-form-group>
-            <label>Telephone Number</label>
-            <validation-provider
-                    #default="{ errors }"
-                    rules="required|regex:^([0-9]+)$|digits:10"
-                    name="Telephone Number"
-            >
-              <b-form-input
-                      v-model="userData.telephone"
-                      :state="errors.length > 0 ? false : null"
-                      placeholder="Enter Telephone Number"
-              />
-              <small class="text-danger">{{ errors[0] }}</small>
-            </validation-provider>
-          </b-form-group>
-        </b-col>
-
-        <!-- Field: Gender -->
-        <b-col cols="12" md="6" lg="4">
-          <b-form-group label="Gender" label-for="Gender">
-            <validation-provider
-                    #default="{ errors }"
-                    rules="required"
-                    name="Gender"
-            >
-              <b-form-radio-group
-                      :state="errors.length > 0 ? false : null"
-                      v-model="userData.gender"
-                      :options="genderOptions"
-                      class="demo-inline-spacing"
-                      name="radio-validation"
-                      value="0"
+        <!-- Header: Personal Info -->
+        <div class="d-flex mb-2">
+          <feather-icon icon="UserIcon" size="19"/>
+          <h4 class="mb-0 ml-50">Shop Information</h4>
+        </div>
+        <b-row>
+          <!--  Full Name-->
+          <b-col cols="12" md="6" lg="4">
+            <b-form-group>
+              <label>Shop Name</label>
+              <validation-provider
+                      #default="{ errors }"
+                      rules="required"
+                      name="Shop Name"
               >
-              </b-form-radio-group>
-              <small class="text-danger">{{ errors[0] }}</small>
-            </validation-provider>
-          </b-form-group>
-        </b-col>
+                <b-form-input
+                        v-model="shopData.name"
+                        :state="errors.length > 0 ? false : null"
+                        placeholder="Enter Shop Name"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
 
-        <b-col cols="12" md="6" lg="6">
-          <b-form-group label="Group" label-for="Group">
-            <validation-provider
-                    #default="{ errors }"
-                    name="Group"
-                    rules="required"
+          <!--  Full Name-->
+          <b-col cols="12" md="6" lg="4">
+            <b-form-group>
+              <label>Owner Shop</label>
+              <validation-provider
+                      #default="{ errors }"
+                      rules="required"
+                      name="Owner Shop"
+              >
+                <b-form-input
+                        v-model="shopData.ownerShop"
+                        :state="errors.length > 0 ? false : null"
+                        placeholder="Enter Owner Shop"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+          <!-- email -->
+          <b-col cols="12" md="6" lg="4">
+            <b-form-group>
+              <label for="email">Email</label>
+              <validation-provider
+                      id="email"
+                      #default="{ errors }"
+                      name="Email"
+                      rules="required|email"
+              >
+                <b-form-input
+                        v-model="shopData.email"
+                        :state="errors.length > 0 ? false : null"
+                        placeholder="Email"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+          <!-- Telephone -->
+          <b-col cols="12" md="6" lg="4">
+            <b-form-group>
+              <label>Telephone</label>
+              <validation-provider
+                      #default="{ errors }"
+                      name="Telephone"
+                      rules="required|integer"
+              >
+                <b-form-input
+                        v-model="shopData.telephone"
+                        :state="errors.length > 0 ? false : null"
+                        placeholder="Telephone"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+
+          <!-- Telephone Shop -->
+          <b-col cols="12" md="6" lg="4">
+            <b-form-group>
+              <label>Telephone Shop</label>
+              <validation-provider
+                      #default="{ errors }"
+                      name="Telephone Shop"
+                      rules="required|integer"
+              >
+                <b-form-input
+                        v-model="shopData.telephoneShop"
+                        :state="errors.length > 0 ? false : null"
+                        placeholder="Telephone Shop"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+          <!-- Fax Shop -->
+          <b-col cols="12" md="6" lg="4">
+            <b-form-group>
+              <label>Fax</label>
+              <validation-provider
+                      #default="{ errors }"
+                      name="Fax"
+                      rules="required|integer"
+              >
+                <b-form-input
+                        v-model="shopData.fax"
+                        :state="errors.length > 0 ? false : null"
+                        placeholder="Fax"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+          <!-- Status -->
+          <b-col cols="12" md="6" lg="4">
+            <b-form-group>
+              <label for="status">Status</label>
+              <validation-provider
+                      #default="{ errors }"
+                      name="Status"
+                      rules="required"
+              >
+                <v-select
+                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                        :state="errors.length > 0 ? false : null"
+                        :value="shopData.status"
+                        :options="optionsActive"
+                        :reduce="(val) => val.value"
+                        @input="(val) => data.status = val"
+                        class="w-100"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+          <b-col cols="12" md="6" lg="4">
+            <b-form-group label="Region" label-for="Region">
+              <validation-provider
+                      #default="{ errors }"
+                      name="Region"
+                      rules="required"
+              >
+                <v-select
+                        :state="errors.length > 0 ? false : null"
+                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                        :value="shopData.region"
+                        :options="regionOptions"
+                        class="w-100"
+                        :reduce="(val) => val.value"
+                        @input="(val) => shopData.region = val"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+          <!-- Address -->
+          <b-col cols="12" md="6" lg="4">
+            <b-form-group>
+              <label>Address</label>
+              <validation-provider
+                      #default="{ errors }"
+                      name="Address"
+                      rules="required"
+              >
+                <b-form-input
+                        v-model="shopData.address"
+                        :state="errors.length > 0 ? false : null"
+                        placeholder="Address"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+          <!-- Fanpage -->
+          <b-col cols="12" md="6" lg="6">
+            <b-form-group>
+              <label>Fanpage</label>
+              <validation-provider
+                      #default="{ errors }"
+                      name="Fanpage"
+                      rules=""
+              >
+                <b-form-input
+                        v-model="shopData.fanpage"
+                        :state="errors.length > 0 ? false : null"
+                        placeholder="Fanpage"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+          <!-- Website -->
+          <b-col cols="12" md="6" lg="6">
+            <b-form-group>
+              <label>Website</label>
+              <validation-provider
+                      #default="{ errors }"
+                      name="Fanpage"
+                      rules=""
+              >
+                <b-form-input
+                        v-model="shopData.website"
+                        :state="errors.length > 0 ? false : null"
+                        placeholder="Website"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+        </b-row>
+        <!-- Header: Personal Note -->
+        <div class="d-flex my-2">
+          <feather-icon icon="ClipboardIcon" size="19"/>
+          <h4 class="mb-0 ml-50">Note</h4>
+        </div>
+        <b-row>
+          <!--  Note -->
+          <b-col cols="12" md="12" lg="12">
+            <b-form-group label="Note Information" label-for="Note Information">
+              <validation-provider
+                      #default="{ errors }"
+                      name="Note"
+                      rules=""
+              >
+                <b-form-textarea
+                        id="textarea-rows"
+                        placeholder="Note Here..."
+                        rows="8"
+                        v-model="shopData.note"
+                        :state="errors.length > 0 ? false : null"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+        </b-row>
+        <!-- submit button -->
+        <b-row class="d-flex float-right mt-2">
+          <b-col>
+            <b-button
+                    variant="outline-secondary"
+                    class="mr-2 text-uppercase"
+                    type="button"
             >
-              <v-select
-                      :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                      :value="userData.groups"
-                      :options="groupOptions"
-                      class="w-100"
-                      :reduce="(val) => val.value"
-                      @input="(val) => {
-                          userData.groups = val;
-                      }"
-              />
-              <small class="text-danger">{{ errors[0] }}</small>
-            </validation-provider>
-          </b-form-group>
-        </b-col>
-      </b-row>
-
-      <!-- Header: Personal Info -->
-<!--      <div class="d-flex mt-2">-->
-<!--        <feather-icon icon="MapPinIcon" size="19" />-->
-<!--        <h4 class="mb-0 ml-50">Address</h4>-->
-<!--      </div>-->
-
-      <!-- Form: Personal Info Form -->
-<!--      <b-row class="mt-1">-->
-<!--        &lt;!&ndash; Field: Province Name &ndash;&gt;-->
-<!--        <b-col cols="12" md="6" lg="4">-->
-<!--          <b-form-group label="Province Name" label-for="city">-->
-<!--            <b-form-select-->
-<!--              v-model="objSelectProvince.selected"-->
-<!--              :options="objSelectProvince.options"-->
-<!--              :state="objSelectProvince.selected === null ? false : true"-->
-<!--            />-->
-
-<!--            &lt;!&ndash; <b-form-input id="city" v-model="userDataInfo.city" /> &ndash;&gt;-->
-<!--          </b-form-group>-->
-<!--        </b-col>-->
-
-<!--        &lt;!&ndash; Field: District Name &ndash;&gt;-->
-<!--        <b-col cols="12" md="6" lg="4">-->
-<!--          <b-form-group label="District Name" label-for="state">-->
-<!--            <b-form-select-->
-<!--              v-model="objSelectDistrict.selected"-->
-<!--              :options="objSelectDistrict.options"-->
-<!--              :state="objSelectDistrict.selected === null ? false : true"-->
-<!--            />-->
-<!--          </b-form-group>-->
-<!--        </b-col>-->
-
-<!--        &lt;!&ndash; Field: Ward Name &ndash;&gt;-->
-<!--        <b-col cols="12" md="6" lg="4">-->
-<!--          <b-form-group label="Ward Name" label-for="country">-->
-<!--            <b-form-select-->
-<!--              v-model="objSelectWard.selected"-->
-<!--              :options="objSelectWard.options"-->
-<!--              :state="objSelectWard.selected === null ? false : true"-->
-<!--            />-->
-<!--          </b-form-group>-->
-<!--        </b-col>-->
-<!--      </b-row>-->
-
-      <!-- Header: Personal Info -->
-      <div class="d-flex mt-2">
-        <feather-icon icon="MapPinIcon" size="19" />
-        <h4 class="mb-0 ml-50">Note</h4>
-      </div>
-
-      <!-- Form: Personal Info Form -->
-      <b-row class="mt-1">
-        <!-- Field: Content -->
-        <b-col cols="12" md="12" lg="12">
-          <b-form-group label="Note Information" label-for="Note Information">
-            <validation-provider
-                    #default="{ errors }"
-                    name="Note"
-                    rules="required"
+              Cancel
+            </b-button>
+            <b-button
+                    class="text-uppercase"
+                    variant="primary"
+                    type="button"
+                    @click="validationForm"
             >
-              <b-form-textarea
-                      id="textarea-rows"
-                      placeholder="Note Here..."
-                      rows="8"
-                      v-model="userData.note"
-                      :state="errors.length > 0 ? false : null"
-              />
-              <small class="text-danger">{{ errors[0] }}</small>
-            </validation-provider>
-          </b-form-group>
-        </b-col>
-      </b-row>
-
-      <!-- Form Actions -->
-      <div class="d-flex float-right mt-2">
-        <b-button
-          type="button"
-          variant="outline-secondary"
-          class="mr-2 text-uppercase"
-          @click="$router.push({name: 'apps-customers-list'})"
-        >
-          Cancel
-        </b-button>
-
-        <b-button variant="primary" @click="validationForm({userData: userData, _id: userData._id})" class="text-uppercase">
-          Save Changes
-        </b-button>
-      </div>
-    </b-form>
+              Save Changes
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-form>
     </validation-observer>
   </div>
 </template>
@@ -362,15 +400,15 @@ export default {
     Ripple,
   },
   props: {
-    userInfo: {
+    shopInfo: {
       type: Object,
       required: true,
     },
   },
-  setup({userInfo}) {
+  setup({shopInfo}) {
     const toast = useToast()
 
-    const userData = ref( userInfo )
+    const shopData = ref( shopInfo )
 
     const api = process.env.VUE_APP_ROOT_API
 
@@ -404,15 +442,14 @@ export default {
       ],
     };
 
-    const groupOptions = [
-      { label: "Normal customers", value: 0 },
-      { label: "Loyal customers", value: 1 },
-      { label: "Potential customers", value: 2 },
+    const optionsActive = [
+      { label: "Inactive", value: 0 },
+      { label: "Active", value: 1 },
     ];
 
-    const genderOptions = [
-      { text: "Male", value: 0 },
-      { text: "Female", value: 1 },
+    const regionOptions = [
+      { label: "TP. Ha Noi", value: 0 },
+      { label: "TP. Ho Chi Minh", value: 1 },
     ];
 
     // ? Demo Purpose => Update image on click of update
@@ -421,15 +458,15 @@ export default {
 
     const { inputImageRenderer } = useInputImageRenderer(refInputEl, base64 => {
       // eslint-disable-next-line no-param-reassign
-      // userData.avatar = base64
+      // shopData.avatar = base64
 
-      store.dispatch('app-customers/uploadCustomer', {
+      store.dispatch('app-shops/uploadCustomer', {
         file: refInputEl.value.files[0],
         _id: router.currentRoute.params.id
       })
               .then(response => {
                 if (response.data.success) {
-                  userData.value.avatar = response.data.data
+                  shopData.value.avatar = response.data.data
                   toast({
                     component: ToastificationContent,
                     props: {
@@ -454,20 +491,21 @@ export default {
     })
 
     const {
-      deleteUser,
-    } = useUsersList();
+      deleteShop,
+    } = useShopsList();
 
     return {
       api,
       toast,
-      userData,
-      genderOptions,
+      shopData,
       objSelectDistrict,
       objSelectProvince,
       objSelectWard,
-      groupOptions,
+
       avatarText,
-      deleteUser,
+      deleteShop,
+      optionsActive,
+      regionOptions,
 
       //  ? Demo - Update Image on click of update button
       refInputEl,
@@ -489,27 +527,26 @@ export default {
       });
     },
     // Update one user
-    validationForm(userData) {
+    validationForm(shopData) {
       this.locale = this.locale === "en" ? "vi" : "en";
 
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
           // eslint-disable-next-line
-          store.dispatch('app-customers/updateUser', userData)
+          store.dispatch('app-shops/updateShop', shopData)
                   .then(response => {
                     if (response.data.success) {
-                      this.alert("success", "Update user successfully.")
-                      this.$router.push({name: 'apps-customers-list'});
+                      this.alert("success", "Update shop successfully.")
+                      this.$router.push({name: 'apps-shops-list'});
                     } else {
-                      this.alert("danger", "Update user failed.")
+                      this.alert("danger", "Update shop failed.")
                     }
                   })
                   .catch((error) => {
-                    console.log(error)
                     this.toast({
                       component: ToastificationContent,
                       props: {
-                        title: 'Error fetching users list',
+                        title: 'Error fetching shops list',
                         icon: 'AlertTriangleIcon',
                         variant: 'danger',
                       },
@@ -520,11 +557,11 @@ export default {
     },
 
     // Delete soft one user
-    async delUser(_id) {
+    async delShop(_id) {
       const data = await this.deleteUser(_id);
       if (data) {
-        this.userData.softDelete = 1;
-        this.$router.push({name: 'apps-customers-list-del'})
+        this.shopData.softDelete = 1;
+        this.$router.push({name: 'apps-shops-list-del'})
       }
     }
   },
