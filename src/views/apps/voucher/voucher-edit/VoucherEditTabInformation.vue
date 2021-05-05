@@ -78,10 +78,10 @@
                                                         label="Select Shops"
                                                         label-for="v-landmark"
                                                 >
-                                                    <span v-show="system == 0">Choose all shops</span>
+                                                    <span v-show="GroupDataInfo.scopeApply.shop.all == 0">Choose all shops</span>
                                                     <v-select
-                                                            v-show="system != 0"
-                                                            :disabled="system == 0"
+                                                            v-show="GroupDataInfo.scopeApply.shop.all != 0"
+                                                            :disabled="GroupDataInfo.scopeApply.shop.all == 0"
                                                             v-model="GroupDataInfo.scopeApply.shop.listShop"
                                                             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                                             multiple

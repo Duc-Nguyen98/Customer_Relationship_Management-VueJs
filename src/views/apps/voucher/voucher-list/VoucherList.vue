@@ -90,7 +90,7 @@
       >
 
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
-        <template #head(selected)="scope">
+        <template #head(selected)="scope" v-if="idGroup">
           <b-form-checkbox
                   class="float-left"
                   id="cupdateheckbox-1"
@@ -176,6 +176,7 @@
             </template>
 
             <b-dropdown-item
+                    v-if="idGroup"
                     :to="{
                 name: 'apps-voucher-edit',
                 params: { id: data.item._id },
@@ -186,7 +187,14 @@
             </b-dropdown-item>
 
             <b-dropdown-item
+                    v-if="idGroup"
                     @click="deleteVouchersInGroup(data.item._id)"
+            >
+              <feather-icon icon="TrashIcon" />
+              <span class="align-middle ml-50">Delete</span>
+            </b-dropdown-item>
+            <b-dropdown-item
+                    @click="deleteVouchersInAddGroup(data.index)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -349,6 +357,7 @@
         addVouchersInGroup,
         checkStatus,
         changeStatusVouchersInGroup,
+        deleteVouchersInAddGroup,
 
         // UI
         resolveUserRoleVariant,
@@ -356,6 +365,7 @@
         resolveUserStatusVariant,
         checkClassified,
         resolveUserClassifiedVariant,
+
         // Extra Filters
         classified,
         status,
@@ -411,6 +421,7 @@
         checkClassified,
         resolveUserClassifiedVariant,
         classifiedOptions,
+        deleteVouchersInAddGroup,
 
         // Filter
         avatarText,

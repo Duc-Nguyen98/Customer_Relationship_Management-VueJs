@@ -213,6 +213,7 @@
                             nameLocationUse : null,
                             usedDate : null,
                             softDelete : 0,
+                            classified: this.data.vouchers.classified,
                             created : {
                                 createBy : "admin",
                                 time : Date.now()
@@ -224,7 +225,6 @@
                         }
                     } else {
                         this.vouchers[index] = val
-                        console.log(this.vouchers)
                     }
                 } else {
                     this.vouchers = this.vouchers.filter((item, key) => key != index)
