@@ -90,7 +90,7 @@
       >
 
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
-        <template #head(selected)="scope">
+        <template #head(selected)="scope" v-if="idGroup">
           <b-form-checkbox
                   class="float-left"
                   id="cupdateheckbox-1"
