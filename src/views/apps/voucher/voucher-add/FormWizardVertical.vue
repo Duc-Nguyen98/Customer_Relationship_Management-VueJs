@@ -481,6 +481,7 @@ export default {
     },
 
     formSubmitted() {
+      console.log('cc')
       const data = store.state.app_voucher.allVouchers
       store.dispatch('app_voucher/addListVouchersGroup', data)
               .then(response => {

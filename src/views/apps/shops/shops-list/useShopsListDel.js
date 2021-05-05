@@ -14,6 +14,7 @@ export default function useShopsListDel() {
 
   // Table Handlers
   const tableColumns = [
+    { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: false },
     { key: 'name', label: 'NAME', formatter: title, sortable: true },
     { key: 'telephoneShop', label: 'TELEPHONE SHOP', sortable: true },
@@ -178,10 +179,86 @@ export default function useShopsListDel() {
     return 'Inactive'
   }
 
+  const selected = ref([])
+  const one = ref(false)
+  const all = ref(false)
+
+  const chooseOne = (item) => {
+    one.value = !one.value;
+    if (selected.value.indexOf(item) != -1) {
+      selected.value = selected.value.filter(val => val != item)
+    } else {
+      selected.value.push(item)
+    }
+  }
+
+  const chooseAll = () => {
+    all.value = !all.value
+    Shops.value.map(obj => {
+      chooseOne(obj._id)
+    })
+  }
+
+  const deleteManyShop = () => {
+    store
+        .dispatch('app-shops/deleteManyShop', {shopIdArray: selected.value})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Delete shops successfully.")
+            selected.value = []
+            all.value = !all.value
+            fetchShopsDel()
+          } else {
+            alert("danger", "Delete shops failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching shops list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
+  const restoreManyShop = () => {
+    store
+        .dispatch('app-shops/restoreManyShop', {shopIdArray: selected.value})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Restore shops successfully.")
+            selected.value = []
+            all.value = !all.value
+            fetchShopsDel()
+          } else {
+            alert("danger", "Restore shops failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching shops list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
   return {
+    one,
+    all,
+    selected,
+    chooseOne,
+    chooseAll,
     fetchShopsDel,
     deleteShop,
     restoreShop,
+    restoreManyShop,
     Shops,
     tableColumns,
     perPage,
@@ -193,11 +270,12 @@ export default function useShopsListDel() {
     sortBy,
     isSortDirDesc,
     refShopListTable,
-
+    deleteManyShop,
     resolveUserStatusVariant,
     refetchData,
     checkRegion,
     checkStatus,
+
     // Extra Filters
     time,
     isBusy,

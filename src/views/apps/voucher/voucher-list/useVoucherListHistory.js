@@ -164,6 +164,7 @@ export default function useVoucherList() {
           if (response.data.success) {
             alert("success", "Delete vouchers successfully.")
             selected.value = []
+            all.value = !all.value
             fetchHisListVouchers(group.value)
           } else {
             alert("danger", "Delete vouchers failed.")
