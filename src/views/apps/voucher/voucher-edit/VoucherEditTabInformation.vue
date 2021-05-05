@@ -297,7 +297,6 @@
             const GroupDataInfo = ref(groupinfo);
             console.log(GroupDataInfo.value)
             const classifiedOptions = [
-                {label: "Choose a classified", value: null},
                 {label: "Trade Voucher", value: 0},
                 {label: "Gift Voucher", value: 1},
             ]
@@ -308,7 +307,6 @@
             const system = ref(0)
 
             const optionsActive = [
-                {label: "Choose a status", value: null},
                 {label: "Inactive", value: 0},
                 {label: "Active", value: 1},
             ]

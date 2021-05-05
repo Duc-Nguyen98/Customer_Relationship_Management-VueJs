@@ -62,7 +62,7 @@ export default {
             .catch(error => reject(error))
       })
     },
-    restoreUser(ctx, { _id }) {
+    restoreShop(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
             .patch(process.env.VUE_APP_ROOT_API + `shop/trash/restore/${_id}`)
