@@ -441,7 +441,7 @@
             },
 
             addShop() {
-                store.dispatch('app-shops/addShop', this.shopData)
+                store.dispatch('app-groups-customers/addShop', this.shopData)
                     .then(response => {
                         if (response.data.success) {
                             this.alert("success", "Add shop successfully.")

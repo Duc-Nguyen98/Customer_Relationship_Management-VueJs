@@ -16,12 +16,10 @@ export default function useShopsListDel() {
   const tableColumns = [
     { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: false },
-    { key: 'name', label: 'NAME', formatter: title, sortable: true },
-    { key: 'telephoneShop', label: 'TELEPHONE SHOP', sortable: true },
-    { key: 'mail', label: 'EMAIL', sortable: true },
-    { key: 'ownerShop', label: 'Owner Shop', sortable: true },
-    { key: 'region', label: 'REGION', sortable: true },
+    { key: 'title', label: 'Title', formatter: title, sortable: true },
     { key: 'status', label: 'STATUS', sortable: true },
+    { key: 'note', label: 'NOTE', sortable: true },
+    { key: 'star', label: 'Star', sortable: true },
     { key: 'actions' },
   ]
 
@@ -46,7 +44,7 @@ export default function useShopsListDel() {
   })
 
   const refetchData = () => {
-    fetchShopsDel()
+    fetchGCDel()
   }
 
   watch([currentPage, perPage, searchQuery, region, status], () => {
@@ -56,14 +54,14 @@ export default function useShopsListDel() {
   const time = ref(null);
   const isBusy = ref(null);
 
-  const fetchShopsDel = (ctx, callback) => {
+  const fetchGCDel = (ctx, callback) => {
     isBusy.value = true;
     if (time.value) {
       clearTimeout(time.value)
     }
     time.value = setTimeout(() => {
       store
-          .dispatch('app-shops/fetchShopsDel', {
+          .dispatch('app-groups-customers/fetchGCDel', {
             q: searchQuery.value,
             perPage: perPage.value,
             page: currentPage.value,
@@ -103,11 +101,11 @@ export default function useShopsListDel() {
 
   const deleteShop = id => {
     store
-      .dispatch('app-shops/deleteShopR', { _id: id })
+      .dispatch('app-groups-customers/deleteShopR', { _id: id })
       .then(response => {
         if (response.data.success) {
           alert("success", "Delete shop successfully.")
-          fetchShopsDel()
+          fetchGCDel()
         } else {
           alert("danger", "Delete shop failed.")
         }
@@ -126,11 +124,11 @@ export default function useShopsListDel() {
 
   const restoreShop = id => {
     store
-        .dispatch('app-shops/restoreShop', { _id: id })
+        .dispatch('app-groups-customers/restoreShop', { _id: id })
         .then(response => {
           if (response.data.success) {
             alert("success", "Restore shop successfully.")
-            fetchShopsDel()
+            fetchGCDel()
           } else {
             alert("danger", "Restore shop failed.")
           }
@@ -147,7 +145,7 @@ export default function useShopsListDel() {
         })
   }
 
-  fetchShopsDel()
+  fetchGCDel()
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
@@ -201,13 +199,13 @@ export default function useShopsListDel() {
 
   const deleteManyShop = () => {
     store
-        .dispatch('app-shops/deleteManyShop', {shopIdArray: selected.value})
+        .dispatch('app-groups-customers/deleteManyShop', {shopIdArray: selected.value})
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete shops successfully.")
             selected.value = []
             all.value = !all.value
-            fetchShopsDel()
+            fetchGCDel()
           } else {
             alert("danger", "Delete shops failed.")
           }
@@ -226,13 +224,13 @@ export default function useShopsListDel() {
 
   const restoreManyShop = () => {
     store
-        .dispatch('app-shops/restoreManyShop', {shopIdArray: selected.value})
+        .dispatch('app-groups-customers/restoreManyShop', {shopIdArray: selected.value})
         .then(response => {
           if (response.data.success) {
             alert("success", "Restore shops successfully.")
             selected.value = []
             all.value = !all.value
-            fetchShopsDel()
+            fetchGCDel()
           } else {
             alert("danger", "Restore shops failed.")
           }
@@ -255,7 +253,7 @@ export default function useShopsListDel() {
     selected,
     chooseOne,
     chooseAll,
-    fetchShopsDel,
+    fetchGCDel,
     deleteShop,
     restoreShop,
     restoreManyShop,

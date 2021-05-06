@@ -384,15 +384,12 @@
       }
       const dataVouchers = ref({})
       const dataVoucher = (vouchers) => {
-        if (_id == null) {
+        if (idGroup == null) {
           Vouchers.value = [...Vouchers.value, ...vouchers.items]
           store.commit('app_voucher/saveVouchers', Vouchers.value)
         } else {
-          const data = {
-            voucherCode: vouchers.items,
-            ...vouchers.vouchers,
-          }
-          addVouchersInGroup(_id, data)
+          console.log(vouchers)
+          addVouchersInGroup(idGroup, vouchers.items)
         }
       }
 

@@ -16,12 +16,10 @@ export default function useShopsList() {
   const tableColumns = [
     { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: false },
-    { key: 'name', label: 'NAME', formatter: title, sortable: true },
-    { key: 'telephoneShop', label: 'TELEPHONE SHOP', sortable: true },
-    { key: 'mail', label: 'EMAIL', sortable: true },
-    { key: 'ownerShop', label: 'Owner Shop', sortable: true },
-    { key: 'region', label: 'REGION', sortable: true },
+    { key: 'title', label: 'Title', formatter: title, sortable: true },
     { key: 'status', label: 'STATUS', sortable: true },
+    { key: 'note', label: 'NOTE', sortable: true },
+    { key: 'star', label: 'Star', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -45,7 +43,7 @@ export default function useShopsList() {
   })
 
   const refetchData = () => {
-    fetchShops()
+    fetchGC()
   }
 
   watch([currentPage, perPage, searchQuery, status, region], () => {
@@ -54,14 +52,14 @@ export default function useShopsList() {
 
   const time = ref(null);
   const isBusy = ref(null);
-  const fetchShops = (ctx, callback) => {
+  const fetchGC = (ctx, callback) => {
     isBusy.value = true;
     if (time.value) {
       clearTimeout(time.value)
     }
     time.value = setTimeout(() => {
       store
-          .dispatch('app-shops/fetchShops', {
+          .dispatch('app-groups-customers/fetchGC', {
             q: searchQuery.value,
             perPage: perPage.value,
             page: currentPage.value,
@@ -101,11 +99,11 @@ export default function useShopsList() {
 
   const deleteShop = (_id) => {
     return store
-      .dispatch('app-shops/deleteShop', { _id: _id })
+      .dispatch('app-groups-customers/deleteShop', { _id: _id })
       .then(response => {
         if (response.data.success) {
           alert("success", "Delete user successfully.")
-          fetchShops()
+          fetchGC()
           return true
         } else {
           alert("danger", "Delete user failed.")
@@ -123,7 +121,7 @@ export default function useShopsList() {
       })
   }
 
-  fetchShops()
+  fetchGC()
 
   const resolveUserStatusVariant = status => {
     if (status === 0) return 'danger'
@@ -173,13 +171,13 @@ export default function useShopsList() {
 
   const deleteSoftManyShop = () => {
     store
-        .dispatch('app-shops/deleteSoftManyShop', {shopIdArray: selected.value})
+        .dispatch('app-groups-customers/deleteSoftManyShop', {shopIdArray: selected.value})
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete shops successfully.")
             selected.value = []
             all.value = !all.value
-            fetchShops()
+            fetchGC()
           } else {
             alert("danger", "Delete shops failed.")
           }
@@ -202,7 +200,7 @@ export default function useShopsList() {
     selected,
     chooseOne,
     chooseAll,
-    fetchShops,
+    fetchGC,
     deleteShop,
     checkRegion,
     checkStatus,

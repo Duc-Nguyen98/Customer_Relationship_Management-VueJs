@@ -350,7 +350,6 @@ import Ripple from "vue-ripple-directive";
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils';
 import { avatarText } from '@core/utils/filter';
 import {ValidationProvider, ValidationObserver} from "vee-validate";
-import useShopsList from '../shops-list/useShopsList';
 
   import {
     required,
@@ -460,7 +459,7 @@ export default {
       // eslint-disable-next-line no-param-reassign
       // shopData.avatar = base64
 
-      store.dispatch('app-shops/uploadCustomer', {
+      store.dispatch('app-groups-customers/uploadCustomer', {
         file: refInputEl.value.files[0],
         _id: router.currentRoute.params.id
       })

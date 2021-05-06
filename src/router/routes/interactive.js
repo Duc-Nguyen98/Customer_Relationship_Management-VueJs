@@ -31,6 +31,31 @@ export default [
     },
 
     // *===============================================---*
+    // *--------- GROUPS CUSTOMERS ---- ---------------------------------------*
+    // *===============================================---*
+
+    {
+        path: '/apps/groups-customers/list',
+        name: 'apps-groups-customers-list',
+        component: () => import('@/views/apps/groupCustomers/groupCustomers-list/groupCustomersList.vue'),
+    },
+    {
+        path: '/apps/groups-customers/list/del',
+        name: 'apps-groups-customers-list-del',
+        component: () => import('@/views/apps/groupCustomers/groupCustomers-list/groupCustomersListDel.vue'),
+    },
+    {
+        path: '/apps/groups-customers/add',
+        name: 'apps-groups-customers-add',
+        component: () => import('@/views/apps/groupCustomers/groupCustomers-add/groupCustomersAdd.vue'),
+    },
+    {
+        path: '/apps/groups-customers/edit/:id',
+        name: 'apps-groups-customers-edit',
+        component: () => import('@/views/apps/groupCustomers/groupCustomers-edit/groupCustomersEdit.vue'),
+    },
+
+    // *===============================================---*
     // *--------- SHOPS ---- ---------------------------------------*
     // *===============================================---*
 

@@ -19,7 +19,7 @@
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
           <span class="d-none d-sm-inline">New Shop</span>
         </template>
-        <shop-add-tab-information class="mt-2 pt-75" />
+        <group-customers-add-tab-information class="mt-2 pt-75" />
       </b-tab>
     </b-tabs>
   </component>
@@ -30,8 +30,8 @@ import { BTab, BTabs, BCard, BAlert, BLink } from "bootstrap-vue";
 import { ref, onUnmounted } from "@vue/composition-api";
 import router from "@/router";
 import store from "@/store";
-import shopStoreModule from "../shopStoreModule";
-import ShopAddTabInformation from "./ShopAddTabInformation.vue";
+import groupCustomerStoreModule from "../groupCustomersStoreModule";
+import groupCustomersAddTabInformation from "./groupCustomersAddTabInformation.vue";
 import Ripple from "vue-ripple-directive";
 
 export default {
@@ -42,16 +42,16 @@ export default {
     BAlert,
     BLink,
 
-    ShopAddTabInformation,
+    groupCustomersAddTabInformation,
   },
   setup() {
     const userData = ref(null);
 
-    const USER_APP_STORE_MODULE_NAME = "app-customers";
+    const USER_APP_STORE_MODULE_NAME = "app-groups-customers";
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule);
+      store.registerModule(USER_APP_STORE_MODULE_NAME, groupCustomerStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {

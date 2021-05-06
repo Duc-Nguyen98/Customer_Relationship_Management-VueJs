@@ -151,7 +151,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteVoucher(data.item._id)"
+              @click="deleteVoucher(data.item.idGroupVoucher)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
