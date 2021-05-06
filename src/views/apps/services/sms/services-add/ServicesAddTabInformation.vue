@@ -99,34 +99,6 @@
                         ></b-form-radio-group>
                       </b-form-group>
                     </b-col>
-                    <b-col md="6">
-                      <b-form-group
-                              label="Select Shops"
-                              label-for="v-landmark"
-                      >
-                        <span v-show="data.scopeApply.shop.all == 0">Choose all shops</span>
-                        <validation-provider
-                                v-if="data.scopeApply.shop.all != 0"
-                                #default="{ errors }"
-                                name="Shops"
-                                rules="required"
-                        >
-                          <v-select
-                                  v-model="data.scopeApply.shop.listShop"
-                                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                  multiple
-                                  :options="$store.state.app_voucher.allSystem"
-                                  label="title"
-                                  :state="errors.length > 0 && chooseE==1 ? false : null"
-                          >
-                            <template v-slot:option="option">
-                              {{ option.title }}
-                            </template>
-                          </v-select>
-                          <small class="text-danger">{{ errors[0] }}</small>
-                        </validation-provider>
-                      </b-form-group>
-                    </b-col>
                   </b-row>
                 </b-col>
               </b-row>

@@ -132,6 +132,7 @@ export default {
       })
     },
     changeStatusVouchersInGroup(ctx, {status, VoucherIdArray}) {
+      console.log(status);
       return new Promise((resolve, reject) => {
         axios
             .patch(process.env.VUE_APP_ROOT_API + `voucher/group/change/status/many/voucher?status=${status}`, VoucherIdArray)
