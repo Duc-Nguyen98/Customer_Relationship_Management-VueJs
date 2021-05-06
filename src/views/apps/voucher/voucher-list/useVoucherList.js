@@ -149,12 +149,12 @@ export default function useVoucherList() {
         .dispatch('app_voucher/changeStatusVouchersInGroup', {status: status, VoucherIdArray: {VoucherIdArray: selected.value}})
         .then(response => {
           if (response.data.success) {
-            alert("success", "Delete vouchers successfully.")
+            alert("success", "Change status vouchers successfully.")
             selected.value = []
             all.value = !all.value
             fetchListVouchers(group.value)
           } else {
-            alert("danger", "Delete vouchers failed.")
+            alert("danger", "Change status vouchers failed.")
           }
         })
         .catch(() => {

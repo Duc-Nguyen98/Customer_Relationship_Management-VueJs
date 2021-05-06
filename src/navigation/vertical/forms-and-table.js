@@ -50,6 +50,10 @@ export default [
                 title: 'List Email',
                 route: 'apps-services-list-email',
             },
+            {
+                title: 'Add',
+                route: 'apps-services-add',
+            },
         ],
     },
 

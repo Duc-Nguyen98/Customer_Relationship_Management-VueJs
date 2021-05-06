@@ -1,118 +1,158 @@
 <template>
   <div>
-    <validation-observer ref="simpleRules">
-      <b-form class="mt-1">
-        <!-- Header: Personal Info -->
-        <div class="d-flex mb-2">
-          <feather-icon icon="UserIcon" size="19" />
-          <h4 class="mb-0 ml-50">SMS Information</h4>
-        </div>
-        <b-row>
-          <!-- Customer -->
-          <b-col cols="12" md="6" lg="4">
-            <b-form-group>
-              <label>Customer</label>
-              <validation-provider
-                #default="{ errors }"
-                name="Customer"
-                rules="required"
-              >
-                <v-select
-                        :state="errors.length > 0 ? false : null"
-                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                        v-model="smsData.customer"
-                        :options="customers"
-                        class="w-100"
-                        @input="changeCustomer($event)"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
+    <form-wizard
+            color="#7367F0"
+            :title="null"
+            :subtitle="null"
+            layout="vertical"
+            finish-button-text="Submit"
+            back-button-text="Previous"
+            class="wizard-vertical mb-3"
+            @on-complete="formSubmitted"
+    >
 
-          <!-- Type -->
-          <b-col cols="12" md="6" lg="4">
-            <b-form-group label="Type" label-for="Type">
-              <validation-provider
-                      #default="{ errors }"
-                      name="Type"
-                      rules="required"
-              >
-                <v-select
-                        :state="errors.length > 0 ? false : null"
-                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                        v-model="smsData.type_name"
-                        :options="typeOptions"
-                        class="w-100"
-                        @input="changeType($event)"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-
-          <!-- Voucher -->
-          <b-col cols="12" md="6" lg="4">
-            <b-form-group label="Voucher" label-for="Voucher">
-              <validation-provider
-                      #default="{ errors }"
-                      name="Voucher"
-                      rules="required"
-              >
-                <v-select
-                        :state="errors.length > 0 ? false : null"
-                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                        v-model="smsData.voucher_name"
-                        :options="voucherOptions"
-                        class="w-100"
-                        @input="changeVoucher($event)"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-
-        <!-- Header: Personal Note -->
-        <div class="d-flex my-2">
-          <feather-icon icon="MapPinIcon" size="19" />
-          <h4 class="mb-0 ml-50">Content</h4>
-        </div>
-        <b-row>
-          <!--  Note -->
-          <b-col cols="12" md="12" lg="12">
-            <b-form-group label="Content Information" label-for="Content Information">
-              <b-form-textarea
-                id="textarea-rows"
-                placeholder="Content Here..."
-                rows="8"
-                v-model="smsData.content"
-              />
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <!-- submit button -->
-        <b-row class="d-flex float-right mt-2">
-          <b-col>
-            <b-button
-              variant="outline-secondary"
-              class="mr-2 text-uppercase"
-              type="button"
+      <!-- Information Group tab -->
+      <tab-content title="Information Group" :before-change="validateStep1">
+        <validation-observer ref="information">
+          <b-row>
+            <b-col
+                    cols="12"
+                    class="mb-2"
             >
-              Cancel
-            </b-button>
-            <b-button
-              class="text-uppercase"
-              variant="primary"
-              type="button"
-              @click="validationForm"
-            >
-              Send
-            </b-button>
+              <h5 class="mb-0">
+                Information Group
+              </h5>
+              <small class="text-muted">
+                Enter Your Information Group.
+              </small>
+            </b-col>
+            <b-col md="6">
+              <b-form-group
+                      label="Title Group"
+                      label-for="v-title"
+              >
+                <validation-provider
+                        #default="{ errors }"
+                        name="Title"
+                        rules="required"
+                >
+                  <b-form-input
+                          v-model="data.title"
+                          :state="errors.length > 0 ? false : null"
+                          id="v-title"
+                          placeholder="Enter title group"
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+            <b-col md="6">
+              <b-form-group
+                      label="Status Group"
+                      label-for="v-password"
+              >
+                <validation-provider
+                        #default="{ errors }"
+                        name="Status"
+                        rules="required"
+                >
+                  <v-select
+                          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                          :state="errors.length > 0 ? false : null"
+                          :value="data.status"
+                          :options="typeOptions"
+                          :reduce="(val) => val.value"
+                          @input="(val) => data.status = val"
+                          class="w-100"
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+            <b-col md="12">
+              <b-row>
+                <b-col
+                        cols="12"
+                        class="mb-2"
+                >
+                  <h5 class="mb-0">
+                    Range Of Activities
+                  </h5>
+                  <small class="text-muted">Enter Your Range Of Activities.</small>
+                </b-col>
+
+                <b-col md="12">
+                  <b-row>
+                    <b-col md="6">
+                      <b-form-group
+                              label="Shops"
+                              label-for="v-systems-apply"
+                      >
+                        <b-form-radio-group
+                                id="v-systems-apply"
+                                v-model="data.scopeApply.shop.all"
+                                :options="typeOptions"
+                                class="mb-3"
+                                value-field="item"
+                                text-field="name"
+                                disabled-field="notEnabled"
+                        ></b-form-radio-group>
+                      </b-form-group>
+                    </b-col>
+                    <b-col md="6">
+                      <b-form-group
+                              label="Select Shops"
+                              label-for="v-landmark"
+                      >
+                        <span v-show="data.scopeApply.shop.all == 0">Choose all shops</span>
+                        <validation-provider
+                                v-if="data.scopeApply.shop.all != 0"
+                                #default="{ errors }"
+                                name="Shops"
+                                rules="required"
+                        >
+                          <v-select
+                                  v-model="data.scopeApply.shop.listShop"
+                                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                  multiple
+                                  :options="$store.state.app_voucher.allSystem"
+                                  label="title"
+                                  :state="errors.length > 0 && chooseE==1 ? false : null"
+                          >
+                            <template v-slot:option="option">
+                              {{ option.title }}
+                            </template>
+                          </v-select>
+                          <small class="text-danger">{{ errors[0] }}</small>
+                        </validation-provider>
+                      </b-form-group>
+                    </b-col>
+                  </b-row>
+                </b-col>
+              </b-row>
+            </b-col>
+          </b-row>
+        </validation-observer>
+      </tab-content>
+
+      <!-- social link -->
+      <tab-content title="Voucher List">
+        <b-row>
+          <b-col
+                  cols="12"
+                  class="mb-2"
+          >
+            <h5 class="mb-0">
+              Voucher List
+            </h5>
+            <small class="text-muted">Enter Your Voucher List</small>
+          </b-col>
+          <b-col md="12">
+            <VoucherList />
           </b-col>
         </b-row>
-      </b-form>
-    </validation-observer>
+      </tab-content>
+    </form-wizard>
   </div>
 </template>
 
@@ -289,6 +329,34 @@ export default {
           this.sendSMS();
         }
       });
+    },
+
+    validateStep1() {
+      this.locale = this.locale === "en" ? "vi" : "en"
+      return this.$refs.information.validate()
+    },
+
+    formSubmitted() {
+      const data = store.state.app_voucher.allVouchers
+      store.dispatch('app_voucher/addListVouchersGroup', data)
+              .then(response => {
+                if (response.data.success) {
+                  this.alert("success", "Add vouchers successfully.")
+                  this.$router.push({name: 'apps-group-voucher-list'})
+                } else {
+                  this.alert("danger", "Add vouchers failed.")
+                }
+              })
+              .catch((err) => {
+                this.$toast({
+                  component: ToastificationContent,
+                  props: {
+                    title: 'Error add vouchers list',
+                    icon: 'AlertTriangleIcon',
+                    variant: 'danger',
+                  },
+                })
+              })
     },
 
     sendSMS() {
