@@ -99,16 +99,9 @@
                   @change="chooseAll()"
           >
           </b-form-checkbox>
-
+          UnlockIcon
           <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteVouchersInGroup"><feather-icon icon="TrashIcon" /></span>
-          <v-select
-                  v-if="selected.length > 0 || all"
-                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                  :options="statusOptions"
-                  :clearable="false"
-                  @input="changeStatusVouchersInGroup($event)"
-                  class="per-page-selector d-inline-block mx-50"
-          />
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="changeStatusVouchersInGroup(1)"><feather-icon icon="UnlockIcon" /></span>
         </template>
 
         <!-- Column: Delete -->

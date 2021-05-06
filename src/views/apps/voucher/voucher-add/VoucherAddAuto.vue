@@ -323,31 +323,25 @@
                         // eslint-disable-next-line
                         let vouchers = [];
                         let length = this.data.length - (this.data.begin.length + this.data.end.length)
-                        if (this._id == null) {
-                            for (let i = 0; i < this.data.number; i++) {
-                                vouchers.push(
-                                    {
-                                        idVoucher: null,
-                                        voucherCode: this.data.begin + this.makeid(length) + this.data.end,
-                                        discount: this.dataVouchers.vouchers.discount,
-                                        timeLine:this.dataVouchers.vouchers.timeLine,
-                                        status : 0,
-                                        classified: this.dataVouchers.vouchers.classified,
-                                        created: {
-                                            createBy: "admin",
-                                            time: Date.now()
-                                        },
-                                        modified: {
-                                            modifyBy: "admin",
-                                            time: Date.now()
-                                        }
+                        for (let i = 0; i < this.data.number; i++) {
+                            vouchers.push(
+                                {
+                                    idVoucher: null,
+                                    voucherCode: this.data.begin + this.makeid(length) + this.data.end,
+                                    discount: this.dataVouchers.vouchers.discount,
+                                    timeLine:this.dataVouchers.vouchers.timeLine,
+                                    status : 0,
+                                    classified: this.dataVouchers.vouchers.classified,
+                                    created: {
+                                        createBy: "admin",
+                                        time: Date.now()
+                                    },
+                                    modified: {
+                                        modifyBy: "admin",
+                                        time: Date.now()
                                     }
-                                )
-                            }
-                        } else {
-                            for (let i = 0; i < this.data.number; i++) {
-                                vouchers.push(this.data.begin + this.makeid(length) + this.data.end)
-                            }
+                                }
+                            )
                         }
                         this.dataVouchers.items = vouchers
                         this.$emit('update', this.dataVouchers)
