@@ -20,31 +20,11 @@
                     class="mb-2"
             >
               <h5 class="mb-0">
-                Information Group
+                Information Service
               </h5>
               <small class="text-muted">
-                Enter Your Information Group.
+                Enter Your Information Service.
               </small>
-            </b-col>
-            <b-col md="6">
-              <b-form-group
-                      label="Title Group"
-                      label-for="v-title"
-              >
-                <validation-provider
-                        #default="{ errors }"
-                        name="Title"
-                        rules="required"
-                >
-                  <b-form-input
-                          v-model="data.title"
-                          :state="errors.length > 0 ? false : null"
-                          id="v-title"
-                          placeholder="Enter title group"
-                  />
-                  <small class="text-danger">{{ errors[0] }}</small>
-                </validation-provider>
-              </b-form-group>
             </b-col>
             <b-col md="6">
               <b-form-group
@@ -69,40 +49,6 @@
                 </validation-provider>
               </b-form-group>
             </b-col>
-            <b-col md="12">
-              <b-row>
-                <b-col
-                        cols="12"
-                        class="mb-2"
-                >
-                  <h5 class="mb-0">
-                    Range Of Activities
-                  </h5>
-                  <small class="text-muted">Enter Your Range Of Activities.</small>
-                </b-col>
-
-                <b-col md="12">
-                  <b-row>
-                    <b-col md="6">
-                      <b-form-group
-                              label="Shops"
-                              label-for="v-systems-apply"
-                      >
-                        <b-form-radio-group
-                                id="v-systems-apply"
-                                v-model="data.scopeApply.shop.all"
-                                :options="typeOptions"
-                                class="mb-3"
-                                value-field="item"
-                                text-field="name"
-                                disabled-field="notEnabled"
-                        ></b-form-radio-group>
-                      </b-form-group>
-                    </b-col>
-                  </b-row>
-                </b-col>
-              </b-row>
-            </b-col>
           </b-row>
         </validation-observer>
       </tab-content>
@@ -120,7 +66,7 @@
             <small class="text-muted">Enter Your Voucher List</small>
           </b-col>
           <b-col md="12">
-            <VoucherList />
+
           </b-col>
         </b-row>
       </tab-content>

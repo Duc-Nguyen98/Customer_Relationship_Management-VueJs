@@ -134,17 +134,7 @@
             </template>
 
             <b-dropdown-item
-              :to="{
-                name: 'apps-services-edit-sms',
-                params: { id: data.item._id },
-              }"
-            >
-              <feather-icon icon="PlusCircleIcon" />
-              <span class="align-middle ml-50">Edit</span>
-            </b-dropdown-item>
-
-            <b-dropdown-item
-                    @click="restoreVoucher(data.item._id)"
+                    @click="restoreVoucher(data.item.idGroupVoucher)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Restore</span>
