@@ -14,7 +14,7 @@ export default function useVoucherListGroups() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'selected', label: 'All', class: 'all'},
+    { key: 'selected', label: 'All', class: 'all' },
     { key: 'stt', label: 'STT', sortable: true },
     { key: 'title', label: 'Name Group', formatter: title, sortable: true },
     { key: 'note', label: 'Note', sortable: true },
@@ -60,29 +60,29 @@ export default function useVoucherListGroups() {
     }
     time.value = setTimeout(() => {
       store
-          .dispatch('app_voucher/fetchVouchers', {
-            q: searchQuery.value,
-            perPage: perPage.value,
-            page: currentPage.value,
-            classified: classified.value,
-            status: status.value,
+        .dispatch('app_voucher/fetchVouchers', {
+          q: searchQuery.value,
+          perPage: perPage.value,
+          page: currentPage.value,
+          classified: classified.value,
+          status: status.value,
+        })
+        .then(response => {
+          const { groupVouchers, countGroupVoucher } = response.data
+          Vouchers.value = groupVouchers
+          totalVoucher.value = countGroupVoucher
+          isBusy.value = false
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching services list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
           })
-          .then(response => {
-            const {groupVouchers, countGroupVoucher} = response.data
-            Vouchers.value = groupVouchers
-            totalVoucher.value = countGroupVoucher
-            isBusy.value = false
-          })
-          .catch(() => {
-            toast({
-              component: ToastificationContent,
-              props: {
-                title: 'Error fetching services list',
-                icon: 'AlertTriangleIcon',
-                variant: 'danger',
-              },
-            })
-          })
+        })
     }, searchQuery.value ? 1000 : 0)
   }
 
@@ -100,25 +100,25 @@ export default function useVoucherListGroups() {
 
   const deleteVoucherSoft = id => {
     store
-        .dispatch('app_voucher/deleteVoucherSoft', {_id: id})
-        .then(response => {
-          if (response.data.success) {
-            alert("success", "Delete services successfully.")
-            fetchVouchers()
-          } else {
-            alert("danger", "Delete services failed.")
-          }
+      .dispatch('app_voucher/deleteVoucherSoft', { _id: id })
+      .then(response => {
+        if (response.data.success) {
+          alert("success", "Delete services successfully.")
+          fetchVouchers()
+        } else {
+          alert("danger", "Delete services failed.")
+        }
+      })
+      .catch(() => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Error fetching services list',
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
         })
-        .catch(() => {
-          toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Error fetching services list',
-              icon: 'AlertTriangleIcon',
-              variant: 'danger',
-            },
-          })
-        })
+      })
   }
 
   fetchVouchers()
@@ -184,33 +184,33 @@ export default function useVoucherListGroups() {
   const chooseAll = () => {
     all.value = !all.value
     Vouchers.value.map(obj => {
-      chooseOne(obj._id)
+      chooseOne(obj.idGroupVoucher)
     })
   }
 
   const deleteSoftManyGroups = () => {
     store
-        .dispatch('app_voucher/deleteSoftManyGroups', {GroupIdArray: selected.value})
-        .then(response => {
-          if (response.data.success) {
-            alert("success", "Delete group vouchers successfully.")
-            fetchVouchers()
-            selected.value = []
-            all.value = !all.value
-          } else {
-            alert("danger", "Delete group vouchers failed.")
-          }
+      .dispatch('app_voucher/deleteSoftManyGroups', { GroupIdArray: selected.value })
+      .then(response => {
+        if (response.data.success) {
+          alert("success", "Delete group vouchers successfully.")
+          fetchVouchers()
+          selected.value = []
+          all.value = !all.value
+        } else {
+          alert("danger", "Delete group vouchers failed.")
+        }
+      })
+      .catch(() => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Error fetching group vouchers list',
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
         })
-        .catch(() => {
-          toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Error fetching group vouchers list',
-              icon: 'AlertTriangleIcon',
-              variant: 'danger',
-            },
-          })
-        })
+      })
   }
 
   return {
