@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Filters -->
-    <shops-list-filters
+    <group-customers-list-filters
       :status.sync="status"
       :region.sync="region"
       :status-options="statusOptions"
@@ -236,9 +236,9 @@ import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import ShopsListFilters from "./ShopsListFilters.vue";
-import useShopsList from "./useShopsList";
-import shopStoreModule from "../shopStoreModule";
+import groupCustomersListFilters from "./groupCustomersListFilters.vue";
+import useGroupCustomersList from "./useGroupCustomersList";
+import groupCustomersStoreModule from "../groupCustomersStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 
@@ -250,7 +250,7 @@ import { useToast } from 'vue-toastification/composition'
 export default {
   components: {
     ToastificationContent,
-    ShopsListFilters,
+    groupCustomersListFilters,
     BCard,
     BRow,
     BCol,
@@ -275,11 +275,11 @@ export default {
     const toast = useToast()
 
     const api = process.env.VUE_APP_ROOT_API
-    const USER_APP_STORE_MODULE_NAME = 'app-shops'
+    const USER_APP_STORE_MODULE_NAME = 'app-groups-customers'
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule)
+      store.registerModule(USER_APP_STORE_MODULE_NAME, groupCustomersStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
@@ -344,7 +344,7 @@ export default {
       isBusy,
       status,
       region,
-    } = useShopsList();
+    } = useGroupCustomersList();
 
     return {
       one,

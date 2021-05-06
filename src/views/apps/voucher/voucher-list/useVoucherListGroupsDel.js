@@ -207,7 +207,7 @@ export default function useVoucherListGroupsDel() {
   const chooseAll = () => {
     all.value = !all.value
     Vouchers.value.map(obj => {
-      chooseOne(obj._id)
+      chooseOne(obj.idGroupVoucher)
     })
   }
 

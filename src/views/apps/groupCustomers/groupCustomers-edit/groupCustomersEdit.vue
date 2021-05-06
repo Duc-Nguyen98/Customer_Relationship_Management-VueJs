@@ -19,7 +19,7 @@
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
           <span class="d-none d-sm-inline">Infomation Shop</span>
         </template>
-        <shop-edit-tab-information :shop-info="shopData" class="mt-2 pt-75" />
+        <group-customers-edit-tab-information :shop-info="shopData" class="mt-2 pt-75" />
       </b-tab>
     </b-tabs>
   </component>
@@ -30,8 +30,8 @@ import { BTab, BTabs, BCard, BAlert, BLink } from "bootstrap-vue";
 import { ref, onUnmounted } from "@vue/composition-api";
 import router from "@/router";
 import store from "@/store";
-import shopStoreModule from "../shopStoreModule";
-import ShopEditTabInformation from "./ShopEditTabInformation.vue";
+import groupCustomersStoreModule from "../groupCustomersStoreModule";
+import groupCustomersEditTabInformation from "./groupCustomersEditTabInformation.vue";
 
 export default {
   components: {
@@ -41,16 +41,16 @@ export default {
     BAlert,
     BLink,
 
-    ShopEditTabInformation,
+    groupCustomersEditTabInformation,
   },
   setup() {
     const shopData = ref(null);
 
-    const USER_APP_STORE_MODULE_NAME = "app-shops";
+    const USER_APP_STORE_MODULE_NAME = "app-groups-customers";
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule);
+      store.registerModule(USER_APP_STORE_MODULE_NAME, groupCustomersStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
@@ -59,7 +59,7 @@ export default {
     });
 
     store
-      .dispatch("app-shops/fetchShop", { _id: router.currentRoute.params.id })
+      .dispatch("app-groups-customers/fetchOneGC", { _id: router.currentRoute.params.id })
       .then((response) => {
         shopData.value = response.data.data;
         console.log(shopData.value)

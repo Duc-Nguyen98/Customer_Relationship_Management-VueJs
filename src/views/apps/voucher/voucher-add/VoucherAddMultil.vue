@@ -208,28 +208,24 @@
             addVoucher(index) {
                 const val = document.getElementById('voucher' + index).value
                 if (val) {
-                    if (this._id == null) {
-                        this.items[index] = {
-                            idVoucher : null,
-                            voucherCode : val,
-                            discount: this.data.vouchers.discount,
-                            timeLine:this.data.vouchers.timeLine,
-                            status : 0,
-                            classified: this.data.vouchers.classified,
-                            created : {
-                                createBy : "admin",
-                                time : Date.now()
-                            },
-                            modified : {
-                                modifyBy : "admin",
-                                time : Date.now()
-                            }
+                    this.items[index] = {
+                        idVoucher: null,
+                        voucherCode: val,
+                        discount: this.data.vouchers.discount,
+                        timeLine: this.data.vouchers.timeLine,
+                        status : 0,
+                        classified: this.data.vouchers.classified,
+                        created: {
+                            createBy: "admin",
+                            time: Date.now()
+                        },
+                        modified: {
+                            modifyBy: "admin",
+                            time: Date.now()
                         }
-                    } else {
-                        this.vouchers[index] = val
                     }
                 } else {
-                    this.vouchers = this.vouchers.filter((item, key) => key != index)
+                    this.items = this.items.filter((item, key) => key != index)
                     this.$toast({
                         component: ToastificationContent,
                         props: {
@@ -241,8 +237,8 @@
                 }
             },
             emitData() {
-                if ( this.vouchers.length > 0 || this.items.length > 0 && this.data.vouchers != null) {
-                    this.data.items = this._id == null ? this.items : this.vouchers
+                if ( this.items.length > 0 && this.data.vouchers != null ) {
+                    this.data.items = this.items
                     this.$emit('update', this.data)
                     this.$bvModal.hide("modal-lg")
                 } else {

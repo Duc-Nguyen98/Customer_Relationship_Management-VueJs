@@ -6,34 +6,34 @@ export default {
   getters: {},
   mutations: {},
   actions: {
-    fetchShops(ctx, queryParams) {
+    fetchGC(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + 'shop/list', { params: queryParams })
+          .get(process.env.VUE_APP_ROOT_API + 'customer/group/list', { params: queryParams })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
     },
-    fetchShopsDel(ctx, queryParams) {
+    fetchGCDel(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-            .get(process.env.VUE_APP_ROOT_API + 'shop/list/trash', { params: queryParams })
+            .get(process.env.VUE_APP_ROOT_API + 'customer/group/list/trash', { params: queryParams })
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
     },
-    fetchShop(ctx, { _id }) {
+    fetchOneGC(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + `shop/detail/${_id}`)
+          .get(process.env.VUE_APP_ROOT_API + `customer/group/detail/${_id}`)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
     },
-    addShop(ctx, shopData) {
+    addGC(ctx, gcData) {
       return new Promise((resolve, reject) => {
         axios
-          .post(process.env.VUE_APP_ROOT_API + 'shop/create', shopData)
+          .post(process.env.VUE_APP_ROOT_API + 'customer/group/create', gcData)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -90,16 +90,6 @@ export default {
       return new Promise((resolve, reject) => {
         axios
             .patch(process.env.VUE_APP_ROOT_API + `shop/restore/many/shop`, shopIdArray)
-            .then(response => resolve(response))
-            .catch(error => reject(error))
-      })
-    },
-    uploadCustomer(ctx, { file, _id }) {
-      let data = new FormData()
-      data.append('file', file)
-      return new Promise((resolve, reject) => {
-        axios
-            .post(process.env.VUE_APP_ROOT_API + `customer/upload/${_id}`, data)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })

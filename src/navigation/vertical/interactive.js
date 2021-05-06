@@ -21,6 +21,24 @@ export default [
         ],
     },
     {
+        title: 'Group Customers',
+        icon: 'UsersIcon',
+        children: [
+            {
+                title: 'List Group',
+                route: 'apps-groups-customers-list',
+            },
+            {
+                title: 'L-Group Delete',
+                route: 'apps-groups-customers-list-del',
+            },
+            {
+                title: 'Add',
+                route: 'apps-groups-customers-add',
+            },
+        ],
+    },
+    {
         title: 'Shops',
         icon: 'ShoppingBagIcon',
         children: [
