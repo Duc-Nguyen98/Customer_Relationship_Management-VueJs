@@ -251,7 +251,7 @@
             <validation-provider
                     #default="{ errors }"
                     name="Note"
-                    rules="required"
+                    rules=""
             >
               <b-form-textarea
                       id="textarea-rows"
@@ -272,7 +272,7 @@
           type="button"
           variant="outline-secondary"
           class="mr-2 text-uppercase"
-          @click="$router.push({name: 'apps-customers-list'})"
+          :to="{name: 'apps-customers-list'}"
         >
           Cancel
         </b-button>

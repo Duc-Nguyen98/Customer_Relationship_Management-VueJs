@@ -100,7 +100,7 @@
                                   multiple
                                   :options="$store.state.app_voucher.allSystem"
                                   label="title"
-                                  :state="errors.length > 0 && chooseE==1 ? false : null"
+                                  :state="errors.length > 0 ? false : null"
                           >
                             <template v-slot:option="option">
                               {{ option.title }}
@@ -164,7 +164,7 @@
             <wizard-button  v-if="props.activeTabIndex > 0 && !props.isLastStep" :style="props.fillButtonStyle">Previous</wizard-button>
           </div>
           <div class="wizard-footer-right">
-            <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" @click="submitGroup" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
+            <wizard-button v-if="!props.isLastStep" @click.native="submitGroup(props)" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
 
             <wizard-button v-else @click.native="alert('Done')" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Done' : 'Next'}}</wizard-button>
 
@@ -394,7 +394,7 @@ export default {
       return this.$refs.information.validate()
     },
 
-    submitGroup() {
+    submitGroup(props) {
       if (this.add == false) {
         this.locale = this.locale === "en" ? "vi" : "en"
         this.$refs.information.validate().then((success) => {
@@ -403,6 +403,7 @@ export default {
                     .then(response => {
                       if (response.data.success) {
                         this.add = true
+                        props.nextTab();
                         this.alert("success", "Add group voucher successfully.")
                       } else {
                         this.alert("danger", "Add group voucher failed.")
@@ -461,17 +462,6 @@ export default {
         this.Mmoney = 0
       }
     },
-    chooseE(val) {
-      if (val == 0) {
-        this.data.timeLine.expiry.number = null
-        this.data.timeLine.expiry.type = null
-      } else {
-        this.data.timeLine.expiry.number = 1
-        this.data.timeLine.expiry.type = 1
-        this.data.timeLine.effective.release = null
-        this.data.timeLine.effective.expiration = null
-      }
-    }
   }
 }
 </script>
