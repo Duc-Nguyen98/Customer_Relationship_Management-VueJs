@@ -1,5 +1,9 @@
 import axios from '@axios'
 
+const config = {
+  headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
+};
+
 export default {
   namespaced: true,
   state: {},
@@ -9,7 +13,7 @@ export default {
     fetchGC(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + 'customer/group/list', { params: queryParams })
+          .get(process.env.VUE_APP_ROOT_API + 'customer/group/list', { params: queryParams }, config)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -17,7 +21,7 @@ export default {
     fetchGCDel(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-            .get(process.env.VUE_APP_ROOT_API + 'customer/group/list/trash', { params: queryParams })
+            .get(process.env.VUE_APP_ROOT_API + 'customer/group/list/trash', { params: queryParams }, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -25,7 +29,7 @@ export default {
     fetchOneGC(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + `customer/group/detail/${_id}`)
+          .get(process.env.VUE_APP_ROOT_API + `customer/group/detail/${_id}`, config)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -33,7 +37,7 @@ export default {
     addGC(ctx, gcData) {
       return new Promise((resolve, reject) => {
         axios
-          .post(process.env.VUE_APP_ROOT_API + 'customer/group/create', gcData)
+          .post(process.env.VUE_APP_ROOT_API + 'customer/group/create', gcData, config)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -41,7 +45,7 @@ export default {
     updateUser(ctx, { userData, _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .put(process.env.VUE_APP_ROOT_API + `customer/update/${_id}`, userData)
+            .put(process.env.VUE_APP_ROOT_API + `customer/update/${_id}`, userData, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -49,7 +53,7 @@ export default {
     deleteShop(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `shop/delete-soft/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `shop/delete-soft/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -57,7 +61,7 @@ export default {
     deleteShopR(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `shop/delete/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `shop/delete/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -65,7 +69,7 @@ export default {
     restoreShop(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `shop/trash/restore/${_id}`)
+            .patch(process.env.VUE_APP_ROOT_API + `shop/trash/restore/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -73,7 +77,7 @@ export default {
     deleteManyShop(ctx, shopIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `shop/delete/many/shop`, shopIdArray)
+            .patch(process.env.VUE_APP_ROOT_API + `shop/delete/many/shop`, shopIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -81,7 +85,7 @@ export default {
     deleteSoftManyShop(ctx, shopIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `shop/delete-soft/many/shop`, shopIdArray)
+            .patch(process.env.VUE_APP_ROOT_API + `shop/delete-soft/many/shop`, shopIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -89,7 +93,7 @@ export default {
     restoreManyShop(ctx, shopIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `shop/restore/many/shop`, shopIdArray)
+            .patch(process.env.VUE_APP_ROOT_API + `shop/restore/many/shop`, shopIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })

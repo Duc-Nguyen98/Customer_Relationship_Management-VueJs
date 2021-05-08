@@ -1,6 +1,5 @@
 import axios from '@axios'
 
-console.log(localStorage.getItem('accessToken'))
 const config = {
   headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
 };
