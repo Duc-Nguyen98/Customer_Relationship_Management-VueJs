@@ -13,7 +13,7 @@
     >
 
       <!-- Information Group tab -->
-      <tab-content title="Information Group" :before-change="validateStep1">
+      <tab-content title="Information Group">
         <validation-observer ref="information">
         <b-row>
           <b-col
@@ -95,7 +95,7 @@
                                 rules="required"
                         >
                           <v-select
-                                  v-model="data.scopeApply.listShop"
+                                  v-model="data.listShop"
                                   :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                   multiple
                                   :options="$store.state.app_voucher.allSystem"
@@ -270,9 +270,7 @@ export default {
         title: null,
         status: 0,
         note: null,
-        scopeApply: {
-          listShop: [],
-        },
+        listShop: [],
       },
       applies: 0,
       appliesOptions: [

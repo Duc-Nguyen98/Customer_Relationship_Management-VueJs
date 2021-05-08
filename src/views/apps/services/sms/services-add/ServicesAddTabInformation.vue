@@ -12,7 +12,7 @@
             @on-complete="formSubmitted"
     >
       <!-- Information User tab -->
-      <tab-content title="Information User">
+      <tab-content title="Information User" >
         <validation-observer ref="validateStep">
           <b-form class="mt-1">
             <!-- Header: Personal Info -->
@@ -112,9 +112,10 @@
                             :state="errors.length > 0 ? false : null"
                             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                             :options="servicesOptions"
+                            v-model="smsData.service"
                             class="w-100"
                             :reduce="(val) => val.value"
-                            @input="(val) => smsData.services = val"
+                            @input="(val) => smsData.service = val"
                     />
                     <small class="text-danger">{{ errors[0] }}</small>
                   </validation-provider>
@@ -254,6 +255,26 @@
               </b-row>
         </validation-observer>
       </tab-content>
+
+      <template slot="footer" scope="props">
+        <div class=wizard-footer-left>
+          <wizard-button  v-if="props.activeTabIndex > 0 && !props.isLastStep" :style="props.fillButtonStyle">Previous</wizard-button>
+        </div>
+        <div class="wizard-footer-right">
+          <wizard-button v-if="!props.isLastStep" @click.native="nextService(props)" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
+
+          <wizard-button v-else @click.native="alert('Done')" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Done' : 'Next'}}</wizard-button>
+
+          <wizard-button
+                  class="mr-2 text-uppercase btn-outline-primary wizard-footer-right"
+                  type="button"
+                  :to="{name: 'apps-group-voucher-list'}"
+          >
+            Cancel
+          </wizard-button>
+        </div>
+
+      </template>
     </form-wizard>
   </div>
 </template>
@@ -335,14 +356,40 @@ export default {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME))
         store.unregisterModule(USER_APP_STORE_MODULE_NAME);
     })
+    const smsData = ref({
+      customer: null,
+      telephone: "",
+      email: "",
+      title: "",
+      service: null,
+      dateAuto: "",
+      content: "",
+      group: "",
+      voucher: "",
+      discount: "",
+      form_date: "",
+      to_date: "",
+    })
 
-    const customers = ref([]);
+    const customers = ref([
+      {
+        telephone: null,
+        email: null,
+        value: null,
+        label: 'Choose a customer'
+      }
+    ]);
+
+    const groupOptions = ref([])
+    const voucherOptions = ref([])
 
     store.dispatch('app-customers/fetchUsers', {}).then(response => {
       customers.value = [];
          const { data } = response.data
             data.map(obj => {
               customers.value.push({
+                telephone: obj.telephone,
+                email: obj.email,
                 value: obj.telephone,
                 label: '@CS' + obj.idCustomer + '-' + obj.name
               })
@@ -359,25 +406,8 @@ export default {
               })
             })
 
-    const smsData = ref({
-      customer: "",
-      telephone: "",
-      email: "",
-      title: "",
-      service: "",
-      dateAuto: "",
-      content: "",
-      group: "",
-      voucher: "",
-      discount: "",
-      form_date: "",
-      to_date: "",
-    })
-
-    const groupOptions = ref([])
-    const voucherOptions = ref([])
-
     const servicesOptions = [
+      { label: "Choose a service", value: null },
       { label: "SMS", value: 0 },
       { label: "Email", value: 1 },
     ]
@@ -410,9 +440,36 @@ export default {
 
   methods: {
     changeCustomer(data) {
-      this.smsData.customer = data?.label??""
-      this.smsData.telephone = data?.value??""
-      this.smsData.content = this.smsData.customer + ' - Voucher ' + this.smsData.type_name + ':"' + faker.finance.bic() + '" - '
+      this.smsData.telephone = data.telephone
+      this.smsData.email = data.email
+    },
+
+    nextService(props) {
+        this.locale = this.locale === "en" ? "vi" : "en"
+        this.$refs.information.validate().then((success) => {
+          if(success) {
+            store.dispatch('app_voucher/addVoucherGroup', this.data)
+                    .then(response => {
+                      if (response.data.success) {
+                        this.add = true
+                        props.nextTab();
+                        this.alert("success", "Add group voucher successfully.")
+                      } else {
+                        this.alert("danger", "Add group voucher failed.")
+                      }
+                    })
+                    .catch((err) => {
+                      this.$toast({
+                        component: ToastificationContent,
+                        props: {
+                          title: 'Error Add group voucher',
+                          icon: 'AlertTriangleIcon',
+                          variant: 'danger',
+                        },
+                      })
+                    })
+          }
+        })
     },
 
     changeType(data) {

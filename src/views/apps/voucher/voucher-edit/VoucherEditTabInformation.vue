@@ -63,7 +63,7 @@
                                                         label-for="v-landmark"
                                                 >
                                                     <v-select
-                                                            v-model="GroupDataInfo.scopeApply.listShop"
+                                                            v-model="GroupDataInfo.listShop"
                                                             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                                             multiple
                                                             :options="$store.state.app_voucher.allSystem"
@@ -356,62 +356,7 @@
                             })
                         })
                 }
-
-                if (store.state.app_voucher.allCustomers.length == 0) {
-                    store.dispatch('app_voucher/fetchCustomers')
-                        .then(response => {
-                            if (response.data.success) {
-                                let allCustomers = []
-                                response.data.listGroupCustomer.map(obj => {
-                                    allCustomers.push({
-                                        value: obj.idGroupCustomer,
-                                        title: obj.title,
-                                    })
-                                })
-                                store.commit('app_voucher/updateCustomers', allCustomers)
-                            } else {
-                                alert("danger", "Get list customers failed.")
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err)
-                            toast({
-                                component: ToastificationContent,
-                                props: {
-                                    title: 'Error fetching services list',
-                                    icon: 'AlertTriangleIcon',
-                                    variant: 'danger',
-                                },
-                            })
-                        })
-                }
             }
-
-            //Format money
-            // const Mmoney = ref(GroupDataInfo.value.discount.PercentAMaximum.maximumMoney)
-            // const blurMoney = () => {
-            //     GroupDataInfo.value.discount.PercentAMaximum.maximumMoney = Mmoney.value
-            //     let val = (Mmoney.value/1).toFixed(2).replace('.', ',')
-            //     Mmoney.value = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-            // }
-            // blurMoney()
-
-            //Format money
-            // const reduction = ref(GroupDataInfo.value.discount.reduction.money)
-            // const blurReduction = () => {
-            //     GroupDataInfo.value.discount.reduction.money = reduction.value
-            //     let val = (reduction.value/1).toFixed(2).replace('.', ',')
-            //     reduction.value = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-            // }
-            // blurReduction()
-
-            // if (groupinfo.discount.reduction.money == null) {
-            //     discount.value = 0
-            // }
-            //
-            // if (groupinfo.timeLine.expiry.number == null && groupinfo.timeLine.expiry.type == null) {
-            //     chooseE.value = 0
-            // }
 
             return {
                 chooseEffect,

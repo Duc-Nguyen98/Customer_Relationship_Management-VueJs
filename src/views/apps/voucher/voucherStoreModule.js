@@ -8,16 +8,12 @@ export default {
   namespaced: true,
   state: {
     allSystem: [],
-    allCustomers: [],
     allVouchers: [],
   },
   getters: {},
   mutations: {
     updateSystems(state, systems) {
       state.allSystem = systems
-    },
-    updateCustomers(state, customers) {
-      state.allCustomers = customers
     },
     saveVouchers(state, vouchers) {
       state.allVouchers = vouchers
