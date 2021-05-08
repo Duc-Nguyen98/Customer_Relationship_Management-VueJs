@@ -31,7 +31,7 @@
   "Sales": "Bán hàng",
   "Charts Data": "Dữ liệu biểu đồ",
   "Users": "Người Dùng",
-  "Table Users": "Bảng Người Dùng",
+  "Table Users": "Thành viên",
   "Customers": "Khách Hàng",
   "Transactions": "Giao Dịch",
   "Data Chart": "Biểu đồ dữ liệu",
@@ -39,5 +39,10 @@
   "Permission Control": "Quản lý quyền",
   "Charts Users": "Biểu đồ người dùng",
   "Charts Customers": "Biểu đồ khách hàng",
-  "Charts Transaction": "Biểu đồ giao dịch"
+  "Charts Transaction": "Biểu đồ giao dịch",
+  "Table Customers": "Khách hàng",
+  "Table Services": "Dịch vụ",
+  "Groups Voucher": "Nhóm Phiếu",
+  "Group Customers": "Nhóm Khách Hàng",
+  "Shops": "Cửa Hàng"
 }

@@ -1,6 +1,7 @@
 <template>
   <div>
     <form-wizard
+            ref="wizard"
             color="#7367F0"
             :title="null"
             :subtitle="null"
@@ -10,75 +11,260 @@
             class="wizard-vertical mb-3"
             @on-complete="formSubmitted"
     >
+      <!-- Information User tab -->
+      <tab-content title="Information User">
+        <validation-observer ref="validateStep">
+          <b-form class="mt-1">
+            <!-- Header: Personal Info -->
+            <div class="d-flex mb-2">
+              <feather-icon icon="UserIcon" size="19" />
+              <h4 class="mb-0 ml-50">User Information</h4>
+            </div>
+            <b-row>
+              <!-- Field: Name  -->
+              <b-col cols="12" md="6" lg="4">
+                <b-form-group label="Title" label-for="Title">
+                  <validation-provider
+                          #default="{ errors }"
+                          name="Title"
+                          rules="required"
+                  >
+                    <b-form-input
+                            id="title"
+                            v-model="smsData.title"
+                            :state="errors.length > 0 ? false : null"
+                            placeholder="Title"
+                    />
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+              </b-col>
 
-      <!-- Information Group tab -->
-      <tab-content title="Information Group" :before-change="validateStep1">
-        <validation-observer ref="information">
-          <b-row>
-            <b-col
-                    cols="12"
-                    class="mb-2"
-            >
-              <h5 class="mb-0">
-                Information Service
-              </h5>
-              <small class="text-muted">
-                Enter Your Information Service.
-              </small>
-            </b-col>
-            <b-col md="6">
-              <b-form-group
-                      label="Status Group"
-                      label-for="v-password"
-              >
-                <validation-provider
-                        #default="{ errors }"
-                        name="Status"
-                        rules="required"
-                >
-                  <v-select
-                          :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                          :state="errors.length > 0 ? false : null"
-                          :value="data.status"
-                          :options="typeOptions"
-                          :reduce="(val) => val.value"
-                          @input="(val) => data.status = val"
-                          class="w-100"
-                  />
-                  <small class="text-danger">{{ errors[0] }}</small>
-                </validation-provider>
-              </b-form-group>
-            </b-col>
-          </b-row>
+              <!-- Customer -->
+              <b-col cols="12" md="6" lg="4">
+                <b-form-group>
+                  <label>Customer</label>
+                  <validation-provider
+                          #default="{ errors }"
+                          name="Customer"
+                          rules="required"
+                  >
+                    <v-select
+                            :state="errors.length > 0 ? false : null"
+                            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                            v-model="smsData.customer"
+                            :options="customers"
+                            class="w-100"
+                            @input="changeCustomer($event)"
+                    />
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+              </b-col>
+
+              <!-- Field: Name  -->
+              <b-col cols="12" md="6" lg="4">
+                <b-form-group label="Telephone" label-for="Telephone">
+                  <validation-provider
+                          #default="{ errors }"
+                          name="Telephone"
+                          rules=""
+                  >
+                    <b-form-input
+                            :disabled="true"
+                            id="telephone"
+                            v-model="smsData.telephone"
+                            placeholder="Telephone"
+                    />
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+              </b-col>
+
+              <!-- Field: Name  -->
+              <b-col cols="12" md="6" lg="4">
+                <b-form-group label="Email" label-for="Email">
+                  <validation-provider
+                          #default="{ errors }"
+                          name="Email"
+                          rules="required"
+                  >
+                    <b-form-input
+                            :disabled="true"
+                            id="email"
+                            v-model="smsData.email"
+                            placeholder="Email"
+                    />
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+              </b-col>
+
+              <!-- Type -->
+              <b-col cols="12" md="6" lg="4">
+                <b-form-group label="Services" label-for="Services">
+                  <validation-provider
+                          #default="{ errors }"
+                          name="Services"
+                          rules="required"
+                  >
+                    <v-select
+                            :state="errors.length > 0 ? false : null"
+                            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                            :options="servicesOptions"
+                            class="w-100"
+                            :reduce="(val) => val.value"
+                            @input="(val) => smsData.services = val"
+                    />
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+              </b-col>
+
+              <!-- Date -->
+              <b-col cols="12" md="6" lg="4">
+                <b-form-group label="Date automatically sent" label-for="Date automatically sent">
+                  <validation-provider
+                          #default="{ errors }"
+                          name="Date"
+                          rules="required"
+                  >
+                    <b-form-datepicker id="example-datepicker" v-model="smsData.dateAuto" class="mb-2"></b-form-datepicker>
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-form>
         </validation-observer>
       </tab-content>
+      <tab-content title="Information Service">
+        <validation-observer ref="validateStep2">
+              <b-row>
+                <!-- Groups voucher -->
+                <b-col cols="12" md="6" lg="6">
+                  <b-form-group label="Groups voucher" label-for="Groups voucher">
+                    <validation-provider
+                            #default="{ errors }"
+                            name="Groups voucher"
+                            rules="required"
+                    >
+                      <v-select
+                              :state="errors.length > 0 ? false : null"
+                              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                              :options="groupOptions"
+                              class="w-100"
+                              :reduce="(val) => val.value"
+                              @input="(val) => smsData.group = val"
+                      />
+                      <small class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
+                  </b-form-group>
+                </b-col>
 
-      <!-- social link -->
-      <tab-content title="Voucher List">
-        <b-row>
-          <b-col
-                  cols="12"
-                  class="mb-2"
-          >
-            <h5 class="mb-0">
-              Voucher List
-            </h5>
-            <small class="text-muted">Enter Your Voucher List</small>
-          </b-col>
-          <b-col md="12">
+                <!-- Vouchers -->
+                <b-col cols="12" md="6" lg="6">
+                  <b-form-group label="Vouchers" label-for="Vouchers">
+                    <validation-provider
+                            #default="{ errors }"
+                            name="Voucher"
+                            rules="required"
+                    >
+                      <v-select
+                              :state="errors.length > 0 ? false : null"
+                              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                              :options="voucherOptions"
+                              class="w-100"
+                              :reduce="(val) => val.value"
+                              @input="(val) => smsData.voucher = val"
+                      />
+                      <small class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
+                  </b-form-group>
+                </b-col>
 
-          </b-col>
-        </b-row>
+
+                <!-- Field: Discount  -->
+                <b-col cols="12" md="6" lg="6">
+                  <b-form-group label="Discount" label-for="Discount">
+                    <validation-provider
+                            #default="{ errors }"
+                            name="Discount"
+                            rules=""
+                    >
+                      <b-form-input
+                              id="discount"
+                              :disabled="true"
+                              v-model="smsData.discount"
+                              placeholder="Discount"
+                      />
+                      <small class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
+                  </b-form-group>
+                </b-col>
+
+                <!-- Field: From date  -->
+                <b-col cols="12" md="6" lg="3">
+                  <b-form-group label="From Date" label-for="From Date">
+                    <validation-provider
+                            #default="{ errors }"
+                            name="From Date"
+                            rules=""
+                    >
+                      <b-form-datepicker :disabled="true" id="from_date" v-model="smsData.from_date" class="mb-2"></b-form-datepicker>
+                      <small class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
+                  </b-form-group>
+                </b-col>
+
+                <!-- Field: To date  -->
+                <b-col cols="12" md="6" lg="3">
+                  <b-form-group label="To Date" label-for="To Date">
+                    <validation-provider
+                            #default="{ errors }"
+                            name="To Date"
+                            rules=""
+                    >
+                      <b-form-datepicker :disabled="true" id="to_date" v-model="smsData.to_date" class="mb-2"></b-form-datepicker>
+                      <small class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
+                  </b-form-group>
+                </b-col>
+
+                <!-- Header: Personal Note -->
+                <b-col  cols="12" md="12" lg="12">
+                  <div class="d-flex my-2">
+                    <feather-icon icon="MapPinIcon" size="19" />
+                    <h4 class="mb-0 ml-50">Content</h4>
+                  </div>
+                  <b-row>
+                    <!--  Note -->
+                    <b-col cols="12" md="12" lg="12">
+                      <b-form-group label="Content Information" label-for="Content Information">
+                        <b-form-textarea
+                                id="textarea-rows"
+                                placeholder="Content Here..."
+                                rows="8"
+                                v-model="smsData.content"
+                        />
+                      </b-form-group>
+                    </b-col>
+                  </b-row>
+                </b-col>
+              </b-row>
+        </validation-observer>
       </tab-content>
     </form-wizard>
   </div>
 </template>
 
 <script>
-import { ValidationProvider, ValidationObserver } from "vee-validate";
-import {onUnmounted, ref, watch} from "@vue/composition-api";
-import vSelect from "vue-select";
-import faker from "faker";
+import { FormWizard, TabContent, WizardButton } from 'vue-form-wizard'
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import {onUnmounted, ref} from '@vue/composition-api'
+import vSelect from 'vue-select'
+import faker from 'faker'
 
 import {
   BFormTextarea,
@@ -116,7 +302,11 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 
 export default {
   components: {
+    FormWizard,
+    WizardButton,
+    TabContent,
     BFormTextarea,
+    BFormDatepicker,
     BFormSelect,
     BFormDatepicker,
     BFormRadioGroup,
@@ -171,29 +361,26 @@ export default {
 
     const smsData = ref({
       customer: "",
-      title: "",
-      type: "",
-      type_name: "",
-      category: "",
       telephone: "",
+      email: "",
+      title: "",
+      service: "",
+      dateAuto: "",
       content: "",
-      voucher_name: "",
+      group: "",
       voucher: "",
-    });
+      discount: "",
+      form_date: "",
+      to_date: "",
+    })
 
-    const typeOptions = [
-      { label: "BirthDay Customer", value: 0 },
-      { label: "By Week", value: 1 },
-      { label: "By Month", value: 2 },
-      { label: "Other", value: 3 },
-    ];
+    const groupOptions = ref([])
+    const voucherOptions = ref([])
 
-    const voucherOptions = [
-      { label: "25%", value: 0 },
-      { label: "50%", value: 1 },
-      { label: "75%", value: 2 },
-      { label: "100%", value: 3 },
-    ];
+    const servicesOptions = [
+      { label: "SMS", value: 0 },
+      { label: "Email", value: 1 },
+    ]
 
     const validation = {
       required,
@@ -214,9 +401,10 @@ export default {
     return {
       customers,
       smsData,
-      typeOptions,
       validation,
+      groupOptions,
       voucherOptions,
+      servicesOptions,
     };
   },
 
@@ -303,5 +491,6 @@ export default {
 };
 </script>
 <style lang="scss">
+  @import '@core/scss/vue/libs/vue-wizard.scss';
   @import "@core/scss/vue/libs/vue-select.scss";
 </style>

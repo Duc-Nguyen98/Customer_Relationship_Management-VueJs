@@ -56,18 +56,18 @@
           <validation-observer ref="loginForm" #default="{ invalid }">
             <b-form class="auth-login-form mt-2" @submit.prevent="login">
               <!-- email -->
-              <b-form-group label="Email" label-for="login-email">
+              <b-form-group label="Account" label-for="login-account">
                 <validation-provider
                   #default="{ errors }"
-                  name="Email"
-                  vid="email"
-                  rules="required|email"
+                  name="Account"
+                  vid="account"
+                  rules="required"
                 >
                   <b-form-input
-                    id="login-email"
-                    v-model="userEmail"
+                    id="login-account"
+                    v-model="account"
                     :state="errors.length > 0 ? false : null"
-                    name="login-email"
+                    name="login-account"
                     placeholder="john@example.com"
                   />
                   <small class="text-danger">{{ errors[0] }}</small>
@@ -198,8 +198,8 @@ export default {
   data() {
     return {
       status: "",
-      password: "admin",
-      userEmail: "admin@demo.com",
+      password: "123456",
+      account: "nguyenquan1",
       sideImg: require("@/assets/images/pages/login-v2.svg"),
 
       // validation rules
@@ -226,7 +226,7 @@ export default {
         if (success) {
           useJwt
             .login({
-              email: this.userEmail,
+              account: this.account,
               password: this.password,
             })
             .then((response) => {
@@ -235,13 +235,13 @@ export default {
               useJwt.setRefreshToken(response.data.refreshToken);
               localStorage.setItem("userData", JSON.stringify(userData));
               this.$ability.update(userData.ability);
-
+console.log(this.$ability)
               // ? This is just for demo purpose as well.
               // ? Because we are showing eCommerce app's cart items count in navbar
-              this.$store.commit(
-                "app-ecommerce/UPDATE_CART_ITEMS_COUNT",
-                userData.extras.eCommerceCartItemsCount
-              );
+              // this.$store.commit(
+              //   "app-ecommerce/UPDATE_CART_ITEMS_COUNT",
+              //   userData.extras.eCommerceCartItemsCount
+              // );
 
               // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
               this.$router

@@ -79,7 +79,7 @@ mock.onPost('/jwt/login').reply(request => {
       const response = {
         userData,
         accessToken,
-        refreshToken,
+          refreshToken,
       }
 
       return [200, response]

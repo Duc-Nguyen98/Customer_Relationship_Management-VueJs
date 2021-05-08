@@ -1,6 +1,7 @@
 <template>
   <div>
       <form-wizard
+              ref="wizard"
       color="#7367F0"
       :title="null"
       :subtitle="null"
@@ -85,34 +86,16 @@
                   <b-row>
                     <b-col md="6">
                       <b-form-group
-                              label="Shops"
-                              label-for="v-systems-apply"
-                      >
-                        <b-form-radio-group
-                                id="v-systems-apply"
-                                v-model="data.scopeApply.shop.all"
-                                :options="sysOptions"
-                                class="mb-3"
-                                value-field="item"
-                                text-field="name"
-                                disabled-field="notEnabled"
-                        ></b-form-radio-group>
-                      </b-form-group>
-                    </b-col>
-                    <b-col md="6">
-                      <b-form-group
                               label="Select Shops"
                               label-for="v-landmark"
                       >
-                        <span v-show="data.scopeApply.shop.all == 0">Choose all shops</span>
                         <validation-provider
-                                v-if="data.scopeApply.shop.all != 0"
                                 #default="{ errors }"
                                 name="Shops"
                                 rules="required"
                         >
                           <v-select
-                                  v-model="data.scopeApply.shop.listShop"
+                                  v-model="data.scopeApply.listShop"
                                   :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                   multiple
                                   :options="$store.state.app_voucher.allSystem"
@@ -129,34 +112,16 @@
                     </b-col>
                     <b-col md="6">
                       <b-form-group
-                              label="Customer Apply To"
-                              label-for="v-customer-apply"
-                      >
-                        <b-form-radio-group
-                                id="v-customer-apply"
-                                v-model="data.scopeApply.customer.all"
-                                :options="cusOptions"
-                                class="mb-3"
-                                value-field="item"
-                                text-field="name"
-                                disabled-field="notEnabled">
-                        </b-form-radio-group>
-                      </b-form-group>
-                    </b-col>
-                    <b-col md="6">
-                      <b-form-group
                               label="Select Groups Customer"
                               label-for="v-city"
                       >
-                        <span v-show="data.scopeApply.customer.all == 0">Choose all customers</span>
                         <validation-provider
-                                v-if="data.scopeApply.customer.all != 0"
                                 #default="{ errors }"
                                 name="Groups Customer"
                                 rules="required"
                         >
                           <v-select
-                                  v-model="data.scopeApply.customer.listGroupCustomer"
+                                  v-model="data.scopeApply.listGroupCustomer"
                                   :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                   multiple
                                   :options="$store.state.app_voucher.allCustomers"
@@ -197,28 +162,6 @@
               </validation-provider>
             </b-form-group>
           </b-col>
-          <b-col md="12 mb-2  mt-5">
-            <b-row class="d-flex float-right">
-              <b-col>
-                <b-button
-                        variant="outline-secondary"
-                        class="mr-2 text-uppercase"
-                        type="button"
-                        :to="{name: 'apps-group-voucher-list'}"
-                >
-                  Cancel
-                </b-button>
-                <b-button
-                        class="text-uppercase"
-                        variant="primary"
-                        type="button"
-                        @click="submitGroup"
-                >
-                  Save group voucher
-                </b-button>
-              </b-col>
-            </b-row>
-          </b-col>
         </b-row>
         </validation-observer>
       </tab-content>
@@ -240,12 +183,32 @@
           </b-col>
         </b-row>
       </tab-content>
+
+        <template slot="footer" scope="props">
+          <div class=wizard-footer-left>
+            <wizard-button  v-if="props.activeTabIndex > 0 && !props.isLastStep" :style="props.fillButtonStyle">Previous</wizard-button>
+          </div>
+          <div class="wizard-footer-right">
+            <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" @click="submitGroup" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
+
+            <wizard-button v-else @click.native="alert('Done')" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Done' : 'Next'}}</wizard-button>
+
+            <wizard-button
+                    class="mr-2 text-uppercase btn-outline-primary wizard-footer-right"
+                    type="button"
+                    :to="{name: 'apps-group-voucher-list'}"
+            >
+              Cancel
+            </wizard-button>
+          </div>
+
+        </template>
     </form-wizard>
   </div>
 </template>
 
 <script>
-import { FormWizard, TabContent } from 'vue-form-wizard'
+import { FormWizard, TabContent, WizardButton } from 'vue-form-wizard'
 import vSelect from 'vue-select'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import VoucherList from '../voucher-list/VoucherList.vue'
@@ -307,6 +270,7 @@ export default {
     ValidationProvider, ValidationObserver,
     VoucherList,
     FormWizard,
+    WizardButton,
     TabContent,
     BRow,
     BCol,
@@ -332,14 +296,8 @@ export default {
         status: 0,
         note: null,
         scopeApply: {
-          shop: {
-            all: 0,
-            listShop: [],
-          },
-          customer: {
-            all: 0,
-            listGroupCustomer: [],
-          },
+          listShop: [],
+          listGroupCustomer: [],
         },
       },
       applies: 0,
@@ -372,12 +330,20 @@ export default {
       ],
       note: "",
       vouchers: {},
+      add: false,
     }
   },
   async created() {
     await this.chooseRange()
   },
   methods: {
+    isLastStep() {
+      if (this.$refs.wizard) {
+
+        return this.$refs.wizard.isLastStep
+      }
+      return false
+    },
     alert(variant, message) {
       this.$toast({
         component: ToastificationContent,
@@ -455,29 +421,32 @@ export default {
     },
 
     submitGroup() {
-      this.locale = this.locale === "en" ? "vi" : "en"
-      this.$refs.information.validate().then((success) => {
-        if(success) {
-          store.dispatch('app_voucher/addVoucherGroup', this.data)
-                  .then(response => {
-                    if (response.data.success) {
-                      this.alert("success", "Add group voucher successfully.")
-                    } else {
-                      this.alert("danger", "Add group voucher failed.")
-                    }
-                  })
-                  .catch((err) => {
-                    this.$toast({
-                      component: ToastificationContent,
-                      props: {
-                        title: 'Error Add group voucher',
-                        icon: 'AlertTriangleIcon',
-                        variant: 'danger',
-                      },
+      if (this.add == false) {
+        this.locale = this.locale === "en" ? "vi" : "en"
+        this.$refs.information.validate().then((success) => {
+          if(success) {
+            store.dispatch('app_voucher/addVoucherGroup', this.data)
+                    .then(response => {
+                      if (response.data.success) {
+                        this.add = true
+                        this.alert("success", "Add group voucher successfully.")
+                      } else {
+                        this.alert("danger", "Add group voucher failed.")
+                      }
                     })
-                  })
-        }
-      })
+                    .catch((err) => {
+                      this.$toast({
+                        component: ToastificationContent,
+                        props: {
+                          title: 'Error Add group voucher',
+                          icon: 'AlertTriangleIcon',
+                          variant: 'danger',
+                        },
+                      })
+                    })
+          }
+        })
+      }
     },
 
     formSubmitted() {

@@ -59,30 +59,11 @@
                                             </b-col>
                                             <b-col md="6">
                                                 <b-form-group
-                                                        label="Shops"
-                                                        label-for="v-systems-apply"
-                                                >
-                                                    <b-form-radio-group
-                                                            id="v-systems-apply"
-                                                            v-model="GroupDataInfo.scopeApply.shop.all"
-                                                            :options="sysOptions"
-                                                            class="mb-3"
-                                                            value-field="item"
-                                                            text-field="name"
-                                                            disabled-field="notEnabled"
-                                                    ></b-form-radio-group>
-                                                </b-form-group>
-                                            </b-col>
-                                            <b-col md="6">
-                                                <b-form-group
                                                         label="Select Shops"
                                                         label-for="v-landmark"
                                                 >
-                                                    <span v-show="GroupDataInfo.scopeApply.shop.all == 0">Choose all shops</span>
                                                     <v-select
-                                                            v-show="GroupDataInfo.scopeApply.shop.all != 0"
-                                                            :disabled="GroupDataInfo.scopeApply.shop.all == 0"
-                                                            v-model="GroupDataInfo.scopeApply.shop.listShop"
+                                                            v-model="GroupDataInfo.scopeApply.listShop"
                                                             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                                             multiple
                                                             :options="$store.state.app_voucher.allSystem"
@@ -96,29 +77,11 @@
                                             </b-col>
                                             <b-col md="6">
                                                 <b-form-group
-                                                        label="Customer Apply To"
-                                                        label-for="v-customer-apply"
-                                                >
-                                                    <b-form-radio-group
-                                                            id="v-customer-apply"
-                                                            v-model="GroupDataInfo.scopeApply.customer.all"
-                                                            :options="cusOptions"
-                                                            class="mb-3"
-                                                            value-field="item"
-                                                            text-field="name"
-                                                            disabled-field="notEnabled">
-                                                    </b-form-radio-group>
-                                                </b-form-group>
-                                            </b-col>
-                                            <b-col md="6">
-                                                <b-form-group
                                                         label="Select Groups Customer"
                                                         label-for="v-city"
                                                 >
-                                                    <span v-show="GroupDataInfo.scopeApply.customer.all == 0">Choose all groups customer</span>
                                                     <v-select
-                                                            v-show="GroupDataInfo.scopeApply.customer.all != 0"
-                                                            v-model="GroupDataInfo.scopeApply.customer.listGroupCustomer"
+                                                            v-model="GroupDataInfo.scopeApply.listGroupCustomer"
                                                             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                                             multiple
                                                             :options="$store.state.app_voucher.allCustomers"
