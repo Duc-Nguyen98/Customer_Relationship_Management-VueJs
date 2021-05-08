@@ -151,7 +151,7 @@ export default function useVoucherList() {
           if (response.data.success) {
             alert("success", "Change status vouchers successfully.")
             selected.value = []
-            all.value = !all.value
+            all.value = false
             fetchListVouchers(group.value)
           } else {
             alert("danger", "Change status vouchers failed.")
@@ -176,7 +176,7 @@ export default function useVoucherList() {
           if (response.data.success) {
             alert("success", "Delete vouchers successfully.")
             selected.value = []
-            all.value = !all.value
+            all.value = false
             fetchListVouchers(group.value)
           } else {
             alert("danger", "Delete vouchers failed.")

@@ -196,7 +196,7 @@ export default function useVoucherListGroups() {
           alert("success", "Delete group vouchers successfully.")
           fetchVouchers()
           selected.value = []
-          all.value = !all.value
+          all.value = false
         } else {
           alert("danger", "Delete group vouchers failed.")
         }

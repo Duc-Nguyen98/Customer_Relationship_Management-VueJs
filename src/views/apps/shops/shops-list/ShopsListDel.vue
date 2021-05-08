@@ -161,7 +161,7 @@
             <b-dropdown-item
                     @click="restoreShop(data.item._id)"
             >
-              <feather-icon icon="TrashIcon" />
+              <feather-icon icon="RotateCwIcon" />
               <span class="align-middle ml-50">Restore</span>
             </b-dropdown-item>
 

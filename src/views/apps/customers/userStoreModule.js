@@ -66,6 +66,14 @@ export default {
             .catch(error => reject(error))
       })
     },
+    deleteSoftManyCustomer(ctx, GroupCustomerIdArray) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + `customer/group/delete-soft/many/group`, GroupCustomerIdArray, config)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
     restoreUser(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios

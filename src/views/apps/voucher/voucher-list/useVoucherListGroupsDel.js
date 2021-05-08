@@ -218,7 +218,7 @@ export default function useVoucherListGroupsDel() {
           if (response.data.success) {
             alert("success", "Delete group vouchers successfully.")
             selected.value = []
-            all.value = !all.value
+            all.value = false
             fetchVouchersDel()
           } else {
             alert("danger", "Delete group vouchers failed.")
@@ -243,7 +243,7 @@ export default function useVoucherListGroupsDel() {
           if (response.data.success) {
             alert("success", "Restore group vouchers successfully.")
             selected.value = []
-            all.value = !all.value
+            all.value = false
             fetchVouchersDel()
           } else {
             alert("danger", "Restore group vouchers failed.")

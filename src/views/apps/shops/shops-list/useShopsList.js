@@ -178,7 +178,7 @@ export default function useShopsList() {
           if (response.data.success) {
             alert("success", "Delete shops successfully.")
             selected.value = []
-            all.value = !all.value
+            all.value = false
             fetchShops()
           } else {
             alert("danger", "Delete shops failed.")

@@ -136,7 +136,7 @@
             <b-dropdown-item
                     @click="restoreVoucher(data.item.idGroupVoucher)"
             >
-              <feather-icon icon="TrashIcon" />
+              <feather-icon icon="RotateCwIcon" />
               <span class="align-middle ml-50">Restore</span>
             </b-dropdown-item>
 

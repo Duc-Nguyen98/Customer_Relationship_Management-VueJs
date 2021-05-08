@@ -26,7 +26,6 @@ export default {
   actions: {
     //Fetch data
     fetchVouchers(ctx, queryParams) {
-      console.log('cc');
       return new Promise((resolve, reject) => {
         axios
           .get(process.env.VUE_APP_ROOT_API + `voucher/group/list`, { params: queryParams }, config)

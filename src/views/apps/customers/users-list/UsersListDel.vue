@@ -139,19 +139,18 @@
             </template>
 
             <b-dropdown-item
-              @click="deleteUser(data.item._id)"
+                    @click="restoreUser(data.item._id)"
+            >
+              <feather-icon icon="RotateCwIcon" />
+              <span class="align-middle ml-50">Restore</span>
+            </b-dropdown-item>
+
+            <b-dropdown-item
+                    @click="deleteUser(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>
-
-            <b-dropdown-item
-                    @click="restoreUser(data.item._id)"
-            >
-              <feather-icon icon="RotateCwIcon " />
-              <span class="align-middle ml-50">Restore</span>
-            </b-dropdown-item>
-
           </b-dropdown>
         </template>
       </b-table>

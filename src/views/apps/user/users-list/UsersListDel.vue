@@ -131,14 +131,12 @@
                       class="align-middle text-body"
               />
             </template>
+
             <b-dropdown-item
-                    :to="{
-                name: 'apps-users-view',
-                params: { id: data.item._id },
-              }"
+                    @click="restoreUser(data.item._id)"
             >
-              <feather-icon icon="FileTextIcon" />
-              <span class="align-middle ml-50">Details</span>
+              <feather-icon icon="RotateCwIcon" />
+              <span class="align-middle ml-50">Restore</span>
             </b-dropdown-item>
 
             <b-dropdown-item
@@ -146,13 +144,6 @@
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
-            </b-dropdown-item>
-
-            <b-dropdown-item
-                    @click="restoreUser(data.item._id)"
-            >
-              <feather-icon icon="RotateCwIcon" />
-              <span class="align-middle ml-50">Restore</span>
             </b-dropdown-item>
           </b-dropdown>
         </template>
