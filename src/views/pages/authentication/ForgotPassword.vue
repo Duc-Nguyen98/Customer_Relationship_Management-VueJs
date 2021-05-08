@@ -62,7 +62,7 @@
                 >
                   <b-form-input
                     id="forgot-password-email"
-                    v-model="userEmail"
+                    v-model="gmailForgot"
                     :state="errors.length > 0 ? false:null"
                     name="forgot-password-email"
                     placeholder="john@example.com"
@@ -103,6 +103,7 @@ import {
 import { required, email } from '@validations'
 import store from '@/store/index'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import useJwt from "@/auth/jwt/useJwt";
 
 export default {
   components: {
@@ -122,7 +123,7 @@ export default {
   },
   data() {
     return {
-      userEmail: '',
+      gmailForgot: '',
       sideImg: require('@/assets/images/pages/forgot-password-v2.svg'),
       // validation
       required,
@@ -143,14 +144,34 @@ export default {
     validationForm() {
       this.$refs.simpleRules.validate().then(success => {
         if (success) {
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'This is for UI purpose only.',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
-          })
+          try {
+            useJwt
+                    .forgotPassword({
+                      gmailForgot: this.gmailForgot,
+                    })
+                    .then((response) => {
+                      this.$toast({
+                        component: ToastificationContent,
+                        props: {
+                          title: response.data.message,
+                          icon: 'EditIcon',
+                          variant: 'success',
+                        },
+                      })
+                      if (response.data.success) {
+
+                      }
+                    })
+          } catch (error) {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Error, please try again!',
+                icon: 'EditIcon',
+                variant: 'success',
+              },
+            })
+          }
         }
       })
     },

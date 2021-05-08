@@ -7,6 +7,7 @@ export default {
 
   loginEndpoint: process.env.VUE_APP_ROOT_API + 'login',
   registerEndpoint: process.env.VUE_APP_ROOT_API + 'register',
+  forgotPassword: process.env.VUE_APP_ROOT_API + 'forgot-password',
   refreshEndpoint: process.env.VUE_APP_ROOT_API + 'refresh-token',
   logoutEndpoint: process.env.VUE_APP_ROOT_API + 'logout',
 

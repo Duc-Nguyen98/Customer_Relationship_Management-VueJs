@@ -110,31 +110,6 @@
                         </validation-provider>
                       </b-form-group>
                     </b-col>
-                    <b-col md="6">
-                      <b-form-group
-                              label="Select Groups Customer"
-                              label-for="v-city"
-                      >
-                        <validation-provider
-                                #default="{ errors }"
-                                name="Groups Customer"
-                                rules="required"
-                        >
-                          <v-select
-                                  v-model="data.scopeApply.listGroupCustomer"
-                                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                  multiple
-                                  :options="$store.state.app_voucher.allCustomers"
-                                  label="title"
-                          >
-                            <template v-slot:option="option">
-                              {{ option.title }}
-                            </template>
-                          </v-select>
-                          <small class="text-danger">{{ errors[0] }}</small>
-                        </validation-provider>
-                      </b-form-group>
-                    </b-col>
                   </b-row>
               </b-col>
             </b-row>
@@ -297,7 +272,6 @@ export default {
         note: null,
         scopeApply: {
           listShop: [],
-          listGroupCustomer: [],
         },
       },
       applies: 0,

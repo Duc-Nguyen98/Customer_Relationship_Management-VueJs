@@ -75,24 +75,6 @@
                                                     </v-select>
                                                 </b-form-group>
                                             </b-col>
-                                            <b-col md="6">
-                                                <b-form-group
-                                                        label="Select Groups Customer"
-                                                        label-for="v-city"
-                                                >
-                                                    <v-select
-                                                            v-model="GroupDataInfo.scopeApply.listGroupCustomer"
-                                                            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                                            multiple
-                                                            :options="$store.state.app_voucher.allCustomers"
-                                                            label="title"
-                                                    >
-                                                        <template v-slot:option="option">
-                                                            {{ option.title }}
-                                                        </template>
-                                                    </v-select>
-                                                </b-form-group>
-                                            </b-col>
                                         </b-row>
                                     </b-col>
                                     <b-col md="12">
