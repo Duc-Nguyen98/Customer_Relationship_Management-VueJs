@@ -1,5 +1,10 @@
 import axios from '@axios'
 
+console.log(localStorage.getItem('accessToken'))
+const config = {
+  headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
+};
+
 export default {
   namespaced: true,
   state: {
@@ -22,9 +27,10 @@ export default {
   actions: {
     //Fetch data
     fetchVouchers(ctx, queryParams) {
+      console.log('cc');
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + `voucher/group/list`, { params: queryParams })
+          .get(process.env.VUE_APP_ROOT_API + `voucher/group/list`, { params: queryParams }, config)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -32,7 +38,7 @@ export default {
     fetchListVouchers(ctx, {_id, queryParams}) {
       return new Promise((resolve, reject) => {
         axios
-            .get(process.env.VUE_APP_ROOT_API + `voucher/group/list/voucher/item/${_id}`, { params: queryParams })
+            .get(process.env.VUE_APP_ROOT_API + `voucher/group/list/voucher/item/${_id}`, { params: queryParams }, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -40,7 +46,7 @@ export default {
     fetchHisListVouchers(ctx, {_id, queryParams}) {
       return new Promise((resolve, reject) => {
         axios
-            .get(process.env.VUE_APP_ROOT_API + `voucher/group/history/voucher/item/${_id}`, { params: queryParams })
+            .get(process.env.VUE_APP_ROOT_API + `voucher/group/history/voucher/item/${_id}`, { params: queryParams }, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -48,7 +54,7 @@ export default {
     fetchVouchersDel(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-            .get(process.env.VUE_APP_ROOT_API + `voucher/group/trash`, { params: queryParams })
+            .get(process.env.VUE_APP_ROOT_API + `voucher/group/trash`, { params: queryParams }, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -56,7 +62,7 @@ export default {
     fetchGVoucher(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + `voucher/group/detail/${_id}`)
+          .get(process.env.VUE_APP_ROOT_API + `voucher/group/detail/${_id}`, config)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -64,7 +70,7 @@ export default {
     fetchSystems(ctx) {
       return new Promise((resolve, reject) => {
         axios
-            .get(process.env.VUE_APP_ROOT_API + `voucher/group/list/shop`)
+            .get(process.env.VUE_APP_ROOT_API + `voucher/group/list/shop`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -72,7 +78,7 @@ export default {
     fetchCustomers(ctx) {
       return new Promise((resolve, reject) => {
         axios
-            .get(process.env.VUE_APP_ROOT_API + `voucher/group/list/customer`)
+            .get(process.env.VUE_APP_ROOT_API + `voucher/group/list/customer`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -80,7 +86,7 @@ export default {
     fetchListVouchersTrash(ctx, {_id, queryParams}) {
       return new Promise((resolve, reject) => {
         axios
-            .get(process.env.VUE_APP_ROOT_API + `voucher/group/history/trash/voucher/item/${_id}`, { params: queryParams })
+            .get(process.env.VUE_APP_ROOT_API + `voucher/group/history/trash/voucher/item/${_id}`, { params: queryParams }, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -91,7 +97,7 @@ export default {
     sendSMS(ctx, smsData) {
       return new Promise((resolve, reject) => {
         axios
-            .post(process.env.VUE_APP_ROOT_API + '/services', { user: smsData })
+            .post(process.env.VUE_APP_ROOT_API + '/services', { user: smsData }, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -99,7 +105,7 @@ export default {
     addVoucherGroup(ctx, voucherGroup) {
       return new Promise((resolve, reject) => {
         axios
-            .post(process.env.VUE_APP_ROOT_API + 'voucher/group/create', voucherGroup)
+            .post(process.env.VUE_APP_ROOT_API + 'voucher/group/create', voucherGroup, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -107,7 +113,7 @@ export default {
     addListVouchersGroup(ctx, voucherGroup) {
       return new Promise((resolve, reject) => {
         axios
-            .post(process.env.VUE_APP_ROOT_API + 'voucher/group/create/voucher', voucherGroup)
+            .post(process.env.VUE_APP_ROOT_API + 'voucher/group/create/voucher', voucherGroup, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -115,7 +121,7 @@ export default {
     addVouchersInGroup(ctx, {_id, voucherCode}) {
       return new Promise((resolve, reject) => {
         axios
-            .post(process.env.VUE_APP_ROOT_API + `voucher/group/update/many/voucher/add/${_id}`, voucherCode)
+            .post(process.env.VUE_APP_ROOT_API + `voucher/group/update/many/voucher/add/${_id}`, voucherCode, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -126,7 +132,7 @@ export default {
     updateVoucherGroup(ctx, {_id, GroupDataInfo}) {
       return new Promise((resolve, reject) => {
         axios
-            .put(process.env.VUE_APP_ROOT_API + `voucher/group/update/${_id}`, GroupDataInfo)
+            .put(process.env.VUE_APP_ROOT_API + `voucher/group/update/${_id}`, GroupDataInfo, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -135,7 +141,7 @@ export default {
       console.log(status);
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/change/status/many/voucher?status=${status}`, VoucherIdArray)
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/change/status/many/voucher?status=${status}`, VoucherIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -147,7 +153,7 @@ export default {
     deleteVoucherSoft(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/delete-soft/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/delete-soft/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -155,7 +161,7 @@ export default {
     deleteSoftManyGroups(ctx, GroupIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete-soft/many/group`, GroupIdArray)
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete-soft/many/group`, GroupIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -163,7 +169,7 @@ export default {
     deleteManyGroups(ctx, GroupIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete/many/group`, GroupIdArray)
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete/many/group`, GroupIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -171,7 +177,7 @@ export default {
     restoreVoucher(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/trash/restore/${_id}`)
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/trash/restore/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -179,7 +185,7 @@ export default {
     deleteVoucher(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/delete/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/delete/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -189,7 +195,7 @@ export default {
     deleteOneVouchersInGroup(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/trash/voucher-items/delete/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/trash/voucher-items/delete/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -197,7 +203,7 @@ export default {
     deleteVouchersInGroup(ctx, VoucherIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete/many/voucher`, VoucherIdArray)
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete/many/voucher`, VoucherIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -205,7 +211,7 @@ export default {
     deleteOneSoftVouchersInGroup(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/voucher-items/delete-soft/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/voucher-items/delete-soft/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -213,7 +219,7 @@ export default {
     deleteSoftVouchersInGroup(ctx, VoucherIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete-soft/many/voucher`, VoucherIdArray)
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/delete-soft/many/voucher`, VoucherIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -223,7 +229,7 @@ export default {
     restoreOneSoftVouchersInGroup(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/trash/voucher-items/restore/${_id}`)
+            .delete(process.env.VUE_APP_ROOT_API + `voucher/group/trash/voucher-items/restore/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -231,7 +237,7 @@ export default {
     restoreSoftVouchersInGroup(ctx, VoucherIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/restore/many/voucher`, VoucherIdArray)
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/restore/many/voucher`, VoucherIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -239,7 +245,7 @@ export default {
     restoreManyGroups(ctx, GroupIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/restore/many/group`, GroupIdArray)
+            .patch(process.env.VUE_APP_ROOT_API + `voucher/group/restore/many/group`, GroupIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
