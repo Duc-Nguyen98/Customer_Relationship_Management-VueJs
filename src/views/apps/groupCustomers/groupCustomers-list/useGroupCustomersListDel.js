@@ -99,22 +99,22 @@ export default function useShopsListDel() {
     });
   }
 
-  const deleteShop = id => {
+  const deleteGroupsCustomerR = id => {
     store
-      .dispatch('app-groups-customers/deleteShopR', { _id: id })
+      .dispatch('app-groups-customers/deleteGroupsCustomerR', { _id: id })
       .then(response => {
         if (response.data.success) {
-          alert("success", "Delete shop successfully.")
+          alert("success", "Delete group customer successfully.")
           fetchGCDel()
         } else {
-          alert("danger", "Delete shop failed.")
+          alert("danger", "Delete group customer failed.")
         }
       })
       .catch(() => {
         toast({
           component: ToastificationContent,
           props: {
-            title: 'Error fetching shop list',
+            title: 'Error fetching delete group customer list',
             icon: 'AlertTriangleIcon',
             variant: 'danger',
           },
@@ -122,22 +122,22 @@ export default function useShopsListDel() {
       })
   }
 
-  const restoreShop = id => {
+  const restoreGroupsCustomer = id => {
     store
-        .dispatch('app-groups-customers/restoreShop', { _id: id })
+        .dispatch('app-groups-customers/restoreGroupsCustomer', { _id: id })
         .then(response => {
           if (response.data.success) {
-            alert("success", "Restore shop successfully.")
+            alert("success", "Restore group customer successfully.")
             fetchGCDel()
           } else {
-            alert("danger", "Restore shop failed.")
+            alert("danger", "Restore group customer failed.")
           }
         })
         .catch(() => {
           toast({
             component: ToastificationContent,
             props: {
-              title: 'Error fetching shop list',
+              title: 'Error fetching delete group customer list',
               icon: 'AlertTriangleIcon',
               variant: 'danger',
             },
@@ -197,24 +197,24 @@ export default function useShopsListDel() {
     })
   }
 
-  const deleteManyShop = () => {
+  const deleteManyGroupsCustomer = () => {
     store
-        .dispatch('app-groups-customers/deleteManyShop', {shopIdArray: selected.value})
+        .dispatch('app-groups-customers/deleteManyGroupsCustomer', {GroupCustomerIdArray: selected.value})
         .then(response => {
           if (response.data.success) {
-            alert("success", "Delete shops successfully.")
+            alert("success", "Delete groups customer successfully.")
             selected.value = []
-            all.value = !all.value
+            all.value = false
             fetchGCDel()
           } else {
-            alert("danger", "Delete shops failed.")
+            alert("danger", "Delete groups customer failed.")
           }
         })
         .catch(() => {
           toast({
             component: ToastificationContent,
             props: {
-              title: 'Error fetching shops list',
+              title: 'Error fetching groups customer list',
               icon: 'AlertTriangleIcon',
               variant: 'danger',
             },
@@ -222,24 +222,24 @@ export default function useShopsListDel() {
         })
   }
 
-  const restoreManyShop = () => {
+  const restoreManyGroupsCustomer = () => {
     store
-        .dispatch('app-groups-customers/restoreManyShop', {shopIdArray: selected.value})
+        .dispatch('app-groups-customers/restoreManyGroupsCustomer', {GroupCustomerIdArray: selected.value})
         .then(response => {
           if (response.data.success) {
-            alert("success", "Restore shops successfully.")
+            alert("success", "Restore groups customer successfully.")
             selected.value = []
-            all.value = !all.value
+            all.value = false
             fetchGCDel()
           } else {
-            alert("danger", "Restore shops failed.")
+            alert("danger", "Restore groups customer failed.")
           }
         })
         .catch(() => {
           toast({
             component: ToastificationContent,
             props: {
-              title: 'Error fetching shops list',
+              title: 'Error fetching groups customer list',
               icon: 'AlertTriangleIcon',
               variant: 'danger',
             },
@@ -254,9 +254,10 @@ export default function useShopsListDel() {
     chooseOne,
     chooseAll,
     fetchGCDel,
-    deleteShop,
-    restoreShop,
-    restoreManyShop,
+    deleteGroupsCustomerR,
+    restoreGroupsCustomer,
+    deleteManyGroupsCustomer,
+    restoreManyGroupsCustomer,
     Shops,
     tableColumns,
     perPage,
@@ -268,7 +269,6 @@ export default function useShopsListDel() {
     sortBy,
     isSortDirDesc,
     refShopListTable,
-    deleteManyShop,
     resolveUserStatusVariant,
     refetchData,
     checkRegion,

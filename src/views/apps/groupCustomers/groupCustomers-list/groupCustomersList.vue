@@ -61,7 +61,7 @@
       </div>
 
       <b-table
-        ref="refShopListTable"
+        ref="refGcListTable"
         class="position-relative scrollbar"
         :items="Shops"
         responsive
@@ -82,7 +82,7 @@
                   @input="chooseAll()"
           >
           </b-form-checkbox>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftManyShop"><feather-icon icon="TrashIcon" /></span>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftManyGroupsCustomer"><feather-icon icon="TrashIcon" /></span>
         </template>
 
         <!-- Column: Delete -->
@@ -154,7 +154,7 @@
 
             <b-dropdown-item
               :to="{
-                name: 'apps-shops-edit',
+                name: 'apps-groups-customers-edit',
                 params: { id: data.item._id },
               }"
             >
@@ -163,7 +163,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteShop(data.item._id)"
+              @click="deleteGroupsCustomer(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -284,7 +284,7 @@ export default {
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME))
-        store.unregisterModule(USER_APP_STORE_MODULE_NAME);
+        store.unregisterModule(USER_APP_STORE_MODULE_NAME)
     })
 
     const regionOptions = [
@@ -305,14 +305,14 @@ export default {
     }
 
     const statusOptions = [
-      { label: "Choose a status", value: null },
-      { label: "Inactive", value: 0 },
-      { label: "Active", value: 1 },
-    ];
+      { label: 'Choose a status', value: null },
+      { label: 'Inactive', value: 0 },
+      { label: 'Active', value: 1 },
+    ]
 
     const convertDate = (date) => {
-      return moment(date).format("DD-MM-YYYY");
-    };
+      return moment(date).format('DD-MM-YYYY')
+    }
 
     const {
       one,
@@ -320,7 +320,7 @@ export default {
       selected,
       chooseOne,
       chooseAll,
-      deleteSoftManyShop,
+      deleteSoftManyGroupsCustomer,
       Shops,
       tableColumns,
       perPage,
@@ -331,9 +331,9 @@ export default {
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refShopListTable,
+      refGcListTable,
       refetchData,
-      deleteShop,
+      deleteGroupsCustomer,
       checkRegion,
       checkStatus,
 
@@ -352,7 +352,7 @@ export default {
       selected,
       chooseOne,
       chooseAll,
-      deleteSoftManyShop,
+      deleteSoftManyGroupsCustomer,
       api,
       toast,
       Shops,
@@ -365,12 +365,12 @@ export default {
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refShopListTable,
+      refGcListTable,
       checkRegion,
       checkStatus,
       convertDate,
       refetchData,
-      deleteShop,
+      deleteGroupsCustomer,
       pillRegion,
 
       // Filter

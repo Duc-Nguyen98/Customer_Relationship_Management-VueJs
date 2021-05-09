@@ -85,8 +85,8 @@
                   @input="chooseAll()"
           >
           </b-form-checkbox>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteManyShop"><feather-icon icon="TrashIcon" /></span>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="restoreManyShop"><feather-icon icon="RotateCwIcon" /></span>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteManyGroupsCustomer"><feather-icon icon="TrashIcon" /></span>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="restoreManyGroupsCustomer"><feather-icon icon="RotateCwIcon" /></span>
 
         </template>
 
@@ -332,10 +332,10 @@ export default {
       checkRegion,
       checkStatus,
       refetchData,
-      deleteShop,
-      restoreShop,
-      deleteManyShop,
-      restoreManyShop,
+      deleteGroupsCustomerR,
+      restoreGroupsCustomer,
+      deleteManyGroupsCustomer,
+      restoreManyGroupsCustomer,
       // UI
       resolveUserStatusVariant,
 
@@ -366,11 +366,11 @@ export default {
       checkRegion,
       checkStatus,
       refetchData,
-      deleteShop,
-      restoreShop,
+      deleteGroupsCustomerR,
+      restoreGroupsCustomer,
       pillRegion,
-      deleteManyShop,
-      restoreManyShop,
+      deleteManyGroupsCustomer,
+      restoreManyGroupsCustomer,
       // Filter
       avatarText,
 

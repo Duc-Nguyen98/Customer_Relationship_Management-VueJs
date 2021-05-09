@@ -13,7 +13,7 @@
     >
       <!-- Information User tab -->
       <tab-content title="Information User" >
-        <validation-observer ref="validateStep">
+        <validation-observer ref="information_user">
           <b-form class="mt-1">
             <!-- Header: Personal Info -->
             <div class="d-flex mb-2">
@@ -68,7 +68,7 @@
                   <validation-provider
                           #default="{ errors }"
                           name="Telephone"
-                          rules=""
+                          rules="required"
                   >
                     <b-form-input
                             :disabled="true"
@@ -130,7 +130,12 @@
                           name="Date"
                           rules="required"
                   >
-                    <b-form-datepicker id="example-datepicker" v-model="smsData.dateAuto" class="mb-2"></b-form-datepicker>
+                    <flat-pickr
+                            v-model="smsData.dateAuto"
+                            class="form-control mb-2"
+                            :config="{ enableTime: true,dateFormat: 'Y-m-d H:i'}"
+                            :date-disabled-fn="dateEffDisabled" :locale="locale"
+                    />
                     <small class="text-danger">{{ errors[0] }}</small>
                   </validation-provider>
                 </b-form-group>
@@ -286,6 +291,7 @@ import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {onUnmounted, ref} from '@vue/composition-api'
 import vSelect from 'vue-select'
 import faker from 'faker'
+import flatPickr from 'vue-flatpickr-component'
 
 import {
   BFormTextarea,
@@ -323,6 +329,7 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 
 export default {
   components: {
+    flatPickr,
     FormWizard,
     WizardButton,
     TabContent,
@@ -439,6 +446,19 @@ export default {
   },
 
   methods: {
+    dateEffDisabled(ymd, date) {
+      // Disable weekends (Sunday = `0`, Saturday = `6`) and
+      // disable days that fall on the 13th of the month
+      var today = new Date();
+
+      const day = date.getDate()
+      const month = date.getMonth()
+      const year = date.getFullYear()
+
+      // Return `true` if the date should be disabled
+      return date < today.setDate(today.getDate() - 1)
+    },
+
     changeCustomer(data) {
       this.smsData.telephone = data.telephone
       this.smsData.email = data.email
@@ -446,28 +466,26 @@ export default {
 
     nextService(props) {
         this.locale = this.locale === "en" ? "vi" : "en"
-        this.$refs.information.validate().then((success) => {
+        this.$refs.information_user.validate().then((success) => {
           if(success) {
-            store.dispatch('app_voucher/addVoucherGroup', this.data)
+            store.dispatch('app-services-sms/fetchVoucherGroup', this.data)
                     .then(response => {
                       if (response.data.success) {
-                        this.add = true
-                        props.nextTab();
-                        this.alert("success", "Add group voucher successfully.")
-                      } else {
-                        this.alert("danger", "Add group voucher failed.")
+                        this.groupOptions = response.data.groupVoucher
                       }
                     })
                     .catch((err) => {
                       this.$toast({
                         component: ToastificationContent,
                         props: {
-                          title: 'Error Add group voucher',
+                          title: 'Fetch groups voucher error',
                           icon: 'AlertTriangleIcon',
                           variant: 'danger',
                         },
                       })
                     })
+
+            props.nextTab();
           }
         })
     },
@@ -550,4 +568,5 @@ export default {
 <style lang="scss">
   @import '@core/scss/vue/libs/vue-wizard.scss';
   @import "@core/scss/vue/libs/vue-select.scss";
+  @import '@core/scss/vue/libs/vue-flatpicker.scss';
 </style>

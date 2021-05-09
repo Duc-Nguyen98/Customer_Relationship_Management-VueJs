@@ -10,7 +10,7 @@ export default function useShopsList() {
   // Use toast
   const toast = useToast();
 
-  const refShopListTable = ref(null)
+  const refGcListTable = ref(null)
 
   // Table Handlers
   const tableColumns = [
@@ -34,7 +34,7 @@ export default function useShopsList() {
   const Shops = ref([])
 
   const dataMeta = computed(() => {
-    const localItemsCount = refShopListTable.value ? refShopListTable.value.localItems.length : 0
+    const localItemsCount = refGcListTable.value ? refGcListTable.value.localItems.length : 0
     return {
       from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
       to: perPage.value * (currentPage.value - 1) + localItemsCount,
@@ -97,23 +97,22 @@ export default function useShopsList() {
     });
   }
 
-  const deleteShop = (_id) => {
+  const deleteGroupsCustomer = (_id) => {
     return store
-      .dispatch('app-groups-customers/deleteShop', { _id: _id })
+      .dispatch('app-groups-customers/deleteGroupsCustomer', { _id: _id })
       .then(response => {
         if (response.data.success) {
-          alert("success", "Delete user successfully.")
+          alert("success", "Delete soft group customer successfully.")
           fetchGC()
-          return true
         } else {
-          alert("danger", "Delete user failed.")
+          alert("danger", "Delete soft group customer failed.")
         }
       })
       .catch(() => {
         toast({
           component: ToastificationContent,
           props: {
-            title: 'Error fetching users list',
+            title: 'Error fetching group customer list',
             icon: 'AlertTriangleIcon',
             variant: 'danger',
           },
@@ -169,24 +168,24 @@ export default function useShopsList() {
     })
   }
 
-  const deleteSoftManyShop = () => {
+  const deleteSoftManyGroupsCustomer = () => {
     store
-        .dispatch('app-groups-customers/deleteSoftManyShop', {shopIdArray: selected.value})
+        .dispatch('app-groups-customers/deleteSoftManyGroupsCustomer', {GroupCustomerIdArray: selected.value})
         .then(response => {
           if (response.data.success) {
-            alert("success", "Delete shops successfully.")
+            alert("success", "Delete soft many groups customer successfully.")
             selected.value = []
-            all.value = !all.value
+            all.value = false
             fetchGC()
           } else {
-            alert("danger", "Delete shops failed.")
+            alert("danger", "Delete soft many groups customer failed.")
           }
         })
         .catch(() => {
           toast({
             component: ToastificationContent,
             props: {
-              title: 'Error fetching shops list',
+              title: 'Error fetching groups customer list',
               icon: 'AlertTriangleIcon',
               variant: 'danger',
             },
@@ -201,7 +200,7 @@ export default function useShopsList() {
     chooseOne,
     chooseAll,
     fetchGC,
-    deleteShop,
+    deleteGroupsCustomer,
     checkRegion,
     checkStatus,
     Shops,
@@ -214,8 +213,8 @@ export default function useShopsList() {
     searchQuery,
     sortBy,
     isSortDirDesc,
-    refShopListTable,
-    deleteSoftManyShop,
+    refGcListTable,
+    deleteSoftManyGroupsCustomer,
     resolveUserStatusVariant,
     refetchData,
 

@@ -184,13 +184,14 @@ export default function useUsersList() {
   const chooseAll = () => {
     all.value = !all.value
     Users.value.map(obj => {
-      chooseOne(obj._id)
+      chooseOne(obj.idCustomer)
     })
+    console.log(selected.value)
   }
 
   const deleteSoftManyCustomer = () => {
     store
-        .dispatch('app-customers/deleteSoftManyCustomer', {GroupCustomerIdArray: selected.value})
+        .dispatch('app-customers/deleteSoftManyCustomer', {CustomerIdArray: selected.value})
         .then(response => {
           if (response.data.success) {
             alert("success", "Delete customers successfully.")

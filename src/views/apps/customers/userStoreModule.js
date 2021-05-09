@@ -66,10 +66,18 @@ export default {
             .catch(error => reject(error))
       })
     },
-    deleteSoftManyCustomer(ctx, GroupCustomerIdArray) {
+    deleteSoftManyCustomer(ctx, CustomerIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `customer/group/delete-soft/many/group`, GroupCustomerIdArray, config)
+            .patch(process.env.VUE_APP_ROOT_API + `customer/delete-soft/many/customer`, CustomerIdArray, config)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    deleteManyCustomer(ctx, CustomerIdArray) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + `customer/delete/many/customer`, CustomerIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
@@ -78,6 +86,14 @@ export default {
       return new Promise((resolve, reject) => {
         axios
             .patch(process.env.VUE_APP_ROOT_API + `customer/trash/restore/${_id}`, config)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+    restoreManyCustomer(ctx, CustomerIdArray) {
+      return new Promise((resolve, reject) => {
+        axios
+            .patch(process.env.VUE_APP_ROOT_API + `customer/restore/many/customer`, CustomerIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })

@@ -50,50 +50,50 @@ export default {
             .catch(error => reject(error))
       })
     },
-    deleteShop(ctx, { _id }) {
+    deleteGroupsCustomer(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `shop/delete-soft/${_id}`, config)
+            .delete(process.env.VUE_APP_ROOT_API + `customer/group/delete-soft/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
     },
-    deleteShopR(ctx, { _id }) {
+    deleteGroupsCustomerR(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.VUE_APP_ROOT_API + `shop/delete/${_id}`, config)
+            .delete(process.env.VUE_APP_ROOT_API + `customer/group/delete/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
     },
-    restoreShop(ctx, { _id }) {
+    restoreGroupsCustomer(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `shop/trash/restore/${_id}`, config)
+            .patch(process.env.VUE_APP_ROOT_API + `customer/group/trash/restore/${_id}`, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
     },
-    deleteManyShop(ctx, shopIdArray) {
+    deleteManyGroupsCustomer(ctx, GroupCustomerIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `shop/delete/many/shop`, shopIdArray, config)
+            .patch(process.env.VUE_APP_ROOT_API + `customer/group/delete/many/group`, GroupCustomerIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
     },
-    deleteSoftManyShop(ctx, shopIdArray) {
+    deleteSoftManyGroupsCustomer(ctx, GroupCustomerIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `shop/delete-soft/many/shop`, shopIdArray, config)
+            .patch(process.env.VUE_APP_ROOT_API + `customer/group/delete-soft/many/group`, GroupCustomerIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
     },
-    restoreManyShop(ctx, shopIdArray) {
+    restoreManyGroupsCustomer(ctx, GroupCustomerIdArray) {
       return new Promise((resolve, reject) => {
         axios
-            .patch(process.env.VUE_APP_ROOT_API + `shop/restore/many/shop`, shopIdArray, config)
+            .patch(process.env.VUE_APP_ROOT_API + `customer/group/restore/many/group`, GroupCustomerIdArray, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })
