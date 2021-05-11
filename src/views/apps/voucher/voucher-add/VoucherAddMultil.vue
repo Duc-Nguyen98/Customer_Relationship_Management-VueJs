@@ -207,14 +207,14 @@
         methods: {
             addVoucher(index) {
                 const val = document.getElementById('voucher' + index).value
-                if (val) {
+                if (val && this.data.vouchers != null) {
                     this.items[index] = {
                         idVoucher: null,
                         voucherCode: val,
-                        discount: this.data?.vouchers?.discount,
-                        timeLine: this.data?.vouchers?.timeLine,
+                        discount: this.data.vouchers.discount,
+                        timeLine: this.data.vouchers.timeLine,
                         status : 0,
-                        classified: this.data?.vouchers?.classified,
+                        classified: this.data.vouchers.classified,
                         created: {
                             createBy: "admin",
                             time: Date.now()

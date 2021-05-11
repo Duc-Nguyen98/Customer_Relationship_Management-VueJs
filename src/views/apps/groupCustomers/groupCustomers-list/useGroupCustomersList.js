@@ -6,7 +6,7 @@ import { title } from '@core/utils/filter'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-export default function useShopsList() {
+export default function useGroupCustomersList() {
   // Use toast
   const toast = useToast();
 
@@ -128,19 +128,6 @@ export default function useShopsList() {
     return 'danger'
   }
 
-  const checkRegion = (key) => {
-    switch (key) {
-      case 0:
-        return "TP.Ha Noi";
-        break;
-      case 1:
-        return "TP.Ho Chi Minh";
-        break;
-      default:
-        return "TP.Ha Noi";
-        break;
-    }
-  }
 
   const checkStatus = stt => {
     if (stt === 0) return 'Inactive'
@@ -201,7 +188,6 @@ export default function useShopsList() {
     chooseAll,
     fetchGC,
     deleteGroupsCustomer,
-    checkRegion,
     checkStatus,
     Shops,
     tableColumns,

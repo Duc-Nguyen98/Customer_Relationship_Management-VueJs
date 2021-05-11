@@ -3,9 +3,9 @@
     <!-- Filters -->
     <group-customers-list-filters
       :status.sync="status"
-      :region.sync="region"
+      :star.sync="star"
       :status-options="statusOptions"
-      :region-options="regionOptions"
+      :star-options="starOptions"
     />
 
     <!-- Table Container Card -->
@@ -132,9 +132,15 @@
           <b-badge :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
-        <!-- Column: Region -->
-        <template #cell(region)="data">
-          <b-badge :variant="pillRegion(data.value)">{{ checkRegion(data.value) }}</b-badge>
+        <!-- Column: Star -->
+        <template #cell(star)="data">
+          <b-badge :variant="`light-${pillStar(data.value)}`">
+            <feather-icon
+                  icon="StarIcon"
+                  size="16"
+                  :class="`text-${pillStar(data.value)}`"
+            />
+          </b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -287,19 +293,19 @@ export default {
         store.unregisterModule(USER_APP_STORE_MODULE_NAME)
     })
 
-    const regionOptions = [
-      { label: 'Choose a region', value: null },
-      { label: 'TP.Ha Noi', value: 0 },
-      { label: 'TP.Ho Chi Minh', value: 1 },
+    const starOptions = [
+      { label: 'Choose a star', value: null },
+      { label: 'No Star', value: 0 },
+      { label: 'Star', value: 1 },
     ]
 
-    const pillRegion = (region) => {
-      switch (region) {
+    const pillStar = (star) => {
+      switch (star) {
         case 0:
-          return 'primary'
+          return 'success'
           break;
         case 1:
-          return 'success'
+          return 'warning'
           break;
       }
     }
@@ -334,7 +340,6 @@ export default {
       refGcListTable,
       refetchData,
       deleteGroupsCustomer,
-      checkRegion,
       checkStatus,
 
       // UI
@@ -343,7 +348,7 @@ export default {
       // Extra Filters
       isBusy,
       status,
-      region,
+      star,
     } = useGroupCustomersList();
 
     return {
@@ -366,12 +371,11 @@ export default {
       sortBy,
       isSortDirDesc,
       refGcListTable,
-      checkRegion,
       checkStatus,
       convertDate,
       refetchData,
       deleteGroupsCustomer,
-      pillRegion,
+      pillStar,
 
       // Filter
       avatarText,
@@ -379,13 +383,13 @@ export default {
       // UI
       resolveUserStatusVariant,
 
-      regionOptions,
+      starOptions,
       statusOptions,
 
       // Extra Filters
       isBusy,
       status,
-      region,
+      star,
     };
   },
 };

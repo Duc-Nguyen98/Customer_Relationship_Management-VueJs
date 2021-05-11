@@ -6,14 +6,14 @@
     <b-card-body>
       <b-row>
         <b-col cols="12" md="6" class="mb-md-0 mb-2">
-          <label>Region</label>
+          <label>Star</label>
           <v-select
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="region"
-            :options="regionOptions"
+            :value="star"
+            :options="starOptions"
             class="w-100"
             :reduce="(val) => val.value"
-            @input="(val) => $emit('update:region', val)"
+            @input="(val) => $emit('update:star', val)"
           />
         </b-col>
         <b-col cols="12" md="6" class="mb-md-0 mb-2">
@@ -50,7 +50,7 @@ export default {
       type: [Number, null],
       default: null,
     },
-    region: {
+    star: {
       type: [Number, null],
       default: null,
     },
@@ -58,7 +58,7 @@ export default {
       type: Array,
       required: true,
     },
-    regionOptions: {
+    starOptions: {
       type: Array,
       required: true,
     },

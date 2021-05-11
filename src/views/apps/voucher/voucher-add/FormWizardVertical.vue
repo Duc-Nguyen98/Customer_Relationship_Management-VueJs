@@ -304,8 +304,8 @@ export default {
       add: false,
     }
   },
-  async created() {
-    await this.chooseRange()
+  created() {
+     this.chooseRange()
   },
   methods: {
     isLastStep() {
@@ -327,6 +327,7 @@ export default {
       });
     },
     chooseRange() {
+      console.log(store.state.app_voucher.allSystem)
       if (store.state.app_voucher.allSystem.length == 0) {
         store.dispatch('app_voucher/fetchSystems')
                 .then(response => {
