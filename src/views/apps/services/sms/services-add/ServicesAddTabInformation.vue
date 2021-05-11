@@ -618,6 +618,18 @@
                 return this.$refs.information.validate()
             },
 
+            alert(variant, message) {
+                this.$toast({
+                    component: ToastificationContent,
+                    props: {
+                        title: "Notification",
+                        icon: "BellIcon",
+                        text: "👋 " + message,
+                        variant,
+                    },
+                });
+            },
+
             formSubmitted() {
               const smsData = {
                 idCustomer: this.smsData.customer.value,
