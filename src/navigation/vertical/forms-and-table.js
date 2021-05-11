@@ -5,18 +5,26 @@ export default [
     {
         title: 'Table Customers',
         icon: 'UserIcon',
+        resource: 'customers',
+        action: 'manage',
         children: [
             {
                 title: 'List',
                 route: 'apps-customers-list',
+                resource: 'customers',
+                action: 'manage',
             },
             {
                 title: 'List-Delete',
                 route: 'apps-customers-list-del',
+                resource: 'customers',
+                action: 'manage',
             },
             {
                 title: 'Add',
                 route: 'apps-customers-add',
+                resource: 'customers',
+                action: 'manage',
             },
         ],
     },
@@ -29,7 +37,7 @@ export default [
                 route: 'apps-users-list',
             },
             {
-                title: 'List-Delete',
+                title: 'List Delete',
                 route: 'apps-users-list-del',
             },
             {
@@ -43,12 +51,12 @@ export default [
         icon: 'CodesandboxIcon',
         children: [
             {
-                title: 'List SMS',
+                title: 'List',
                 route: 'apps-services-list-sms',
             },
             {
-                title: 'List Email',
-                route: 'apps-services-list-email',
+                title: 'List Delete',
+                route: 'apps-services-list-sms-del',
             },
             {
                 title: 'Add',

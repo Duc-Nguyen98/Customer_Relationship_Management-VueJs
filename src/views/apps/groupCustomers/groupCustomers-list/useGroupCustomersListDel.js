@@ -193,7 +193,7 @@ export default function useShopsListDel() {
   const chooseAll = () => {
     all.value = !all.value
     Shops.value.map(obj => {
-      chooseOne(obj._id)
+      chooseOne(obj.idGroupCustomer)
     })
   }
 

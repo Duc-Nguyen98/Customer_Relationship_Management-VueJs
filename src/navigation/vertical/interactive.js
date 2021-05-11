@@ -40,7 +40,7 @@ export default [
     },
     {
         title: 'Shops',
-        icon: 'ShoppingBagIcon',
+        icon: 'HomeIcon',
         children: [
             {
                 title: 'List Shops',

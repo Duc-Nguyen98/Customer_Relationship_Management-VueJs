@@ -1,8 +1,10 @@
 <template>
   <div>
-<!--     Filters-->
-    <voucher-list-filters
+    <!-- Filters -->
+    <services-list-filters
+      :type.sync="type"
       :status.sync="status"
+      :type-options="typeOptions"
       :status-options="statusOptions"
     />
 
@@ -14,7 +16,7 @@
           <!-- Per Page -->
           <b-col
             cols="12"
-            md="3"
+            md="6"
             class="d-flex align-items-center justify-content-start mb-1 mb-md-0"
           >
             <label>Show</label>
@@ -29,24 +31,31 @@
           </b-col>
 
           <!-- Search -->
-          <b-col cols="12" md="9">
+          <b-col cols="12" md="6">
             <div class="d-flex align-items-center justify-content-end">
               <b-form-input
                       v-model="searchQuery"
                       class="d-inline-block mr-1"
                       placeholder="Search..."
               />
-
-              <!--              Start add voucher -->
+              <b-button
+                      class="mr-1"
+                      variant="primary"
+                      :to="{ name: 'apps-services-add' }"
+              >
+                <span class="text-nowrap"
+                ><feather-icon icon="PlusCircleIcon"
+                /></span>
+              </b-button>
 
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{name: 'apps-group-voucher-list'}"
+                      :to="{ name: 'apps-services-list-sms-del' }"
               >
                 <span class="text-nowrap"
-                ><feather-icon icon="RotateCwIcon"
-                /> Groups Voucher</span>
+                ><feather-icon icon="Trash2Icon"
+                /></span>
               </b-button>
             </div>
           </b-col>
@@ -54,9 +63,9 @@
       </div>
 
       <b-table
-        ref="refVoucherListTable"
+        ref="refServicesListTable"
         class="position-relative"
-        :items="Vouchers"
+        :items="Services"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -64,7 +73,6 @@
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
-        :busy="isBusy"
       >
 
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
@@ -77,8 +85,9 @@
                   @change="chooseAll()"
           >
           </b-form-checkbox>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteManyGroups"><feather-icon icon="TrashIcon" /></span>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="restoreManyGroups"><feather-icon icon="RotateCwIcon" /></span>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteManyServices"><feather-icon icon="TrashIcon" /></span>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="restoreManyServices"><feather-icon icon="RotateCwIcon" /></span>
+
         </template>
 
         <!-- Column: Delete -->
@@ -86,36 +95,44 @@
           <b-form-checkbox
                   :id="data.item._id"
                   :checked="all"
-                  @change="chooseOne(data.item.idGroupVoucher)"
+                  @change="chooseOne(data.item._id)"
           ></b-form-checkbox>
         </template>
+
 
         <!-- Column: STT -->
         <template #cell(stt)="data">
           {{ data.index + 1 }}
         </template>
 
-        <!-- Column: Created at -->
-        <template #cell(created_at)="data">
-          {{ convertDate(data.item.created.time) }}
+        <!-- Column: Receiver -->
+        <template #cell(receiver)="data">
+          <b-media>
+            <b-link class="font-weight-bold d-block text-nowrap">
+              {{ data.item.nameCustomer }}
+            </b-link>
+            <small class="text-muted"> @CS{{ data.item.idCustomer }}</small>
+          </b-media>
         </template>
 
-        <!-- Column: Created at -->
-        <template #cell(created_by)="data">
-          <div class="text-nowrap">
-            <feather-icon
-                    :icon="resolveUserRoleIcon(data.item.created.createBy)"
-                    size="18"
-                    class="mr-50"
-                    :class="`text-${resolveUserRoleVariant(data.item.created.createBy)}`"
-            />
-            <span class="align-text-top text-capitalize">{{ data.item.created.createBy }}</span>
-          </div>
+        <!-- Column: STT -->
+        <template #cell(receiver)="data">
+          @KH{{ data.item.idCustomer }} - {{ data.item.nameCustomer }}
+        </template>
+
+        <!-- Column: Type -->
+        <template #cell(type)="data">
+          <b-badge :variant="resolveServiceTypeVariant(data.value)">{{ checkType(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Status -->
-        <template #cell(status)="data">
-          <b-badge pill :variant="resolveUserStatusVariant(data.value)" class="badge-glow">{{ checkStatus(data.value) }}</b-badge>
+        <template #cell(statusSend)="data">
+          <b-badge :variant="resolveStatusTypeVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+        </template>
+
+        <!-- Column: birthDate -->
+        <template #cell(dateAutomaticallySent)="data">
+          {{ convertDate(data.value) }}
         </template>
 
         <!-- Column: Actions -->
@@ -132,16 +149,28 @@
                 class="align-middle text-body"
               />
             </template>
+<!--            <b-dropdown-item-->
+<!--              :to="{-->
+<!--                name: 'apps-services-view-sms',-->
+<!--                params: { id: data.item._id },-->
+<!--              }"-->
+<!--            >-->
+<!--              <feather-icon icon="FileTextIcon" />-->
+<!--              <span class="align-middle ml-50">Details</span>-->
+<!--            </b-dropdown-item>-->
 
             <b-dropdown-item
-                    @click="restoreVoucher(data.item._id)"
+              :to="{
+                name: 'apps-services-edit-sms',
+                params: { id: data.item._id },
+              }"
             >
-              <feather-icon icon="RotateCwIcon" />
-              <span class="align-middle ml-50">Restore</span>
+              <feather-icon icon="PlusCircleIcon" />
+              <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteVoucher(data.item.idGroupVoucher)"
+              @click="deleteService(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -169,7 +198,7 @@
           >
             <b-pagination
               :value="currentPage"
-              :total-rows="totalVoucher"
+              :total-rows="totalServices"
               :per-page="perPage"
               align="right"
               first-text="First"
@@ -194,39 +223,35 @@
 </template>
 
 <script>
-  import {
-    BCard,
-    BRow,
-    BCol,
-    BFormInput,
-    BButton,
-    BTable,
-    BMedia,
-    BAvatar,
-    BLink,
-    BBadge,
-    BDropdown,
-    BDropdownItem,
-    BPagination, BFormCheckbox,
-  } from "bootstrap-vue";
+import {
+  BCard,
+  BRow,
+  BCol,
+  BFormInput,
+  BButton,
+  BTable,
+  BMedia,
+  BAvatar,
+  BLink,
+  BBadge,
+  BDropdown,
+  BDropdownItem,
+  BPagination,
+} from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
-import useVoucherListGroupsDel from "./useVoucherListGroupsDel";
-import VoucherListFilters from "./VoucherListFilters";
-import VoucherAddMultil from "../voucher-add/VoucherAddMultil";
-import VoucherAddAuto from "../voucher-add/VoucherAddAuto";
-import voucherStoreModule from "../voucherStoreModule";
+import ServicesListFilters from "./ServicesListFilters.vue";
+import useServicesListSMSDel from "./useServicesListSMSDel";
+import servicesStoreModule from "../servicesStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
 
 export default {
   components: {
-    VoucherAddMultil,
-    VoucherAddAuto,
-    VoucherListFilters,
+    ServicesListFilters,
     BCard,
     BRow,
     BCol,
@@ -240,70 +265,73 @@ export default {
     BDropdown,
     BDropdownItem,
     BPagination,
-    BFormCheckbox,
     vSelect,
   },
   directives: {
     Ripple,
   },
   setup() {
-    const SERVICES_APP_STORE_MODULE_NAME = "app_voucher";
+    const SERVICES_APP_STORE_MODULE_NAME = "app-services-sms"
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, voucherStoreModule);
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
-    });
+        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME)
+    })
+
+    const typeOptions = [
+      { label: 'Choose a type', value: null },
+      { label: 'SMS', value: 0 },
+      { label: 'Mail', value: 1 },
+      { label: 'SMS & Mail', value: 2 },
+    ]
 
     const statusOptions = [
-      { label: "Choose 1 status", value: null },
-      { label: "Inactive", value: 0 },
-      { label: "Active", value: 1 },
-    ];
+      { label: 'Choose a status', value: null },
+      { label: 'Pending', value: 0 },
+      { label: 'Sended', value: 1 },
+    ]
 
     const convertDate = (date) => {
-      return moment(date).format("DD-MM-YYYY");
-    };
+      return moment.unix(date/1000).format('DD-MM-YYYY hh:mm')
+    }
 
     const {
-      Vouchers,
-      tableColumns,
-      perPage,
-      currentPage,
-      totalVoucher,
-      dataMeta,
-      perPageOptions,
-      searchQuery,
-      sortBy,
-      isSortDirDesc,
-      refVoucherListTable,
-      refetchData,
-      deleteVoucher,
-      deleteManyGroups,
-      restoreVoucher,
-      restoreManyGroups,
-      checkStatus,
-      checkClassified,
-
-      // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
-      resolveUserStatusVariant,
-      resolveUserClassifiedVariant,
-      // Extra Filters
-      classified,
-      status,
-      isBusy,
       one,
       all,
       selected,
       chooseOne,
       chooseAll,
-    } = useVoucherListGroupsDel();
+      deleteManyServices,
+      restoreManyServices,
+      Services,
+      tableColumns,
+      perPage,
+      currentPage,
+      totalServices,
+      dataMeta,
+      perPageOptions,
+      searchQuery,
+      sortBy,
+      isSortDirDesc,
+      refServicesListTable,
+      refetchData,
+      deleteService,
+      checkType,
+      checkStatus,
+      // UI
+      resolveUserRoleVariant,
+      resolveUserRoleIcon,
+      resolveServiceTypeVariant,
+      resolveStatusTypeVariant,
+      // Extra Filters
+      type,
+      status,
+    } = useServicesListSMSDel();
 
     return {
       one,
@@ -311,39 +339,39 @@ export default {
       selected,
       chooseOne,
       chooseAll,
-      Vouchers,
+      deleteManyServices,
+      restoreManyServices,
+      Services,
       tableColumns,
       perPage,
       currentPage,
-      totalVoucher,
+      totalServices,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refVoucherListTable,
+      refServicesListTable,
       convertDate,
       refetchData,
-      deleteVoucher,
-      deleteManyGroups,
-      restoreVoucher,
-      restoreManyGroups,
+      deleteService,
+      checkType,
       checkStatus,
-      checkClassified,
       // Filter
       avatarText,
 
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
-      resolveUserStatusVariant,
-      resolveUserClassifiedVariant,
+      resolveServiceTypeVariant,
+      resolveStatusTypeVariant,
+
+      typeOptions,
       statusOptions,
 
       // Extra Filters
-      classified,
+      type,
       status,
-      isBusy,
     };
   },
 };

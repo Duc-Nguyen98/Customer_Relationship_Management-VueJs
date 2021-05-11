@@ -153,13 +153,9 @@
         <!-- Field: Content -->
         <b-col cols="12" md="12" lg="12">
           <b-form-group label="Note Information" label-for="Note Information">
-            <b-form-textarea
-              id="textarea-state"
-              @input="follow"
-              v-model="ServiceDataInfo.C_Note"
-              :state="ServiceDataInfo.C_Note.length > 0"
-              placeholder="Enter only 255 characters or less"
-              rows="3"
+            <quill-editor
+                    id="textarea-default"
+                    v-model="ServiceDataInfo.C_Note"
             />
           </b-form-group>
         </b-col>
@@ -204,9 +200,11 @@ import flatPickr from "vue-flatpickr-component";
 import { ref } from "@vue/composition-api";
 import vSelect from "vue-select";
 import Ripple from "vue-ripple-directive";
+import {quillEditor} from "vue-quill-editor";
 
 export default {
   components: {
+    quillEditor,
     BFormSelect,
     BRow,
     BFormTextarea,
@@ -306,5 +304,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@core/scss/vue/libs/vue-flatpicker.scss";
+  @import '@core/scss/vue/libs/quill.scss';
+  @import "@core/scss/vue/libs/vue-flatpicker.scss";
+</style>
+<style>
+  .ql-editor {
+    height: 200px !important;
+  }
 </style>

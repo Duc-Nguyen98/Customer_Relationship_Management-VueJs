@@ -328,10 +328,10 @@
                                 {
                                     idVoucher: null,
                                     voucherCode: this.data.begin + this.makeid(length) + this.data.end,
-                                    discount: this.dataVouchers.vouchers.discount,
-                                    timeLine:this.dataVouchers.vouchers.timeLine,
+                                    discount: this.dataVouchers?.vouchers?.discount,
+                                    timeLine:this.dataVouchers?.vouchers?.timeLine,
                                     status : 0,
-                                    classified: this.dataVouchers.vouchers.classified,
+                                    classified: this.dataVouchers?.vouchers?.classified,
                                     created: {
                                         createBy: "admin",
                                         time: Date.now()

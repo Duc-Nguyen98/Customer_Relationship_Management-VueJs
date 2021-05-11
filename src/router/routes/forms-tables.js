@@ -7,11 +7,19 @@ export default [
     path: '/apps/customers/list',
     name: 'apps-customers-list',
     component: () => import('@/views/apps/customers/users-list/UsersList.vue'),
+    meta: {
+      resource: 'customers',
+      action: 'manage',
+    },
   },
   {
     path: '/apps/customers/list/del',
     name: 'apps-customers-list-del',
     component: () => import('@/views/apps/customers/users-list/UsersListDel.vue'),
+    meta: {
+      resource: 'customers',
+      action: 'manage',
+    },
   },
   {
     path: '/apps/customers/view/:id',
@@ -67,6 +75,11 @@ export default [
     path: '/apps/services/list/sms',
     name: 'apps-services-list-sms',
     component: () => import('@/views/apps/services/sms/services-list/ServicesListSMS.vue'),
+  },
+  {
+    path: '/apps/services/list/sms/del',
+    name: 'apps-services-list-sms-del',
+    component: () => import('@/views/apps/services/sms/services-list/ServicesListSMSDel.vue'),
   },
   {
     path: '/apps/services/add',

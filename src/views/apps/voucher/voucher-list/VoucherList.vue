@@ -100,6 +100,7 @@
           >
           </b-form-checkbox>
           <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteVouchersInGroup"><feather-icon icon="TrashIcon" /></span>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="changeStatusVouchersInGroup(0)"><feather-icon icon="LockIcon" /></span>
           <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="changeStatusVouchersInGroup(1)"><feather-icon icon="UnlockIcon" /></span>
         </template>
 

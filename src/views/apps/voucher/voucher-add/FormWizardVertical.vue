@@ -9,7 +9,6 @@
       finish-button-text="Submit"
       back-button-text="Previous"
       class="wizard-vertical mb-3"
-      @on-complete="formSubmitted"
     >
 
       <!-- Information Group tab -->
@@ -126,13 +125,11 @@
                       name="Percent"
                       rules="max:1000"
               >
-              <b-form-textarea
-                      id="textarea-default"
-                      placeholder="Textarea"
-                      rows="6.5"
-                      :state="errors.length > 0 ? false : null"
-                      v-model="data.note"
-              />
+                <quill-editor
+                        id="textarea-default"
+                        :state="errors.length > 0 ? false : null"
+                        v-model="data.note"
+                />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
@@ -166,12 +163,12 @@
           <div class="wizard-footer-right">
             <wizard-button v-if="!props.isLastStep" @click.native="submitGroup(props)" class="wizard-footer-right" :style="props.fillButtonStyle">Next</wizard-button>
 
-            <wizard-button v-else @click.native="alert('Done')" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Done' : 'Next'}}</wizard-button>
+            <wizard-button v-else @click.native="formSubmitted" class="wizard-footer-right finish-button" :style="props.fillButtonStyle">{{props.isLastStep ? 'Done' : 'Next'}}</wizard-button>
 
             <wizard-button
                     class="mr-2 text-uppercase btn-outline-primary wizard-footer-right"
                     type="button"
-                    :to="{name: 'apps-group-voucher-list'}"
+                    @click.native="$router.push({name: 'apps-group-voucher-list'})"
             >
               Cancel
             </wizard-button>
@@ -188,6 +185,7 @@ import vSelect from 'vue-select'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import VoucherList from '../voucher-list/VoucherList.vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { quillEditor } from 'vue-quill-editor'
 
 import {
   required,
@@ -261,6 +259,7 @@ export default {
     BInputGroup,
     BInputGroupAppend,
     vSelect,
+    quillEditor,
     // eslint-disable-next-line vue/no-unused-components
     ToastificationContent,
   },
@@ -463,3 +462,11 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  @import '@core/scss/vue/libs/quill.scss';
+</style>
+<style>
+  .ql-editor {
+    height: 200px !important;
+  }
+</style>

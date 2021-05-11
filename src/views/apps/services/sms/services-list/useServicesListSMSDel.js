@@ -6,7 +6,7 @@ import { title } from '@core/utils/filter'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-export default function useServicesListSMS() {
+export default function useServicesListSMSDel() {
   // Use toast
   const toast = useToast()
 
@@ -45,16 +45,16 @@ export default function useServicesListSMS() {
   })
 
   const refetchData = () => {
-    fetchServices()
+    fetchServicesDel()
   }
 
   watch([currentPage, perPage, searchQuery, type, status], () => {
     refetchData()
   })
 
-  const fetchServices = (ctx, callback) => {
+  const fetchServicesDel = (ctx, callback) => {
     store
-      .dispatch('app-services-sms/fetchServices', {type: 'sms', queryParams: {
+      .dispatch('app-services-sms/fetchServicesDel', {type: 'sms', queryParams: {
       q: searchQuery.value,
           perPage: perPage.value,
           page: currentPage.value,
@@ -91,15 +91,15 @@ export default function useServicesListSMS() {
     });
   }
 
-  const deleteSoftService = id => {
+  const deleteService = id => {
     store
-        .dispatch('app-services-sms/deleteSoftService', {_id: id})
+        .dispatch('app-services-sms/deleteService', {_id: id})
         .then(response => {
           if (response.data.success) {
-            alert("success", "Delete soft service successfully.")
-            fetchServices()
+            alert("success", "Delete service successfully.")
+            fetchServicesDel()
           } else {
-            alert("danger", "Delete soft service failed.")
+            alert("danger", "Delete service failed.")
           }
         })
         .catch(() => {
@@ -114,7 +114,7 @@ export default function useServicesListSMS() {
         })
   }
 
-  fetchServices()
+  fetchServicesDel()
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
@@ -183,24 +183,49 @@ export default function useServicesListSMS() {
     })
   }
 
-  const deleteSoftManyServices = () => {
+  const deleteManyServices = () => {
     store
-        .dispatch('app-services-sms/deleteSoftManyServices', {ServicesIdArray: selected.value})
+        .dispatch('app-services-sms/deleteManyServices', {ServicesIdArray: selected.value})
         .then(response => {
           if (response.data.success) {
-            alert("success", "Delete customers successfully.")
+            alert("success", "Delete services successfully.")
             selected.value = []
             all.value = false
-            fetchServices()
+            fetchServicesDel()
           } else {
-            alert("danger", "Delete customers failed.")
+            alert("danger", "Delete services failed.")
           }
         })
         .catch(() => {
           toast({
             component: ToastificationContent,
             props: {
-              title: 'Error fetching customers list',
+              title: 'Error fetching services list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
+  const restoreManyServices = () => {
+    store
+        .dispatch('app-services-sms/restoreManyServices', {ServicesIdArray: selected.value})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Restore services successfully.")
+            selected.value = []
+            all.value = false
+            fetchServicesDel()
+          } else {
+            alert("danger", "Restore services failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching services list',
               icon: 'AlertTriangleIcon',
               variant: 'danger',
             },
@@ -214,9 +239,10 @@ export default function useServicesListSMS() {
     selected,
     chooseOne,
     chooseAll,
-    deleteSoftManyServices,
-    fetchServices,
-    deleteSoftService,
+    deleteManyServices,
+    restoreManyServices,
+    fetchServicesDel,
+    deleteService,
     checkType,
     checkStatus,
     Services,

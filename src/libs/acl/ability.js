@@ -7,5 +7,5 @@ import { initialAbility } from './config'
 // ! Anyone can update localStorage so be careful and please update this
 const userData = JSON.parse(localStorage.getItem('userData'))
 const existingAbility = userData ? userData.ability : null
-
+console.log(existingAbility);
 export default new Ability(existingAbility || initialAbility)

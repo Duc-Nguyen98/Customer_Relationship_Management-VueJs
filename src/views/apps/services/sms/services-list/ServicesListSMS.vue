@@ -41,7 +41,7 @@
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{ name: 'apps-users-add-sms' }"
+                      :to="{ name: 'apps-services-add' }"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="PlusCircleIcon"
@@ -51,7 +51,7 @@
               <b-button
                       class="mr-1"
                       variant="primary"
-                      :to="{ name: 'apps-customers-add' }"
+                      :to="{ name: 'apps-services-list-sms-del' }"
               >
                 <span class="text-nowrap"
                 ><feather-icon icon="Trash2Icon"
@@ -63,7 +63,7 @@
       </div>
 
       <b-table
-        ref="refUserListTable"
+        ref="refServicesListTable"
         class="position-relative"
         :items="Services"
         responsive
@@ -74,19 +74,58 @@
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
       >
+
+        <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
+        <template #head(selected)="scope">
+          <b-form-checkbox
+                  class="float-left"
+                  id="cupdateheckbox-1"
+                  name="checkbox-1"
+                  :checked="all"
+                  @change="chooseAll()"
+          >
+          </b-form-checkbox>
+          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftManyServices"><feather-icon icon="TrashIcon" /></span>
+        </template>
+
+        <!-- Column: Delete -->
+        <template #cell(selected)="data">
+          <b-form-checkbox
+                  :id="data.item._id"
+                  :checked="all"
+                  @change="chooseOne(data.item._id)"
+          ></b-form-checkbox>
+        </template>
+
+
         <!-- Column: STT -->
         <template #cell(stt)="data">
           {{ data.index + 1 }}
         </template>
 
-        <!-- Column: birthDate -->
-        <template #cell(birthDate)="data">
-          {{ convertDate(data.value) }}
+        <!-- Column: STT -->
+        <template #cell(receiver)="data">
+          <b-media>
+            <b-link class="font-weight-bold d-block text-nowrap">
+              {{ data.item.nameCustomer }}
+            </b-link>
+              <small class="text-muted"> @CS{{ data.item.idCustomer }}</small>
+          </b-media>
+        </template>
+
+        <!-- Column: Type -->
+        <template #cell(type)="data">
+          <b-badge :variant="resolveServiceTypeVariant(data.value)">{{ checkType(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Status -->
-        <template #cell(status)="data">
-          <b-badge pill :variant="resolveUserStatusVariant(data.value)" class="badge-glow">{{ checkStatus(data.value) }}</b-badge>
+        <template #cell(statusSend)="data">
+          <b-badge :variant="resolveStatusTypeVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+        </template>
+
+        <!-- Column: birthDate -->
+        <template #cell(dateAutomaticallySent)="data">
+          {{ convertDate(data.value) }}
         </template>
 
         <!-- Column: Actions -->
@@ -124,7 +163,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-              @click="deleteService(data.item._id)"
+              @click="deleteSoftService(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -177,36 +216,31 @@
 </template>
 
 <script>
-import {
-  BCard,
-  BRow,
-  BCol,
-  BFormInput,
-  BButton,
-  BTable,
-  BMedia,
-  BAvatar,
-  BLink,
-  BBadge,
-  BDropdown,
-  BDropdownItem,
-  BPagination,
-} from "bootstrap-vue";
+  import {
+    BCard,
+    BRow,
+    BCol,
+    BFormInput,
+    BButton,
+    BTable,
+    BMedia,
+    BAvatar,
+    BLink,
+    BBadge,
+    BDropdown,
+    BDropdownItem,
+    BPagination, BFormCheckbox,
+  } from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
 import ServicesListFilters from "./ServicesListFilters.vue";
-import useVoucherList from "./useServicesListSMS";
+import useServicesListSMS from "./useServicesListSMS";
 import servicesStoreModule from "../servicesStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
-import Vue from "vue";
-import {ToastPlugin} from "bootstrap-vue";
-
-Vue.use(ToastPlugin)
-const v = new Vue()
 
 export default {
   components: {
@@ -224,40 +258,49 @@ export default {
     BDropdown,
     BDropdownItem,
     BPagination,
+    BFormCheckbox,
     vSelect,
   },
   directives: {
     Ripple,
   },
   setup() {
-    const SERVICES_APP_STORE_MODULE_NAME = "app-services-sms";
+    const SERVICES_APP_STORE_MODULE_NAME = 'app-services-sms'
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule);
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
-    });
+        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME)
+    })
 
     const typeOptions = [
-      { label: "Khách hàng thường", value: 0 },
-      { label: "khách hàng thân thiết", value: 1 },
-      { label: "Khách hàng tiềm năng", value: 2 },
-    ];
+      { label: 'Choose a type', value: null },
+      { label: 'SMS', value: 0 },
+      { label: 'Mail', value: 1 },
+      { label: 'SMS & Mail', value: 2 },
+    ]
 
     const statusOptions = [
-      { label: "Pending", value: 0 },
-      { label: "Send", value: 1 },
-    ];
+      { label: 'Choose a status', value: null },
+      { label: 'Pending', value: 0 },
+      { label: 'Sended', value: 1 },
+    ]
 
     const convertDate = (date) => {
-      return moment(date).format("DD-MM-YYYY");
-    };
+      return moment.unix(date/1000).format('DD-MM-YYYY hh:mm')
+    }
 
     const {
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
+      deleteSoftManyServices,
       Services,
       tableColumns,
       perPage,
@@ -270,20 +313,26 @@ export default {
       isSortDirDesc,
       refServicesListTable,
       refetchData,
-      deleteService,
+      deleteSoftService,
+      checkType,
       checkStatus,
-
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
-      resolveUserStatusVariant,
-
+      resolveServiceTypeVariant,
+      resolveStatusTypeVariant,
       // Extra Filters
       type,
       status,
-    } = useServicesListSMS();
+    } = useServicesListSMS()
 
     return {
+      one,
+      all,
+      selected,
+      chooseOne,
+      chooseAll,
+      deleteSoftManyServices,
       Services,
       tableColumns,
       perPage,
@@ -297,16 +346,17 @@ export default {
       refServicesListTable,
       convertDate,
       refetchData,
-      deleteService,
+      deleteSoftService,
+      checkType,
       checkStatus,
-
       // Filter
       avatarText,
 
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
-      resolveUserStatusVariant,
+      resolveServiceTypeVariant,
+      resolveStatusTypeVariant,
 
       typeOptions,
       statusOptions,

@@ -89,10 +89,8 @@
                                                     name="Percent"
                                                     rules="max:1000"
                                             >
-                                                <b-form-textarea
+                                                <quill-editor
                                                         id="textarea-default"
-                                                        placeholder="Enter note"
-                                                        rows="6.5"
                                                         v-model="GroupDataInfo.note"
                                                 />
                                                 <small class="text-danger">{{ errors[0] }}</small>
@@ -197,9 +195,11 @@
     // Notification
     import { useToast } from 'vue-toastification/composition'
     import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+    import {quillEditor} from "vue-quill-editor";
 
     export default {
         components: {
+            quillEditor,
             VoucherList,
             VoucherListHistory,
             VoucherListDel,
@@ -423,4 +423,10 @@
 <style lang="scss">
     @import "@core/scss/vue/libs/vue-flatpicker.scss";
     @import "@core/scss/vue/libs/vue-select.scss";
+    @import '@core/scss/vue/libs/quill.scss';
+</style>
+<style>
+    .ql-editor {
+        height: 200px !important;
+    }
 </style>
