@@ -100,6 +100,11 @@
           {{ convertDate(data.item.created.time) }}
         </template>
 
+        <!-- Column: Note -->
+        <template #cell(note)="data">
+          <span v-html="data.value"></span>
+        </template>
+
         <!-- Column: Created at -->
         <template #cell(created_by)="data">
           <div class="text-nowrap">
