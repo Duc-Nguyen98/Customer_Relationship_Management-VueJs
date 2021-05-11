@@ -236,6 +236,7 @@ import {
   BBadge,
   BDropdown,
   BDropdownItem,
+  BFormCheckbox,
   BPagination,
 } from "bootstrap-vue";
 import vSelect from "vue-select";
@@ -265,6 +266,7 @@ export default {
     BDropdown,
     BDropdownItem,
     BPagination,
+    BFormCheckbox,
     vSelect,
   },
   directives: {
