@@ -298,7 +298,7 @@ export default {
     ]
 
     const convertDate = (date) => {
-      return moment.unix(date/1000).format('DD-MM-YYYY hh:mm')
+      return moment.unix(date).format('DD-MM-YYYY hh:mm')
     }
 
     const {

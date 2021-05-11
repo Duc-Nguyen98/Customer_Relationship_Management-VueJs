@@ -337,6 +337,7 @@
     import faker from 'faker'
     import flatPickr from 'vue-flatpickr-component'
     import {quillEditor} from 'vue-quill-editor'
+    import moment from 'moment'
 
     import {
         BFormTextarea,
@@ -634,7 +635,7 @@
               const smsData = {
                 idCustomer: this.smsData.customer.value,
                 typeServices: this.smsData.typeServices,
-                dateAutomaticallySent: Math.round(new Date(this.smsData.dateAuto).getTime()/1000),
+                dateAutomaticallySent: moment(this.smsData.dateAuto).format("X"),
                 titleServices: this.smsData.titleServices,
                 idGroupVoucher: this.smsData.idGroupVoucher,
                 voucherCode: this.smsData.voucher.label,
