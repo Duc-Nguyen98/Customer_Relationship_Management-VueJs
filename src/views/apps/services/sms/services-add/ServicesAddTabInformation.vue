@@ -30,7 +30,7 @@
                                     >
                                         <b-form-input
                                                 id="title"
-                                                v-model="smsData.title"
+                                                v-model="smsData.titleServices"
                                                 :state="errors.length > 0 ? false : null"
                                                 placeholder="Title"
                                         />
@@ -195,7 +195,7 @@
                                         name="Discount"
                                         rules=""
                                 >
-                                    <p> {{ fmMoney(smsData.voucher.discount.reduction.money) }}</p>
+                                    <p> {{ fmMoney(smsData.voucher.discount.reduction.money) }}đ</p>
                                     <small class="text-danger">{{ errors[0] }}</small>
                                 </validation-provider>
                             </b-form-group>
@@ -209,7 +209,7 @@
                                         name="Discount"
                                         rules=""
                                 >
-                                    <p>{{ fmMoney(smsData.voucher.discount.PercentAMaximum.maximumMoney) }}</p>
+                                    <p>{{ fmMoney(smsData.voucher.discount.PercentAMaximum.maximumMoney) }}đ</p>
                                     <small class="text-danger">{{ errors[0] }}</small>
                                 </validation-provider>
                             </b-form-group>
@@ -222,7 +222,7 @@
                                         name="Discount"
                                         rules=""
                                 >
-                                    <p> {{ smsData.voucher.discount.PercentAMaximum.percent }}</p>
+                                    <p> {{ smsData.voucher.discount.PercentAMaximum.percent }}%</p>
                                     <small class="text-danger">{{ errors[0] }}</small>
                                 </validation-provider>
                             </b-form-group>

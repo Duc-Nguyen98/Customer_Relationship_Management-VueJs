@@ -122,7 +122,7 @@
         <!-- Column: voucherCode -->
         <template #cell(voucherCode)="data">
           <span class="cursor-pointer">{{ data.value }} <br />
-            <small class="text-muted">@GVC{{ data.item.idVoucher }}</small>
+            <small class="text-muted" v-if="data.item.idVoucher">@GVC{{ data.item.idVoucher }}</small>
           </span>
         </template>
 

@@ -108,6 +108,11 @@
           <small class="text-muted">@CS{{ data.item.idGroupVoucher }}</small>
         </template>
 
+        <!-- Column: Note -->
+        <template #cell(note)="data">
+         <span v-html="data.value"></span>
+        </template>
+
           <!-- Column: Created at -->
         <template #cell(created_at)="data">
           {{ convertDate(data.item.created.time) }}

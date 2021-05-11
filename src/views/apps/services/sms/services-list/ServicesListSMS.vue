@@ -103,6 +103,13 @@
           {{ data.index + 1 }}
         </template>
 
+        <!-- Column: Title -->
+        <template #cell(title)="data">
+           <span class="cursor-pointer">{{ data.value }} <br />
+            <small class="text-muted" v-if="data.item.idService">@ISC{{ data.item.idService }}</small>
+          </span>
+        </template>
+
         <!-- Column: STT -->
         <template #cell(receiver)="data">
           <b-media>
