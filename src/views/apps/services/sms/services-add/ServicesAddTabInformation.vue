@@ -645,7 +645,7 @@
                     .then(response => {
                         if (response.data.success) {
                             this.alert("success", "Add service successfully.")
-                            this.$router.push({name: 'apps-services-sms-list'})
+                            this.$router.push({name: 'apps-services-list-sms'})
                         } else {
                             this.alert("danger", "Add service failed.")
                         }
