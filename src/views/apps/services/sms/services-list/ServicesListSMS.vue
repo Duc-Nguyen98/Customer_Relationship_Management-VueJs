@@ -104,10 +104,13 @@
         </template>
 
         <!-- Column: Title -->
-        <template #cell(title)="data">
-           <span class="cursor-pointer">{{ data.value }} <br />
-            <small class="text-muted" v-if="data.item.idService">@ISC{{ data.item.idService }}</small>
-          </span>
+        <template #cell(titleServices)="data">
+          <b-media>
+            <b-link class="font-weight-bold d-block text-nowrap">
+              {{ data.value }}
+            </b-link>
+            <small class="text-muted" v-if="data.item.idServices">@ISC{{ data.item.idServices }}</small>
+          </b-media>
         </template>
 
         <!-- Column: STT -->
