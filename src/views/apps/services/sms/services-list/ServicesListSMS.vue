@@ -93,7 +93,7 @@
           <b-form-checkbox
                   :id="data.item._id"
                   :checked="all"
-                  @change="chooseOne(data.item._id)"
+                  @change="chooseOne($event, data.item._id)"
           ></b-form-checkbox>
         </template>
 
@@ -124,7 +124,7 @@
         </template>
 
         <!-- Column: Type -->
-        <template #cell(type)="data">
+        <template #cell(typeServices)="data">
           <b-badge :variant="resolveServiceTypeVariant(data.value)">{{ checkType(data.value) }}</b-badge>
         </template>
 
@@ -301,7 +301,7 @@ export default {
     ]
 
     const convertDate = (date) => {
-      return moment.unix(date).format('DD-MM-YYYY hh:mm')
+      return moment(date).format('DD-MM-YYYY HH:mm')
     }
 
     const {

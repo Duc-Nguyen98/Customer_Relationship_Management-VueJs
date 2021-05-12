@@ -97,17 +97,28 @@
             </b-form-group>
           </b-col>
 
-          <!--  Full Name-->
+
+          <!-- Account Name -->
           <b-col cols="12" md="6" lg="4">
-            <b-form-radio-group
-              v-model="userData.gender"
-              :options="genderOptions"
-              class="demo-inline-spacing"
-              name="radio-validation"
-              value="0"
-            >
-            </b-form-radio-group>
+            <b-form-group>
+              <label>Account Name</label>
+              <validation-provider
+                      #default="{ errors }"
+                      rules="required||max:50"
+                      name="Account Name"
+              >
+                <b-form-input
+                        v-model="userData.account"
+                        :state="
+                    errors.length > 0 && errors.length <= 50 ? false : null
+                  "
+                        placeholder="Enter Account Name"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
           </b-col>
+
 
           <!-- Role -->
           <b-col>
@@ -130,47 +141,19 @@
             </b-form-group>
           </b-col>
 
-          <!-- Account Name -->
+
+          <!--  Gender -->
           <b-col cols="12" md="6" lg="4">
-            <b-form-group>
-              <label>Account Name</label>
-              <validation-provider
-                #default="{ errors }"
-                rules="required||max:50"
-                name="Account Name"
-              >
-                <b-form-input
-                  v-model="userData.account"
-                  :state="
-                    errors.length > 0 && errors.length <= 50 ? false : null
-                  "
-                  placeholder="Enter Account Name"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
+            <b-form-radio-group
+                    v-model="userData.gender"
+                    :options="genderOptions"
+                    class="demo-inline-spacing"
+                    name="radio-validation"
+                    value="0"
+            >
+            </b-form-radio-group>
           </b-col>
-          <!-- Password -->
-          <b-col cols="12" md="6" lg="4">
-            <b-form-group>
-              <label>Password</label>
-              <validation-provider
-                #default="{ errors }"
-                rules="required|max:50|min:6"
-                name="Password"
-              >
-                <b-form-input
-                  v-model="userData.password"
-                  type="password"
-                  :state="
-                    errors.length > 0 && errors.length <= 50 ? false : null
-                  "
-                  placeholder="Enter Password"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
+
         </b-row>
         <!-- submit button -->
         <b-row class="d-flex float-right mt-2">

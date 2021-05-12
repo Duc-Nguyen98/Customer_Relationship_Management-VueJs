@@ -11,20 +11,14 @@ export default [
             {
                 title: 'List',
                 route: 'apps-customers-list',
-                resource: 'customers',
-                action: 'manage',
             },
             {
                 title: 'List-Delete',
                 route: 'apps-customers-list-del',
-                resource: 'customers',
-                action: 'manage',
             },
             {
                 title: 'Add',
                 route: 'apps-customers-add',
-                resource: 'customers',
-                action: 'manage',
             },
         ],
     },

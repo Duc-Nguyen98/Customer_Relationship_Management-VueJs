@@ -19,7 +19,7 @@ export default function useServicesListSMS() {
     { key: 'titleServices', label: 'TITLE', formatter: title, sortable: false },
     { key: 'receiver', label: 'Customer', sortable: false },
     { key: 'voucherCode', label: 'Voucher Code', sortable: false },
-    { key: 'type', label: 'TYPE', sortable: false },
+    { key: 'typeServices', label: 'TYPE', sortable: false },
     { key: 'statusSend', label: 'Status', sortable: false },
     { key: 'dateAutomaticallySent', label: 'Date Auto Sent', sortable: false },
     { key: 'actions' },
@@ -145,6 +145,7 @@ export default function useServicesListSMS() {
   }
 
   const checkType = type => {
+    console.log(type)
     if (type === 0) return 'SMS'
     if (type === 1) return 'Mail'
     if (type === 2) return 'SMS & Mail'
@@ -167,7 +168,7 @@ export default function useServicesListSMS() {
   const one = ref(false)
   const all = ref(false)
 
-  const chooseOne = (item) => {
+  const chooseOne = (event, item) => {
     one.value = !one.value;
     if (selected.value.indexOf(item) != -1) {
       selected.value = selected.value.filter(val => val != item)

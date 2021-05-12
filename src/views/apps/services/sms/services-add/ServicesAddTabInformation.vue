@@ -301,7 +301,7 @@
 
             <template slot="footer" scope="props">
                 <div class=wizard-footer-left>
-                    <wizard-button v-if="props.activeTabIndex > 0 && !props.isLastStep" :style="props.fillButtonStyle">
+                    <wizard-button v-if="props.activeTabIndex > 0" @click.native="props.prevTab()" :style="props.fillButtonStyle">
                         Previous
                     </wizard-button>
                 </div>
@@ -317,7 +317,7 @@
                     <wizard-button
                             class="mr-2 text-uppercase btn-outline-primary wizard-footer-right"
                             type="button"
-                            :to="{name: 'apps-group-voucher-list'}"
+                            @click.native="$router.push({name: 'apps-services-list-sms'})"
                     >
                         Cancel
                     </wizard-button>
@@ -635,7 +635,7 @@
               const smsData = {
                 idCustomer: this.smsData.customer.value,
                 typeServices: this.smsData.typeServices,
-                dateAutomaticallySent: moment(this.smsData.dateAuto).format("X"),
+                dateAutomaticallySent: moment(this.smsData.dateAuto, 'YYYY-MM-DD hh:mm').format('x'),
                 titleServices: this.smsData.titleServices,
                 idGroupVoucher: this.smsData.idGroupVoucher,
                 voucherCode: this.smsData.voucher.label,

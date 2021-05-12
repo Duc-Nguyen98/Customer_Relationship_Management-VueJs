@@ -9,7 +9,7 @@ export default [
     component: () => import('@/views/apps/customers/users-list/UsersList.vue'),
     meta: {
       resource: 'customers',
-      action: 'manage',
+      action: 'read',
     },
   },
   {
