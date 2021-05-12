@@ -41,6 +41,16 @@
               <b-button
                       class="mr-1"
                       variant="primary"
+                      @click="refetchData"
+              >
+                <span class="text-nowrap"
+                ><feather-icon icon="RefreshCwIcon"
+                /></span>
+              </b-button>
+
+              <b-button
+                      class="mr-1"
+                      variant="primary"
                       :to="{ name: 'apps-services-add' }"
               >
                 <span class="text-nowrap"
