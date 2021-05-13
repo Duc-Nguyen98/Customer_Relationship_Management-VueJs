@@ -3,56 +3,56 @@ export default [
         header: 'Manage Interactive',
     },
     {
-        title: 'Groups Voucher',
+        title: 'MG-Voucher',
         icon: 'BookmarkIcon',
         children: [
             {
-                title: 'G-Voucher',
+                title: 'G-Voucher-List',
                 route: 'apps-group-voucher-list',
             },
             {
-                title: 'G-Voucher Delete',
+                title: 'G-Voucher-Trash',
                 route: 'apps-group-voucher-list-del',
             },
             {
-                title: 'Add',
+                title: 'G-Add',
                 route: 'apps-group-voucher-add',
             },
         ],
     },
     {
-        title: 'Group Customers',
+        title: 'MG-Customers',
         icon: 'UsersIcon',
         children: [
             {
-                title: 'List Group',
+                title: 'G-Customer List',
                 route: 'apps-groups-customers-list',
             },
             {
-                title: 'L-Group Delete',
+                title: 'G-Customer Trash',
                 route: 'apps-groups-customers-list-del',
             },
             {
-                title: 'Add',
+                title: 'G-Customer Add',
                 route: 'apps-groups-customers-add',
             },
         ],
     },
     {
-        title: 'Shops',
-        icon: 'HomeIcon',
+        title: 'MG-Services',
+        icon: 'Share2Icon',
         children: [
             {
-                title: 'List Shops',
-                route: 'apps-shops-list',
+                title: 'G-Services List',
+                route: 'apps-services-list-sms',
             },
             {
-                title: 'L-Shops Delete',
-                route: 'apps-shops-list-del',
+                title: 'G-Services Trash',
+                route: 'apps-services-list-sms-del',
             },
             {
-                title: 'Add',
-                route: 'apps-shops-add',
+                title: 'G-Services Add',
+                route: 'apps-services-add',
             },
         ],
     },

@@ -3,7 +3,7 @@ export default [
         header: 'Users & Customers ...',
     },
     {
-        title: 'Table Customers',
+        title: 'M-Customers',
         icon: 'UserIcon',
         resource: 'customers',
         action: 'manage',
@@ -23,7 +23,7 @@ export default [
         ],
     },
     {
-        title: 'Table Users',
+        title: 'M-Users',
         icon: 'UserIcon',
         children: [
             {
@@ -41,22 +41,21 @@ export default [
         ],
     },
     {
-        title: 'Table Services',
-        icon: 'CodesandboxIcon',
+        title: 'M-Shops',
+        icon: 'HomeIcon',
         children: [
             {
-                title: 'List',
-                route: 'apps-services-list-sms',
+                title: 'List Shops',
+                route: 'apps-shops-list',
             },
             {
-                title: 'List Delete',
-                route: 'apps-services-list-sms-del',
+                title: 'L-Shops Delete',
+                route: 'apps-shops-list-del',
             },
             {
                 title: 'Add',
-                route: 'apps-services-add',
+                route: 'apps-shops-add',
             },
         ],
     },
-
 ]
