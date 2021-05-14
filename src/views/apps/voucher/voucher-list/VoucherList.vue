@@ -83,7 +83,8 @@
               :items="Vouchers"
               responsive
               :fields="tableColumns"
-              primary-key="id"
+              primary-key="stt"
+              :sort-by.sync="sortBy"
               show-empty
               empty-text="No matching records found"
               :sort-desc.sync="isSortDirDesc"
@@ -347,6 +348,7 @@
         perPageOptions,
         searchQuery,
         isSortDirDesc,
+        sortBy,
         refVouchersListTable,
         refetchData,
         deleteVouchersInGroup,
@@ -405,6 +407,7 @@
         perPageOptions,
         searchQuery,
         isSortDirDesc,
+        sortBy,
         refVouchersListTable,
         convertDate,
         refetchData,

@@ -52,7 +52,8 @@
         :items="Vouchers"
         responsive
         :fields="tableColumns"
-        primary-key="id"
+        primary-key="stt"
+        :sort-by.sync="sortBy"
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
@@ -81,11 +82,6 @@
                   :checked="all"
                   @change="chooseOne(data.item._id)"
           ></b-form-checkbox>
-        </template>
-
-        <!-- Column: STT -->
-        <template #cell(stt)="data">
-          {{ data.index + 1 }}
         </template>
 
         <!-- Column: voucherCode -->
@@ -273,6 +269,7 @@ export default {
       perPageOptions,
       searchQuery,
       isSortDirDesc,
+      sortBy,
       refVouchersListTable,
       refetchData,
       deleteOneVouchersInGroup,
@@ -329,6 +326,7 @@ export default {
       perPageOptions,
       searchQuery,
       isSortDirDesc,
+      sortBy,
       refVouchersListTable,
       convertDate,
       refetchData,

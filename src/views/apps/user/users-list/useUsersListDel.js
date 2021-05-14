@@ -29,8 +29,8 @@ export default function useUsersListDel() {
   const currentPage = ref(1)
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref('')
-  const sortBy = ref('id')
-  const isSortDirDesc = ref(true)
+  const sortBy = ref('stt')
+  const isSortDirDesc = ref(false)
   const role = ref(null)
   const gender = ref(null)
   const active = ref(null)

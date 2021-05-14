@@ -28,8 +28,8 @@ export default function useVoucherListGroups() {
   const currentPage = ref(1)
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref('')
-  const sortBy = ref('id')
-  const isSortDirDesc = ref(true)
+  const sortBy = ref('stt')
+  const isSortDirDesc = ref(false)
   const classified = ref(null)
   const status = ref(null)
   const Vouchers = ref([])
@@ -69,6 +69,7 @@ export default function useVoucherListGroups() {
         })
         .then(response => {
           const { groupVouchers, countGroupVoucher } = response.data
+          groupVouchers.map((obj, index) => obj.stt = index+1)
           Vouchers.value = groupVouchers
           totalVoucher.value = countGroupVoucher
           isBusy.value = false

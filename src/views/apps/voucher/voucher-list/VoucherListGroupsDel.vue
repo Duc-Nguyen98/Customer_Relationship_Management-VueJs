@@ -59,7 +59,7 @@
         :items="Vouchers"
         responsive
         :fields="tableColumns"
-        primary-key="id"
+        primary-key="stt"
         :sort-by.sync="sortBy"
         show-empty
         empty-text="No matching records found"
@@ -89,11 +89,6 @@
                   :checked="all"
                   @change="chooseOne(data.item.idGroupVoucher)"
           ></b-form-checkbox>
-        </template>
-
-        <!-- Column: STT -->
-        <template #cell(stt)="data">
-          {{ data.index + 1 }}
         </template>
 
         <!-- Column: Created at -->
@@ -272,7 +267,7 @@ export default {
     ];
 
     const convertDate = (date) => {
-      return moment(date).format("DD-MM-YYYY");
+      return moment(date).format("DD-MM-YYYY h:mm");
     };
 
     const {

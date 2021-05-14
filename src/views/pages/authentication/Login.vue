@@ -236,7 +236,7 @@ export default {
                 useJwt.setRefreshToken(response.data.refreshToken);
                 localStorage.setItem("userData", JSON.stringify(userData));
                 this.$ability.update(userData.ability);
-                console.log(this.$ability)
+                console.log(userData.ability)
                 // ? This is just for demo purpose as well.
                 // ? Because we are showing eCommerce app's cart items count in navbar
 

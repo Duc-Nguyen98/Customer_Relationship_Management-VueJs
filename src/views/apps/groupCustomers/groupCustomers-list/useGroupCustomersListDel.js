@@ -28,8 +28,8 @@ export default function useShopsListDel() {
   const currentPage = ref(1)
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref(null)
-  const sortBy = ref('id')
-  const isSortDirDesc = ref(true)
+  const sortBy = ref('stt')
+  const isSortDirDesc = ref(false)
   const status = ref(null)
   const region = ref(null)
   const Shops = ref([])

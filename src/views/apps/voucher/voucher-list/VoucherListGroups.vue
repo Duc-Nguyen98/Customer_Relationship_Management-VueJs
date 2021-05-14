@@ -90,11 +90,6 @@
           ></b-form-checkbox>
         </template>
 
-        <!-- Column: STT -->
-        <template #cell(stt)="data">
-          {{ data.index + 1 }}
-        </template>
-
         <!-- Column: Title -->
         <template #cell(title)="data">
           <b-link
@@ -289,7 +284,7 @@ export default {
     ];
 
     const convertDate = (date) => {
-      return moment(date).format("DD-MM-YYYY");
+      return moment(date).format("DD-MM-YYYY h:mm");
     };
 
     const {
@@ -344,7 +339,7 @@ export default {
       deleteVoucherSoft,
       deleteSoftManyGroups,
       checkStatus,
-        checkClassified,
+      checkClassified,
 
       // Filter
       avatarText,
