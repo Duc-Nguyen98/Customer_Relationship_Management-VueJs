@@ -61,11 +61,11 @@
                   #default="{ errors }"
                   name="Account"
                   vid="account"
-                  rules="required"
+                  rules="required|email"
                 >
                   <b-form-input
                     id="login-account"
-                    v-model="account"
+                    v-model="user.email"
                     :state="errors.length > 0 ? false : null"
                     name="login-account"
                     placeholder="john@example.com"
@@ -94,7 +94,7 @@
                   >
                     <b-form-input
                       id="login-password"
-                      v-model="password"
+                      v-model="user.password"
                       :state="errors.length > 0 ? false : null"
                       class="form-control-merge"
                       :type="passwordFieldType"
@@ -198,8 +198,10 @@ export default {
   data() {
     return {
       status: "",
-      password: "123456",
-      account: "nguyenquan1",
+      user: {
+        email: "quangducn98@gmail.com",
+        password: "WXu95BTRS42AJbB",
+      },
       sideImg: require("@/assets/images/pages/login-v2.svg"),
 
       // validation rules
@@ -225,10 +227,7 @@ export default {
       this.$refs.loginForm.validate().then((success) => {
         if (success) {
           useJwt
-            .login({
-              account: this.account,
-              password: this.password,
-            })
+            .login(this.user)
             .then((response) => {
               if (response.data.success) {
                 const { userData } = response.data;
