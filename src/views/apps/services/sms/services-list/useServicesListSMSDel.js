@@ -58,13 +58,13 @@ export default function useServicesListSMSDel() {
       q: searchQuery.value,
           perPage: perPage.value,
           page: currentPage.value,
-          sort: sortBy.value,
           type: type.value,
           status: status.value,
     }})
       .then(response => {
         const { services, totalRecords } = response.data
         totalServices.value = totalRecords
+        services.map((obj, index) => obj.stt = index+1)
         Services.value = services
       })
       .catch(() => {

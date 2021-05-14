@@ -18,7 +18,7 @@ export default [
     component: () => import('@/views/apps/customers/users-list/UsersListDel.vue'),
     meta: {
       resource: 'customers',
-      action: 'manage',
+      action: 'delete',
     },
   },
   {

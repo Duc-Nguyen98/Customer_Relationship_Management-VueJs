@@ -70,18 +70,14 @@
         :items="Users"
         responsive
         :fields="tableColumns"
-        primary-key="id"
+        primary-key="stt"
         :sort-by.sync="sortBy"
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
         :busy="isBusy"
+        hover
       >
-        <!-- Column: Stt -->
-        <template #cell(stt)="data">
-          {{ data.index + 1 }}
-        </template>
-
         <!-- Column: name -->
         <template #cell(name)="data">
           <b-media vertical-align="center">

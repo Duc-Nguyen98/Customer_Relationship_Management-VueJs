@@ -87,6 +87,7 @@
               show-empty
               empty-text="No matching records found"
               :sort-desc.sync="isSortDirDesc"
+              hover
       >
 
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->

@@ -5,16 +5,18 @@ export default [
     {
         title: 'Table Customers',
         icon: 'UserIcon',
-        resource: 'customers',
-        action: 'manage',
         children: [
             {
                 title: 'List',
                 route: 'apps-customers-list',
+                resource: 'customers',
+                action: 'read',
             },
             {
                 title: 'List-Delete',
                 route: 'apps-customers-list-del',
+                resource: 'customers',
+                action: 'delete',
             },
             {
                 title: 'Add',

@@ -187,7 +187,7 @@
                         :value="shopData.status"
                         :options="optionsActive"
                         :reduce="(val) => val.value"
-                        @input="(val) => data.status = val"
+                        @input="(val) => shopData.status = val"
                         class="w-100"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>

@@ -81,9 +81,10 @@
         :items="Users"
         responsive
         :fields="tableColumns"
-        primary-key="id"
+        primary-key="stt"
         :sort-by.sync="sortBy"
         show-empty
+        hover
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
         :busy="isBusy"
@@ -109,11 +110,6 @@
                   :checked="all"
                   @change="chooseOne(data.item.idCustomer)"
           ></b-form-checkbox>
-        </template>
-
-        <!-- Column: STT -->
-        <template #cell(stt)="data">
-          {{ data.index + 1 }}
         </template>
 
         <!-- Column: User -->

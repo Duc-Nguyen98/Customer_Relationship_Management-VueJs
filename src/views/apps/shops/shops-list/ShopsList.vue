@@ -66,12 +66,13 @@
         :items="Shops"
         responsive
         :fields="tableColumns"
-        primary-key="id"
+        primary-key="stt"
         :sort-by.sync="sortBy"
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
         :busy="isBusy"
+        hover
       >
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
         <template #head(selected)="scope">
@@ -93,11 +94,6 @@
                   :checked="all"
                   @change="chooseOne(data.item._id)"
           ></b-form-checkbox>
-        </template>
-
-        <!-- Column: STT -->
-        <template #cell(stt)="data">
-          {{ data.index + 1 }}
         </template>
 
         <!-- Column: User -->

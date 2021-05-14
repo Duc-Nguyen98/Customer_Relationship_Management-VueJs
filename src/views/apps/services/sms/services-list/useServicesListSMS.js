@@ -65,6 +65,7 @@ export default function useServicesListSMS() {
       .then(response => {
         const { services, totalRecords } = response.data
         totalServices.value = totalRecords
+        services.map((obj, index) => obj.stt = index+1)
         Services.value = services
       })
       .catch(() => {

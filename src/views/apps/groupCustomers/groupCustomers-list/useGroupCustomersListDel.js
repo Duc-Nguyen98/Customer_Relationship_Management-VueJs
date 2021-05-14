@@ -71,6 +71,7 @@ export default function useShopsListDel() {
           .then(response => {
             const { data, totalRecords } = response.data
             totalShops.value = totalRecords
+            data.map((obj, index) => obj.stt = index+1)
             Shops.value = data
             isBusy.value = false
           })

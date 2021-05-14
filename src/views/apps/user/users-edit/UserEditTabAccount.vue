@@ -51,7 +51,6 @@
         <validation-observer ref="simpleRules">
             <b-form>
             <b-row>
-
                 <!-- Field: Username -->
                 <b-col
                         cols="12"
@@ -67,6 +66,7 @@
                                 name="Name"
                         >
                             <b-form-input
+                                    disabled=""
                                     id="name"
                                     :state="errors.length > 0 ? false : null"
                                     v-model="userData.name"
@@ -91,6 +91,7 @@
                                 name="Email"
                         >
                         <b-form-input
+                                disabled=""
                                 id="email"
                                 v-model="userData.email"
                                 :state="errors.length > 0 ? false : null"

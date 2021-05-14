@@ -15,10 +15,10 @@ export default function useUsersList() {
   // Table Handlers
   const tableColumns = [
 
-    { key: 'stt', label: 'STT', sortable: false },
-    { key: 'name', label: 'NAME', formatter: title, sortable: true },
-    { key: 'telephone', label: 'TELEPHONE', sortable: true },
-    { key: 'email', label: 'EMAIL', sortable: true },
+    { key: 'stt', label: 'STT', sortable: true },
+    { key: 'name', label: 'NAME', formatter: title, sortable: false },
+    { key: 'telephone', label: 'TELEPHONE', sortable: false },
+    { key: 'email', label: 'EMAIL', sortable: false },
     { key: 'role', label: 'Role', sortable: true },
     { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
     { key: 'gender', label: 'GENDER', sortable: true },
@@ -74,6 +74,7 @@ export default function useUsersList() {
           .then(response => {
             const { users, totalRecords } = response.data
             totalUsers.value = totalRecords
+            users.map((obj, index) => obj.stt = index+1)
             Users.value = users
             isBusy.value = false
           })

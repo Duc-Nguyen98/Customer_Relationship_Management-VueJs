@@ -14,12 +14,12 @@ export default function useUsersListDel() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'selected', label: 'All', class: 'all'},
-    { key: 'stt', label: 'STT', sortable: false },
-    { key: 'name', label: 'NAME', formatter: title, sortable: true },
-    { key: 'telephone', label: 'TELEPHONE', sortable: true },
-    { key: 'email', label: 'EMAIL', sortable: true },
-    { key: 'birthDay', label: 'BIRTHDAY', sortable: true },
+    { key: 'selected', label: 'All', class: 'all', sortable: false },
+    { key: 'stt', label: 'STT', sortable: true },
+    { key: 'name', label: 'NAME', formatter: title, sortable: false },
+    { key: 'telephone', label: 'TELEPHONE', sortable: false },
+    { key: 'email', label: 'EMAIL', sortable: false },
+    { key: 'birthDay', label: 'BIRTHDAY', sortable: false },
     { key: 'gender', label: 'GENDER', sortable: true },
     { key: 'groups', label: 'GROUPS', sortable: true },
     { key: 'actions' },
@@ -29,8 +29,8 @@ export default function useUsersListDel() {
   const currentPage = ref(1)
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref('')
-  const sortBy = ref('id')
-  const isSortDirDesc = ref(true)
+  const sortBy = ref('stt')
+  const isSortDirDesc = ref(false)
   const group = ref(null)
   const gender = ref(null)
   const Users = ref([])
@@ -65,13 +65,13 @@ export default function useUsersListDel() {
             q: searchQuery.value,
             perPage: perPage.value,
             page: currentPage.value,
-            sort: sortBy.value,
             gender: gender.value,
             group: group.value,
           })
           .then(response => {
             const { data, totalRecords } = response.data
             totalUsers.value = totalRecords
+            data.map((obj, index) => obj.stt = index+1)
             Users.value = data
             isBusy.value = false
           })

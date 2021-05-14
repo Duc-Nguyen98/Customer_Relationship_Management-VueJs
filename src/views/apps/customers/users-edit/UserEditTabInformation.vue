@@ -61,6 +61,7 @@
                     name="Full Name"
             >
               <b-form-input
+                      disabled=""
                       v-model="userData.name"
                       :state="errors.length > 0 ? false : null"
                       placeholder="Enter Full Name"
@@ -80,6 +81,7 @@
                     rules="required|email"
             >
               <b-form-input
+                      disabled=""
                       v-model="userData.email"
                       :state="errors.length > 0 ? false : null"
                       placeholder="Email"

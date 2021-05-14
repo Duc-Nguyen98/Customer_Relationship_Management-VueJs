@@ -14,8 +14,8 @@ export default function useUsersList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'selected', label: 'All', class: 'all'},
-    { key: 'stt', label: 'STT', sortable: false },
+    { key: 'selected', label: 'All', class: 'all', sortable: false},
+    { key: 'stt', label: 'STT', sortable: true },
     { key: 'name', label: 'NAME', formatter: title, sortable: true },
     { key: 'telephone', label: 'TELEPHONE', sortable: true },
     { key: 'email', label: 'EMAIL', sortable: true },
@@ -24,13 +24,14 @@ export default function useUsersList() {
     { key: 'groups', label: 'GROUP', sortable: true },
     { key: 'actions' },
   ]
+
   const perPage = ref(10)
   const totalUsers = ref(0)
   const currentPage = ref(1)
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref('')
-  const sortBy = ref('id')
-  const isSortDirDesc = ref(true)
+  const sortBy = ref('stt')
+  const isSortDirDesc = ref(false)
   const group = ref(null)
   const gender = ref(null)
   const Users = ref([])
@@ -52,10 +53,10 @@ export default function useUsersList() {
     refetchData()
   })
 
-  const time = ref(null);
-  const isBusy = ref(null);
+  const time = ref(null)
+  const isBusy = ref(null)
   const fetchUsers = (ctx, callback) => {
-    isBusy.value = true;
+    isBusy.value = true
     if (time.value) {
       clearTimeout(time.value)
     }
@@ -65,13 +66,13 @@ export default function useUsersList() {
             q: searchQuery.value,
             perPage: perPage.value,
             page: currentPage.value,
-            sort: sortBy.value,
             gender: gender.value,
             group: group.value,
           })
           .then(response => {
             const { data, totalRecords } = response.data
             totalUsers.value = totalRecords
+            data.map((obj, index) => obj.stt = index+1)
             Users.value = data
             isBusy.value = false
           })

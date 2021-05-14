@@ -8,12 +8,16 @@ export default [
       {
         title: 'Analytics',
         route: 'dashboard-analytics',
+        resource: 'analytics',
+        action: 'read',
       },
       {
         title: 'eCommerce',
         route: 'dashboard-others',
         tag: 'B',
         tagVariant: 'light-warning',
+        resource: 'others',
+        action: 'read',
       },
     ],
   },

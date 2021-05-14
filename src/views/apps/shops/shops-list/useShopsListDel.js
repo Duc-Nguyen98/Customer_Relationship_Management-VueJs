@@ -15,10 +15,10 @@ export default function useShopsListDel() {
   // Table Handlers
   const tableColumns = [
     { key: 'selected', label: 'All', class: 'all'},
-    { key: 'stt', label: 'STT', sortable: false },
-    { key: 'name', label: 'NAME', formatter: title, sortable: true },
-    { key: 'telephoneShop', label: 'TELEPHONE SHOP', sortable: true },
-    { key: 'mail', label: 'EMAIL', sortable: true },
+    { key: 'stt', label: 'STT', sortable: true },
+    { key: 'name', label: 'NAME', formatter: title, sortable: false },
+    { key: 'telephoneShop', label: 'TELEPHONE SHOP', sortable: false },
+    { key: 'mail', label: 'EMAIL', sortable: false },
     { key: 'ownerShop', label: 'Owner Shop', sortable: true },
     { key: 'region', label: 'REGION', sortable: true },
     { key: 'status', label: 'STATUS', sortable: true },
@@ -73,6 +73,7 @@ export default function useShopsListDel() {
           .then(response => {
             const { data, totalRecords } = response.data
             totalShops.value = totalRecords
+            data.map((obj, index) => obj.stt = index+1)
             Shops.value = data
             isBusy.value = false
           })
