@@ -13,14 +13,14 @@
       </div>
       <b-avatar
         size="40"
-        :src="userData.avatar"
+        :src="api+userData.avatar"
         variant="light-primary"
         badge
         class="badge-minimal"
         badge-variant="success"
       >
         <feather-icon
-          v-if="!userData.fullName"
+          v-if="!userData.avatar"
           icon="UserIcon"
           size="22"
         />
@@ -105,6 +105,7 @@ export default {
   },
   data() {
     return {
+      api: process.env.VUE_APP_ROOT_API,
       userData: JSON.parse(localStorage.getItem('userData')),
       avatarText,
     }
