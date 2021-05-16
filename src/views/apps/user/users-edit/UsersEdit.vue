@@ -96,7 +96,7 @@ export default {
     store.dispatch('app-user/fetchUser', { _id: router.currentRoute.params.id })
       .then(response => {
         if (response.data.success) {
-          userData.value = response.data.data
+          userData.value = response.data.users
         }
       })
       .catch(error => {

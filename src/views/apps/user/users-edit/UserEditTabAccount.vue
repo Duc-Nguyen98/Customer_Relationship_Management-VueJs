@@ -183,6 +183,7 @@
 
                 <!-- Field: Role -->
                 <b-col
+                        v-if="userData.role != 'super admin'"
                         cols="12"
                         md="4"
                 >
@@ -244,6 +245,7 @@
         </validation-observer>
         <!-- PERMISSION TABLE -->
         <b-card
+                v-if="userData.role != 'super admin'"
                 no-body
                 class="border mt-1"
         >
@@ -265,8 +267,17 @@
                 <template #cell(module)="data">
                     {{ data.value }}
                 </template>
-                <template #cell()="data">
-                    <b-form-checkbox :checked="data.value"/>
+                <template #cell(read)="data">
+                    <b-form-checkbox @change="changeRole(data.value, {action: 'read', subject: data.item.module})" v-model="data.value"/>
+                </template>
+                <template #cell(create)="data">
+                    <b-form-checkbox @change="changeRole(data.value, {action: 'create', subject: data.item.module})" v-model="data.value"/>
+                </template>
+                <template #cell(update)="data">
+                    <b-form-checkbox @change="changeRole(data.value, {action: 'update', subject: data.item.module})" v-model="data.value"/>
+                </template>
+                <template #cell(delete)="data">
+                    <b-form-checkbox @change="changeRole(data.value, {action: 'delete', subject: data.item.module})" v-model="data.value"/>
                 </template>
             </b-table>
         </b-card>
@@ -281,7 +292,7 @@
             >
                 Cancel
             </b-button>
-            <b-button @click="validationForm({userData: userData, _id: userData._id})"
+            <b-button @click="validationForm({userData: userData, _id: userData.idUser})"
                       variant="primary"
                       class="mb-1 mb-sm-0 mr-0 mr-sm-1 text-uppercase"
                       :block="$store.getters['app/currentBreakPoint'] === 'xs'"
@@ -385,43 +396,78 @@
                 {text: "Female", value: 1},
             ]
 
-            const permissionsData = [
-                {
-                    module: 'Admin',
-                    read: true,
-                    write: false,
-                    create: false,
-                    delete: false,
-                },
-                {
-                    module: 'Staff',
-                    read: false,
-                    write: true,
-                    create: false,
-                    delete: false,
-                },
-                {
-                    module: 'Author',
-                    read: true,
-                    write: false,
-                    create: true,
-                    delete: false,
-                },
-                {
-                    module: 'Contributor',
-                    read: false,
-                    write: false,
-                    create: false,
-                    delete: false,
-                },
-                {
-                    module: 'User',
-                    read: false,
-                    write: false,
-                    create: false,
-                    delete: true,
-                },
-            ]
+            const permissionsData = ref(
+                [
+                    {
+                        module: 'customers',
+                        read: false,
+                        create: false,
+                        update: false,
+                        delete: false,
+                    },
+                    {
+                        module: 'voucherItems',
+                        read: false,
+                        create: false,
+                        update: false,
+                        delete: false,
+                    },
+                    {
+                        module: 'services',
+                        read: false,
+                        create: false,
+                        update: false,
+                        delete: false,
+                    },
+                    {
+                        module: 'users',
+                        read: false,
+                        create: false,
+                        update: false,
+                        delete: false,
+                    },
+                    {
+                        module: 'shops',
+                        read: false,
+                        create: false,
+                        update: false,
+                        delete: false,
+                    },
+                    {
+                        module: 'groupVouchers',
+                        read: false,
+                        create: false,
+                        update: false,
+                        delete: false,
+                    },
+                    {
+                        module: 'groupCustomers',
+                        read: false,
+                        create: false,
+                        update: false,
+                        delete: false,
+                    },
+                ]
+            );
+
+            userData.value.modules.map(val => {
+                let data = permissionsData.value.filter(obj => obj.module != val)
+                if (data.length < permissionsData.value.length) {
+                    permissionsData.value = data
+                    let ability = userData.value.ability.filter(obj => obj.subject == val)
+                    let action = ability.map(obj => obj.action)
+                    permissionsData.value.unshift({
+                        module: val,
+                        read: action.includes('read') ? true : false,
+                        create: action.includes('create') ? true : false,
+                        update: action.includes('update') ? true : false,
+                        delete: action.includes('delete') ? true : false,
+                    })
+                }
+            })
+
+
+
             const type = ref(true)
             const hidePass = () => {
                 type.value = !type.value
@@ -501,6 +547,21 @@
                         variant,
                     },
                 });
+            },
+
+            changeRole(bol, {action, subject}) {
+                if (bol == false) {
+                    this.userData.ability = this.userData.ability.filter(obj => obj.action != action || obj.subject != subject)
+                } else {
+                    this.userData.ability.push({'action': action, 'subject': subject})
+                }
+
+                let module = this.userData.ability.filter(obj => obj.subject == subject)
+                if (module.length == 0) {
+                    this.userData.modules = this.userData.modules.filter(val => val != subject)
+                } else if (!subject.includes(this.userData.modules)) {
+                    this.userData.modules.push(subject)
+                }
             },
 
             validationForm(userData) {

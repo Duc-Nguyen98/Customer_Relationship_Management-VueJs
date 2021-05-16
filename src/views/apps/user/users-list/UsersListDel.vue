@@ -137,7 +137,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-                    @click="deleteUser(data.item._id)"
+                    @click="deleteUser(data.item.idUser)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>

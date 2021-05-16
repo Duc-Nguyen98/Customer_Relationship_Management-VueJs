@@ -150,7 +150,7 @@
             <b-dropdown-item
                     :to="{
                 name: 'apps-users-edit',
-                params: { id: data.item._id },
+                params: { id: data.item.idUser },
               }"
             >
               <feather-icon icon="PlusCircleIcon" />
