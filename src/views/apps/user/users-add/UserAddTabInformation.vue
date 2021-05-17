@@ -47,23 +47,23 @@
           </b-col>
 
           <!-- Adress -->
-<!--          <b-col cols="12" md="6" lg="4">-->
-<!--            <b-form-group>-->
-<!--              <label>Address</label>-->
-<!--              <validation-provider-->
-<!--                #default="{ errors }"-->
-<!--                name="Adress"-->
-<!--                rules="required|"-->
-<!--              >-->
-<!--                <b-form-input-->
-<!--                  v-model="userData.address"-->
-<!--                  :state="errors.length > 0 ? false : null"-->
-<!--                  placeholder="Adress"-->
-<!--                />-->
-<!--                <small class="text-danger">{{ errors[0] }}</small>-->
-<!--              </validation-provider>-->
-<!--            </b-form-group>-->
-<!--          </b-col>-->
+          <!--          <b-col cols="12" md="6" lg="4">-->
+          <!--            <b-form-group>-->
+          <!--              <label>Address</label>-->
+          <!--              <validation-provider-->
+          <!--                #default="{ errors }"-->
+          <!--                name="Adress"-->
+          <!--                rules="required|"-->
+          <!--              >-->
+          <!--                <b-form-input-->
+          <!--                  v-model="userData.address"-->
+          <!--                  :state="errors.length > 0 ? false : null"-->
+          <!--                  placeholder="Adress"-->
+          <!--                />-->
+          <!--                <small class="text-danger">{{ errors[0] }}</small>-->
+          <!--              </validation-provider>-->
+          <!--            </b-form-group>-->
+          <!--          </b-col>-->
 
           <!-- Birth Day -->
           <b-col cols="12" md="6" lg="4">
@@ -97,63 +97,38 @@
             </b-form-group>
           </b-col>
 
-
-          <!-- Account Name -->
+          <!--  Gender -->
           <b-col cols="12" md="6" lg="4">
-            <b-form-group>
-              <label>Account Name</label>
-              <validation-provider
-                      #default="{ errors }"
-                      rules="required||max:50"
-                      name="Account Name"
-              >
-                <b-form-input
-                        v-model="userData.account"
-                        :state="
-                    errors.length > 0 && errors.length <= 50 ? false : null
-                  "
-                        placeholder="Enter Account Name"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
+            <b-form-radio-group
+              v-model="userData.gender"
+              :options="genderOptions"
+              class="demo-inline-spacing"
+              name="radio-validation"
+              value="0"
+            >
+            </b-form-radio-group>
           </b-col>
-
 
           <!-- Role -->
           <b-col>
             <b-form-group>
               <label>Role</label>
               <validation-provider
-                      #default="{ errors }"
-                      rules="required"
-                      name="Role"
+                #default="{ errors }"
+                rules="required"
+                name="Role"
               >
                 <v-select
-                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                        :options="roleOptions"
-                        class="w-100"
-                        :reduce="val => val.value"
-                        v-model="userData.role"
+                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                  :options="roleOptions"
+                  class="w-100"
+                  :reduce="(val) => val.value"
+                  v-model="userData.role"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
           </b-col>
-
-
-          <!--  Gender -->
-          <b-col cols="12" md="6" lg="4">
-            <b-form-radio-group
-                    v-model="userData.gender"
-                    :options="genderOptions"
-                    class="demo-inline-spacing"
-                    name="radio-validation"
-                    value="0"
-            >
-            </b-form-radio-group>
-          </b-col>
-
         </b-row>
         <!-- submit button -->
         <b-row class="d-flex float-right mt-2">
@@ -162,7 +137,7 @@
               variant="outline-secondary"
               class="mr-2 text-uppercase"
               type="button"
-              :to="{name: 'apps-users-list'}"
+              :to="{ name: 'apps-users-list' }"
             >
               Cancel
             </b-button>
@@ -213,10 +188,10 @@ import {
   length,
 } from "@validations";
 import moment from "moment";
-import vSelect from 'vue-select'
+import vSelect from "vue-select";
 import ToastificationContent from "@core/components/toastification/ToastificationContent";
 import store from "@/store";
-import {useToast} from 'vue-toastification/composition'
+import { useToast } from "vue-toastification/composition";
 
 export default {
   components: {
@@ -245,41 +220,7 @@ export default {
       telephone: "",
       role: "",
       birthDay: moment(today._d).format("YYYY-MM-DD"),
-      account: "",
-      password: "",
     });
-
-    console.log(userData.value.telephone);
-    console.log(userData.value.address);
-    const objSelectDistrict = {
-      selected: null,
-      options: [
-        { value: null, text: "Please select some item", disabled: true },
-        { value: "a", text: "This is First option" },
-        { value: "b", text: "Default Selected Option" },
-        { value: "c", text: "This is another option" },
-      ],
-    };
-
-    const objSelectProvince = {
-      selected: null,
-      options: [
-        { value: null, text: "Please select some item", disabled: true },
-        { value: "a", text: "This is First option" },
-        { value: "b", text: "Default Selected Option" },
-        { value: "c", text: "This is another option" },
-      ],
-    };
-
-    const objSelectWard = {
-      selected: null,
-      options: [
-        { value: null, text: "Please select some item", disabled: true },
-        { value: "a", text: "This is First option" },
-        { value: "b", text: "Default Selected Option" },
-        { value: "c", text: "This is another option" },
-      ],
-    };
 
     const roleOptions = [
       { label: "Employee", value: "employee" },
@@ -289,7 +230,7 @@ export default {
     const genderOptions = [
       { text: "Male", value: 0 },
       { text: "Female", value: 1 },
-    ]
+    ];
 
     const validation = {
       required,
@@ -309,9 +250,6 @@ export default {
 
     return {
       userData,
-      objSelectDistrict,
-      objSelectProvince,
-      objSelectWard,
       genderOptions,
       roleOptions,
       validation,
@@ -337,35 +275,36 @@ export default {
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
           // eslint-disable-next-line
-          this.addUser()
+          this.addUser();
         }
       });
     },
 
     addUser() {
-      store.dispatch('app-user/addUser', this.userData)
-              .then(response => {
-                if (response.data.success) {
-                  this.alert("success", "Add user successfully.")
-                  this.$router.push({name: 'apps-users-list'});
-                } else {
-                  this.alert("danger", "Add user failed.")
-                }
-              })
-              .catch(() => {
-                this.toast({
-                  component: ToastificationContent,
-                  props: {
-                    title: 'Error fetching users list',
-                    icon: 'AlertTriangleIcon',
-                    variant: 'danger',
-                  },
-                });
-              });
-    }
+      store
+        .dispatch("app-user/addUser", this.userData)
+        .then((response) => {
+          if (response.data.success) {
+            this.alert("success", "Add user successfully.");
+            this.$router.push({ name: "apps-users-list" });
+          } else {
+            this.alert("danger", "Add user failed.");
+          }
+        })
+        .catch(() => {
+          this.toast({
+            component: ToastificationContent,
+            props: {
+              title: "Error fetching users list",
+              icon: "AlertTriangleIcon",
+              variant: "danger",
+            },
+          });
+        });
+    },
   },
 };
 </script>
 <style lang="scss">
-  @import '@core/scss/vue/libs/vue-select.scss';
+@import "@core/scss/vue/libs/vue-select.scss";
 </style>
