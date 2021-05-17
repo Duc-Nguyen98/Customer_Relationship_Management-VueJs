@@ -87,11 +87,16 @@
                 :src="api + data.item.avatar"
                 :text="avatarText(data.item.name)"
                 :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
-                :to="{ name: 'apps-users-edit', params: { id: data.item.id } }"
+                :to="{
+                  name: 'apps-users-edit',
+                  params: { id: data.item.idUser },
+                }"
               />
             </template>
-            <b-link
-              :to="{ name: 'apps-users-edit', params: { id: data.item.id } }"
+            <b-link :to="{
+                  name: 'apps-users-edit',
+                  params: { id: data.item.idUser },
+                }"
               class="font-weight-bold d-block text-nowrap"
             >
               {{ data.item.name }}
