@@ -198,12 +198,13 @@
                         >
                             <v-select
                                     :state="errors.length > 0 ? false : null"
-                                    v-model="userData.role"
                                     :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                     :options="roleOptions"
-                                    :reduce="val => val.value"
                                     :clearable="false"
                                     input-id="user-role"
+                                    :value="userData.role.charAt(0).toUpperCase() + userData.role.slice(1)"
+                                    :selectable="option => !option.value.includes(userData.role)"
+                                    @input="chooseRole($event)"
                             />
                             <small class="text-danger">{{ errors[0] }}</small>
                         </validation-provider>
@@ -265,7 +266,7 @@
                     :items="permissionsData"
             >
                 <template #cell(module)="data">
-                    {{ data.value }}
+                    {{ data.value.charAt(0).toUpperCase() + data.value.slice(1) }}
                 </template>
                 <template #cell(read)="data">
                     <b-form-checkbox @change="changeRole(data.value, {action: 'read', subject: data.item.module})" v-model="data.value"/>
@@ -386,10 +387,28 @@
 
             const {resolveUserRoleVariant} = useUsersList()
 
-            const roleOptions = [
-                {label: "Employee", value: "employee"},
-                {label: "Admin", value: "admin"},
-            ]
+            const roleOptions = ref([]);
+
+            store.dispatch('app-user/fetchRoles')
+                .then(response => {
+                    if (response.data.success) {
+                        let listRole = response.data.listRole.filter(obj => obj.name != "Super Admin")
+                            listRole.map(obj => {
+                            roleOptions.value.push({
+                                label: obj.name,
+                                value: obj.name.toLowerCase(),
+                                ability: obj.ability,
+                                modules: obj.modules,
+                                disabled: true,
+                            })
+                        })
+                    }
+                })
+                .catch(error => {
+                    if (error.response.status === 404) {
+                        userData.value = undefined
+                    }
+                })
 
             const genderOptions = [
                 {text: "Male", value: 0},
@@ -450,23 +469,30 @@
                 ]
             );
 
-            userData.value.modules.map(val => {
-                let data = permissionsData.value.filter(obj => obj.module != val)
-                if (data.length < permissionsData.value.length) {
-                    permissionsData.value = data
-                    let ability = userData.value.ability.filter(obj => obj.subject == val)
-                    let action = ability.map(obj => obj.action)
-                    permissionsData.value.unshift({
-                        module: val,
-                        read: action.includes('read') ? true : false,
-                        create: action.includes('create') ? true : false,
-                        update: action.includes('update') ? true : false,
-                        delete: action.includes('delete') ? true : false,
-                    })
-                }
-            })
+            const changeRoleUser = (ability, modules) => {
+                modules.map(val => {
+                    let data = permissionsData.value.filter(obj => obj.module != val)
+                    if (data.length < permissionsData.value.length) {
+                        permissionsData.value = data
+                        let ability_new = ability.filter(obj => obj.subject == val)
+                        let action = ability_new.map(obj => obj.action)
+                        permissionsData.value.unshift({
+                            module: val,
+                            read: action.includes('read') ? true : false,
+                            create: action.includes('create') ? true : false,
+                            update: action.includes('update') ? true : false,
+                            delete: action.includes('delete') ? true : false,
+                        })
+                    }
+                })
+            }
 
+            changeRoleUser(userData.value.ability, userData.value.modules)
 
+            const chooseRole = (role) => {
+                changeRoleUser(role.ability, role.modules)
+                userData.value.role = role.value
+            }
 
             const type = ref(true)
             const hidePass = () => {
@@ -524,7 +550,7 @@
                 genderOptions,
                 permissionsData,
                 deleteUser,
-
+                chooseRole,
                 //  ? Demo - Update Image on click of update button
                 refInputEl,
                 previewEl,
