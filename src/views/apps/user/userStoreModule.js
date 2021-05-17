@@ -92,5 +92,16 @@ export default {
             .catch(error => reject(error))
       })
     },
+
+    //Role
+    fetchRoles() {
+      return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.VUE_APP_ROOT_API + 'role/list', config)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+
   },
 }
