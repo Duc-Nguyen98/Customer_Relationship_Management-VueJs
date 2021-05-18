@@ -3,12 +3,20 @@ export default [
     path: '/apps/chatbot',
     name: 'apps-chatbot',
     component: () => import('@/views/pages/miscellaneous/ComingSoon.vue'),
+    meta: {
+      resource: 'Dashboard',
+      action: 'read',
+    },
   },
 
   {
     path: '/apps/sales',
     name: 'apps-sales',
     component: () => import('@/views/pages/miscellaneous/ComingSoon.vue'),
+    meta: {
+      resource: 'Dashboard',
+      action: 'read',
+    },
   },
 
   // *===============================================---*
@@ -21,6 +29,8 @@ export default [
     meta: {
       contentRenderer: 'sidebar-left',
       contentClass: 'email-application',
+      resource: 'Dashboard',
+      action: 'read',
     },
   },
   {
@@ -31,6 +41,8 @@ export default [
       contentRenderer: 'sidebar-left',
       contentClass: 'email-application',
       navActiveLink: 'apps-email',
+      resource: 'Dashboard',
+      action: 'read',
     },
     beforeEnter(to, _, next) {
       if (['sent', 'draft', 'starred', 'spam', 'trash'].includes(to.params.folder)) next()
@@ -45,6 +57,8 @@ export default [
       contentRenderer: 'sidebar-left',
       contentClass: 'email-application',
       navActiveLink: 'apps-email',
+      resource: 'Dashboard',
+      action: 'read',
     },
     beforeEnter(to, _, next) {
       if (['personal', 'company', 'important', 'private'].includes(to.params.label)) next()
@@ -62,6 +76,8 @@ export default [
     meta: {
       contentRenderer: 'sidebar-left',
       contentClass: 'todo-application',
+      resource: 'Dashboard',
+      action: 'read',
     },
   },
   {
@@ -72,6 +88,8 @@ export default [
       contentRenderer: 'sidebar-left',
       contentClass: 'todo-application',
       navActiveLink: 'apps-todo',
+      resource: 'Dashboard',
+      action: 'read',
     },
     beforeEnter(to, _, next) {
       if (['important', 'completed', 'deleted'].includes(to.params.filter)) next()
@@ -86,6 +104,8 @@ export default [
       contentRenderer: 'sidebar-left',
       contentClass: 'todo-application',
       navActiveLink: 'apps-todo',
+      resource: 'Dashboard',
+      action: 'read',
     },
     beforeEnter(to, _, next) {
       if (['team', 'low', 'medium', 'high', 'update'].includes(to.params.tag)) next()
@@ -103,6 +123,8 @@ export default [
     meta: {
       contentRenderer: 'sidebar-left',
       contentClass: 'chat-application',
+      resource: 'Dashboard',
+      action: 'read',
     },
   },
 ]

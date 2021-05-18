@@ -8,7 +8,7 @@ export default [
       {
         title: 'Analytics',
         route: 'dashboard-analytics',
-        resource: 'analytics',
+        resource: 'Dashboard',
         action: 'read',
       },
       {
@@ -16,7 +16,7 @@ export default [
         route: 'dashboard-others',
         tag: 'B',
         tagVariant: 'light-warning',
-        resource: 'others',
+        resource: 'Dashboard',
         action: 'read',
       },
     ],

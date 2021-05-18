@@ -4,7 +4,7 @@ export default [
     name: 'dashboard-analytics',
     component: () => import('@/views/dashboard/analytics/Analytics.vue'),
     meta: {
-      resource: 'customers',
+      resource: 'Dashboard',
       action: 'read',
     },
   },
@@ -13,8 +13,8 @@ export default [
     name: 'dashboard-others',
     component: () => import('@/views/pages/miscellaneous/ComingSoon.vue'),
     meta: {
-      resource: 'customers',
-      action: 'delete',
+      resource: 'Dashboard',
+      action: 'read',
     },
   },
 ]

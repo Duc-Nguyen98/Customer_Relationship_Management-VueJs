@@ -8,6 +8,8 @@ export default [
     icon: 'MailIcon',
     tag: 'new',
     tagVariant: 'light-success',
+    resource: 'Dashboard',
+    action: 'read',
   },
 
   {
@@ -16,6 +18,8 @@ export default [
     icon: 'CheckSquareIcon',
     tag: 'new',
     tagVariant: 'light-success',
+    resource: 'Dashboard',
+    action: 'read',
   },
   {
     title: 'Chat',
@@ -23,6 +27,8 @@ export default [
     icon: 'MessageSquareIcon',
     tag: 'dev',
     tagVariant: 'light-warning',
+    resource: 'Dashboard',
+    action: 'read',
   },
   {
     title: 'ChatBot',
@@ -30,6 +36,8 @@ export default [
     icon: 'EyeIcon',
     tag: 'dev',
     tagVariant: 'light-warning',
+    resource: 'Dashboard',
+    action: 'read',
   },
   {
     title: 'Sales',
@@ -37,5 +45,7 @@ export default [
     icon: 'ShoppingBagIcon',
     tag: 'dev',
     tagVariant: 'light-warning',
+    resource: 'Dashboard',
+    action: 'read',
   },
 ]
