@@ -100,11 +100,6 @@
           <b-badge pill :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
-        <!-- Column: Used Day -->
-        <template #cell(usedDate)="data">
-          {{ convertDate(data.value) }}
-        </template>
-
         <!-- Column: Created at -->
         <template #cell(created)="data">
           {{ convertDate(data.value.time) }}

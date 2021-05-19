@@ -18,8 +18,6 @@ export default function useVoucherList() {
     { key: 'voucherCode', label: 'Voucher code', sortable: true },
     { key: 'classified', label: 'Classified', sortable: true },
     { key: 'nameCustomerUse', label: 'Customers use', sortable: true },
-    { key: 'nameLocationUse', label: 'Location use', sortable: true },
-    { key: 'usedDate', label: 'Used day', sortable: true },
     { key: 'status', label: 'Status', sortable: true },
     { key: 'created', label: 'Created At', sortable: false },
     { key: 'actions' },
