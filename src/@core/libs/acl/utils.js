@@ -1,4 +1,5 @@
 import { getCurrentInstance } from '@vue/composition-api'
+import {console} from "vuedraggable/src/util/helper";
 
 /**
  * Returns ability result if ACL is configured or else just return true

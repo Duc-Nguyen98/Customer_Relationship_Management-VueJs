@@ -267,6 +267,9 @@ export default {
   directives: {
     Ripple,
   },
+  created() {
+   console.log( this.$ability )
+  },
   setup() {
 
     const api = process.env.VUE_APP_ROOT_API;

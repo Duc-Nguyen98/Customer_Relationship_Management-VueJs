@@ -5,7 +5,7 @@ export default [
     component: () => import('@/views/extensions/acl/PermissionControl.vue'),
     meta: {
       resource: 'ACL',
-      action: 'read',
+      action: 'write',
     },
   },
 ]

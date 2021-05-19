@@ -1,6 +1,8 @@
 export default [
     {
         header: 'Manage Interactive',
+        resource: 'Dashboard',
+        action: 'read',
     },
     {
         title: 'MG-Voucher',
@@ -10,7 +12,7 @@ export default [
                 title: 'G-Voucher-List',
                 route: 'apps-group-voucher-list',
                 resource: 'groupVouchers',
-                action: 'read',
+                action: 'write',
             },
             {
                 title: 'G-Voucher-Trash',
@@ -34,7 +36,7 @@ export default [
                 title: 'G-Customer List',
                 route: 'apps-groups-customers-list',
                 resource: 'groupCustomers',
-                action: 'read',
+                action: 'write',
             },
             {
                 title: 'G-Customer Trash',
@@ -58,7 +60,7 @@ export default [
                 title: 'G-Services List',
                 route: 'apps-services-list-sms',
                 resource: 'services',
-                action: 'read',
+                action: 'write',
             },
             {
                 title: 'G-Services Trash',

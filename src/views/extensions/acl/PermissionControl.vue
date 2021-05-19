@@ -12,12 +12,12 @@
       </b-card>
     </b-col>
     <b-col
-      v-if="$can('read', 'Dashboard')"
+      v-if="$can('write', 'Dashboard')"
       cols="12"
       md="6"
     >
       <b-card title="Analytics">
-        <b-card-text>User with 'Analytics' subject's 'Read' ability can view this card</b-card-text>
+        <b-card-text>User with 'Analytics' subject's 'write' ability can view this card</b-card-text>
         <b-card-text class="text-danger">
           This card is visible to 'admin' only
         </b-card-text>
@@ -108,8 +108,8 @@
                       <template #cell(module)="data">
                         {{ data.value.charAt(0).toUpperCase() + data.value.slice(1) }}
                       </template>
-                      <template #cell(read)="data">
-                        <b-form-checkbox @change="changeRole(data.value, {action: 'read', subject: data.item.module})" v-model="data.value"/>
+                      <template #cell(write)="data">
+                        <b-form-checkbox @change="changeRole(data.value, {action: 'write', subject: data.item.module})" v-model="data.value"/>
                       </template>
                       <template #cell(create)="data">
                         <b-form-checkbox @change="changeRole(data.value, {action: 'create', subject: data.item.module})" v-model="data.value"/>
@@ -224,49 +224,49 @@ export default {
             [
               {
                 module: 'customers',
-                read: false,
+                write: false,
                 create: false,
                 update: false,
                 delete: false,
               },
               {
                 module: 'voucherItems',
-                read: false,
+                write: false,
                 create: false,
                 update: false,
                 delete: false,
               },
               {
                 module: 'services',
-                read: false,
+                write: false,
                 create: false,
                 update: false,
                 delete: false,
               },
               {
                 module: 'users',
-                read: false,
+                write: false,
                 create: false,
                 update: false,
                 delete: false,
               },
               {
                 module: 'shops',
-                read: false,
+                write: false,
                 create: false,
                 update: false,
                 delete: false,
               },
               {
                 module: 'groupVouchers',
-                read: false,
+                write: false,
                 create: false,
                 update: false,
                 delete: false,
               },
               {
                 module: 'groupCustomers',
-                read: false,
+                write: false,
                 create: false,
                 update: false,
                 delete: false,
@@ -283,7 +283,7 @@ export default {
           let action = ability_new.map(obj => obj.action)
           permissionsData.value.unshift({
             module: val,
-            read: action.includes('read') ? true : false,
+            write: action.includes('write') ? true : false,
             create: action.includes('create') ? true : false,
             update: action.includes('update') ? true : false,
             delete: action.includes('delete') ? true : false,

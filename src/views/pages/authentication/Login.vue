@@ -232,9 +232,15 @@
                                 if (response.data.success) {
                                     const {userData} = response.data
                                     userData.ability.push({
-                                        resource: 'Dashboard',
                                         action: 'read',
+                                        resource: 'Dashboard',
                                     })
+                                    if (userData.role == 'super admin') {
+                                        userData.ability.push({
+                                            action: 'read',
+                                            resource: 'Role',
+                                        })
+                                    }
                                     useJwt.setToken(response.data.accessToken)
                                     useJwt.setRefreshToken(response.data.refreshToken)
                                     localStorage.setItem("userData", JSON.stringify(userData))

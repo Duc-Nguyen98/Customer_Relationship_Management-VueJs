@@ -7,7 +7,7 @@ export default [
     route: 'access-control',
     icon: 'ShieldIcon',
     // acl: {
-    action: 'read',
+    action: 'write',
     resource: 'ACL',
     // },
   },

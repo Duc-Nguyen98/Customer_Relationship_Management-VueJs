@@ -9,7 +9,7 @@ export default [
     component: () => import('@/views/apps/customers/users-list/UsersList.vue'),
     meta: {
       resource: 'customers',
-      action: 'read',
+      action: 'write',
     },
   },
   {
@@ -59,7 +59,7 @@ export default [
     component: () => import('@/views/apps/user/users-list/UsersList.vue'),
     meta: {
       resource: 'users',
-      action: 'read',
+      action: 'write',
     },
   },
   {
@@ -109,7 +109,7 @@ export default [
     component: () => import('@/views/apps/services/sms/services-list/ServicesListSMS.vue'),
     meta: {
       resource: 'services',
-      action: 'read',
+      action: 'write',
     },
   },
   {

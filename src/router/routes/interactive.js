@@ -10,7 +10,7 @@ export default [
         component: () => import('@/views/apps/voucher/voucher-list/VoucherListGroups.vue'),
         meta: {
             resource: 'groupVouchers',
-            action: 'read',
+            action: 'write',
         },
     },
     {
@@ -60,7 +60,7 @@ export default [
         component: () => import('@/views/apps/groupCustomers/groupCustomers-list/groupCustomersList.vue'),
         meta: {
             resource: 'groupCustomers',
-            action: 'read',
+            action: 'write',
         },
     },
     {
@@ -101,7 +101,7 @@ export default [
         component: () => import('@/views/apps/shops/shops-list/ShopsList.vue'),
         meta: {
             resource: 'shops',
-            action: 'read',
+            action: 'write',
         },
     },
     {

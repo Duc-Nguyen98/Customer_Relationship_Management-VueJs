@@ -268,8 +268,8 @@
                 <template #cell(module)="data">
                     {{ data.value.charAt(0).toUpperCase() + data.value.slice(1) }}
                 </template>
-                <template #cell(read)="data">
-                    <b-form-checkbox @change="changeRole(data.value, {action: 'read', subject: data.item.module})" v-model="data.value"/>
+                <template #cell(write)="data">
+                    <b-form-checkbox @change="changeRole(data.value, {action: 'write', subject: data.item.module})" v-model="data.value"/>
                 </template>
                 <template #cell(create)="data">
                     <b-form-checkbox @change="changeRole(data.value, {action: 'create', subject: data.item.module})" v-model="data.value"/>
@@ -419,49 +419,49 @@
                 [
                     {
                         module: 'customers',
-                        read: false,
+                        write: false,
                         create: false,
                         update: false,
                         delete: false,
                     },
                     {
                         module: 'voucherItems',
-                        read: false,
+                        write: false,
                         create: false,
                         update: false,
                         delete: false,
                     },
                     {
                         module: 'services',
-                        read: false,
+                        write: false,
                         create: false,
                         update: false,
                         delete: false,
                     },
                     {
                         module: 'users',
-                        read: false,
+                        write: false,
                         create: false,
                         update: false,
                         delete: false,
                     },
                     {
-                        module: 'shops',
-                        read: false,
+                        module: 'shop',
+                        write: false,
                         create: false,
                         update: false,
                         delete: false,
                     },
                     {
-                        module: 'groupVouchers',
-                        read: false,
+                        module: 'groupVoucher',
+                        write: false,
                         create: false,
                         update: false,
                         delete: false,
                     },
                     {
-                        module: 'groupCustomers',
-                        read: false,
+                        module: 'groupCustomer',
+                        write: false,
                         create: false,
                         update: false,
                         delete: false,
@@ -478,13 +478,14 @@
                         let action = ability_new.map(obj => obj.action)
                         permissionsData.value.unshift({
                             module: val,
-                            read: action.includes('read') ? true : false,
+                            write: action.includes('write') ? true : false,
                             create: action.includes('create') ? true : false,
                             update: action.includes('update') ? true : false,
                             delete: action.includes('delete') ? true : false,
                         })
                     }
                 })
+
             }
 
             changeRoleUser(userData.value.ability, userData.value.modules)
@@ -588,6 +589,8 @@
                 } else if (!subject.includes(this.userData.modules)) {
                     this.userData.modules.push(subject)
                 }
+
+                console.log(this.userData.ability)
             },
 
             validationForm(userData) {

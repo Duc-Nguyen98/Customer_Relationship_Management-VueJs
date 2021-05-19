@@ -1,6 +1,8 @@
 export default [
     {
         header: 'Users & Customers ...',
+        resource: 'Dashboard',
+        action: 'read',
     },
     {
         title: 'M-Customers',
@@ -10,7 +12,7 @@ export default [
                 title: 'List',
                 route: 'apps-customers-list',
                 resource: 'customers',
-                action: 'read',
+                action: 'write',
             },
             {
                 title: 'List-Delete',
@@ -34,7 +36,7 @@ export default [
                 title: 'List',
                 route: 'apps-users-list',
                 resource: 'users',
-                action: 'read',
+                action: 'write',
             },
             {
                 title: 'List Delete',
@@ -58,7 +60,7 @@ export default [
                 title: 'List Shops',
                 route: 'apps-shops-list',
                 resource: 'shops',
-                action: 'read',
+                action: 'write',
             },
             {
                 title: 'L-Shops Delete',
