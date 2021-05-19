@@ -231,11 +231,14 @@
                             .then((response) => {
                                 if (response.data.success) {
                                     const {userData} = response.data
+                                    userData.ability.push({
+                                        resource: 'Dashboard',
+                                        action: 'read',
+                                    })
                                     useJwt.setToken(response.data.accessToken)
                                     useJwt.setRefreshToken(response.data.refreshToken)
                                     localStorage.setItem("userData", JSON.stringify(userData))
                                     this.$ability.update(userData.ability)
-                                    console.log(userData)
                                     // ? This is just for demo purpose as well.
                                     // ? Because we are showing eCommerce app's cart items count in navbar
 
