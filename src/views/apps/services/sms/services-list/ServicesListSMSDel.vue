@@ -100,6 +100,89 @@
           ></b-form-checkbox>
         </template>
 
+        <!-- Column: Title -->
+        <template #cell(titleServices)="row">
+          <b-media @click="row.toggleDetails">
+            <b-link class="font-weight-bold d-block text-nowrap" >
+              {{ row.value }}
+            </b-link>
+            <small class="text-muted" v-if="row.item.idServices">@ISC{{ row.item.idServices }}</small>
+          </b-media>
+        </template>
+
+        <template #row-details="row">
+          <b-card>
+            <b-row class="mb-2">
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Created by : </strong>{{ row.item.details.createBy }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>User phone : </strong>{{ row.item.telephoneCustomer }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>User email : </strong>{{ row.item.mailCustomer }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Shop : </strong>
+                <span v-for="item in row.item.listShop">
+                  <span :key="item.value">{{ item.title }},</span>
+                </span>
+              </b-col>
+              <b-col
+                      v-if="!row.item.discount.reduction.money"
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Percent : </strong>{{ row.item.discount.PercentAMaximum.percent }}%
+              </b-col>
+              <b-col
+                      v-if="!row.item.discount.reduction.money"
+                      md="4"
+                      class="mb-1"
+              >
+                <strong >Maximum money : </strong>{{ row.item.discount.PercentAMaximum.maximumMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) }}
+              </b-col>
+
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Created at : </strong>{{ convertDate(row.item.details.time) }}
+              </b-col>
+
+              <b-col
+                      v-if="row.item.discount.reduction.money"
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Money : </strong>{{ row.item.discount.reduction.money.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <b-row>
+                  <b-col md="3"><strong>Content : </strong></b-col>
+                  <b-col md="9"><span v-html="row.item.content"></span></b-col>
+                </b-row>
+              </b-col>
+            </b-row>
+          </b-card>
+        </template>
+
+
         <!-- Column: Receiver -->
         <template #cell(receiver)="data">
           <b-media>
@@ -108,11 +191,6 @@
             </b-link>
             <small class="text-muted"> @CS{{ data.item.idCustomer }}</small>
           </b-media>
-        </template>
-
-        <!-- Column: STT -->
-        <template #cell(receiver)="data">
-          @KH{{ data.item.idCustomer }} - {{ data.item.nameCustomer }}
         </template>
 
         <!-- Column: Type -->

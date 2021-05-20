@@ -97,31 +97,70 @@
         </template>
 
         <!-- Column: User -->
-        <template #cell(name)="data">
-          <b-media vertical-align="center">
+        <template #cell(name)="row">
+          <b-media vertical-align="center" @click="row.toggleDetails">
             <template #aside>
               <b-avatar
                 size="32"
-                :src="api + data.item.avatar"
-                :text="avatarText(data.item.name)"
+                :src="api + row.item.avatar"
+                :text="avatarText(row.item.name)"
                 variant="light-primary"
                 :to="{
                   name: 'apps-shops-edit',
-                  params: { id: data.item._id },
+                  params: { id: row.item._id },
                 }"
               />
             </template>
             <b-link
-              :to="{
-                name: 'apps-shops-edit',
-                params: { id: data.item._id },
-              }"
               class="font-weight-bold d-block text-nowrap"
             >
-              {{ data.item.name }}
+              {{ row.item.name }}
             </b-link>
-            <small class="text-muted">@SA{{ data.item.idShop }}</small>
+            <small class="text-muted">@SA{{ row.item.idShop }}</small>
           </b-media>
+        </template>
+
+        <template #row-details="row">
+          <b-card>
+            <b-row class="mb-2">
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Created by  : </strong>{{ row.item.created.createBy }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Address : </strong>{{ row.item.address }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Created at : </strong>{{ convertDate(row.item.created.time) }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Fanpage : </strong><a :href="row.item.fanpage">{{ row.item.fanpage }}</a>
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Fax : </strong>{{ row.item.fax }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Note : </strong>{{ row.item.note }}
+              </b-col>
+            </b-row>
+          </b-card>
         </template>
 
         <!-- Column: Status -->

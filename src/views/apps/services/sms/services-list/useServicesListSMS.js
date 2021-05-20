@@ -146,7 +146,6 @@ export default function useServicesListSMS() {
   }
 
   const checkType = type => {
-    console.log(type)
     if (type === 0) return 'SMS'
     if (type === 1) return 'Mail'
     if (type === 2) return 'SMS & Mail'

@@ -2,13 +2,13 @@
   <component :is="serviceData === undefined ? 'div' : 'b-card'">
     <!-- Alert: No item found -->
     <b-alert variant="danger" :show="serviceData === undefined">
-      <h4 class="alert-heading">Error fetching user data</h4>
+      <h4 class="alert-heading">Error fetching services data</h4>
       <div class="alert-body">
-        No user found with this user id. Check
-        <b-link class="alert-link" :to="{ name: 'apps-users-list' }">
-          User List
+        No services found with this user id. Check
+        <b-link class="alert-link" :to="{ name: 'apps-services-list-sms' }">
+          Services List
         </b-link>
-        for other users.
+        for other services.
       </div>
     </b-alert>
 
@@ -19,7 +19,7 @@
           <feather-icon icon="UserIcon" size="16" class="mr-0 mr-sm-50" />
           <span class="d-none d-sm-inline">Info Service</span>
         </template>
-        <user-edit-tab-information :userinfo="serviceData" class="mt-2 pt-75" />
+        <services-edit-tab-information :serviceinfo="serviceData" class="mt-2 pt-75" />
       </b-tab>
     </b-tabs>
   </component>
@@ -45,7 +45,7 @@ export default {
     servicesEditTabInformation,
   },
   setup() {
-    const userData = ref(null);
+    const serviceData = ref(null);
 
     const SERVICES_APP_STORE_MODULE_NAME = "app-services";
 
@@ -60,13 +60,13 @@ export default {
     });
 
     store
-      .dispatch("app-services/fetchService", { id: router.currentRoute.params.id })
+      .dispatch("app-services/fetchService", { _id: router.currentRoute.params.id })
       .then((response) => {
-        serviceData.value = response.data;
+        serviceData.value = response.data.data
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          userData.value = undefined;
+          serviceData.value = undefined;
         }
       });
 

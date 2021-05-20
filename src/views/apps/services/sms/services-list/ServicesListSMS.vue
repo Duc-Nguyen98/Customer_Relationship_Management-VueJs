@@ -85,7 +85,6 @@
         :sort-desc.sync="isSortDirDesc"
         hover
       >
-
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
         <template #head(selected)="scope">
           <b-form-checkbox
@@ -104,21 +103,94 @@
           <b-form-checkbox
                   :id="data.item._id"
                   :checked="all"
-                  @change="chooseOne($event, data.item._id)"
+                  @change="chooseOne(data.item._id)"
           ></b-form-checkbox>
         </template>
 
         <!-- Column: Title -->
-        <template #cell(titleServices)="data">
-          <b-media>
-            <b-link class="font-weight-bold d-block text-nowrap">
-              {{ data.value }}
+        <template #cell(titleServices)="row">
+          <b-media @click="row.toggleDetails">
+            <b-link class="font-weight-bold d-block text-nowrap" >
+              {{ row.value }}
             </b-link>
-            <small class="text-muted" v-if="data.item.idServices">@ISC{{ data.item.idServices }}</small>
+            <small class="text-muted" v-if="row.item.idServices">@ISC{{ row.item.idServices }}</small>
           </b-media>
         </template>
 
-        <!-- Column: STT -->
+        <template #row-details="row">
+          <b-card>
+            <b-row class="mb-2">
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Created by : </strong>{{ row.item.details.createBy }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>User phone : </strong>{{ row.item.telephoneCustomer }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>User email : </strong>{{ row.item.mailCustomer }}
+              </b-col>
+
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Shop : </strong>
+                <span v-for="item in row.item.listShop">
+                  <span :key="item.value">{{ item.title }},</span>
+                </span>
+              </b-col>
+              <b-col
+                      v-if="!row.item.discount.reduction.money"
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Percent : </strong>{{ row.item.discount.PercentAMaximum.percent }}%
+              </b-col>
+              <b-col
+                      v-if="!row.item.discount.reduction.money"
+                      md="4"
+                      class="mb-1"
+              >
+                <strong >Maximum money : </strong>{{ row.item.discount.PercentAMaximum.maximumMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) }}
+              </b-col>
+
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Created at : </strong>{{ convertDate(row.item.details.time) }}
+              </b-col>
+
+              <b-col
+                      v-if="row.item.discount.reduction.money"
+                      md="4"
+                      class="mb-1"
+              >
+                <strong>Money : </strong>{{ row.item.discount.reduction.money.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) }}
+              </b-col>
+              <b-col
+                      md="4"
+                      class="mb-1"
+              >
+                <b-row>
+                  <b-col md="3"><strong>Content : </strong></b-col>
+                  <b-col md="9"><span v-html="row.item.content"></span></b-col>
+                </b-row>
+              </b-col>
+            </b-row>
+          </b-card>
+        </template>
+
+        <!-- Column: Receiver -->
         <template #cell(receiver)="data">
           <b-media>
             <b-link class="font-weight-bold d-block text-nowrap">
@@ -167,15 +239,15 @@
 <!--              <span class="align-middle ml-50">Details</span>-->
 <!--            </b-dropdown-item>-->
 
-            <b-dropdown-item
-              :to="{
-                name: 'apps-services-edit-sms',
-                params: { id: data.item._id },
-              }"
-            >
-              <feather-icon icon="PlusCircleIcon" />
-              <span class="align-middle ml-50">Edit</span>
-            </b-dropdown-item>
+<!--            <b-dropdown-item-->
+<!--              :to="{-->
+<!--                name: 'apps-services-view',-->
+<!--                params: { id: data.item._id },-->
+<!--              }"-->
+<!--            >-->
+<!--              <feather-icon icon="PlusCircleIcon" />-->
+<!--              <span class="align-middle ml-50">Detail</span>-->
+<!--            </b-dropdown-item>-->
 
             <b-dropdown-item
               @click="deleteSoftService(data.item._id)"

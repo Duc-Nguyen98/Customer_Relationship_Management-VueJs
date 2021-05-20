@@ -30,7 +30,7 @@ export default {
     fetchService(ctx, { _id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(process.env.VUE_APP_ROOT_API + `services/${_id}`, config)
+          .get(process.env.VUE_APP_ROOT_API + `services/detail/${_id}`, config)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

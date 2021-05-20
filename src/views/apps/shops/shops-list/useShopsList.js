@@ -17,6 +17,7 @@ export default function useShopsList() {
     { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: true },
     { key: 'name', label: 'NAME', formatter: title, sortable: false },
+    { key: 'telephone', label: 'TELEPHONE', sortable: false },
     { key: 'telephoneShop', label: 'TELEPHONE SHOP', sortable: false },
     { key: 'mail', label: 'EMAIL', sortable: false },
     { key: 'ownerShop', label: 'Owner Shop', sortable: true },
@@ -74,6 +75,7 @@ export default function useShopsList() {
             data.map((obj, index) => obj.stt = index+1)
             Shops.value = data
             isBusy.value = false
+            console.log(data)
           })
           .catch(() => {
             toast({

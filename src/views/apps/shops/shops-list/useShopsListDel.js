@@ -17,6 +17,7 @@ export default function useShopsListDel() {
     { key: 'selected', label: 'All', class: 'all'},
     { key: 'stt', label: 'STT', sortable: true },
     { key: 'name', label: 'NAME', formatter: title, sortable: false },
+    { key: 'telephone', label: 'TELEPHONE', sortable: false },
     { key: 'telephoneShop', label: 'TELEPHONE SHOP', sortable: false },
     { key: 'mail', label: 'EMAIL', sortable: false },
     { key: 'ownerShop', label: 'Owner Shop', sortable: true },
@@ -154,10 +155,9 @@ export default function useShopsListDel() {
   // *===============================================---*
 
   const resolveUserStatusVariant = status => {
-    if (status === 'pending') return 'warning'
-    if (status === 'active') return 'success'
-    if (status === 'inactive') return 'secondary'
-    return 'primary'
+    if (status === 0) return 'danger'
+    if (status === 1) return 'info'
+    return 'danger'
   }
 
   const checkRegion = (key) => {

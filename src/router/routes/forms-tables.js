@@ -132,8 +132,8 @@ export default [
   },
   {
     path: '/apps/services/view/:id',
-    name: 'apps-users-view',
-    component: () => import('@/views/apps/services/sms/services-view/ServicesView.vue'),
+    name: 'apps-services-view',
+    component: () => import('@/views/apps/services/sms/services-edit/ServicesEdit.vue'),
     meta: {
       resource: 'services',
       action: 'update',

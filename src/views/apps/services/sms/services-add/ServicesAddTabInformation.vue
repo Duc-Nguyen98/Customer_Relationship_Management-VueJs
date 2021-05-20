@@ -10,14 +10,14 @@
                 back-button-text="Previous"
                 class="wizard-vertical mb-3"
         >
-            <!-- Information User tab -->
+            <!-- Information Service tab -->
             <tab-content title="Information User">
                 <validation-observer ref="information_user">
                     <b-form class="mt-1">
                         <!-- Header: Personal Info -->
                         <div class="d-flex mb-2">
                             <feather-icon icon="UserIcon" size="19"/>
-                            <h4 class="mb-0 ml-50">User Information</h4>
+                            <h4 class="mb-0 ml-50">Service Information</h4>
                         </div>
                         <b-row>
                             <!-- Field: Name  -->
