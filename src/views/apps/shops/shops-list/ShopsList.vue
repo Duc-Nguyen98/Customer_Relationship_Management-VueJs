@@ -189,6 +189,7 @@
             </template>
 
             <b-dropdown-item
+                    v-if="canViewVerticalNavMenuLink({action: 'update', subject: 'shop'})"
               :to="{
                 name: 'apps-shops-edit',
                 params: { id: data.item._id },
@@ -199,6 +200,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
+                    v-if="canViewVerticalNavMenuLink({action: 'delete', subject: 'shop'})"
               @click="deleteShop(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
@@ -252,6 +254,7 @@
 </template>
 
 <script>
+  import { useUtils as useAclUtils } from '@core/libs/acl'
 import {
   BCard,
   BRow,
@@ -312,7 +315,7 @@ export default {
 
     const api = process.env.VUE_APP_ROOT_API
     const USER_APP_STORE_MODULE_NAME = 'app-shops'
-
+    const { canViewVerticalNavMenuLink } = useAclUtils()
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
       store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule)
@@ -414,7 +417,7 @@ export default {
 
       // UI
       resolveUserStatusVariant,
-
+      canViewVerticalNavMenuLink,
       regionOptions,
       statusOptions,
 

@@ -153,6 +153,7 @@
             </template>
 
             <b-dropdown-item
+                    v-if="canViewVerticalNavMenuLink({action: 'update', subject: 'users'})"
                     :to="{
                 name: 'apps-users-edit',
                 params: { id: data.item.idUser },
@@ -163,6 +164,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
+                    v-if="canViewVerticalNavMenuLink({action: 'delete', subject: 'users'})"
                     @click="deleteUser(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
@@ -242,6 +244,7 @@ import userStoreModule from "../userStoreModule";
 import UserListAddNew from "./UserListAddNew.vue";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
+import {useUtils as useAclUtils} from "@core/libs/acl";
 
 export default {
   components: {
@@ -267,14 +270,11 @@ export default {
   directives: {
     Ripple,
   },
-  created() {
-   console.log( this.$ability )
-  },
   setup() {
 
     const api = process.env.VUE_APP_ROOT_API;
     const USER_APP_STORE_MODULE_NAME = "app-user";
-
+    const { canViewVerticalNavMenuLink } = useAclUtils();
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
       store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule);
@@ -364,7 +364,7 @@ export default {
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
-
+      canViewVerticalNavMenuLink,
       roleOptions,
       genderOptions,
       activeOptions,

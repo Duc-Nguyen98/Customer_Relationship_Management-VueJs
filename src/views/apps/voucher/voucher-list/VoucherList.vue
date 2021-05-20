@@ -172,7 +172,7 @@
             </template>
 
             <b-dropdown-item
-                    v-if="idGroup"
+                    v-if="idGroup  && canViewVerticalNavMenuLink({action: 'update', subject: 'voucherItems'})"
                     :to="{
                 name: 'apps-voucher-edit',
                 params: { id: data.item._id },
@@ -183,14 +183,14 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-                    v-if="idGroup"
+                    v-if="idGroup && canViewVerticalNavMenuLink({action: 'update', subject: 'voucherItems'})"
                     @click="deleteVouchersInGroup(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>
             <b-dropdown-item
-                    v-if="idGroup == null"
+                    v-if="idGroup == null  && canViewVerticalNavMenuLink({action: 'update', subject: 'voucherItems'})"
                     @click="deleteVouchersInAddGroup(data.index)"
             >
               <feather-icon icon="TrashIcon" />
@@ -273,6 +273,7 @@
   import Ripple from "vue-ripple-directive";
   import moment from "moment";
   import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+  import {useUtils as useAclUtils} from "@core/libs/acl";
 
   export default {
     components: {
@@ -310,6 +311,7 @@
     setup({_id, idGroup}) {
 
       const SERVICES_APP_STORE_MODULE_NAME = "app_voucher";
+      const { canViewVerticalNavMenuLink } = useAclUtils();
 
       // Register module
       if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
@@ -426,7 +428,7 @@
         resolveUserRoleVariant,
         resolveUserRoleIcon,
         resolveUserStatusVariant,
-
+        canViewVerticalNavMenuLink,
         // Extra Filters
         classified,
         status,

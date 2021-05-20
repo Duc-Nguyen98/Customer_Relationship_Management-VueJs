@@ -4,8 +4,8 @@
     <group-customers-list-filters
       :status.sync="status"
       :region.sync="region"
+      :star-options="starOptions"
       :status-options="statusOptions"
-      :region-options="regionOptions"
     />
 
     <!-- Table Container Card -->
@@ -285,10 +285,10 @@ export default {
     })
 
 
-    const regionOptions = [
-      { label: 'Choose a region', value: null },
-      { label: 'TP.Ha Noi', value: 0 },
-      { label: 'TP.Ho Chi Minh', value: 1 },
+    const statusOptions = [
+      { label: 'Choose a status', value: null },
+      { label: 'Inactive', value: 0 },
+      { label: 'Active', value: 1 },
     ]
 
     const pillRegion = (region) => {
@@ -302,11 +302,11 @@ export default {
       }
     }
 
-    const statusOptions = [
-      { label: "Choose a status", value: null },
-      { label: "Inactive", value: 0 },
-      { label: "Active", value: 1 },
-    ];
+    const starOptions = [
+      { label: 'Choose a star', value: null },
+      { label: 'No Star', value: 0 },
+      { label: 'Star', value: 1 },
+    ]
 
     const {
       one,
@@ -373,8 +373,8 @@ export default {
       // UI
       resolveUserStatusVariant,
 
+      starOptions,
       statusOptions,
-      regionOptions,
 
       // Extra Filters
       isBusy,

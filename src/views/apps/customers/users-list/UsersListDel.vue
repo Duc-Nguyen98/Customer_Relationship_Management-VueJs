@@ -140,7 +140,7 @@
 
         <!-- Column: Groups -->
         <template #cell(groups)="data">
-          <b-badge pill :variant="pillGroups(data.value)" class="badge-glow">{{ checkGroup(data.value) }}</b-badge>
+          <b-badge :variant="pillGroups(data.value)">{{ checkGroup(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -292,13 +292,13 @@ export default {
     const pillGroups = (group) => {
       switch (group) {
         case 0:
-          return 'primary';
+          return 'light-primary';
           break;
         case 1:
-          return 'success';
+          return 'light-success';
           break;
         case 2:
-          return 'info';
+          return 'light-info';
           break;
       }
     };

@@ -250,6 +250,7 @@
 <!--            </b-dropdown-item>-->
 
             <b-dropdown-item
+              v-if="canViewVerticalNavMenuLink({action: 'delete', subject: 'services'})"
               @click="deleteSoftService(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
@@ -303,6 +304,7 @@
 </template>
 
 <script>
+  import { useUtils as useAclUtils } from '@core/libs/acl'
   import {
     BCard,
     BRow,
@@ -353,7 +355,7 @@ export default {
   },
   setup() {
     const SERVICES_APP_STORE_MODULE_NAME = 'app-services-sms'
-
+    const { canViewVerticalNavMenuLink } = useAclUtils()
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
       store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule)
@@ -444,7 +446,7 @@ export default {
       resolveUserRoleIcon,
       resolveServiceTypeVariant,
       resolveStatusTypeVariant,
-
+      canViewVerticalNavMenuLink,
       typeOptions,
       statusOptions,
 

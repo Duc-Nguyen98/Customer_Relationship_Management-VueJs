@@ -155,6 +155,7 @@
             </template>
 
             <b-dropdown-item
+                    v-if="canViewVerticalNavMenuLink({action: 'update', subject: 'groupCustomer'})"
               :to="{
                 name: 'apps-groups-customers-edit',
                 params: { id: data.item._id },
@@ -165,6 +166,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
+                    v-if="canViewVerticalNavMenuLink({action: 'delete', subject: 'groupCustomer'})"
               @click="deleteGroupsCustomer(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
@@ -218,6 +220,7 @@
 </template>
 
 <script>
+  import { useUtils as useAclUtils } from '@core/libs/acl'
 import {
   BCard,
   BRow,
@@ -278,7 +281,7 @@ export default {
 
     const api = process.env.VUE_APP_ROOT_API
     const USER_APP_STORE_MODULE_NAME = 'app-groups-customers'
-
+    const { canViewVerticalNavMenuLink } = useAclUtils()
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
       store.registerModule(USER_APP_STORE_MODULE_NAME, groupCustomersStoreModule)
@@ -371,6 +374,7 @@ export default {
       convertDate,
       refetchData,
       deleteGroupsCustomer,
+      canViewVerticalNavMenuLink,
       pillStar,
 
       // Filter

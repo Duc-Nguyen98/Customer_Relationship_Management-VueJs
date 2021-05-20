@@ -147,6 +147,7 @@
               />
             </template>
             <b-dropdown-item
+                    v-if="canViewVerticalNavMenuLink({action: 'update', subject: 'groupVoucher'})"
               :to="{
                 name: 'apps-group-voucher-edit',
                 params: { id: data.item._id },
@@ -157,6 +158,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
+                    v-if="canViewVerticalNavMenuLink({action: 'delete', subject: 'groupVoucher'})"
               @click="deleteVoucherSoft(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
@@ -238,6 +240,7 @@ import voucherStoreModule from "../voucherStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+import {useUtils as useAclUtils} from "@core/libs/acl";
 
 export default {
   components: {
@@ -266,6 +269,7 @@ export default {
   },
   setup() {
     const SERVICES_APP_STORE_MODULE_NAME = "app_voucher";
+    const { canViewVerticalNavMenuLink } = useAclUtils();
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
@@ -349,7 +353,7 @@ export default {
       resolveUserRoleIcon,
       resolveUserStatusVariant,
       resolveUserClassifiedVariant,
-
+      canViewVerticalNavMenuLink,
       statusOptions,
 
       // Extra Filters

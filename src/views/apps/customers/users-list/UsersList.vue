@@ -152,7 +152,7 @@
 
         <!-- Column: Groups -->
         <template #cell(groups)="data">
-          <b-badge pill :variant="pillGroups(data.value)" class="badge-glow">{{ checkGroup(data.value) }}</b-badge>
+          <b-badge :variant="pillGroups(data.value)">{{ checkGroup(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -180,6 +180,7 @@
 <!--            </b-dropdown-item>-->
 
             <b-dropdown-item
+                    v-if="canViewVerticalNavMenuLink({action: 'update', subject: 'customers'})"
               :to="{
                 name: 'apps-customers-edit',
                 params: { id: data.item._id },
@@ -190,6 +191,7 @@
             </b-dropdown-item>
 
             <b-dropdown-item
+                    v-if="canViewVerticalNavMenuLink({action: 'delete', subject: 'customers'})"
               @click="deleteUser(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
@@ -243,6 +245,7 @@
 </template>
 
 <script>
+  import { useUtils as useAclUtils } from '@core/libs/acl'
   import {
     BCard,
     BRow,
@@ -295,6 +298,7 @@ export default {
 
     const api = process.env.VUE_APP_ROOT_API;
     const USER_APP_STORE_MODULE_NAME = "app-customers";
+    const { canViewVerticalNavMenuLink } = useAclUtils();
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
@@ -316,13 +320,13 @@ export default {
     const pillGroups = (group) => {
       switch (group) {
         case 0:
-          return 'primary';
+          return 'light-primary';
           break;
         case 1:
-          return 'success';
+          return 'light-success';
           break;
         case 2:
-          return 'info';
+          return 'light-info';
           break;
       }
     };
@@ -393,6 +397,7 @@ export default {
       refetchData,
       deleteUser,
       pillGroups,
+      canViewVerticalNavMenuLink,
 
       // Filter
       avatarText,
