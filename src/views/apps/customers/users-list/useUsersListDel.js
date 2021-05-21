@@ -205,10 +205,13 @@ export default function useUsersListDel() {
 
   const chooseAll = () => {
     all.value = !all.value
-    Users.value.map(obj => {
-      chooseOne(obj.idCustomer)
-    })
-    console.log(selected.value)
+    if (all.value) {
+      Users.value.map(obj => {
+        chooseOne(obj.idCustomer)
+      })
+    } else {
+      selected.value = []
+    }
   }
 
   const deleteManyCustomer = () => {

@@ -84,19 +84,20 @@
                   id="cupdateheckbox-1"
                   name="checkbox-1"
                   :checked="all"
+                  :key="'cupdateheckbox'"
                   @change="chooseAll()"
           >
           </b-form-checkbox>
           <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteManyShop"><feather-icon icon="TrashIcon" /></span>
           <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="restoreManyShop"><feather-icon icon="RotateCwIcon" /></span>
-
         </template>
 
         <!-- Column: Delete -->
         <template #cell(selected)="data">
           <b-form-checkbox
                   :id="data.item._id"
-                  :checked="all"
+                  :key="data.item._id"
+                  :checked="selected.length > 0 && all"
                   @change="chooseOne(data.item._id)"
           ></b-form-checkbox>
         </template>

@@ -89,7 +89,7 @@ export default function useVoucherList() {
   }
 
   const alert = (variant, message) => {
-    v.$toast({
+    toast({
       component: ToastificationContent,
       props: {
         title: "Notification",
@@ -97,7 +97,7 @@ export default function useVoucherList() {
         text: "👋 " + message,
         variant,
       },
-    });
+    })
   }
 
   const deleteOneSoftVouchersInGroup = id => {
@@ -162,9 +162,10 @@ export default function useVoucherList() {
         .dispatch('app_voucher/deleteSoftVouchersInGroup', {VoucherIdArray: selected.value})
         .then(response => {
           if (response.data.success) {
+            console.log(response.data)
             alert("success", "Delete vouchers successfully.")
             selected.value = []
-            all.value = !all.value
+            all.value = false
             fetchHisListVouchers(group.value)
           } else {
             alert("danger", "Delete vouchers failed.")
@@ -193,9 +194,13 @@ export default function useVoucherList() {
 
   const chooseAll = () => {
     all.value = !all.value
-    Vouchers.value.map(obj => {
-      chooseOne(obj._id)
-    })
+    if (all.value) {
+      Vouchers.value.map(obj => {
+        chooseOne(obj._id)
+      })
+    } else {
+      selected.value = []
+    }
   }
 
   return {

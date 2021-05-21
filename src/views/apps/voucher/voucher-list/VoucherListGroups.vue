@@ -70,22 +70,25 @@
 
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
         <template #head(selected)="scope">
-          <b-form-checkbox
-                  class="float-left"
-                  id="cupdateheckbox-1"
-                  name="checkbox-1"
-                  :checked="all"
-                  @change="chooseAll()"
-          >
-          </b-form-checkbox>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftManyGroups"><feather-icon icon="TrashIcon" /></span>
+          <div class="d-flex justify-center">
+            <b-form-checkbox
+                    class="float-left"
+                    id="cupdateheckbox-1"
+                    name="checkbox-1"
+                    :checked="all"
+                    @change="chooseAll()"
+            >
+            </b-form-checkbox>
+            <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftManyGroups"><feather-icon icon="TrashIcon" /></span>
+          </div>
         </template>
 
         <!-- Column: Delete -->
         <template #cell(selected)="data">
           <b-form-checkbox
                   :id="data.item._id"
-                  :checked="all"
+                  :key="data.item._id"
+                  :checked="selected.length > 0 && all"
                   @change="chooseOne(data.item.idGroupVoucher)"
           ></b-form-checkbox>
         </template>

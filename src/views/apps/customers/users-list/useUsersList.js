@@ -174,7 +174,7 @@ export default function useUsersList() {
   const all = ref(false)
 
   const chooseOne = (item) => {
-    one.value = !one.value;
+    one.value = !one.value
     if (selected.value.indexOf(item) != -1) {
       selected.value = selected.value.filter(val => val != item)
     } else {
@@ -184,10 +184,13 @@ export default function useUsersList() {
 
   const chooseAll = () => {
     all.value = !all.value
-    Users.value.map(obj => {
-      chooseOne(obj.idCustomer)
-    })
-    console.log(selected.value)
+    if (all.value) {
+      Users.value.map(obj => {
+        chooseOne(obj.idCustomer)
+      })
+    } else {
+      selected.value = []
+    }
   }
 
   const deleteSoftManyCustomer = () => {

@@ -184,9 +184,13 @@ export default function useVoucherListGroups() {
 
   const chooseAll = () => {
     all.value = !all.value
-    Vouchers.value.map(obj => {
-      chooseOne(obj.idGroupVoucher)
-    })
+    if (all.value) {
+      Vouchers.value.map(obj => {
+        chooseOne(obj.idGroupVoucher)
+      })
+    } else {
+      selected.value = []
+    }
   }
 
   const deleteSoftManyGroups = () => {

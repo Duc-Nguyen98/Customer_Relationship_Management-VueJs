@@ -185,7 +185,7 @@ export default function useShopsListDel() {
   const all = ref(false)
 
   const chooseOne = (item) => {
-    one.value = !one.value;
+    all.value = !all.value
     if (selected.value.indexOf(item) != -1) {
       selected.value = selected.value.filter(val => val != item)
     } else {
@@ -195,9 +195,13 @@ export default function useShopsListDel() {
 
   const chooseAll = () => {
     all.value = !all.value
-    Shops.value.map(obj => {
-      chooseOne(obj._id)
-    })
+    if (all.value) {
+      Shops.value.map(obj => {
+        chooseOne(obj._id)
+      })
+    } else {
+      selected.value = []
+    }
   }
 
   const deleteManyShop = () => {

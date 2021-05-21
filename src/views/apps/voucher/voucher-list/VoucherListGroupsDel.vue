@@ -86,7 +86,8 @@
         <template #cell(selected)="data">
           <b-form-checkbox
                   :id="data.item._id"
-                  :checked="all"
+                  :key="data.item._id"
+                  :checked="selected.length > 0 && all"
                   @change="chooseOne(data.item.idGroupVoucher)"
           ></b-form-checkbox>
         </template>

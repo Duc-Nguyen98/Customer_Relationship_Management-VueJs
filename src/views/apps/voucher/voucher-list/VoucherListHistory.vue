@@ -66,8 +66,9 @@
           <b-form-checkbox
                   class="float-left"
                   id="checkbox-1"
-                  name="checkbox-1"
+                  name="hischeckbox"
                   :checked="all"
+                  :key="'hischeckbox'"
                   @change="chooseAll()"
           >
           </b-form-checkbox>
@@ -78,7 +79,8 @@
         <template #cell(selected)="data">
           <b-form-checkbox
                   :id="data.item._id"
-                  :checked="all"
+                  :key="data.item._id"
+                  :checked="selected.length > 0 && all"
                   @change="chooseOne(data.item._id)"
           ></b-form-checkbox>
         </template>

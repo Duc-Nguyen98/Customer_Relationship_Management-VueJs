@@ -141,9 +141,13 @@ export default function useVoucherList() {
 
   const chooseAll = () => {
     all.value = !all.value
-    Vouchers.value.map(obj => {
-      chooseOne(obj._id)
-    })
+    if (all.value) {
+      Vouchers.value.map(obj => {
+        chooseOne(obj._id)
+      })
+    } else {
+      selected.value = []
+    }
   }
 
   const changeStatusVouchersInGroup = (status) => {

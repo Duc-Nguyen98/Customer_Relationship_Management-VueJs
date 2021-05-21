@@ -193,9 +193,13 @@ export default function useShopsListDel() {
 
   const chooseAll = () => {
     all.value = !all.value
-    Shops.value.map(obj => {
-      chooseOne(obj.idGroupCustomer)
-    })
+    if (all.value) {
+      Shops.value.map(obj => {
+        chooseOne(obj.idGroupCustomer)
+      })
+    } else {
+      selected.value = []
+    }
   }
 
   const deleteManyGroupsCustomer = () => {
