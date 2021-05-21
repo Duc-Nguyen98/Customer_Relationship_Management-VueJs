@@ -27,7 +27,7 @@
         >
           German
         </b-form-radio>
-        <b-form-radio value="vi">
+        <b-form-radio value="pt">
           Portuguese
         </b-form-radio>
       </b-form-radio-group>
