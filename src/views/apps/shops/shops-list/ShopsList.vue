@@ -169,12 +169,12 @@
 
         <!-- Column: Status -->
         <template #cell(status)="data">
-          <b-badge :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge :variant="`light-${resolveUserStatusVariant(data.value)}`">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Region -->
         <template #cell(region)="data">
-          <b-badge :variant="pillRegion(data.value)">{{ checkRegion(data.value) }}</b-badge>
+          <b-badge :variant="`light-${pillRegion(data.value)}`">{{ checkRegion(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->

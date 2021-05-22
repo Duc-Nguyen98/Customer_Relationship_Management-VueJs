@@ -117,7 +117,7 @@
 
         <!-- Column: Status -->
         <template #cell(status)="data">
-          <b-badge pill :variant="resolveUserStatusVariant(data.value)" class="badge-glow">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge pill :variant="`light-${resolveUserStatusVariant(data.value)}`" class="badge-glow">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Actions -->

@@ -34,27 +34,27 @@
           <b-col cols="12" md="6">
             <div class="d-flex align-items-center justify-content-end">
               <b-form-input
-                      v-model="searchQuery"
-                      class="d-inline-block mr-1"
-                      placeholder="Search..."
+                v-model="searchQuery"
+                class="d-inline-block mr-1"
+                placeholder="Search..."
               />
               <b-button
-                      class="mr-1"
-                      variant="primary"
-                      :to="{ name: 'apps-services-add' }"
+                class="mr-1"
+                variant="primary"
+                :to="{ name: 'apps-services-add' }"
               >
                 <span class="text-nowrap"
-                ><feather-icon icon="PlusCircleIcon"
+                  ><feather-icon icon="PlusCircleIcon"
                 /></span>
               </b-button>
 
               <b-button
-                      class="mr-1"
-                      variant="primary"
-                      :to="{ name: 'apps-services-list-sms-del' }"
+                class="mr-1"
+                variant="primary"
+                :to="{ name: 'apps-services-list-sms-del' }"
               >
                 <span class="text-nowrap"
-                ><feather-icon icon="Trash2Icon"
+                  ><feather-icon icon="Trash2Icon"
                 /></span>
               </b-button>
             </div>
@@ -75,104 +75,110 @@
         :sort-desc.sync="isSortDirDesc"
         hover
       >
-
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
         <template #head(selected)="scope">
           <b-form-checkbox
-                  class="float-left"
-                  id="cupdateheckbox-1"
-                  name="checkbox-1"
-                  :checked="all"
-                  @change="chooseAll()"
+            class="float-left"
+            id="cupdateheckbox-1"
+            name="checkbox-1"
+            :checked="all"
+            @change="chooseAll()"
           >
           </b-form-checkbox>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteManyServices"><feather-icon icon="TrashIcon" /></span>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="restoreManyServices"><feather-icon icon="RotateCwIcon" /></span>
-
+          <span
+            class="ml-2 cursor-pointer"
+            v-if="selected.length > 0 || all"
+            @click="deleteManyServices"
+            ><feather-icon icon="TrashIcon"
+          /></span>
+          <span
+            class="ml-2 cursor-pointer"
+            v-if="selected.length > 0 || all"
+            @click="restoreManyServices"
+            ><feather-icon icon="RotateCwIcon"
+          /></span>
         </template>
 
         <!-- Column: Delete -->
         <template #cell(selected)="data">
           <b-form-checkbox
-                  :id="data.item._id"
-                  :checked="all"
-                  @change="chooseOne(data.item._id)"
+            :id="data.item._id"
+            :checked="all"
+            @change="chooseOne(data.item._id)"
           ></b-form-checkbox>
         </template>
 
         <!-- Column: Title -->
         <template #cell(titleServices)="row">
           <b-media @click="row.toggleDetails">
-            <b-link class="font-weight-bold d-block text-nowrap" >
+            <b-link class="font-weight-bold d-block text-nowrap">
               {{ row.value }}
             </b-link>
-            <small class="text-muted" v-if="row.item.idServices">@ISC{{ row.item.idServices }}</small>
+            <small class="text-muted" v-if="row.item.idServices"
+              >@ISC{{ row.item.idServices }}</small
+            >
           </b-media>
         </template>
 
         <template #row-details="row">
           <b-card>
             <b-row class="mb-2">
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
+              <b-col md="4" class="mb-1">
                 <strong>Created by : </strong>{{ row.item.details.createBy }}
               </b-col>
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
+              <b-col md="4" class="mb-1">
                 <strong>User phone : </strong>{{ row.item.telephoneCustomer }}
               </b-col>
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
+              <b-col md="4" class="mb-1">
                 <strong>User email : </strong>{{ row.item.mailCustomer }}
               </b-col>
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
+              <b-col md="4" class="mb-1">
                 <strong>Shop : </strong>
                 <span v-for="item in row.item.listShop">
                   <span :key="item.value">{{ item.title }},</span>
                 </span>
               </b-col>
               <b-col
-                      v-if="!row.item.discount.reduction.money"
-                      md="4"
-                      class="mb-1"
+                v-if="!row.item.discount.reduction.money"
+                md="4"
+                class="mb-1"
               >
-                <strong>Percent : </strong>{{ row.item.discount.PercentAMaximum.percent }}%
+                <strong>Percent : </strong
+                >{{ row.item.discount.PercentAMaximum.percent }}%
               </b-col>
               <b-col
-                      v-if="!row.item.discount.reduction.money"
-                      md="4"
-                      class="mb-1"
+                v-if="!row.item.discount.reduction.money"
+                md="4"
+                class="mb-1"
               >
-                <strong >Maximum money : </strong>{{ row.item.discount.PercentAMaximum.maximumMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) }}
+                <strong>Maximum money : </strong
+                >{{
+                  row.item.discount.PercentAMaximum.maximumMoney.toLocaleString(
+                    "it-IT",
+                    { style: "currency", currency: "VND" }
+                  )
+                }}
+              </b-col>
+
+              <b-col md="4" class="mb-1">
+                <strong>Created at : </strong
+                >{{ convertDate(row.item.details.time) }}
               </b-col>
 
               <b-col
-                      md="4"
-                      class="mb-1"
+                v-if="row.item.discount.reduction.money"
+                md="4"
+                class="mb-1"
               >
-                <strong>Created at : </strong>{{ convertDate(row.item.details.time) }}
+                <strong>Money : </strong
+                >{{
+                  row.item.discount.reduction.money.toLocaleString("it-IT", {
+                    style: "currency",
+                    currency: "VND",
+                  })
+                }}
               </b-col>
-
-              <b-col
-                      v-if="row.item.discount.reduction.money"
-                      md="4"
-                      class="mb-1"
-              >
-                <strong>Money : </strong>{{ row.item.discount.reduction.money.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) }}
-              </b-col>
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
+              <b-col md="4" class="mb-1">
                 <b-row>
                   <b-col md="3"><strong>Content : </strong></b-col>
                   <b-col md="9"><span v-html="row.item.content"></span></b-col>
@@ -181,7 +187,6 @@
             </b-row>
           </b-card>
         </template>
-
 
         <!-- Column: Receiver -->
         <template #cell(receiver)="data">
@@ -195,12 +200,17 @@
 
         <!-- Column: Type -->
         <template #cell(type)="data">
-          <b-badge :variant="resolveServiceTypeVariant(data.value)">{{ checkType(data.value) }}</b-badge>
+          <b-badge
+            :variant="`light-${resolveServiceTypeVariant(data.value)}`"
+            >{{ checkType(data.value) }}</b-badge
+          >
         </template>
 
         <!-- Column: Status -->
         <template #cell(statusSend)="data">
-          <b-badge :variant="resolveStatusTypeVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge :variant="`light-${resolveStatusTypeVariant(data.value)}`">{{
+            checkStatus(data.value)
+          }}</b-badge>
         </template>
 
         <!-- Column: birthDate -->
@@ -222,15 +232,15 @@
                 class="align-middle text-body"
               />
             </template>
-<!--            <b-dropdown-item-->
-<!--              :to="{-->
-<!--                name: 'apps-services-view-sms',-->
-<!--                params: { id: data.item._id },-->
-<!--              }"-->
-<!--            >-->
-<!--              <feather-icon icon="FileTextIcon" />-->
-<!--              <span class="align-middle ml-50">Details</span>-->
-<!--            </b-dropdown-item>-->
+            <!--            <b-dropdown-item-->
+            <!--              :to="{-->
+            <!--                name: 'apps-services-view-sms',-->
+            <!--                params: { id: data.item._id },-->
+            <!--              }"-->
+            <!--            >-->
+            <!--              <feather-icon icon="FileTextIcon" />-->
+            <!--              <span class="align-middle ml-50">Details</span>-->
+            <!--            </b-dropdown-item>-->
 
             <b-dropdown-item
               :to="{
@@ -242,9 +252,7 @@
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
 
-            <b-dropdown-item
-              @click="deleteService(data.item._id)"
-            >
+            <b-dropdown-item @click="deleteService(data.item._id)">
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>
@@ -346,34 +354,34 @@ export default {
     Ripple,
   },
   setup() {
-    const SERVICES_APP_STORE_MODULE_NAME = "app-services-sms"
+    const SERVICES_APP_STORE_MODULE_NAME = "app-services-sms";
 
     // Register module
     if (!store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule)
+      store.registerModule(SERVICES_APP_STORE_MODULE_NAME, servicesStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(SERVICES_APP_STORE_MODULE_NAME))
-        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME)
-    })
+        store.unregisterModule(SERVICES_APP_STORE_MODULE_NAME);
+    });
 
     const typeOptions = [
-      { label: 'Choose a type', value: null },
-      { label: 'SMS', value: 0 },
-      { label: 'Mail', value: 1 },
-      { label: 'SMS & Mail', value: 2 },
-    ]
+      { label: "Choose a type", value: null },
+      { label: "SMS", value: 0 },
+      { label: "Mail", value: 1 },
+      { label: "SMS & Mail", value: 2 },
+    ];
 
     const statusOptions = [
-      { label: 'Choose a status', value: null },
-      { label: 'Pending', value: 0 },
-      { label: 'Sended', value: 1 },
-    ]
+      { label: "Choose a status", value: null },
+      { label: "Pending", value: 0 },
+      { label: "Sended", value: 1 },
+    ];
 
     const convertDate = (date) => {
-      return moment.unix(date/1000).format('DD-MM-YYYY hh:mm')
-    }
+      return moment.unix(date / 1000).format("DD-MM-YYYY hh:mm");
+    };
 
     const {
       one,

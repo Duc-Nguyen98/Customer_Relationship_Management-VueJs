@@ -202,12 +202,12 @@
 
         <!-- Column: Type -->
         <template #cell(typeServices)="data">
-          <b-badge :variant="resolveServiceTypeVariant(data.value)">{{ checkType(data.value) }}</b-badge>
+          <b-badge :variant="`light-${resolveServiceTypeVariant(data.value)}`">{{ checkType(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Status -->
         <template #cell(statusSend)="data">
-          <b-badge :variant="resolveStatusTypeVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge :variant="`light-${resolveStatusTypeVariant(data.value)}`">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
         <!-- Column: birthDate -->
