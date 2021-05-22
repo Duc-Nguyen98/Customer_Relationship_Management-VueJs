@@ -31,6 +31,8 @@ export default [
     {
         title: 'MG-Customers',
         icon: 'UsersIcon',
+        tag: 'B',
+        tagVariant: 'light-warning',
         children: [
             {
                 title: 'G-Customer List',

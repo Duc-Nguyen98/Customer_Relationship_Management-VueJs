@@ -119,7 +119,7 @@ export default [
   {
     path: '/apps/chat',
     name: 'apps-chat',
-    component: () => import('@/views/apps/chat/Chat.vue'),
+    component: () => import('@/views/pages/miscellaneous/ComingSoon.vue'),
     meta: {
       contentRenderer: 'sidebar-left',
       contentClass: 'chat-application',

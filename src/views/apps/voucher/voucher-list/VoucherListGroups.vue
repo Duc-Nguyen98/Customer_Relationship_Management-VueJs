@@ -1,6 +1,6 @@
 <template>
   <div>
-<!--     Filters-->
+    <!--     Filters-->
     <voucher-list-filters
       :status.sync="status"
       :status-options="statusOptions"
@@ -32,21 +32,21 @@
           <b-col cols="12" md="9">
             <div class="d-flex align-items-center justify-content-end">
               <b-form-input
-                      v-model="searchQuery"
-                      class="d-inline-block mr-1"
-                      placeholder="Search..."
+                v-model="searchQuery"
+                class="d-inline-block mr-1"
+                placeholder="Search..."
               />
 
               <!--              Start add voucher -->
 
               <b-button
-                      class="mr-1"
-                      variant="primary"
-                      :to="{name: 'apps-group-voucher-add'}"
+                class="mr-1"
+                variant="primary"
+                :to="{ name: 'apps-group-voucher-add' }"
               >
                 <span class="text-nowrap"
-                ><feather-icon icon="PlusCircleIcon"
-                /> Group voucher</span>
+                  ><feather-icon icon="PlusCircleIcon" /> Group voucher</span
+                >
               </b-button>
             </div>
           </b-col>
@@ -67,40 +67,44 @@
         :busy="isBusy"
         hover
       >
-
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
         <template #head(selected)="scope">
           <div class="d-flex justify-center">
             <b-form-checkbox
-                    class="float-left"
-                    id="cupdateheckbox-1"
-                    name="checkbox-1"
-                    :checked="all"
-                    @change="chooseAll()"
+              class="float-left"
+              id="cupdateheckbox-1"
+              name="checkbox-1"
+              :checked="all"
+              @change="chooseAll()"
             >
             </b-form-checkbox>
-            <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftManyGroups"><feather-icon icon="TrashIcon" /></span>
+            <span
+              class="ml-2 cursor-pointer"
+              v-if="selected.length > 0 || all"
+              @click="deleteSoftManyGroups"
+              ><feather-icon icon="TrashIcon"
+            /></span>
           </div>
         </template>
 
         <!-- Column: Delete -->
         <template #cell(selected)="data">
           <b-form-checkbox
-                  :id="data.item._id"
-                  :key="data.item._id"
-                  :checked="selected.length > 0 && all"
-                  @change="chooseOne(data.item.idGroupVoucher)"
+            :id="data.item._id"
+            :key="data.item._id"
+            :checked="selected.length > 0 && all"
+            @change="chooseOne(data.item.idGroupVoucher)"
           ></b-form-checkbox>
         </template>
 
         <!-- Column: Title -->
         <template #cell(title)="data">
           <b-link
-                  :to="{
-                name: 'apps-group-voucher-edit',
-                params: { id: data.item._id },
-              }"
-                  class="font-weight-bold d-block text-nowrap"
+            :to="{
+              name: 'apps-group-voucher-edit',
+              params: { id: data.item._id },
+            }"
+            class="font-weight-bold d-block text-nowrap"
           >
             {{ data.value }}
           </b-link>
@@ -109,10 +113,10 @@
 
         <!-- Column: Note -->
         <template #cell(note)="data">
-         <span v-html="data.value"></span>
+          <span v-html="data.value"></span>
         </template>
 
-          <!-- Column: Created at -->
+        <!-- Column: Created at -->
         <template #cell(created_at)="data">
           {{ convertDate(data.item.created.time) }}
         </template>
@@ -121,18 +125,24 @@
         <template #cell(created_by)="data">
           <div class="text-nowrap">
             <feather-icon
-                    :icon="resolveUserRoleIcon(data.item.created.createBy)"
-                    size="18"
-                    class="mr-50"
-                    :class="`text-${resolveUserRoleVariant(data.item.created.createBy)}`"
+              :icon="resolveUserRoleIcon(data.item.created.createBy)"
+              size="18"
+              class="mr-50"
+              :class="`text-${resolveUserRoleVariant(
+                data.item.created.createBy
+              )}`"
             />
-            <span class="align-text-top text-capitalize">{{ data.item.created.createBy }}</span>
+            <span class="align-text-top text-capitalize">{{
+              data.item.created.createBy
+            }}</span>
           </div>
         </template>
 
         <!-- Column: Status -->
         <template #cell(status)="data">
-          <b-badge :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge :variant="`light-${resolveUserStatusVariant(data.value)}`">{{
+            checkStatus(data.value)
+          }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -150,7 +160,12 @@
               />
             </template>
             <b-dropdown-item
-                    v-if="canViewVerticalNavMenuLink({action: 'update', subject: 'groupVoucher'})"
+              v-if="
+                canViewVerticalNavMenuLink({
+                  action: 'update',
+                  subject: 'groupVoucher',
+                })
+              "
               :to="{
                 name: 'apps-group-voucher-edit',
                 params: { id: data.item._id },
@@ -161,7 +176,12 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-                    v-if="canViewVerticalNavMenuLink({action: 'delete', subject: 'groupVoucher'})"
+              v-if="
+                canViewVerticalNavMenuLink({
+                  action: 'delete',
+                  subject: 'groupVoucher',
+                })
+              "
               @click="deleteVoucherSoft(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
@@ -215,21 +235,22 @@
 </template>
 
 <script>
-  import {
-    BCard,
-    BRow,
-    BCol,
-    BFormInput,
-    BButton,
-    BTable,
-    BMedia,
-    BAvatar,
-    BLink,
-    BBadge,
-    BDropdown,
-    BDropdownItem,
-    BPagination, BFormCheckbox,
-  } from "bootstrap-vue";
+import {
+  BCard,
+  BRow,
+  BCol,
+  BFormInput,
+  BButton,
+  BTable,
+  BMedia,
+  BAvatar,
+  BLink,
+  BBadge,
+  BDropdown,
+  BDropdownItem,
+  BPagination,
+  BFormCheckbox,
+} from "bootstrap-vue";
 import vSelect from "vue-select";
 import store from "@/store";
 import { ref, onUnmounted } from "@vue/composition-api";
@@ -243,7 +264,7 @@ import voucherStoreModule from "../voucherStoreModule";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
-import {useUtils as useAclUtils} from "@core/libs/acl";
+import { useUtils as useAclUtils } from "@core/libs/acl";
 
 export default {
   components: {
@@ -310,16 +331,16 @@ export default {
       deleteVoucherSoft,
       deleteSoftManyGroups,
       checkStatus,
-        checkClassified,
+      checkClassified,
 
       // UI
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
-       resolveUserClassifiedVariant,
+      resolveUserClassifiedVariant,
 
       // Extra Filters
-        classified,
+      classified,
       status,
       isBusy,
       one,

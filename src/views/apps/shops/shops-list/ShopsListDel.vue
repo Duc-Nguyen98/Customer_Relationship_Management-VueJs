@@ -34,27 +34,27 @@
           <b-col cols="12" md="6">
             <div class="d-flex align-items-center justify-content-end">
               <b-form-input
-                      v-model="searchQuery"
-                      class="d-inline-block mr-1"
-                      placeholder="Search..."
+                v-model="searchQuery"
+                class="d-inline-block mr-1"
+                placeholder="Search..."
               />
               <b-button
-                      class="mr-1"
-                      variant="primary"
-                      :to="{ name: 'apps-users-add' }"
+                class="mr-1"
+                variant="primary"
+                :to="{ name: 'apps-users-add' }"
               >
                 <span class="text-nowrap"
-                ><feather-icon icon="PlusCircleIcon"
+                  ><feather-icon icon="PlusCircleIcon"
                 /></span>
               </b-button>
 
               <b-button
-                      class="mr-1"
-                      variant="primary"
-                      :to="{ name: 'apps-customers-add' }"
+                class="mr-1"
+                variant="primary"
+                :to="{ name: 'apps-customers-add' }"
               >
                 <span class="text-nowrap"
-                ><feather-icon icon="Trash2Icon"
+                  ><feather-icon icon="Trash2Icon"
                 /></span>
               </b-button>
             </div>
@@ -76,29 +76,38 @@
         :busy="isBusy"
         hover
       >
-
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
         <template #head(selected)="scope">
           <b-form-checkbox
-                  class="float-left"
-                  id="cupdateheckbox-1"
-                  name="checkbox-1"
-                  :checked="all"
-                  :key="'cupdateheckbox'"
-                  @change="chooseAll()"
+            class="float-left"
+            id="cupdateheckbox-1"
+            name="checkbox-1"
+            :checked="all"
+            :key="'cupdateheckbox'"
+            @change="chooseAll()"
           >
           </b-form-checkbox>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteManyShop"><feather-icon icon="TrashIcon" /></span>
-          <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="restoreManyShop"><feather-icon icon="RotateCwIcon" /></span>
+          <span
+            class="ml-2 cursor-pointer"
+            v-if="selected.length > 0 || all"
+            @click="deleteManyShop"
+            ><feather-icon icon="TrashIcon"
+          /></span>
+          <span
+            class="ml-2 cursor-pointer"
+            v-if="selected.length > 0 || all"
+            @click="restoreManyShop"
+            ><feather-icon icon="RotateCwIcon"
+          /></span>
         </template>
 
         <!-- Column: Delete -->
         <template #cell(selected)="data">
           <b-form-checkbox
-                  :id="data.item._id"
-                  :key="data.item._id"
-                  :checked="selected.length > 0 && all"
-                  @change="chooseOne(data.item._id)"
+            :id="data.item._id"
+            :key="data.item._id"
+            :checked="selected.length > 0 && all"
+            @change="chooseOne(data.item._id)"
           ></b-form-checkbox>
         </template>
 
@@ -107,19 +116,17 @@
           <b-media vertical-align="center" @click="row.toggleDetails">
             <template #aside>
               <b-avatar
-                      size="32"
-                      :src="api + row.item.avatar"
-                      :text="avatarText(row.item.name)"
-                      variant="light-primary"
-                      :to="{
+                size="32"
+                :src="api + row.item.avatar"
+                :text="avatarText(row.item.name)"
+                variant="light-primary"
+                :to="{
                   name: 'apps-shops-edit',
                   params: { id: row.item._id },
                 }"
               />
             </template>
-            <b-link
-                    class="font-weight-bold d-block text-nowrap"
-            >
+            <b-link class="font-weight-bold d-block text-nowrap">
               {{ row.item.name }}
             </b-link>
             <small class="text-muted">@SA{{ row.item.idShop }}</small>
@@ -129,40 +136,24 @@
         <template #row-details="row">
           <b-card>
             <b-row class="mb-2">
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
-                <strong>Created by  : </strong>{{ row.item.created.createBy }}
+              <b-col md="4" class="mb-1">
+                <strong>Created by : </strong>{{ row.item.created.createBy }}
               </b-col>
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
+              <b-col md="4" class="mb-1">
                 <strong>Address : </strong>{{ row.item.address }}
               </b-col>
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
-                <strong>Created at : </strong>{{ convertDate(row.item.created.time) }}
+              <b-col md="4" class="mb-1">
+                <strong>Created at : </strong
+                >{{ convertDate(row.item.created.time) }}
               </b-col>
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
-                <strong>Fanpage : </strong><a :href="row.item.fanpage">{{ row.item.fanpage }}</a>
+              <b-col md="4" class="mb-1">
+                <strong>Fanpage : </strong
+                ><a :href="row.item.fanpage">{{ row.item.fanpage }}</a>
               </b-col>
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
+              <b-col md="4" class="mb-1">
                 <strong>Fax : </strong>{{ row.item.fax }}
               </b-col>
-              <b-col
-                      md="4"
-                      class="mb-1"
-              >
+              <b-col md="4" class="mb-1">
                 <strong>Note : </strong>{{ row.item.note }}
               </b-col>
             </b-row>
@@ -171,12 +162,16 @@
 
         <!-- Column: Status -->
         <template #cell(status)="data">
-          <b-badge :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge :variant="`light-${resolveUserStatusVariant(data.value)}`">{{
+            checkStatus(data.value)
+          }}</b-badge>
         </template>
 
         <!-- Column: Region -->
         <template #cell(region)="data">
-          <b-badge :variant="pillRegion(data.value)">{{ checkRegion(data.value) }}</b-badge>
+          <b-badge :variant="`light-${pillRegion(data.value)}`">{{
+            checkRegion(data.value)
+          }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -194,20 +189,15 @@
               />
             </template>
 
-            <b-dropdown-item
-                    @click="restoreShop(data.item._id)"
-            >
+            <b-dropdown-item @click="restoreShop(data.item._id)">
               <feather-icon icon="RotateCwIcon" />
               <span class="align-middle ml-50">Restore</span>
             </b-dropdown-item>
 
-            <b-dropdown-item
-              @click="deleteShop(data.item._id)"
-            >
+            <b-dropdown-item @click="deleteShop(data.item._id)">
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>
-
           </b-dropdown>
         </template>
       </b-table>
@@ -256,34 +246,35 @@
 </template>
 
 <script>
-  import {
-    BCard,
-    BRow,
-    BCol,
-    BFormInput,
-    BButton,
-    BTable,
-    BMedia,
-    BAvatar,
-    BLink,
-    BBadge,
-    BDropdown,
-    BDropdownItem,
-    BPagination, BFormCheckbox,
-  } from 'bootstrap-vue'
-import vSelect from 'vue-select'
-import store from '@/store'
-import { ref, onUnmounted } from '@vue/composition-api'
-import { avatarText } from '@core/utils/filter'
-import ShopsListFilters from './ShopsListFilters.vue'
-import useShopsListDel from './useShopsListDel'
-import shopStoreModule from '../shopStoreModule'
-import Ripple from 'vue-ripple-directive'
-import moment from 'moment'
+import {
+  BCard,
+  BRow,
+  BCol,
+  BFormInput,
+  BButton,
+  BTable,
+  BMedia,
+  BAvatar,
+  BLink,
+  BBadge,
+  BDropdown,
+  BDropdownItem,
+  BPagination,
+  BFormCheckbox,
+} from "bootstrap-vue";
+import vSelect from "vue-select";
+import store from "@/store";
+import { ref, onUnmounted } from "@vue/composition-api";
+import { avatarText } from "@core/utils/filter";
+import ShopsListFilters from "./ShopsListFilters.vue";
+import useShopsListDel from "./useShopsListDel";
+import shopStoreModule from "../shopStoreModule";
+import Ripple from "vue-ripple-directive";
+import moment from "moment";
 
 // Notification
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
-import { useToast } from 'vue-toastification/composition'
+import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+import { useToast } from "vue-toastification/composition";
 
 export default {
   components: {
@@ -309,39 +300,37 @@ export default {
     Ripple,
   },
   setup() {
+    const toast = useToast();
 
-    const toast = useToast()
-
-    const api = process.env.VUE_APP_ROOT_API
-    const USER_APP_STORE_MODULE_NAME = 'app-shops'
+    const api = process.env.VUE_APP_ROOT_API;
+    const USER_APP_STORE_MODULE_NAME = "app-shops";
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
-      store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule)
+      store.registerModule(USER_APP_STORE_MODULE_NAME, shopStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME))
-        store.unregisterModule(USER_APP_STORE_MODULE_NAME)
-    })
-
+        store.unregisterModule(USER_APP_STORE_MODULE_NAME);
+    });
 
     const regionOptions = [
-      { label: 'Choose a region', value: null },
-      { label: 'TP.Ha Noi', value: 0 },
-      { label: 'TP.Ho Chi Minh', value: 1 },
-    ]
+      { label: "Choose a region", value: null },
+      { label: "TP.Ha Noi", value: 0 },
+      { label: "TP.Ho Chi Minh", value: 1 },
+    ];
 
     const pillRegion = (region) => {
       switch (region) {
         case 0:
-          return 'primary'
+          return "primary";
           break;
         case 1:
-          return 'success'
+          return "success";
           break;
       }
-    }
+    };
 
     const statusOptions = [
       { label: "Choose a status", value: null },

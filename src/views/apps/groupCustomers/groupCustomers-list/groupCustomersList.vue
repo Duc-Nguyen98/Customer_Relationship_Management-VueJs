@@ -130,7 +130,7 @@
 
         <!-- Column: Status -->
         <template #cell(status)="data">
-          <b-badge :variant="resolveUserStatusVariant(data.value)">{{ checkStatus(data.value) }}</b-badge>
+          <b-badge :variant="`light-${resolveUserStatusVariant(data.value)}`">{{ checkStatus(data.value) }}</b-badge>
         </template>
 
         <!-- Column: Star -->

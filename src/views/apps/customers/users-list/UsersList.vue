@@ -34,40 +34,23 @@
           <b-col cols="12" md="6">
             <div class="d-flex align-items-center justify-content-end">
               <b-form-input
-                      v-model="searchQuery"
-                      class="d-inline-block mr-1"
-                      placeholder="Search..."
+                v-model="searchQuery"
+                class="d-inline-block mr-1"
+                placeholder="Search..."
               />
               <b-button
-                      class="mr-1"
-                      variant="primary"
-                      :to="{ name: 'apps-customers-add' }"
+                class="mr-1"
+                variant="primary"
+                :to="{ name: 'apps-customers-add' }"
               >
                 <span class="text-nowrap"
-                ><feather-icon icon="PlusCircleIcon"
+                  ><feather-icon icon="PlusCircleIcon"
                 /></span>
               </b-button>
-              <b-dropdown
-                      id="dropdown-grouped"
-                      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                      variant="primary"
-                      class="dropdown-icon-wrapper mr-1"
-              >
-                <template #button-content>
-                  <feather-icon
-                          icon="DownloadIcon"
-                          size="14"
-                  />
-                </template>
-                <b-dropdown-item>Export PDF</b-dropdown-item>
-                <b-dropdown-item>Export Excel</b-dropdown-item>
-              </b-dropdown>
-              <b-button
-                      variant="primary"
-                      :to="{ name: 'apps-customers-add' }"
-              >
+
+              <b-button variant="primary" :to="{ name: 'apps-customers-add' }">
                 <span class="text-nowrap"
-                ><feather-icon icon="Trash2Icon"
+                  ><feather-icon icon="Trash2Icon"
                 /></span>
               </b-button>
             </div>
@@ -89,30 +72,34 @@
         :sort-desc.sync="isSortDirDesc"
         :busy="isBusy"
       >
-
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
         <template #head(selected)="scope">
           <div class="d-flex justify-center">
             <b-form-checkbox
-                    class="float-left"
-                    id="cupdateheckbox-1"
-                    :key="'cupdateheckbox'"
-                    name="checkbox-1"
-                    :checked="all"
-                    @change="chooseAll()"
+              class="float-left"
+              id="cupdateheckbox-1"
+              :key="'cupdateheckbox'"
+              name="checkbox-1"
+              :checked="all"
+              @change="chooseAll()"
             >
             </b-form-checkbox>
-            <span class="ml-2 cursor-pointer" v-if="selected.length > 0 || all" @click="deleteSoftManyCustomer"><feather-icon icon="TrashIcon" /></span>
+            <span
+              class="ml-2 cursor-pointer"
+              v-if="selected.length > 0 || all"
+              @click="deleteSoftManyCustomer"
+              ><feather-icon icon="TrashIcon"
+            /></span>
           </div>
         </template>
 
         <!-- Column: Delete -->
         <template #cell(selected)="data">
           <b-form-checkbox
-                  :id="data.item._id"
-                  :key="data.item._id"
-                  :checked="selected.length > 0 && all"
-                  @change="chooseOne(data.item.idCustomer)"
+            :id="data.item._id"
+            :key="data.item._id"
+            :checked="selected.length > 0 && all"
+            @change="chooseOne(data.item.idCustomer)"
           ></b-form-checkbox>
         </template>
 
@@ -151,12 +138,14 @@
 
         <!-- Column: Gender -->
         <template #cell(gender)="data">
-          {{ data.value == 0 ? 'Male' : 'Female' }}
+          {{ data.value == 0 ? "Male" : "Female" }}
         </template>
 
         <!-- Column: Groups -->
         <template #cell(groups)="data">
-          <b-badge :variant="pillGroups(data.value)">{{ checkGroup(data.value) }}</b-badge>
+          <b-badge :variant="pillGroups(data.value)">{{
+            checkGroup(data.value)
+          }}</b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -173,18 +162,23 @@
                 class="align-middle text-body"
               />
             </template>
-<!--            <b-dropdown-item-->
-<!--              :to="{-->
-<!--                name: 'apps-customers-view',-->
-<!--                params: { id: data.item._id },-->
-<!--              }"-->
-<!--            >-->
-<!--              <feather-icon icon="FileTextIcon" />-->
-<!--              <span class="align-middle ml-50">Details</span>-->
-<!--            </b-dropdown-item>-->
+            <!--            <b-dropdown-item-->
+            <!--              :to="{-->
+            <!--                name: 'apps-customers-view',-->
+            <!--                params: { id: data.item._id },-->
+            <!--              }"-->
+            <!--            >-->
+            <!--              <feather-icon icon="FileTextIcon" />-->
+            <!--              <span class="align-middle ml-50">Details</span>-->
+            <!--            </b-dropdown-item>-->
 
             <b-dropdown-item
-                    v-if="canViewVerticalNavMenuLink({action: 'update', subject: 'customers'})"
+              v-if="
+                canViewVerticalNavMenuLink({
+                  action: 'update',
+                  subject: 'customers',
+                })
+              "
               :to="{
                 name: 'apps-customers-edit',
                 params: { id: data.item._id },
@@ -195,7 +189,12 @@
             </b-dropdown-item>
 
             <b-dropdown-item
-                    v-if="canViewVerticalNavMenuLink({action: 'delete', subject: 'customers'})"
+              v-if="
+                canViewVerticalNavMenuLink({
+                  action: 'delete',
+                  subject: 'customers',
+                })
+              "
               @click="deleteUser(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
@@ -249,31 +248,32 @@
 </template>
 
 <script>
-  import { useUtils as useAclUtils } from '@core/libs/acl'
-  import {
-    BCard,
-    BRow,
-    BCol,
-    BFormInput,
-    BButton,
-    BTable,
-    BMedia,
-    BAvatar,
-    BLink,
-    BBadge,
-    BDropdown,
-    BDropdownItem,
-    BPagination, BFormCheckbox,
-  } from 'bootstrap-vue'
-import vSelect from 'vue-select'
-import store from '@/store'
-import { ref, onUnmounted } from '@vue/composition-api'
-import { avatarText } from '@core/utils/filter'
-import UsersListFilters from './UsersListFilters.vue'
-import useUsersList  from './useUsersList'
-import userStoreModule from '../userStoreModule'
-import Ripple from 'vue-ripple-directive'
-import moment from 'moment'
+import { useUtils as useAclUtils } from "@core/libs/acl";
+import {
+  BCard,
+  BRow,
+  BCol,
+  BFormInput,
+  BButton,
+  BTable,
+  BMedia,
+  BAvatar,
+  BLink,
+  BBadge,
+  BDropdown,
+  BDropdownItem,
+  BPagination,
+  BFormCheckbox,
+} from "bootstrap-vue";
+import vSelect from "vue-select";
+import store from "@/store";
+import { ref, onUnmounted } from "@vue/composition-api";
+import { avatarText } from "@core/utils/filter";
+import UsersListFilters from "./UsersListFilters.vue";
+import useUsersList from "./useUsersList";
+import userStoreModule from "../userStoreModule";
+import Ripple from "vue-ripple-directive";
+import moment from "moment";
 import i18n from "@/libs/i18n";
 
 export default {
@@ -299,7 +299,6 @@ export default {
     Ripple,
   },
   setup() {
-
     const api = process.env.VUE_APP_ROOT_API;
     const USER_APP_STORE_MODULE_NAME = "app-customers";
     const { canViewVerticalNavMenuLink } = useAclUtils();
@@ -324,13 +323,13 @@ export default {
     const pillGroups = (group) => {
       switch (group) {
         case 0:
-          return 'light-primary';
+          return "light-primary";
           break;
         case 1:
-          return 'light-success';
+          return "light-success";
           break;
         case 2:
-          return 'light-info';
+          return "light-info";
           break;
       }
     };
