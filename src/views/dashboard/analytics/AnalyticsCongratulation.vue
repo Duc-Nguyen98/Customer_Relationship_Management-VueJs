@@ -26,10 +26,13 @@
       />
     </b-avatar>
     <h1 class="mb-1 mt-50 text-white">
-      Congratulations {{ data.name }},
+      Hello {{ data.name }},
     </h1>
     <b-card-text class="m-auto w-75">
-      You have done <strong>{{ data.saleToday }}%</strong> more sales today. Check your new badge in your profile.
+      So far you have give and sell Voucher for {{ data.gratitudeCustomer }} Gratitude Customer on the system and have earned
+      {{ data.earned.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) }}.
+      Come on dude, ANT-CVV recognizes your efforts and dedication!
+<!--      You have done <strong>{{ data.saleToday }}%</strong> more sales today. Check your new badge in your profile.-->
     </b-card-text>
   </b-card>
 </template>

@@ -11,7 +11,7 @@ export default [
   {
     path: '/dashboard/others',
     name: 'dashboard-others',
-    component: () => import('@/views/pages/miscellaneous/ComingSoon.vue'),
+    component: () => import('@/views/dashboard/ecommerce/Ecommerce.vue'),
     meta: {
       resource: 'Dashboard',
       action: 'read',

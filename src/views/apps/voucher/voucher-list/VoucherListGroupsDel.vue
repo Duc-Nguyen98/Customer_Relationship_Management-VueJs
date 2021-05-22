@@ -103,6 +103,11 @@
         </template>
 
         <!-- Column: Created at -->
+        <template #cell(created_at)="data">
+          {{ convertDate(data.item.created.time) }}
+        </template>
+
+        <!-- Column: Created by -->
         <template #cell(created_by)="data">
           <div class="text-nowrap">
             <feather-icon

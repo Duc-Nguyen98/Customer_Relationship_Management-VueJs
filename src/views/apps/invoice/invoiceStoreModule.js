@@ -1,5 +1,9 @@
 import axios from '@axios'
 
+const config = {
+  headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
+};
+
 export default {
   namespaced: true,
   state: {},
@@ -9,7 +13,7 @@ export default {
     fetchInvoices(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-          .get('/apps/invoice/invoices', { params: queryParams })
+          .get(process.env.VUE_APP_ROOT_API +'home/tableServices', { params: queryParams }, config)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

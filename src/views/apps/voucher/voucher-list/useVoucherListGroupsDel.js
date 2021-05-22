@@ -19,7 +19,7 @@ export default function useVoucherListGroupsDel() {
     { key: 'title', label: 'Name Group', formatter: title, sortable: true },
     { key: 'note', label: 'Note', sortable: true },
     { key: 'status', label: 'Status Voucher', sortable: true },
-    { key: 'created_date', label: 'Created At', sortable: true },
+    { key: 'created_at', label: 'Created At', sortable: true },
     { key: 'created_by', label: 'Created By', sortable: true },
     { key: 'actions' },
   ]

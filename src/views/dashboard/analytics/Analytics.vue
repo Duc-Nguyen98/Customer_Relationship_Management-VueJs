@@ -5,18 +5,21 @@
         lg="6"
         md="12"
       >
-        <analytics-congratulation :data="data.congratulations" />
+        <analytics-congratulation :data="data.userInformation" />
       </b-col>
       <b-col
         lg="3"
         sm="6"
       >
         <statistic-card-with-area-chart
-          v-if="data.subscribersGained"
+          v-if="data.customerData"
           icon="UsersIcon"
-          :statistic="kFormatter(data.subscribersGained.analyticsData.subscribers)"
-          statistic-title="Subscribers Gained"
-          :chart-data="data.subscribersGained.series"
+          title="Statistic Customers"
+          :statistic="kFormatter(data.customerData.totalCustomers)"
+          statistic-title="Totals Customer"
+          :statistic2="kFormatter(data.customerData.customersPerMonth)"
+          statistic2-title="Customers Per Month"
+          :chart-data="data.customerData.chartData"
         />
       </b-col>
       <b-col
@@ -24,34 +27,40 @@
         sm="6"
       >
         <statistic-card-with-area-chart
-          v-if="data.ordersRecevied"
+          v-if="data.gratitudeCustomerData"
           icon="PackageIcon"
           color="warning"
-          :statistic="kFormatter(data.ordersRecevied.analyticsData.orders)"
-          statistic-title="Orders Received"
-          :chart-data="data.ordersRecevied.series"
+          title="Gratitude Customer"
+          :statistic="kFormatter(data.gratitudeCustomerData.totalGratitude)"
+          statistic-title="Totals Gratitude"
+          :statistic2="kFormatter(data.gratitudeCustomerData.gratitudePerMonth)"
+          statistic2-title="Gratitude Per Month"
+          :chart-data="data.gratitudeCustomerData.chartData"
         />
       </b-col>
     </b-row>
 
+<!--    <b-row class="match-height">-->
+<!--      <b-col lg="6">-->
+<!--        <analytics-avg-sessions :data="data.avgSessions" />-->
+<!--      </b-col>-->
+<!--      <b-col lg="6">-->
+<!--        <analytics-support-tracker :data="data.supportTracker" />-->
+<!--      </b-col>-->
+<!--    </b-row>-->
+
     <b-row class="match-height">
       <b-col lg="6">
-        <analytics-avg-sessions :data="data.avgSessions" />
+        <analytics-sales-radar title="Sales Revenue Ranking" type="sale" @update="changeRank" :data="data.rankingRevenue" />
       </b-col>
       <b-col lg="6">
-        <analytics-support-tracker :data="data.supportTracker" />
+        <analytics-sales-radar title="Customer Gratitude Ranking" type="gra" @update="changeRank" :data="data.rankingGratitude" />
       </b-col>
     </b-row>
 
     <b-row class="match-height">
-      <b-col lg="4">
-        <analytics-timeline :data="data.timeline" />
-      </b-col>
-      <b-col lg="4">
-        <analytics-sales-radar-chart :data="data.salesChart" />
-      </b-col>
-      <b-col lg="4">
-        <analytics-app-design :data="data.appDesign" />
+      <b-col cols="12">
+        <ecommerce-statistics :data="data.statistics" />
       </b-col>
     </b-row>
 
@@ -65,7 +74,7 @@
 
 <script>
 import { BRow, BCol } from 'bootstrap-vue'
-
+import axios from 'axios'
 import StatisticCardWithAreaChart from '@core/components/statistics-cards/StatisticCardWithAreaChart.vue'
 import { kFormatter } from '@core/utils/filter'
 import InvoiceList from '@/views/apps/invoice/invoice-list/InvoiceList.vue'
@@ -73,8 +82,11 @@ import AnalyticsCongratulation from './AnalyticsCongratulation.vue'
 import AnalyticsAvgSessions from './AnalyticsAvgSessions.vue'
 import AnalyticsSupportTracker from './AnalyticsSupportTracker.vue'
 import AnalyticsTimeline from './AnalyticsTimeline.vue'
-import AnalyticsSalesRadarChart from './AnalyticsSalesRadarChart.vue'
+import AnalyticsSalesRadar from './AnalyticsSalesRadar.vue'
 import AnalyticsAppDesign from './AnalyticsAppDesign.vue'
+import EcommerceStatistics from '../ecommerce/EcommerceStatistics.vue'
+// Notification
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
@@ -85,22 +97,137 @@ export default {
     StatisticCardWithAreaChart,
     AnalyticsSupportTracker,
     AnalyticsTimeline,
-    AnalyticsSalesRadarChart,
+    AnalyticsSalesRadar,
     AnalyticsAppDesign,
     InvoiceList,
+    EcommerceStatistics,
   },
   data() {
     return {
-      data: {},
+      data: {
+        userInformation: {
+          name: "User",
+          gratitudeCustomer: 0,
+          earned: 0,
+        },
+        customerData: {
+          totalCustomers: 0,
+          customersPerMonth: 0,
+          chartData: [
+            {
+              name: 'customerData',
+              data: [28, 40, 36, 52, 38, 60, 55],
+            },
+          ],
+        },
+        gratitudeCustomerData: {
+          totalGratitude: 0,
+          gratitudePerMonth: 0,
+          chartData: [
+            {
+              name: 'gratitudeCustomerData',
+              data: [28, 40, 36, 52, 38, 60, 55],
+            },
+          ],
+        },
+        rankingGratitude: [],
+        rankingRevenue: [],
+        statistics: [],
+        tableServices: [],
+      },
+      config: {
+        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+      },
     }
   },
   created() {
     // data
-    this.$http.get('/analytics/data')
-      .then(response => { this.data = response.data })
+    Promise.all([this.getUser(), this.getDataCus(), this.getGraCus(), this.getRankGra(), this.getRankSale(), this.getStatistics()])
+            .then(values => {
+              this.data = {}
+               values.map(obj => {
+                 Object.assign(this.data, obj.data)
+               })
+              console.log(values)
+            })
+            .catch(error => {
+              console.log(error)
+              this.$toast({
+                component: ToastificationContent,
+                props: {
+                  title: error.response.data.message,
+                  icon: 'AlertTriangleIcon',
+                  variant: 'danger',
+                },
+              })
+            })
   },
   methods: {
+    async getUser() {
+      const response = await axios.get(`${process.env.VUE_APP_ROOT_API}home/userWelcome`, this.config)
+      return response.data
+    },
+    async getDataCus() {
+      const response = await axios.get(`${process.env.VUE_APP_ROOT_API}home/customerData`, this.config)
+      return response.data
+    },
+    async getGraCus() {
+      const response = await axios.get(`${process.env.VUE_APP_ROOT_API}home/gratitudeCustomerData`, this.config)
+      return response.data
+    },
+    async getRankGra(by) {
+      const response = await axios.get(`${process.env.VUE_APP_ROOT_API}home/rankingGratitude?by=${by??1}`, this.config)
+      return response.data
+    },
+    async getRankSale(by) {
+      const response = await axios.get(`${process.env.VUE_APP_ROOT_API}home/rankingRevenue?by=${by??1}`, this.config)
+      return response.data
+    },
+    async getStatistics() {
+      const response = await axios.get(`${process.env.VUE_APP_ROOT_API}home/statistics`, this.config)
+      response.data.data.statistics = [
+        {
+          icon: 'TagIcon',
+          color: 'light-primary',
+          title: response.data.data.statistics.vouchersTrade,
+          subtitle: 'Vouchers Trade',
+          customClass: 'mb-2 mb-xl-0',
+        },
+        {
+          icon: 'AwardIcon',
+          color: 'light-info',
+          title: response.data.data.statistics.vouchersGift,
+          subtitle: 'Vouchers Gift',
+          customClass: 'mb-2 mb-xl-0',
+        },
+        {
+          icon: 'LayersIcon',
+          color: 'light-danger',
+          title: response.data.data.statistics.totalVouchers,
+          subtitle: 'Total Vouchers',
+          customClass: 'mb-2 mb-xl-0',
+        },
+        {
+          icon: 'DollarSignIcon',
+          color: 'light-success',
+          title: response.data.data.statistics.revenue.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}),
+          subtitle: 'Revenue',
+          customClass: '',
+        },
+      ]
+      return response.data
+    },
     kFormatter,
+    async changeRank({by, type}) {
+        if (type == 'sale') {
+            const response = await this.getRankSale(by)
+            delete this.data.rankingRevenue
+            this.data = {...this.data, ...response.data}
+        } else {
+            const response = await this.getRankGra(by)
+          this.data = {...this.data, ...response.data}
+        }
+    },
   },
 }
 </script>

@@ -239,15 +239,12 @@
 <!--              <span class="align-middle ml-50">Details</span>-->
 <!--            </b-dropdown-item>-->
 
-<!--            <b-dropdown-item-->
-<!--              :to="{-->
-<!--                name: 'apps-services-view',-->
-<!--                params: { id: data.item._id },-->
-<!--              }"-->
-<!--            >-->
-<!--              <feather-icon icon="PlusCircleIcon" />-->
-<!--              <span class="align-middle ml-50">Detail</span>-->
-<!--            </b-dropdown-item>-->
+            <b-dropdown-item
+              v-if="canViewVerticalNavMenuLink({action: 'update', subject: 'services'}) && data.item.statusSend == 0"
+            >
+              <feather-icon icon="XCircleIcon" />
+              <span class="align-middle ml-50">Cancel</span>
+            </b-dropdown-item>
 
             <b-dropdown-item
               v-if="canViewVerticalNavMenuLink({action: 'delete', subject: 'services'})"

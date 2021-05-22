@@ -9,29 +9,6 @@
 
       <!-- Table Top -->
       <b-row>
-
-        <!-- Per Page -->
-        <b-col
-          cols="12"
-          md="6"
-          class="d-flex align-items-center justify-content-start mb-1 mb-md-0"
-        >
-          <label>Entries</label>
-          <v-select
-            v-model="perPage"
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :options="perPageOptions"
-            :clearable="false"
-            class="per-page-selector d-inline-block ml-50 mr-1"
-          />
-          <b-button
-            variant="primary"
-            :to="{ name: 'apps-invoice-add'}"
-          >
-            Add Record
-          </b-button>
-        </b-col>
-
         <!-- Search -->
         <b-col
           cols="12"
@@ -64,7 +41,7 @@
 
     <b-table
       ref="refInvoiceListTable"
-      :items="fetchInvoices"
+      :items="Services"
       responsive
       :fields="tableColumns"
       primary-key="id"
@@ -73,153 +50,123 @@
       empty-text="No matching records found"
       :sort-desc.sync="isSortDirDesc"
       class="position-relative"
+      :busy="isBusy"
     >
 
-      <template #head(invoiceStatus)>
-        <feather-icon
-          icon="TrendingUpIcon"
-          class="mx-auto"
-        />
-      </template>
-
-      <!-- Column: Id -->
-      <template #cell(id)="data">
-        <b-link
-          :to="{ name: 'apps-invoice-preview', params: { id: data.item.id }}"
-          class="font-weight-bold"
-        >
-          #{{ data.value }}
-        </b-link>
-      </template>
-
-      <!-- Column: Invoice Status -->
-      <template #cell(invoiceStatus)="data">
-        <b-avatar
-          :id="`invoice-row-${data.item.id}`"
-          size="32"
-          :variant="`light-${resolveInvoiceStatusVariantAndIcon(data.item.invoiceStatus).variant}`"
-        >
-          <feather-icon
-            :icon="resolveInvoiceStatusVariantAndIcon(data.item.invoiceStatus).icon"
-          />
-        </b-avatar>
-        <b-tooltip
-          :target="`invoice-row-${data.item.id}`"
-          placement="top"
-        >
-          <p class="mb-0">
-            {{ data.item.invoiceStatus }}
-          </p>
-          <p class="mb-0">
-            Balance: {{ data.item.balance }}
-          </p>
-          <p class="mb-0">
-            Due Date: {{ data.item.dueDate }}
-          </p>
-        </b-tooltip>
-      </template>
-
-      <!-- Column: Client -->
-      <template #cell(client)="data">
-        <b-media vertical-align="center">
-          <template #aside>
-            <b-avatar
-              size="32"
-              :src="data.item.avatar"
-              :text="avatarText(data.item.client.name)"
-              :variant="`light-${resolveClientAvatarVariant(data.item.invoiceStatus)}`"
-            />
-          </template>
-          <span class="font-weight-bold d-block text-nowrap">
-            {{ data.item.client.name }}
-          </span>
-          <small class="text-muted">{{ data.item.client.companyEmail }}</small>
+      <!-- Column: Title -->
+      <template #cell(titleServices)="row">
+        <b-media @click="row.toggleDetails">
+          <b-link class="font-weight-bold d-block text-nowrap" >
+            {{ row.value }}
+          </b-link>
+          <small class="text-muted" v-if="row.item.idServices">@ISC{{ row.item.idServices }}</small>
         </b-media>
       </template>
 
-      <!-- Column: Issued Date -->
-      <template #cell(issuedDate)="data">
-        <span class="text-nowrap">
-          {{ data.value }}
-        </span>
+      <template #row-details="row">
+        <b-card>
+          <b-row class="mb-2">
+            <b-col
+                    md="4"
+                    class="mb-1"
+            >
+              <strong>Created by : </strong>{{ row.item.details.createBy }}
+            </b-col>
+            <b-col
+                    md="4"
+                    class="mb-1"
+            >
+              <strong>User phone : </strong>{{ row.item.telephoneCustomer }}
+            </b-col>
+            <b-col
+                    md="4"
+                    class="mb-1"
+            >
+              <strong>User email : </strong>{{ row.item.mailCustomer }}
+            </b-col>
+
+            <b-col
+                    md="4"
+                    class="mb-1"
+            >
+              <strong>Shop : </strong>
+              <span v-for="item in row.item.listShop">
+                  <span :key="item.value">{{ item.title }},</span>
+                </span>
+            </b-col>
+            <b-col
+                    v-if="!row.item.discount.reduction.money"
+                    md="4"
+                    class="mb-1"
+            >
+              <strong>Percent : </strong>{{ row.item.discount.PercentAMaximum.percent }}%
+            </b-col>
+            <b-col
+                    v-if="!row.item.discount.reduction.money"
+                    md="4"
+                    class="mb-1"
+            >
+              <strong >Maximum money : </strong>{{ row.item.discount.PercentAMaximum.maximumMoney.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) }}
+            </b-col>
+
+            <b-col
+                    md="4"
+                    class="mb-1"
+            >
+              <strong>Created at : </strong>{{ convertDate(row.item.details.time) }}
+            </b-col>
+
+            <b-col
+                    v-if="row.item.discount.reduction.money"
+                    md="4"
+                    class="mb-1"
+            >
+              <strong>Money : </strong>{{ row.item.discount.reduction.money.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) }}
+            </b-col>
+            <b-col
+                    md="4"
+                    class="mb-1"
+            >
+              <b-row>
+                <b-col md="3"><strong>Content : </strong></b-col>
+                <b-col md="9"><span v-html="row.item.content"></span></b-col>
+              </b-row>
+            </b-col>
+          </b-row>
+        </b-card>
       </template>
 
-      <!-- Column: Balance -->
-      <template #cell(balance)="data">
-        <template v-if="data.value === 0">
-          <b-badge
-            pill
-            variant="light-success"
-          >
-            Paid
-          </b-badge>
-        </template>
-        <template v-else>
-          {{ data.value }}
-        </template>
+      <!-- Column: Receiver -->
+      <template #cell(receiver)="data">
+        <b-media>
+          <b-link class="font-weight-bold d-block text-nowrap">
+            {{ data.item.nameCustomer }}
+          </b-link>
+          <small class="text-muted"> @CS{{ data.item.idCustomer }}</small>
+        </b-media>
       </template>
 
-      <!-- Column: Actions -->
-      <template #cell(actions)="data">
+      <!-- Column: Type -->
+      <template #cell(typeServices)="data">
+        <b-badge :variant="resolveServiceTypeVariant(data.value)">{{ checkType(data.value) }}</b-badge>
+      </template>
 
-        <div class="text-nowrap">
+      <!-- Column: Status -->
+      <template #cell(statusSend)="data">
+        <b-avatar
+                size="32"
+                :variant="`light-${resolveStatusTypeVariant(data.value).variant}`"
+        >
           <feather-icon
-            :id="`invoice-row-${data.item.id}-send-icon`"
-            icon="SendIcon"
-            class="cursor-pointer"
-            size="16"
+                  :icon="resolveStatusTypeVariant(data.value).icon"
+                  size="18"
           />
-          <b-tooltip
-            title="Send Invoice"
-            class="cursor-pointer"
-            :target="`invoice-row-${data.item.id}-send-icon`"
-          />
+        </b-avatar>
+      </template>
 
-          <feather-icon
-            :id="`invoice-row-${data.item.id}-preview-icon`"
-            icon="EyeIcon"
-            size="16"
-            class="mx-1"
-            @click="$router.push({ name: 'apps-invoice-preview', params: { id: data.item.id }})"
-          />
-          <b-tooltip
-            title="Preview Invoice"
-            :target="`invoice-row-${data.item.id}-preview-icon`"
-          />
-
-          <!-- Dropdown -->
-          <b-dropdown
-            variant="link"
-            toggle-class="p-0"
-            no-caret
-            :right="$store.state.appConfig.isRTL"
-          >
-
-            <template #button-content>
-              <feather-icon
-                icon="MoreVerticalIcon"
-                size="16"
-                class="align-middle text-body"
-              />
-            </template>
-            <b-dropdown-item>
-              <feather-icon icon="DownloadIcon" />
-              <span class="align-middle ml-50">Download</span>
-            </b-dropdown-item>
-            <b-dropdown-item :to="{ name: 'apps-invoice-edit', params: { id: data.item.id } }">
-              <feather-icon icon="EditIcon" />
-              <span class="align-middle ml-50">Edit</span>
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <feather-icon icon="TrashIcon" />
-              <span class="align-middle ml-50">Delete</span>
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <feather-icon icon="CopyIcon" />
-              <span class="align-middle ml-50">Duplicate</span>
-            </b-dropdown-item>
-          </b-dropdown>
-        </div>
+      <!-- Column: birthDate -->
+      <template #cell(dateAutomaticallySent)="data">
+        {{ convertDate(data.value) }}
       </template>
 
     </b-table>
@@ -242,7 +189,7 @@
 
           <b-pagination
             v-model="currentPage"
-            :total-rows="totalInvoices"
+            :total-rows="totalServices"
             :per-page="perPage"
             first-number
             last-number
@@ -284,6 +231,7 @@ import store from '@/store'
 import useInvoicesList from './useInvoiceList'
 
 import invoiceStoreModule from '../invoiceStoreModule'
+import moment from "moment";
 
 export default {
   components: {
@@ -324,45 +272,55 @@ export default {
     ]
 
     const {
-      fetchInvoices,
+      Services,
+      totalServices,
       tableColumns,
       perPage,
       currentPage,
-      totalInvoices,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
       refInvoiceListTable,
-
+      isBusy,
       statusFilter,
-
+      checkType,
+      checkStatus,
+      resolveStatusTypeVariant,
+      resolveServiceTypeVariant,
       refetchData,
 
       resolveInvoiceStatusVariantAndIcon,
       resolveClientAvatarVariant,
     } = useInvoicesList()
 
+    const convertDate = (date) => {
+      return moment(date).format('DD-MM-YYYY HH:mm')
+    }
+
     return {
-      fetchInvoices,
+      Services,
+      totalServices,
       tableColumns,
       perPage,
       currentPage,
-      totalInvoices,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
       refInvoiceListTable,
-
+      isBusy,
       statusFilter,
-
+      checkType,
+      checkStatus,
+      resolveStatusTypeVariant,
+      resolveServiceTypeVariant,
       refetchData,
 
       statusOptions,
-
+      convertDate,
       avatarText,
       resolveInvoiceStatusVariantAndIcon,
       resolveClientAvatarVariant,

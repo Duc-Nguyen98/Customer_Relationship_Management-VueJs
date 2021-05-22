@@ -4,6 +4,7 @@ import store from '@/store'
 // Notification
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import {title} from "@core/utils/filter";
 
 export default function useInvoicesList() {
   // Use toast
@@ -13,41 +14,50 @@ export default function useInvoicesList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'id', label: '#', sortable: true },
-    { key: 'invoiceStatus', sortable: true },
-    { key: 'client', sortable: true },
-    { key: 'total', sortable: true, formatter: val => `$${val}` },
-    { key: 'issuedDate', sortable: true },
-    { key: 'balance', sortable: true },
-    { key: 'actions' },
+    { key: 'stt', label: 'STT', sortable: true },
+    { key: 'titleServices', label: 'TITLE', formatter: title, sortable: false },
+    { key: 'receiver', label: 'Customer', sortable: false },
+    { key: 'voucherCode', label: 'Voucher Code', sortable: false },
+    { key: 'typeServices', label: 'TYPE', sortable: false },
+    { key: 'statusSend', label: 'Status', sortable: false },
+    { key: 'dateAutomaticallySent', label: 'Date Auto Sent', sortable: false },
   ]
+
   const perPage = ref(10)
-  const totalInvoices = ref(0)
+  const totalServices = ref(0)
   const currentPage = ref(1)
   const perPageOptions = [10, 25, 50, 100]
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
   const statusFilter = ref(null)
+  const Services = ref([])
 
   const dataMeta = computed(() => {
     const localItemsCount = refInvoiceListTable.value ? refInvoiceListTable.value.localItems.length : 0
     return {
       from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
       to: perPage.value * (currentPage.value - 1) + localItemsCount,
-      of: totalInvoices.value,
+      of: totalServices.value,
     }
   })
 
   const refetchData = () => {
-    refInvoiceListTable.value.refresh()
+    fetchInvoices()
   }
 
   watch([currentPage, perPage, searchQuery, statusFilter], () => {
     refetchData()
   })
 
+  const time = ref(null)
+  const isBusy = ref(null)
   const fetchInvoices = (ctx, callback) => {
+    isBusy.value = true
+    if (time.value) {
+      clearTimeout(time.value)
+    }
+    time.value = setTimeout(() => {
     store
       .dispatch('app-invoice/fetchInvoices', {
         q: searchQuery.value,
@@ -58,10 +68,12 @@ export default function useInvoicesList() {
         status: statusFilter.value,
       })
       .then(response => {
-        const { invoices, total } = response.data
-
-        callback(invoices)
-        totalInvoices.value = total
+        const { services, totalRecords } = response.data.data
+        totalServices.value = totalRecords
+        services.map((obj, index) => obj.stt = index+1)
+        Services.value = services
+        isBusy.value = false
+        console.log(services)
       })
       .catch(() => {
         toast({
@@ -73,8 +85,9 @@ export default function useInvoicesList() {
           },
         })
       })
+    },searchQuery.value ? 1000 : 0)
   }
-
+  fetchInvoices()
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
@@ -99,21 +112,52 @@ export default function useInvoicesList() {
     return 'primary'
   }
 
+  const resolveServiceTypeVariant = type => {
+    if (type === 0) return 'light-warning'
+    if (type === 1) return 'light-success'
+    if (type === 2) return 'light-primary'
+    return { variant: 'secondary', icon: 'XIcon' }
+  }
+
+  const checkType = type => {
+    if (type === 0) return 'SMS'
+    if (type === 1) return 'Mail'
+    if (type === 2) return 'SMS & Mail'
+    return 'SMS'
+  }
+
+  const resolveStatusTypeVariant = stt => {
+    if (stt === 0) return { variant: 'warning', icon: 'SendIcon' }
+    if (stt === 1) return { variant: 'success', icon: 'CheckCircleIcon' }
+    if (stt === 2) return { variant: 'danger', icon: 'ArrowDownCircleIcon' }
+    return { variant: 'secondary', icon: 'XIcon' }
+  }
+
+  const checkStatus = stt => {
+    if (stt === 0) return 'Pending'
+    if (stt === 1) return 'Sended'
+    return 'Pending'
+  }
+
   return {
     fetchInvoices,
     tableColumns,
     perPage,
     currentPage,
-    totalInvoices,
+    totalServices,
+    Services,
     dataMeta,
     perPageOptions,
     searchQuery,
     sortBy,
     isSortDirDesc,
     refInvoiceListTable,
-
+    checkType,
+    checkStatus,
+    resolveStatusTypeVariant,
+    resolveServiceTypeVariant,
     statusFilter,
-
+    isBusy,
     resolveInvoiceStatusVariantAndIcon,
     resolveClientAvatarVariant,
 
