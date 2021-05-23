@@ -60,24 +60,24 @@
 <!--      />-->
 <!--    </b-tab>-->
 
-    <!-- social links -->
-    <b-tab>
+<!--    &lt;!&ndash; social links &ndash;&gt;-->
+<!--    <b-tab>-->
 
-      <!-- title -->
-      <template #title>
-        <feather-icon
-          icon="LinkIcon"
-          size="18"
-          class="mr-50"
-        />
-        <span class="font-weight-bold">Social</span>
-      </template>
+<!--      &lt;!&ndash; title &ndash;&gt;-->
+<!--      <template #title>-->
+<!--        <feather-icon-->
+<!--          icon="LinkIcon"-->
+<!--          size="18"-->
+<!--          class="mr-50"-->
+<!--        />-->
+<!--        <span class="font-weight-bold">Social</span>-->
+<!--      </template>-->
 
-      <account-setting-social
-        v-if="options.social"
-        :social-data="options.social"
-      />
-    </b-tab>
+<!--      <account-setting-social-->
+<!--        v-if="options.social"-->
+<!--        :social-data="options.social"-->
+<!--      />-->
+<!--    </b-tab>-->
 
     <!-- notification -->
     <b-tab>
@@ -104,11 +104,7 @@
 import { BTabs, BTab } from 'bootstrap-vue'
 import AccountSettingGeneral from './AccountSettingGeneral.vue'
 import AccountSettingPassword from './AccountSettingPassword.vue'
-import AccountSettingSocial from './AccountSettingSocial.vue'
 import AccountSettingNotification from './AccountSettingNotification.vue'
-import store from "@/store";
-import userStoreModule from "@/views/apps/user/userStoreModule";
-import {onUnmounted} from "@vue/composition-api";
 
 export default {
   components: {
@@ -116,7 +112,6 @@ export default {
     BTab,
     AccountSettingGeneral,
     AccountSettingPassword,
-    AccountSettingSocial,
     AccountSettingNotification,
   },
   data() {
