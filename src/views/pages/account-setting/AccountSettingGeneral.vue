@@ -490,7 +490,7 @@
                 // props.userData.avatar = base64
                 store.dispatch('app-user/uploadUser', {
                     file: refInputEl.value.files[0],
-                    _id: router.currentRoute.params.id
+                    _id: optionsLocal.value._id
                 })
                     .then(response => {
                         if (response.data.success) {
