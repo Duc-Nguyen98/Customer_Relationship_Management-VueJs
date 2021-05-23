@@ -186,7 +186,7 @@
 
             <b-dropdown-item
                     v-if="idGroup && canViewVerticalNavMenuLink({action: 'update', subject: 'voucherItems'})"
-                    @click="deleteVouchersInGroup(data.item._id)"
+                    @click="deleteOneSoftVouchersInGroup(data.item._id)"
             >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -360,7 +360,7 @@
         checkStatus,
         changeStatusVouchersInGroup,
         deleteVouchersInAddGroup,
-
+        deleteOneSoftVouchersInGroup,
         // UI
         resolveUserRoleVariant,
         resolveUserRoleIcon,
@@ -422,7 +422,7 @@
         resolveUserClassifiedVariant,
         classifiedOptions,
         deleteVouchersInAddGroup,
-
+        deleteOneSoftVouchersInGroup,
         // Filter
         avatarText,
 

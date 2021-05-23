@@ -37,10 +37,7 @@
       height="100"
       width="100%"
       :options="chartOptionsComputed"
-      :series="[{
-                name: 'customerData',
-                data: [28, 40, 36, 52, 38, 60, 55],
-            }]"
+      :series="chartData"
     />
 
   </b-card>

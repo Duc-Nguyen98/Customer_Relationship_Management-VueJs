@@ -63,10 +63,10 @@
                                 </h5>
                             </div>
                             <div v-if="type == 'sale'">
-                                {{ data.earned.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) }}
+                                {{ data.earned ? data.earned.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) : '' }}
                             </div>
                             <div v-if="type == 'gra'">
-                                {{ data.countGratitude }}
+                                {{ data.countGratitude ? data.countGratitude : '' }}
                             </div>
                         </div>
                     </b-media-body>

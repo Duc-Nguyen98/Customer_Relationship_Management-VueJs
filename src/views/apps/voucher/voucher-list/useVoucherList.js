@@ -200,6 +200,31 @@ export default function useVoucherList() {
         })
   }
 
+  const deleteOneSoftVouchersInGroup = (_id) => {
+    store
+        .dispatch('app_voucher/deleteOneSoftVouchersInGroup', {_id: _id})
+        .then(response => {
+          if (response.data.success) {
+            alert("success", "Delete vouchers successfully.")
+            selected.value = []
+            all.value = false
+            fetchListVouchers(group.value)
+          } else {
+            alert("danger", "Delete vouchers failed.")
+          }
+        })
+        .catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error fetching vouchers list',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
+        })
+  }
+
   const deleteOneVouchersInGroup = id => {
     store
         .dispatch('app_voucher/deleteOneVouchersInGroup', {_id: id})
@@ -288,6 +313,7 @@ export default function useVoucherList() {
     fetchListVouchers,
     deleteVouchersInGroup,
     deleteOneVouchersInGroup,
+    deleteOneSoftVouchersInGroup,
     addVouchersInGroup,
     checkStatus,
     changeStatusVouchersInGroup,

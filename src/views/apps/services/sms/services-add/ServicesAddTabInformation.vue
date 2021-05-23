@@ -310,7 +310,7 @@
                                    class="wizard-footer-right" :style="props.fillButtonStyle">Next
                     </wizard-button>
 
-                    <wizard-button v-else @click.native="formSubmitted" class="wizard-footer-right finish-button"
+                    <wizard-button :disabled="disabled" v-else @click.native="formSubmitted" class="wizard-footer-right finish-button"
                                    :style="props.fillButtonStyle">{{props.isLastStep ? 'Save' : 'Next'}}
                     </wizard-button>
 
@@ -487,6 +487,8 @@
                 {label: "SMS & Email", value: 2},
             ]
 
+            const disabled = ref(false)
+
             const validation = {
                 required,
                 confirmed,
@@ -511,6 +513,7 @@
                 groupOptions,
                 voucherOptions,
                 servicesOptions,
+                disabled,
             };
         },
 
@@ -523,7 +526,7 @@
             dateEffDisabled(ymd, date) {
                 // Disable weekends (Sunday = `0`, Saturday = `6`) and
                 // disable days that fall on the 13th of the month
-                var today = new Date();
+                var today = new Date()
 
                 const day = date.getDate()
                 const month = date.getMonth()
@@ -632,6 +635,7 @@
             },
 
             formSubmitted() {
+              this.disabled = true
               const smsData = {
                 idCustomer: this.smsData.customer.value,
                 typeServices: this.smsData.typeServices,
@@ -652,6 +656,7 @@
                         }
                     })
                     .catch((err) => {
+                        this.disabled = false
                         this.$toast({
                             component: ToastificationContent,
                             props: {

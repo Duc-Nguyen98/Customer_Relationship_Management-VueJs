@@ -15,12 +15,13 @@ export default function useInvoicesList() {
   // Table Handlers
   const tableColumns = [
     { key: 'stt', label: 'STT', sortable: true },
+    { key: 'statusSend', label: 'Status send', sortable: false },
     { key: 'titleServices', label: 'TITLE', formatter: title, sortable: false },
     { key: 'receiver', label: 'Customer', sortable: false },
     { key: 'voucherCode', label: 'Voucher Code', sortable: false },
     { key: 'typeServices', label: 'TYPE', sortable: false },
-    { key: 'statusSend', label: 'Status', sortable: false },
-    { key: 'dateAutomaticallySent', label: 'Date Auto Sent', sortable: false },
+    { key: 'status', label: 'Status', sortable: false },
+    { key: 'dateAutomaticallySent', label: 'Created at', sortable: false },
   ]
 
   const perPage = ref(10)
@@ -126,7 +127,7 @@ export default function useInvoicesList() {
     return 'SMS'
   }
 
-  const resolveStatusTypeVariant = stt => {
+  const resolveServiceStatusVariant = stt => {
     if (stt === 0) return { variant: 'warning', icon: 'SendIcon' }
     if (stt === 1) return { variant: 'success', icon: 'CheckCircleIcon' }
     if (stt === 2) return { variant: 'danger', icon: 'ArrowDownCircleIcon' }
@@ -136,6 +137,7 @@ export default function useInvoicesList() {
   const checkStatus = stt => {
     if (stt === 0) return 'Pending'
     if (stt === 1) return 'Sended'
+    if (stt === 2) return 'Cancel'
     return 'Pending'
   }
 
@@ -154,7 +156,7 @@ export default function useInvoicesList() {
     refInvoiceListTable,
     checkType,
     checkStatus,
-    resolveStatusTypeVariant,
+    resolveServiceStatusVariant,
     resolveServiceTypeVariant,
     statusFilter,
     isBusy,
