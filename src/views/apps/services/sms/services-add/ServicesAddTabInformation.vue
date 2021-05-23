@@ -583,6 +583,7 @@
                                 Vouchers.push({
                                     label: obj.voucherCode + (obj.classified == 0 ? ' - Gift' : ' - Trade') + ' Voucher',
                                     value: obj.idVoucher,
+                                    voucherCode: obj.voucherCode,
                                     discount: obj.discount,
                                     timeLine: obj.timeLine,
                                     classified: obj.classified,
@@ -673,7 +674,7 @@
                     dateAutomaticallySent: moment(this.smsData.dateAuto, 'YYYY-MM-DD hh:mm').format('x'),
                     titleServices: this.smsData.titleServices,
                     idGroupVoucher: this.smsData.idGroupVoucher,
-                    voucherCode: this.smsData.voucher.label,
+                    voucherCode: this.smsData.voucher.voucherCode,
                     price: this.smsData.price,
                     content: this.smsData.content,
                 }

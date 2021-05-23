@@ -123,5 +123,23 @@ export default {
       })
     },
 
+    updateRole(ctx, {_id, role}) {
+      return new Promise((resolve, reject) => {
+        axios
+            .put(process.env.VUE_APP_ROOT_API + `role/update/${_id}`, role, config)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+
+    createRole(ctx, role) {
+      return new Promise((resolve, reject) => {
+        axios
+            .post(process.env.VUE_APP_ROOT_API + `role/create`, role, config)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+
   },
 }
