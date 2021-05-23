@@ -56,7 +56,7 @@
       <!-- Column: Status -->
       <template #cell(statusSend)="data">
         <b-avatar
-                :id="`invoice-row-${data.item.id}`"
+                :id="`invoice-row-${data.item._id}`"
                 size="32"
                 :variant="`light-${resolveServiceStatusVariant(data.value).variant}`"
         >
@@ -66,7 +66,7 @@
           />
         </b-avatar>
         <b-tooltip
-                :target="`invoice-row-${data.item.id}`"
+                :target="`invoice-row-${data.item._id}`"
                 placement="top"
         >
           <p class="mb-0">

@@ -52,10 +52,17 @@ export default function useServicesListSMS() {
     refetchData()
   })
 
+  const time = ref(null)
+  const isBusy = ref(null)
   const fetchServices = (ctx, callback) => {
+    isBusy.value = true
+    if (time.value) {
+      clearTimeout(time.value)
+    }
+    time.value = setTimeout(() => {
     store
       .dispatch('app-services-sms/fetchServices', {type: 'sms', queryParams: {
-      q: searchQuery.value,
+          q: searchQuery.value,
           perPage: perPage.value,
           page: currentPage.value,
           sort: sortBy.value,
@@ -67,6 +74,7 @@ export default function useServicesListSMS() {
         totalServices.value = totalRecords
         services.map((obj, index) => obj.stt = index+1)
         Services.value = services
+        isBusy.value = false
       })
       .catch(() => {
         toast({
@@ -78,6 +86,7 @@ export default function useServicesListSMS() {
           },
         })
       })
+    }, searchQuery.value ? 1000 : 0)
   }
 
   const alert = (variant, message) => {
@@ -242,5 +251,7 @@ export default function useServicesListSMS() {
     type,
     status,
     alert,
+    isBusy,
+    time,
   }
 }

@@ -83,6 +83,7 @@
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
+        :busy="isBusy"
         hover
       >
         <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
@@ -410,6 +411,7 @@ export default {
       // Extra Filters
       type,
       status,
+      isBusy,
     } = useServicesListSMS()
 
     return {
@@ -450,9 +452,10 @@ export default {
       // Extra Filters
       type,
       status,
-    };
+      isBusy,
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
