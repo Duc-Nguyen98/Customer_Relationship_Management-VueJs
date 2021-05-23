@@ -240,11 +240,11 @@ import { ref, onUnmounted } from "@vue/composition-api";
 import { avatarText } from "@core/utils/filter";
 import UsersListFilters from "./UsersListFilters.vue";
 import useUsersList from "./useUsersList";
-import userStoreModule from "../userStoreModule";
 import UserListAddNew from "./UserListAddNew.vue";
 import Ripple from "vue-ripple-directive";
 import moment from "moment";
 import {useUtils as useAclUtils} from "@core/libs/acl";
+import userStoreModule from "../userStoreModule";
 
 export default {
   components: {

@@ -200,7 +200,7 @@
                 status: "",
                 user: {
                     email: "quangducn98@gmail.com",
-                    password: "123456",
+                    password: "Cntt@1234",
                 },
                 sideImg: require("@/assets/images/pages/login-v2.svg"),
 

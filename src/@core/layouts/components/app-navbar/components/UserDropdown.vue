@@ -9,7 +9,7 @@
         <p class="user-name font-weight-bolder mb-0">
           {{ userData.name || userData.email }}
         </p>
-        <span class="user-status">{{ userData.role }}</span>
+        <span class="user-status">{{ userData.role.charAt(0).toUpperCase() + userData.role.slice(1) }}</span>
       </div>
       <b-avatar
         size="40"

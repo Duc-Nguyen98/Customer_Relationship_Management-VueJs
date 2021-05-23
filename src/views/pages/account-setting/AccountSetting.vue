@@ -20,10 +20,7 @@
         <span class="font-weight-bold">General</span>
       </template>
 
-      <account-setting-general
-        v-if="options.general"
-        :general-data="options.general"
-      />
+      <account-setting-general />
     </b-tab>
     <!--/ general tab -->
 
@@ -107,9 +104,11 @@
 import { BTabs, BTab } from 'bootstrap-vue'
 import AccountSettingGeneral from './AccountSettingGeneral.vue'
 import AccountSettingPassword from './AccountSettingPassword.vue'
-import AccountSettingInformation from './AccountSettingInformation.vue'
 import AccountSettingSocial from './AccountSettingSocial.vue'
 import AccountSettingNotification from './AccountSettingNotification.vue'
+import store from "@/store";
+import userStoreModule from "@/views/apps/user/userStoreModule";
+import {onUnmounted} from "@vue/composition-api";
 
 export default {
   components: {
@@ -117,7 +116,6 @@ export default {
     BTab,
     AccountSettingGeneral,
     AccountSettingPassword,
-    AccountSettingInformation,
     AccountSettingSocial,
     AccountSettingNotification,
   },
@@ -125,9 +123,6 @@ export default {
     return {
       options: {},
     }
-  },
-  beforeCreate() {
-    this.$http.get('/account-setting/data').then(res => { this.options = res.data })
   },
 }
 </script>

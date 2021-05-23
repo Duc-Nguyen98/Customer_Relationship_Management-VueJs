@@ -82,12 +82,32 @@ export default {
             .catch(error => reject(error))
       })
     },
+
     uploadUser(ctx, { file, _id }) {
       let data = new FormData()
       data.append('file', file)
       return new Promise((resolve, reject) => {
         axios
             .post(process.env.VUE_APP_ROOT_API + `user/upload/${_id}`, data, config)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+
+    //Acount Setting
+    saveUser(ctx, userData) {
+      return new Promise((resolve, reject) => {
+        axios
+            .post(process.env.VUE_APP_ROOT_API + `home/accountSettings/general`, userData, config)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+      })
+    },
+
+    changePass(ctx, userData) {
+      return new Promise((resolve, reject) => {
+        axios
+            .post(process.env.VUE_APP_ROOT_API + `home/accountSettings/changePassword`, userData, config)
             .then(response => resolve(response))
             .catch(error => reject(error))
       })

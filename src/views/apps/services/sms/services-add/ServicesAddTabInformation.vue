@@ -11,7 +11,7 @@
                 class="wizard-vertical mb-3"
         >
             <!-- Information Service tab -->
-            <tab-content title="Information User">
+            <tab-content title="Service Information">
                 <validation-observer ref="information_user">
                     <b-form class="mt-1">
                         <!-- Header: Personal Info -->
@@ -139,11 +139,12 @@
                                     </validation-provider>
                                 </b-form-group>
                             </b-col>
+
                         </b-row>
                     </b-form>
                 </validation-observer>
             </tab-content>
-            <tab-content title="Information Service">
+            <tab-content title="Voucher Information">
                 <validation-observer ref="validateStep2">
                     <b-row>
                         <!-- Groups voucher -->
@@ -186,6 +187,25 @@
                             </b-form-group>
                         </b-col>
 
+                        <!-- Field: Price  -->
+                        <b-col cols="12" md="6" lg="6" v-if="smsData.voucher.classified == 1">
+                            <b-form-group label="Price" label-for="Price">
+                                <validation-provider
+                                        #default="{ errors }"
+                                        name="Price"
+                                        rules="required"
+                                >
+                                    <b-form-input
+                                            id="price"
+                                            v-model="smsData.Mmoney"
+                                            placeholder="Price"
+                                            @blur="blurMoney"
+                                            @focus="smsData.Mmoney = smsData.price"
+                                    />
+                                    <small class="text-danger">{{ errors[0] }}</small>
+                                </validation-provider>
+                            </b-form-group>
+                        </b-col>
 
                         <!-- Field: Discount  -->
                         <b-col cols="12" md="6" lg="6" v-if="smsData.voucher.discount.reduction.money != null">
@@ -260,22 +280,22 @@
                             </b-form-group>
                         </b-col>
 
-                      <b-col cols="12" md="12" lg="12">
-                        <b-form-group label="List Shops" label-for="List Shops">
-                          <validation-provider
-                                  #default="{ errors }"
-                                  name="List Shops"
-                                  rules=""
-                          >
-                            <b-list-group  v-for="data in smsData.listShops" >
-                              <b-list-group-item class="d-flex" :key="data.value">
-                                <span>{{ data.title }}.</span>
-                              </b-list-group-item>
-                            </b-list-group>
-                            <small class="text-danger">{{ errors[0] }}</small>
-                          </validation-provider>
-                        </b-form-group>
-                      </b-col>
+                        <b-col cols="12" md="6" lg="6">
+                            <b-form-group label="List Shops" label-for="List Shops">
+                                <validation-provider
+                                        #default="{ errors }"
+                                        name="List Shops"
+                                        rules=""
+                                >
+                                    <b-list-group v-for="data in smsData.listShops">
+                                        <b-list-group-item class="d-flex" :key="data.value">
+                                            <span>{{ data.title }}.</span>
+                                        </b-list-group-item>
+                                    </b-list-group>
+                                    <small class="text-danger">{{ errors[0] }}</small>
+                                </validation-provider>
+                            </b-form-group>
+                        </b-col>
 
                         <!-- Header: Personal Note -->
                         <b-col cols="12" md="12" lg="12">
@@ -301,7 +321,8 @@
 
             <template slot="footer" scope="props">
                 <div class=wizard-footer-left>
-                    <wizard-button v-if="props.activeTabIndex > 0" @click.native="props.prevTab()" :style="props.fillButtonStyle">
+                    <wizard-button v-if="props.activeTabIndex > 0" @click.native="props.prevTab()"
+                                   :style="props.fillButtonStyle">
                         Previous
                     </wizard-button>
                 </div>
@@ -310,7 +331,8 @@
                                    class="wizard-footer-right" :style="props.fillButtonStyle">Next
                     </wizard-button>
 
-                    <wizard-button :disabled="disabled" v-else @click.native="formSubmitted" class="wizard-footer-right finish-button"
+                    <wizard-button :disabled="disabled" v-else @click.native="formSubmitted"
+                                   class="wizard-footer-right finish-button"
                                    :style="props.fillButtonStyle">{{props.isLastStep ? 'Save' : 'Next'}}
                     </wizard-button>
 
@@ -421,10 +443,13 @@
                 telephone: "",
                 email: "",
                 title: "",
+                price: 0,
+                Mmoney: "",
                 dateAuto: "",
                 content: null,
                 group: "",
                 voucher: {
+                    classified: null,
                     discount: {
                         PercentAMaximum: {
                             percent: null,
@@ -434,10 +459,10 @@
                             money: null,
                         },
                     },
-                  timeLine: {
-                    release: null,
-                    expiration: null,
-                  },
+                    timeLine: {
+                        release: null,
+                        expiration: null,
+                    },
                 },
                 listShops: [],
                 titleServices: null,
@@ -518,9 +543,15 @@
         },
 
         methods: {
+            blurMoney() {
+                this.smsData.price = Number(this.smsData.Mmoney)
+                let val = (this.smsData.Mmoney / 1).toFixed(0).replace('.', ',')
+                this.smsData.Mmoney = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+            },
+
             fmMoney(val) {
-              let money = (Number(val) / 1).toFixed(0).replace('.', ',')
-              return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                let money = (Number(val) / 1).toFixed(0).replace('.', ',')
+                return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
             },
 
             dateEffDisabled(ymd, date) {
@@ -550,10 +581,11 @@
                             const Vouchers = []
                             response.data.voucherItems.map(obj => {
                                 Vouchers.push({
-                                    label: obj.voucherCode,
+                                    label: obj.voucherCode + (obj.classified == 0 ? ' - Gift' : ' - Trade') + ' Voucher',
                                     value: obj.idVoucher,
                                     discount: obj.discount,
                                     timeLine: obj.timeLine,
+                                    classified: obj.classified,
                                 })
                             })
                             this.voucherOptions = Vouchers
@@ -587,7 +619,6 @@
                                         })
                                     })
                                     this.groupOptions = groupVoucher
-                                    console.log(response.data.groupVoucher)
                                 }
                             })
                             .catch((err) => {
@@ -635,16 +666,17 @@
             },
 
             formSubmitted() {
-              this.disabled = true
-              const smsData = {
-                idCustomer: this.smsData.customer.value,
-                typeServices: this.smsData.typeServices,
-                dateAutomaticallySent: moment(this.smsData.dateAuto, 'YYYY-MM-DD hh:mm').format('x'),
-                titleServices: this.smsData.titleServices,
-                idGroupVoucher: this.smsData.idGroupVoucher,
-                voucherCode: this.smsData.voucher.label,
-                content: this.smsData.content,
-              }
+                this.disabled = true
+                const smsData = {
+                    idCustomer: this.smsData.customer.value,
+                    typeServices: this.smsData.typeServices,
+                    dateAutomaticallySent: moment(this.smsData.dateAuto, 'YYYY-MM-DD hh:mm').format('x'),
+                    titleServices: this.smsData.titleServices,
+                    idGroupVoucher: this.smsData.idGroupVoucher,
+                    voucherCode: this.smsData.voucher.label,
+                    price: this.smsData.price,
+                    content: this.smsData.content,
+                }
 
                 store.dispatch('app-services-sms/addService', smsData)
                     .then(response => {
