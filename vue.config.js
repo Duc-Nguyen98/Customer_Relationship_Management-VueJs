@@ -12,7 +12,7 @@ module.exports = {
     },
   },
   devServer: {
-    proxy: 'http://localhost:1509/',
+    proxy: 'https://antcvvcrm.herokuapp.com/',
   },
   configureWebpack: {
     resolve: {
