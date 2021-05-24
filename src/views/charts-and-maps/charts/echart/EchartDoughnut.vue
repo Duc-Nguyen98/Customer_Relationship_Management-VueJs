@@ -30,7 +30,26 @@ export default {
     },
     series: {
       type: Array,
-      default: () => [],
+      default: () => [
+          {
+              name: 'Visit source',
+              type: 'pie',
+              radius: ['50%', '70%'],
+              avoidLabelOverlap: false,
+              label: {
+                show: false,
+              },
+              labelLine: {
+                show: false,
+              },
+              data: [
+                { value: 335, name: 'Point One' },
+                { value: 310, name: 'Point Two' },
+                { value: 234, name: 'Point Three' },
+                { value: 435, name: 'Point Four' },
+              ],
+            },
+      ],
     }
   },
   data() {
