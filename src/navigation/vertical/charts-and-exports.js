@@ -4,27 +4,18 @@ export default [
   },
   {
 
-    title: 'Statistics customer',
-    route: 'statistics-customer',
-    icon: 'BarChartIcon',
-  },
-  {
-
     title: 'Statistics services',
     route: 'statistics-services',
     icon: 'BarChartIcon',
+    tag: 'N',
+    tagVariant: 'light-success',
   },
   {
 
-    title: 'Charts Customers',
-    route: 'charts-chartjs',
+    title: 'Statistics customer',
+    route: 'statistics-customer',
     icon: 'BarChartIcon',
-  },
-  {
-
-    title: 'Charts Transaction',
-    route: 'charts-echart',
-    icon: 'PieChartIcon',
-  },
-
+    tag: 'B',
+    tagVariant: 'light-warning',
+  }
 ]
