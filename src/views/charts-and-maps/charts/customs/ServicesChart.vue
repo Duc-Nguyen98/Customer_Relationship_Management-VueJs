@@ -5,7 +5,7 @@
                     xl="12"
                     md="12"
             >
-                <chartjs-horizontal-bar-chart title="Customers Used Service" />
+                <chartjs-horizontal-bar-chart :config="config" title="Customers Used Service" />
             </b-col>
         </b-row>
 

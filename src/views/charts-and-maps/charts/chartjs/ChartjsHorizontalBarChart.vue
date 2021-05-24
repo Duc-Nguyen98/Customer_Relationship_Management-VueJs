@@ -41,8 +41,9 @@ import {
 import flatPickr from 'vue-flatpickr-component'
 import ChartjsComponentHorizontalBarChart from './charts-components/ChartjsComponentHorizontalBarChart.vue'
 import chartjsData from './chartjsData'
-import axios from "axios";
+import axios from "axios"
 import { $themeColors } from '@themeConfig'
+import moment from 'moment'
 
 export default {
   components: {
@@ -56,17 +57,17 @@ export default {
   },
   props: {
     title: {
-      type: String
-    }
+      type: String,
+    },
+    config: {
+      type: Object,
+    },
   },
   data() {
     return {
       data: {},
       chartjsData,
-      rangePicker: ['2019-05-01', '2019-05-10'],
-      config: {
-        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-      },
+      rangePicker: [moment().subtract(7, "days").format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
       themeColors: $themeColors,
     }
   },

@@ -44,6 +44,7 @@ import {
 import VueApexCharts from 'vue-apexcharts'
 import flatPickr from 'vue-flatpickr-component'
 import apexChatData from './apexChartData'
+import moment from "moment";
 
 export default {
   components: {
@@ -69,7 +70,7 @@ export default {
       series: this.data.series,
       chartOptions: this.data.chartOptions,
       apexChatData,
-      rangePicker: ['2019-05-01', '2019-05-10'],
+      rangePicker: [moment().subtract(7, "days").format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
     }
   },
   watch: {
