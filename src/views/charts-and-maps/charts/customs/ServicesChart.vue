@@ -26,13 +26,13 @@
 
         <b-row class="match-height">
             <!-- Company Line Chart -->
-            <b-col lg="12">
+            <b-col lg="12" data-aos="fade-up">
                 <apex-line-area-chart title="Voucher Release" :data="data.voucherRelease" />
             </b-col>
             <!--/ Company Line Chart -->
 
             <!-- Company Belance Chart -->
-            <b-col lg="12">
+            <b-col lg="12" data-aos="fade-up">
                 <apex-line-chart title="Service Revenue" :data="data.serviceRevenue" />
             </b-col>
             <!-- Company Belance Chart -->
@@ -49,6 +49,8 @@
     import axios from "axios";
     import ToastificationContent from "@core/components/toastification/ToastificationContent";
     import { $themeColors } from '@themeConfig'
+    import AOS from 'aos';
+    import 'aos/dist/aos.css';
 
     export default {
         components: {
@@ -76,6 +78,7 @@
             }
         },
         created() {
+            AOS.init()
             // data
             Promise.all([this.typeServices(), this.messageServices(), this.voucherRelease(), this.serviceRevenue()])
                 .then(values => {

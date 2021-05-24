@@ -273,6 +273,12 @@ export default {
       resolveClientAvatarVariant,
     }
   },
+  mounted(){
+    window.addEventListener('scroll', this.refetchData)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.refetchData)
+  },
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <section id="dashboard-analytics">
+  <section id="dashboard-analytics" ref="app">
     <b-row class="match-height">
       <b-col
         lg="6"
@@ -49,7 +49,7 @@
 <!--      </b-col>-->
 <!--    </b-row>-->
 
-    <b-row class="match-height">
+    <b-row class="match-height" data-aos="fade-up">
       <b-col lg="6">
         <analytics-sales-radar title="Sales Revenue Ranking" type="sale" @update="changeRank" :data="data.rankingRevenue" />
       </b-col>
@@ -58,13 +58,13 @@
       </b-col>
     </b-row>
 
-    <b-row class="match-height">
+    <b-row class="match-height" data-aos="fade-up" >
       <b-col cols="12">
         <ecommerce-statistics :data="data.statistics" />
       </b-col>
     </b-row>
 
-    <b-row>
+    <b-row data-aos="fade-up">
       <b-col cols="12">
         <invoice-list />
       </b-col>
@@ -87,6 +87,8 @@ import AnalyticsAppDesign from './AnalyticsAppDesign.vue'
 import EcommerceStatistics from '../ecommerce/EcommerceStatistics.vue'
 // Notification
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default {
   components: {
@@ -132,7 +134,7 @@ export default {
         },
         rankingGratitude: [],
         rankingRevenue: [],
-        statistics: [],
+        statistics: null,
         tableServices: [],
       },
       config: {
@@ -141,14 +143,14 @@ export default {
     }
   },
   created() {
+    AOS.init()
     // data
-    Promise.all([this.getUser(), this.getDataCus(), this.getGraCus(), this.getRankGra(), this.getRankSale(), this.getStatistics()])
+    Promise.all([this.getUser(), this.getDataCus(), this.getGraCus(), this.getRankGra(), this.getRankSale()])
             .then(values => {
               this.data = {}
                values.map(obj => {
                  Object.assign(this.data, obj.data)
                })
-              console.log(values)
             })
             .catch(error => {
               console.log(error)
@@ -161,6 +163,12 @@ export default {
                 },
               })
             })
+  },
+  mounted(){
+    window.addEventListener('scroll', this.getStatistics)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.getStatistics)
   },
   methods: {
     async getUser() {
@@ -183,39 +191,42 @@ export default {
       const response = await axios.get(`${process.env.VUE_APP_ROOT_API}home/rankingRevenue?by=${by??1}`, this.config)
       return response.data
     },
-    async getStatistics() {
-      const response = await axios.get(`${process.env.VUE_APP_ROOT_API}home/statistics`, this.config)
-      response.data.data.statistics = [
-        {
-          icon: 'TagIcon',
-          color: 'light-primary',
-          title: response.data.data.statistics.vouchersTrade,
-          subtitle: 'Vouchers Trade',
-          customClass: 'mb-2 mb-xl-0',
-        },
-        {
-          icon: 'AwardIcon',
-          color: 'light-info',
-          title: response.data.data.statistics.vouchersGift,
-          subtitle: 'Vouchers Gift',
-          customClass: 'mb-2 mb-xl-0',
-        },
-        {
-          icon: 'LayersIcon',
-          color: 'light-danger',
-          title: response.data.data.statistics.totalVouchers,
-          subtitle: 'Total Vouchers',
-          customClass: 'mb-2 mb-xl-0',
-        },
-        {
-          icon: 'DollarSignIcon',
-          color: 'light-success',
-          title: response.data.data.statistics.revenue.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}),
-          subtitle: 'Revenue',
-          customClass: '',
-        },
-      ]
-      return response.data
+    async getStatistics(event) {
+      if (this.data.statistics == null) {
+        const response = await axios.get(`${process.env.VUE_APP_ROOT_API}home/statistics`, this.config)
+        response.data.data.statistics = [
+          {
+            icon: 'TagIcon',
+            color: 'light-primary',
+            title: response.data.data.statistics.vouchersTrade,
+            subtitle: 'Vouchers Trade',
+            customClass: 'mb-2 mb-xl-0',
+          },
+          {
+            icon: 'AwardIcon',
+            color: 'light-info',
+            title: response.data.data.statistics.vouchersGift,
+            subtitle: 'Vouchers Gift',
+            customClass: 'mb-2 mb-xl-0',
+          },
+          {
+            icon: 'LayersIcon',
+            color: 'light-danger',
+            title: response.data.data.statistics.totalVouchers,
+            subtitle: 'Total Vouchers',
+            customClass: 'mb-2 mb-xl-0',
+          },
+          {
+            icon: 'DollarSignIcon',
+            color: 'light-success',
+            title: response.data.data.statistics.revenue.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}),
+            subtitle: 'Revenue',
+            customClass: '',
+          },
+        ]
+
+        this.data = {...this.data, statistics: response.data.data.statistics}
+      }
     },
     kFormatter,
     async changeRank({by, type}) {
