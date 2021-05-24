@@ -2,38 +2,26 @@
     <section id="dashboard-ecommerce">
         <b-row class="match-height">
             <b-col
-                    xl="12"
+                    xl="7"
                     md="12"
             >
                 <chartjs-bar-chart />
             </b-col>
-        </b-row>
-
-        <b-row class="match-height">
-            <b-col lg="12">
-                <b-row class="match-height">
-                    <!-- Bar Chart - Doughnut -->
-                    <b-col md="6">
-                        <echart-doughnut />
-                    </b-col>
-                    <!--/ Bar Chart - Doughnut -->
-                    <b-col md="6">
-                        <echart-doughnut />
-                    </b-col>
-                </b-row>
+            <b-col md="12" xl="5">
+                <echart-doughnut title="Customer Classification" :series="data.typeServices" />
             </b-col>
         </b-row>
 
         <b-row class="match-height">
             <!-- Company Line Chart -->
             <b-col lg="12">
-                <apex-line-area-chart />
+
             </b-col>
             <!--/ Company Line Chart -->
 
             <!-- Company Belance Chart -->
             <b-col lg="12">
-                <apex-line-chart />
+
             </b-col>
             <!-- Company Belance Chart -->
         </b-row>
@@ -43,12 +31,14 @@
 <script>
     import { BRow, BCol } from 'bootstrap-vue'
     import ChartjsBarChart from '@/views/charts-and-maps/charts/chartjs/ChartjsBarChart'
+    import EchartDoughnut from '@/views/charts-and-maps/charts/echart/EchartDoughnut'
 
     export default {
         components: {
             BRow,
             BCol,
             ChartjsBarChart,
+            EchartDoughnut,
         },
         data() {
             return {
