@@ -5,7 +5,7 @@
                     xl="12"
                     md="12"
             >
-                <chartjs-horizontal-bar-chart />
+                <chartjs-bar-chart />
             </b-col>
         </b-row>
 
@@ -42,19 +42,13 @@
 
 <script>
     import { BRow, BCol } from 'bootstrap-vue'
-    import ChartjsHorizontalBarChart from '@/views/charts-and-maps/charts/chartjs/ChartjsHorizontalBarChart'
-    import EchartDoughnut from '@/views/charts-and-maps/charts/echart/EchartDoughnut'
-    import ApexLineChart from '@/views/charts-and-maps/charts/apex-chart/ApexLineChart'
-    import ApexLineAreaChart from '@/views/charts-and-maps/charts/apex-chart/ApexLineAreaChart'
+    import ChartjsBarChart from '@/views/charts-and-maps/charts/chartjs/ChartjsBarChart'
 
     export default {
         components: {
             BRow,
             BCol,
-            ChartjsHorizontalBarChart,
-            EchartDoughnut,
-            ApexLineChart,
-            ApexLineAreaChart,
+            ChartjsBarChart,
         },
         data() {
             return {

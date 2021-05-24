@@ -27,7 +27,6 @@ const router = new VueRouter({
     ...dashboard,
     ...pages,
     ...interactive,
-    ...chartsExports,
     ...formsTable,
     ...uiElements,
     ...others,
