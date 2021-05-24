@@ -39,4 +39,4 @@ import formAndTable from './forms-and-table'
 import interactive from './interactive'
 
 // Array of sections
-export default [...dashboard, ...appsAndPages, ...formAndTable, ...interactive, ...others, ...uiElements]
+export default [...dashboard, ...appsAndPages, ...formAndTable, ...interactive, ...chartsAndExports, ...others]
