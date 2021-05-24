@@ -1,13 +1,14 @@
 <template>
-  <b-card title="Doughnut Chart">
-    <div class="pie-text text-center">
-      <h2 class="font-weight-bolder">
-        $23,994
-      </h2>
-      <span class="font-weight-bold">Total</span>
-    </div>
+  <b-card :title="title">
+<!--    <div class="pie-text text-center">-->
+<!--      <h2 class="font-weight-bolder">-->
+<!--        $23,994-->
+<!--      </h2>-->
+<!--      <span class="font-weight-bold">Total</span>-->
+<!--    </div>-->
 
     <!-- echart -->
+
     <app-echart-doughnut :series="series" />
 
   </b-card>
@@ -22,30 +23,43 @@ export default {
     BCard,
     AppEchartDoughnut,
   },
-  data() {
-    return {
-      series: [
-        {
-          name: 'Visit source',
-          type: 'pie',
-          radius: ['50%', '70%'],
-          avoidLabelOverlap: false,
-          label: {
-            show: false,
-          },
-          labelLine: {
-            show: false,
-          },
-          data: [
-            { value: 335, name: 'Point One' },
-            { value: 310, name: 'Point Two' },
-            { value: 234, name: 'Point Three' },
-            { value: 435, name: 'Point Four' },
-          ],
-        },
-      ],
+  props: {
+    title: {
+      type: String,
+      default: () => '',
+    },
+    series: {
+      type: Array,
+      default: () => [],
     }
   },
+  data() {
+    return {
+      // series: [
+      //   {
+      //     name: 'Visit source',
+      //     type: 'pie',
+      //     radius: ['50%', '70%'],
+      //     avoidLabelOverlap: false,
+      //     label: {
+      //       show: false,
+      //     },
+      //     labelLine: {
+      //       show: false,
+      //     },
+      //     data: [
+      //       { value: 335, name: 'Point One' },
+      //       { value: 310, name: 'Point Two' },
+      //       { value: 234, name: 'Point Three' },
+      //       { value: 435, name: 'Point Four' },
+      //     ],
+      //   },
+      // ],
+    }
+  },
+  created() {
+
+  }
 }
 </script>
 

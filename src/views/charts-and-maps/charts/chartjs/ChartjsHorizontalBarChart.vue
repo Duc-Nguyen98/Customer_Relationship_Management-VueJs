@@ -5,7 +5,7 @@
         <b-card-sub-title class="mb-25">
           Balance
         </b-card-sub-title>
-        <b-card-title>$74,123</b-card-title>
+        <b-card-title>{{ title }}</b-card-title>
       </div>
       <!-- datepicker -->
       <div class="d-flex align-items-center">
@@ -27,7 +27,7 @@
     <b-card-body>
       <chartjs-component-horizontal-bar-chart
         :height="400"
-        :data="chartjsData.horizontalBarChart.data"
+        :data="data"
         :options="chartjsData.horizontalBarChart.options"
       />
     </b-card-body>
@@ -41,6 +41,8 @@ import {
 import flatPickr from 'vue-flatpickr-component'
 import ChartjsComponentHorizontalBarChart from './charts-components/ChartjsComponentHorizontalBarChart.vue'
 import chartjsData from './chartjsData'
+import axios from "axios";
+import { $themeColors } from '@themeConfig'
 
 export default {
   components: {
@@ -52,12 +54,35 @@ export default {
     flatPickr,
     ChartjsComponentHorizontalBarChart,
   },
-  data() {
-    return {
-      chartjsData,
-      rangePicker: ['2019-05-01', '2019-05-10'],
+  props: {
+    title: {
+      type: String
     }
   },
+  data() {
+    return {
+      data: {},
+      chartjsData,
+      rangePicker: ['2019-05-01', '2019-05-10'],
+      config: {
+        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+      },
+      themeColors: $themeColors,
+    }
+  },
+  async created() {
+    await this.customersUsedServices()
+  },
+  methods: {
+    async customersUsedServices() {
+      const response = await axios.get(`${process.env.VUE_APP_ROOT_API}statistics/customersUsedServices`, this.config)
+      response.data.data.customersUsedService.datasets[0].backgroundColor = '#00ffff'
+      response.data.data.customersUsedService.datasets[0].borderColor = 'transparent'
+      response.data.data.customersUsedService.datasets[0].barThickness = 15
+      this.data = response.data.data.customersUsedService
+    },
+  },
+
 }
 </script>
 

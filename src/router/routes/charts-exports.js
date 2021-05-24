@@ -50,4 +50,38 @@ export default [
       ],
     },
   },
+  {
+    path: '/statistics-customer',
+    name: 'statistics-customer',
+    component: () => import('@/views/charts-and-maps/charts/customs/CustomersChart.vue'),
+    meta: {
+      pageTitle: 'Statistics customer',
+      breadcrumb: [
+        {
+          text: 'Extensions',
+        },
+        {
+          text: 'Apex Chart',
+          active: true,
+        },
+      ],
+    },
+  },
+  {
+    path: '/statistics-services',
+    name: 'statistics-services',
+    component: () => import('@/views/charts-and-maps/charts/customs/ServicesChart.vue'),
+    meta: {
+      pageTitle: 'Statistics services',
+      breadcrumb: [
+        {
+          text: 'Extensions',
+        },
+        {
+          text: 'Apex Chart',
+          active: true,
+        },
+      ],
+    },
+  },
 ]

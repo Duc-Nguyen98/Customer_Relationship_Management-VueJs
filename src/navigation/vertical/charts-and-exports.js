@@ -4,6 +4,18 @@ export default [
   },
   {
 
+    title: 'Statistics customer',
+    route: 'statistics-customer',
+    icon: 'BarChartIcon',
+  },
+  {
+
+    title: 'Statistics services',
+    route: 'statistics-services',
+    icon: 'BarChartIcon',
+  },
+  {
+
     title: 'Charts Customers',
     route: 'charts-chartjs',
     icon: 'BarChartIcon',
@@ -12,7 +24,7 @@ export default [
 
     title: 'Charts Transaction',
     route: 'charts-echart',
-    icon: 'PieChartIcon'
+    icon: 'PieChartIcon',
   },
 
 ]
