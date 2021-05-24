@@ -58,10 +58,10 @@ export default [
       pageTitle: 'Statistics customer',
       breadcrumb: [
         {
-          text: 'Extensions',
+          text: 'Statistics',
         },
         {
-          text: 'Apex Chart',
+          text: 'Customer',
           active: true,
         },
       ],
@@ -75,10 +75,10 @@ export default [
       pageTitle: 'Statistics services',
       breadcrumb: [
         {
-          text: 'Extensions',
+          text: 'Statistics',
         },
         {
-          text: 'Apex Chart',
+          text: 'Services',
           active: true,
         },
       ],
